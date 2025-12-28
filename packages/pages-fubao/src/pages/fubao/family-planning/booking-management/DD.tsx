@@ -1,4 +1,5 @@
-import moment, { Moment } from 'moment';
+import dayjs, { Dayjs } from 'dayjs'
+
 import store from 'store';
 import { DIFF_HOUR, HOUR_SPAN, START_HOUR } from './constant';
 import { IBooking, IStatisticData, TOperationType } from './type';
@@ -20,13 +21,13 @@ export class DD {
   bookings: IBooking[] = [];
   statisticData: Partial<IStatisticData> = {};
   scheduleArr: IModel_FamilyPlaningSchedulingDetails[] = [];
-  start: Moment = moment();
-  end: Moment = moment();
+  start: Dayjs = dayjs();
+  end: Dayjs = dayjs();
   mode: 'day' | 'week' | 'month' = 'day';
-  selectMoment = moment();
+  selectMoment = dayjs();
   observers: TOs[] = [];
-  disabledStartTime = moment('2000-01-01 12:00');
-  disabledEndTime = moment('2000-01-01 14:00');
+  disabledStartTime = dayjs('2000-01-01 12:00');
+  disabledEndTime = dayjs('2000-01-01 14:00');
   colsOfSameInterval = 1;
   appointSetting?: IModel_FamilyPlanningDefaultSetting;
   static allSchedulingData: { [x: string]: IModel_FamilyPlaningSchedulingDetails };
@@ -55,7 +56,7 @@ export class DD {
   setScheduleArr(data: IModel_FamilyPlaningSchedulingDetails[]) {
     this.scheduleArr = [...data];
   }
-  setStartAndEnd(start: Moment, end: Moment) {
+  setStartAndEnd(start: Dayjs, end: Dayjs) {
     this.start = start;
     this.end = end;
   }
@@ -106,10 +107,11 @@ export class DD {
   equalDay(a: Date, b: Date) {
     return true;
   }
-  checkInRestTime(startTime: Moment) {
+  checkInRestTime(startTime: Dayjs) {
     return false;
   }
-  canAddInDayView(appointmentDate: Moment, colIndex: number, rowIndex: number, type: TOperationType) {
+  canAddInDayView(appointmentDate: Dayjs, colIndex: number, rowIndex: number, type: TOperationType) {
+    return false
     // const thisDayData = findAppointmentOfThisDay(this.bookings.map(_ => _.data), type, appointmentDate)
     // if (thisDayData.length >= getOperationOpenStatusAndNum(appointmentDate, type, this.appointSetting)[1]) return false
     // if (this.checkInRestTime(appointmentDate)) return false
@@ -120,7 +122,7 @@ export class DD {
     // })
     // return isOk
   }
-  findStartColToAdd(startTime: Moment, endTime: Moment) {
+  findStartColToAdd(startTime: Dayjs, endTime: Dayjs) {
     return Array(this.colsOfSameInterval)
       .fill(0)
       .map((_, i) => {
@@ -129,11 +131,11 @@ export class DD {
       })
       .filter((_) => _ !== -1);
   }
-  canAddInWeekView(startTime: Moment, endTime: Moment) {
+  canAddInWeekView(startTime: Dayjs, endTime: Dayjs) {
     const colArr = this.findStartColToAdd(startTime, endTime);
     return !!colArr.length;
   }
-  canAddInMonthView(startTime: Moment) {
+  canAddInMonthView(startTime: Dayjs) {
     const dayStart = startTime.clone().set({ hour: START_HOUR });
 
     return Array(DIFF_HOUR / HOUR_SPAN)
@@ -177,7 +179,7 @@ export class DD {
       });
   }
   initData() {
-    let start: Moment, end: Moment;
+    let start: Dayjs, end: Dayjs;
     if (this.mode === 'day') {
       start = this.selectMoment;
       end = this.selectMoment;

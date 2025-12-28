@@ -1,11 +1,11 @@
 import { message } from 'antd';
-import { Moment } from 'moment';
+import { Dayjs } from 'dayjs';
 import { IModel_FamilyPlanningDefaultSetting } from '.';
-import { stupidEnums } from '..';
 import { get } from 'lodash';
 import { ModelService } from '../ModelService';
 import { IModel_PreoperativeExamination } from './PreoperativeExamination';
 import { SLocal_State } from '@lm_fe/service';
+import { mchcEnv } from '@lm_fe/env';
 export interface IModel_EarlyPregnancyCheckSurgeryType {
   age: number;
   deleteFlag: number;
@@ -25,7 +25,7 @@ export interface IModel_EarlyPregnancyCheckSurgeryType {
   preoperativeDiagnosis: null;
   preoperativeExamination: IModel_PreoperativeExamination;
   preoperativeUterineCavity: null;
-  registrationDate?: Moment;
+  registrationDate?: Dayjs;
   skinCondition: null;
   skinConditionNote: null;
   specialCases: null;
@@ -39,13 +39,13 @@ export interface IModel_EarlyPregnancyCheckSurgeryType {
   surgicalPeople: null;
   telephone: string;
   admissionDoctor: null;
-  admissionTime?: Moment;
+  admissionTime?: Dayjs;
   appointmentNurse: string;
   signInRegistrant: string;
   signInTime: string;
-  appointmentDate?: Moment;
-  appointmentTimeRangeEnd: Moment;
-  appointmentTimeRangeStart: Moment;
+  appointmentDate?: Dayjs;
+  appointmentTimeRangeEnd: Dayjs;
+  appointmentTimeRangeStart: Dayjs;
   earlyPregnancyCheckSurgeryTypeId: null;
   earlyPregnancySurgicalTemplateId: 1;
   idNO: string;
@@ -145,7 +145,7 @@ export interface IModel_EarlyPregnancyCheckSurgeryType_OptionalPregnancy {
   name: string;
   outpatientNo: string;
   permanentResidenceAddress: string;
-  registerDate: Moment;
+  registerDate: Dayjs;
   registerPerson: string;
   residenceAddress: string;
   telephone: string;
@@ -164,7 +164,7 @@ class MY_ModelService extends ModelService<IModel_EarlyPregnancyCheckSurgeryType
       method: 'POST',
       data: this.transferSubmitData(data),
     }).then((r) => {
-      message.info(r.msg);
+      mchcEnv.info(r.msg!);
       return this.transferSourceData(r.data);
     });
   }
@@ -173,7 +173,7 @@ class MY_ModelService extends ModelService<IModel_EarlyPregnancyCheckSurgeryType
       url: `/api/family/planning/cancelAppointmentSurgery/${id}`,
       method: 'DELETE',
     }).then((r) => {
-      message.info(get(r, 'data.msg'));
+      mchcEnv.info(get(r, 'data.msg')!);
     });
   }
   getOptionalPregnancyList(name?: string) {
@@ -199,7 +199,7 @@ class MY_ModelService extends ModelService<IModel_EarlyPregnancyCheckSurgeryType
       params: {},
     }).then((r) => r.data);
   }
-  getStatistic(start: Moment, end: Moment) {
+  getStatistic(start: Dayjs, end: Dayjs) {
     return this._request<{ appointmentNum: number; completeNum: number; signNum: number; timeout: number }>({
       url: '/api/family/planning/getAppointmentSignCompleteTimeoutNum',
       method: 'GET',

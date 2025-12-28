@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Modal, message } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { get, set, isEqual, size, isUndefined } from 'lodash';
 // import FormSection from '@/components/BaseModalForm/FormSection';
 import { modalFormDescriptions as formDescriptions } from '../config/form';
@@ -8,6 +8,7 @@ import { getPregnancyByOutpatientNO, getPrenatalVisits, getMeasuresByDate } from
 import styles from '../index.module.less';
 import { DynamicForm, FormSection, formatTimeToDate } from '@lm_fe/components_m';
 import { request } from '@lm_fe/utils';
+import { mchcEnv } from '@lm_fe/env';
 
 const url = '/api/measures';
 const title = '体格检查';
@@ -56,7 +57,7 @@ export default class BaseModalForm extends DynamicForm {
       } else {
         this.form = this.formRef.current;
         this.form.setFieldsValue({
-          createDate: moment(),
+          createDate: dayjs(),
         });
         this.setState({ data: {} });
       }
@@ -132,20 +133,19 @@ export default class BaseModalForm extends DynamicForm {
         if (!get(values, 'id')) {
           const measureData = await getMeasuresByDate(get(values, 'outpatientNO'), get(values, 'createDate'));
           if (size(measureData) > 0) {
-            message.destroy();
-            message.warn('此用户当天已记录体征数据，请搜索对应的记录编辑。');
+            mchcEnv.warning('此用户当天已记录体征数据，请搜索对应的记录编辑。');
             return;
           }
         }
 
         await request[method](`${url}`, values);
-        message.success(tip);
+        mchcEnv.success(tip);
         onCancel();
         onSearch();
       })
       .catch((error: any) => {
         const errors = get(error, 'errorFields.0.errors.0');
-        message.error(errors);
+        mchcEnv.error(errors);
       });
   };
 
@@ -160,7 +160,7 @@ export default class BaseModalForm extends DynamicForm {
       <Modal
         {...modalProps}
         centered
-        visible={visible}
+        open={visible}
         onCancel={onCancel}
         onOk={this.handleSubmit}
         title={id ? `修改${title}` : `添加${title}`}

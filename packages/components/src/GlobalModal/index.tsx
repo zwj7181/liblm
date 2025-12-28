@@ -1,7 +1,9 @@
 import React, { FC, Suspense, useEffect, useState } from 'react';
 import { GlobalModal, IGlobalModalProps, TGlobalModalMeta } from './utils';
+import { MyLazyComponent } from 'src/MyLazyComponent';
 export * from './utils';
 
+export { IGlobalModalProps }
 
 export function MountGlobalModal(props: { meta: TGlobalModalMeta, globalModal: GlobalModal<any> }) {
     const { meta, globalModal } = props
@@ -19,26 +21,27 @@ export function MountGlobalModal(props: { meta: TGlobalModalMeta, globalModal: G
 
     }
     return (
-        <Suspense fallback={<div>loading...</div>}>
+        <Suspense fallback={<div>loading MountGlobalModal ...</div>}>
             {
                 modalQueue.map(({ name, data, id }) => {
                     const C: FC<IGlobalModalProps<any>> = meta[name] || (() => null)
 
-                    return <C
-                        maskClosable={false}
-                        key={id}
-                        visible
-                        centered
-                        bodyStyle={{ padding: 24 }}
-                        {...data}
-                        close={do_pop}
-                        onOk={(e) => {
-                            do_pop(true, e)
-                        }}
-                        onCancel={(e) => {
-                            do_pop(false, e)
-                        }}
-                    />
+                    return <MyLazyComponent fallback=''>
+                        <C
+                            maskClosable={false}
+                            key={id}
+                            visible
+                            centered
+                            {...data}
+                            close={do_pop}
+                            onOk={(e) => {
+                                do_pop(true, e)
+                            }}
+                            onCancel={(e) => {
+                                do_pop(false, e)
+                            }}
+                        />
+                    </MyLazyComponent>
                 })
             }
         </Suspense>

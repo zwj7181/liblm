@@ -1,6 +1,6 @@
 import React from 'react';
 import { BaseQuery } from '@lm_fe/components_m'
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { Input, message, Button } from 'antd';
 import {
   SearchOutlined,
@@ -12,6 +12,7 @@ import { queryFormDescriptions } from '../config/form';
 import { downloadFile, formatDate as formatTimeToDate } from '@lm_fe/utils'
 import { map, isNil } from 'lodash';
 import { fubaoRequest as request } from '@lm_fe/utils';
+import { mchcEnv } from '@lm_fe/env';
 export default class Query extends BaseQuery {
   state = { queryFormDescriptions };
   renderBtn = () => (
@@ -29,7 +30,7 @@ export default class Query extends BaseQuery {
   );
 
   handleExport = async () => {
-    message.info('暂无开放此功能，敬请期待！');
+    mchcEnv.info('暂无开放此功能，敬请期待！');
     return;
     const data = await this.form.getFieldsValue();
     let queryData = {};

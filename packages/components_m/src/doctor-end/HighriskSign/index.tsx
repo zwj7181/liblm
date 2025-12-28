@@ -1,8 +1,12 @@
 import { SMchc_Pregnancy, SMchc_TemplateTrees } from '@lm_fe/service';
-import { Button, Modal, Tree } from 'antd';
+import { Button, Modal } from 'antd';
 import { cloneDeep, includes, join, map, max, size, split } from 'lodash';
 import React, { Component } from 'react';
 import './index.less';
+import { LazyAntd } from '@lm_fe/components';
+
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
 class Index extends Component {
   state = {
     treeData: [],
@@ -60,7 +64,7 @@ class Index extends Component {
 
   handleSign = async () => {
     const { checkedNodes } = this.state;
-    const { setHighriskSign, pregnancyData, getPregnancyData } = this.props;
+    const { setHighriskSign, pregnancyData } = this.props;
     const { id, highriskGrade, highriskNote = '' } = pregnancyData;
 
     let level = 'Ⅰ';
@@ -86,7 +90,6 @@ class Index extends Component {
     };
     await SMchc_Pregnancy.put(signData);
 
-    await getPregnancyData(id);
     setHighriskSign([]);
     // this.handelNeverShow();
   };

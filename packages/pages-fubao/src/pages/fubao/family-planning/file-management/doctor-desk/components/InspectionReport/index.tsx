@@ -1,11 +1,15 @@
-import React, { Component } from 'react';
-import { Card, Col, Collapse, List, Row, Table } from 'antd';
+import { LazyAntd, transferDataByDate } from '@lm_fe/components_m';
+import { SelectTip } from '@lm_fe/pages';
+import { Card, Col, Collapse, List, Row } from 'antd';
 import { first, get, isEmpty, keys, last, map, values } from 'lodash';
-import { SelectTip, transferDataByDate } from '@lm_fe/components_m';
-import { getLibExamsByOutpatientNO } from './method';
+import React, { Component } from 'react';
+
+import { CalendarOutlined } from '@ant-design/icons';
 import classnames from 'classnames';
 import './index.less';
-import { CalendarOutlined } from '@ant-design/icons';
+import { getLibExamsByOutpatientNO } from './method';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
 const isUnusual = (record: any) => {
   const { normalHigh, normalLow, result, limit } = record;
   if (normalHigh && normalLow) {

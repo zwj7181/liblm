@@ -1,11 +1,13 @@
 import { CalendarOutlined } from '@ant-design/icons';
+import { LazyAntd } from '@lm_fe/components';
+import { SMchc_Admission } from '@lm_fe/service';
 import { formatDate as formatTimeToDate, fubaoRequest as request } from '@lm_fe/utils';
-import { Badge, Collapse, Table } from 'antd';
+import { Badge, Collapse } from 'antd';
 import { get, includes, map, size } from 'lodash';
 import React, { Component } from 'react';
 import ExaminationItemCurve from './components/ExaminationItemCurve';
 import './index.less';
-import { SMchc_Admission } from '@lm_fe/service';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
 
 // const tableColumns = [
 //   { title: '检验项目', dataIndex: 'itemName', key: 'itemName' },
@@ -57,7 +59,10 @@ export default class Index extends Component {
     const idNO = get(headerInfoOfInpatientData, 'idNO');
     let list = {} as any;
 
-    list = await SMchc_Admission.listPatientLabExamReport({ params: { inpatientNO, outpatientNO, idNO }, baseURL: '/fb' })
+    list = await SMchc_Admission.listPatientLabExamReport({
+      params: { inpatientNO, outpatientNO, idNO },
+      //  baseURL: '/fb' 
+    })
 
     // const { pregnancyData, type = 1 } = this.props;
     // const pregnancyId = get(pregnancyData, 'id') || get(getUrlQuery(), 'id');

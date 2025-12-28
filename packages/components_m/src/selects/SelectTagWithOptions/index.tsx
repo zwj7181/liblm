@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Select } from 'antd';
 import { map, get, last, isNil } from 'lodash';
+import { LazyAntd } from '@lm_fe/components';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
 export default (props: any) => {
   const { options, onChange, mode = 'single', getPopupContainer = () => document.body, ...rest } = props;
   const [value, setValue] = useState([]);
@@ -29,7 +30,7 @@ export default (props: any) => {
       ref={selfRef}
       mode="tags"
       style={{ width: '100%', minWidth: 150 }}
-      dropdownMatchSelectWidth={150}
+      popupMatchSelectWidth={150}
       getPopupContainer={getPopupContainer}
       value={isNil(value) ? undefined : value}
       onChange={handleChange}

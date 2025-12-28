@@ -1,7 +1,7 @@
-import { QuestionCircleOutlined } from '@ant-design/icons';
+import { MyIcon } from '@lm_fe/components';
 import { Col, InputNumber, Row, Tooltip } from 'antd';
-import React, { useEffect, useState } from 'react';
 import classnames from 'classnames';
+import React, { useEffect, useState } from 'react';
 import styles from './index.less';
 export default function InputWithRangTip(props: any) {
   const { tip = '', onChange, value, min, max, ...others } = props;
@@ -28,7 +28,7 @@ export default function InputWithRangTip(props: any) {
       </Col>
       <Col span={2} className={styles["input-with-range-tip__tip"]}>
         <Tooltip title={tip}>
-          <QuestionCircleOutlined />
+          <MyIcon value='QuestionCircleOutlined' />
         </Tooltip>
       </Col>
     </Row>

@@ -1,8 +1,9 @@
-import React from "react";
 import { IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit } from "@lm_fe/service";
 import { ColumnsType } from "antd/lib/table";
-import { mchcEnv, otherOptions } from "@lm_fe/env";
-import { EMPTY_PLACEHOLDER } from "@lm_fe/utils";
+import { rt_ctx } from "@lm_fe/env";
+const ctx = rt_ctx
+const React = ctx.React
+const c = React.createElement
 type TfetusExam = IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit['fetusExam']
 
 function get_table_columns_广三(): ColumnsType<IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit> {
@@ -20,19 +21,21 @@ function get_table_columns_广三(): ColumnsType<IMchc_Doctor_RvisitInfoOfOutpat
       align: 'center'
     },
     {
-      title: <span>主诉<em></em></span>,
+      title: '主诉',
       dataIndex: ['chiefComplaint'],
       align: 'center'
     },
 
     {
-      title: <span>血压<em>mmHg</em></span>,
+      // title: () => c('span', {}, ['血压', c('em', {}, 'mmHg')]),
+      title: () => <span>血压<em>mmHg</em></span>,
+
       width: 100,
-      dataIndex: ['physicalExam', 'weight'],
+      dataIndex: 'physicalExam',
       align: 'center',
       ellipsis: true,
-      render(a, b) {
-        const pe = b.physicalExam ?? {}
+      render(pe) {
+        if (!pe) return ''
 
         const x1 = (pe.systolic && pe.diastolic) ? `首:${pe.systolic}/${pe.diastolic}；` : ''
         const x2 = (pe.systolic2 && pe.diastolic2) ? `二:${pe.systolic2}/${pe.diastolic2}；` : ''
@@ -41,50 +44,85 @@ function get_table_columns_广三(): ColumnsType<IMchc_Doctor_RvisitInfoOfOutpat
       }
     },
     {
-      title: <span>脉搏<em>次/分</em></span>,
+      // title: () => c('span', {}, ['脉搏', c('em', {}, '次/分')]),
+      title: () => <span>脉搏<em>次/分</em></span>,
+
       width: 40,
       dataIndex: ['physicalExam', 'pulse'],
       align: 'center'
     },
     {
-      title: <span>体重<em>kg</em></span>,
+      // title: () => c('span', {}, ['体重', c('em', {}, 'kg')]),
+      title: () => <span>体重<em>kg</em></span>,
+
       dataIndex: ['physicalExam', 'weight'],
       width: 40,
       align: 'center'
     },
-    mchcEnv.in(['广三']) ? {
-      title: <span><em>孕期体重增加</em></span>,
+    ctx.mchcEnv.in(['广三']) ? {
+      // title: () => c('em', {}, '孕期体重增加'),
+      title: () => <em>孕期体重增加</em>,
+
       dataIndex: ['physicalExam', 'weightGain'],
-      width:60,
+      width: 60,
       align: 'center',
     } : undefined as any,
     {
-      title: <span>宫高<em>cm</em></span>,
+      // title: () => c('span', {}, ['宫高', c('em', {}, 'cm')]),
+      title: () => <span>宫高<em>cm</em></span>,
+
       dataIndex: ['gynExam', 'fundalHeight'],
       width: 40,
       align: 'center'
     },
     {
-      title: <span>腹围<em>cm</em></span>,
+      // title: () => c('span', {}, ['腹围', c('em', {}, 'cm')]),
+      title: () => <span>腹围<em>cm</em></span>,
+
       dataIndex: ['gynExam', 'waistHip'],
       width: 40,
       align: 'center'
     },
 
-    gen_fetal_info('胎动', 'fetalMovement'),
-    gen_fetal_info('胎心率', 'fetalHeartRate'),
-    gen_fetal_info('位置', 'position'),
-    gen_fetal_info('胎方位', 'fetalPosition'),
-    gen_fetal_info('先露', 'presentation'),
     {
-      title: <span>处置<em></em></span>,
+      ...gen_fetal_info('胎动', 'fetalMovement'), render(value) {
+        const arr: TfetusExam = value || []
+        return arr.map(_ => _['fetalMovement']).join('/')
+      }
+    },
+    {
+      ...gen_fetal_info('胎心率', 'fetalHeartRate'), render(value) {
+        const arr: TfetusExam = value || []
+        return arr.map(_ => _['fetalHeartRate']).join('/')
+      }
+    },
+    {
+      ...gen_fetal_info('位置', 'position'), render(value) {
+        const arr: TfetusExam = value || []
+        return arr.map(_ => _['position']).join('/')
+      }
+    },
+    {
+      ...gen_fetal_info('胎方位', 'fetalPosition'), render(value) {
+        const arr: TfetusExam = value || []
+        return arr.map(_ => _['fetalPosition']).join('/')
+      }
+    },
+    {
+      ...gen_fetal_info('先露', 'presentation'), render(value) {
+        const arr: TfetusExam = value || []
+        return arr.map(_ => _['presentation']).join('/')
+      }
+    },
+    {
+      title: '处置',
       width: 80,
       ellipsis: true,
       dataIndex: ['prescription'],
       align: 'center'
     },
     {
-      title: <span>辅助检查<em></em></span>,
+      title: '辅助检查',
       width: 80,
       ellipsis: true,
       dataIndex: ['exam'],
@@ -117,7 +155,7 @@ function get_table_columns_广三(): ColumnsType<IMchc_Doctor_RvisitInfoOfOutpat
 
 
     {
-      title: <span>其他异常特征<em></em></span>,
+      title: '其他体征',
       dataIndex: ['cardiacDisease', 'otherNote'],
       width: 80,
       ellipsis: true,
@@ -126,7 +164,7 @@ function get_table_columns_广三(): ColumnsType<IMchc_Doctor_RvisitInfoOfOutpat
 
 
     {
-      title: <span>嘱托<em></em></span>,
+      title: '嘱托',
       dataIndex: ['advice'],
       width: 80,
       ellipsis: true,
@@ -141,7 +179,7 @@ function get_table_columns_default(): ColumnsType<IMchc_Doctor_RvisitInfoOfOutpa
   return [
     {
       title: '日期',
-      width: 70,
+      width: 90,
       dataIndex: 'visitDate',
       align: 'center'
     },
@@ -152,58 +190,96 @@ function get_table_columns_default(): ColumnsType<IMchc_Doctor_RvisitInfoOfOutpa
       align: 'center'
     },
     {
-      title: <span>主诉<em></em></span>,
+      title: '主诉',
       dataIndex: ['chiefComplaint'],
-      align: 'center'
+      // align: 'center'
+      width: 140,
+
     },
 
     {
-      title: <span>血压<em>mmHg</em></span>,
+      // title: () => c('span', {}, ['血压', c('em', {}, 'mmHg')]),
+      title: () => <span>血压<em>mmHg</em></span>,
       width: 100,
-      dataIndex: ['physicalExam', 'weight'],
+      dataIndex: 'physicalExam',
       align: 'center',
       ellipsis: true,
-      render(a, b) {
-        const pe = b.physicalExam ?? {}
+      render(pe) {
+        if (!pe) return ''
 
-        const x1 = (pe.systolic && pe.diastolic) ? `首:${pe.systolic}/${pe.diastolic}；` : ''
-        const x2 = (pe.systolic2 && pe.diastolic2) ? `二:${pe.systolic2}/${pe.diastolic2}；` : ''
-        const x3 = (pe.systolic3 && pe.diastolic3) ? `三:${pe.systolic3}/${pe.diastolic3}；` : ''
+        const x1 = (pe.systolic && pe.diastolic) ? `首:${pe.systolic}/${pe.diastolic};` : ''
+        const x2 = (pe.systolic2 && pe.diastolic2) ? `二:${pe.systolic2}/${pe.diastolic2};` : ''
+        const x3 = (pe.systolic3 && pe.diastolic3) ? `三:${pe.systolic3}/${pe.diastolic3};` : ''
         return `${x1} ${x2} ${x3}`
       }
     },
     {
-      title: <span>脉搏<em>次/分</em></span>,
+      // title: () => c('span', {}, ['脉搏', c('em', {}, '次/分')]),
+      title: () => <span>脉搏<em>次/分</em></span>,
+
       width: 40,
       dataIndex: ['physicalExam', 'pulse'],
       align: 'center'
     },
     {
-      title: <span>体重<em>kg</em></span>,
-      dataIndex: ['physicalExam', 'weight'],
-      width: 40,
+      // title: () => c('span', {}, ['身高', c('em', {}, 'cm')]),
+      title: () => <span>身高<em>cm</em></span>,
+
+      dataIndex: ['physicalExam', 'height'],
+      width: 50,
       align: 'center'
     },
 
     {
-      title: <span>宫高<em>cm</em></span>,
+      // title: () => c('span', {}, ['体重', c('em', {}, 'kg')]),
+      title: () => <span>体重<em>kg</em></span>,
+
+      dataIndex: ['physicalExam', 'weight'],
+      width: 50,
+      align: 'center'
+    },
+    {
+      title: 'bmi',
+
+      width: 50,
+      hidden: !ctx.mchcEnv.in(['广州市八']),
+      dataIndex: ['physicalExam', 'bmi'],
+      align: 'center'
+    },
+    {
+      // title: () => c('span', {}, ['宫高', c('em', {}, 'cm')]),
+      title: () => <span>宫高<em>cm</em></span>,
+
       dataIndex: ['gynExam', 'fundalHeight'],
       width: 40,
       align: 'center'
     },
     {
-      title: <span>腹围<em>cm</em></span>,
+      // title: () => c('span', {}, ['腹围', c('em', {}, 'cm')]),
+      title: () => <span>腹围<em>cm</em></span>,
+
       dataIndex: ['gynExam', 'waistHip'],
       width: 40,
       align: 'center'
     },
 
-    gen_fetal_info('胎心率', 'fetalHeartRate'),
-    gen_fetal_info('先露', 'presentation'),
+    {
+      ...gen_fetal_info('胎心率', 'fetalHeartRate'), render(value) {
+        const arr: TfetusExam = value || []
+        return arr.map(_ => _['fetalHeartRate']).join('/')
+      }
+    },
+    {
+      ...gen_fetal_info('先露', 'presentation'), render(value) {
+        const arr: TfetusExam = value || []
+        return arr.map(_ => _['presentation']).join('/')
+      }
+    },
 
 
     {
-      title: <span>下肢水肿<em></em></span>,
+      title: '下肢水肿',
+
       dataIndex: ['edema'],
       width: 40,
       align: 'center',
@@ -222,53 +298,61 @@ function get_table_columns_default(): ColumnsType<IMchc_Doctor_RvisitInfoOfOutpa
     },
 
     {
-      title: <span>其他异常特征<em></em></span>,
+      title: '其他体征',
+
       dataIndex: ['cardiacDisease', 'otherNote'],
-      width: 80,
+      width: 120,
       ellipsis: true,
       align: 'center'
     },
 
     {
-      title: <span>辅助检查<em></em></span>,
+      title: '辅助检查',
+
       width: 80,
       ellipsis: true,
+      hidden: ctx.mchcEnv.in(['广州市八']),
       dataIndex: ['exam'],
       align: 'center'
     },
+
     {
-      title: <span>处理措施<em></em></span>,
-      width: 80,
-      ellipsis: true,
+      title: '处理措施',
+
+      // width: 240,
+      // ellipsis: true,
       dataIndex: ['prescription'],
       align: 'center'
     },
     {
-      title: <span>下次复诊<em></em></span>,
+      title: '下次复诊',
+
       dataIndex: ['resetAppoint'],
       width: 80,
       ellipsis: true,
       align: 'center',
       render(value, record, index) {
         const { appointmentDate, appointmentPeriod, appointmentType } = record
+        if (!appointmentDate) return '-'
 
-
-        if (appointmentDate) {
-          let str1 = appointmentDate.slice(5),
-            str2 = '',
-            str3 = '';
-          if (appointmentPeriod) {
-            const period = appointmentPeriod === '1' ? '上午' : '下午';
-            str2 = period.slice(0, 1);
-          }
-          if (appointmentType) str3 = otherOptions.appointmentTypeOptions.find(_ => _.value == appointmentType)?.label!
-          return `${str1} ${str2} ${str3?.slice?.(0, 1)}`
+        let str1 = appointmentDate.slice(5),
+          str2 = '',
+          str3 = '';
+        if (appointmentPeriod) {
+          const period = appointmentPeriod === '1' ? '上午' : '下午';
+          str2 = period.slice(0, 1);
         }
-        return EMPTY_PLACEHOLDER
+        if (appointmentType) {
+          const options = ctx.mchcEnv.get_other_options('appointmentTypeOptions').find(_ => _.value == appointmentType)
+
+          str3 = options ? (options.label || '') : ''
+        }
+        return `${str1} ${str2} ${str3.slice(0, 1)}`
       },
     },
     {
-      title: <span>医生<em></em></span>,
+      title: '医生',
+
       dataIndex: ['doctorName'],
       ellipsis: true,
       width: 50,
@@ -276,23 +360,18 @@ function get_table_columns_default(): ColumnsType<IMchc_Doctor_RvisitInfoOfOutpa
     },
   ]
 }
-export function get_table_columns(): ColumnsType<IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit> {
-  if (mchcEnv.is('广三'))
-    return get_table_columns_广三()
-  return get_table_columns_default()
+export default function get_table_columns() {
+  const arr = (ctx.mchcEnv.is('广三')) ? get_table_columns_广三() : get_table_columns_default()
+  return arr.filter((_: any) => !_.hidden) as ColumnsType<IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit>
 }
 
 
 function gen_fetal_info(title: string, key: keyof TfetusExam[number]) {
 
   return {
-    title: <span>{title}<em></em></span>,
+    title: title,
     dataIndex: ['fetusExam'],
     width: 60,
     align: 'center',
-    render(value, record, index) {
-      const arr: TfetusExam = record.fetusExam ?? []
-      return arr.map(_ => _[key]).join('、')
-    },
   } as any
 }

@@ -1,18 +1,16 @@
+import { LazyAntd } from '@lm_fe/components';
 import { Browser } from '@lm_fe/utils';
-import {
-  Pagination, Space, Table
-} from 'antd';
+import { Pagination, Space } from 'antd';
 import { TableProps } from 'antd/lib/table';
-import classnames from 'classnames';
 import { get, map } from 'lodash';
 import React, { FC, useEffect, useState } from 'react';
 import './index.less';
-import { mchcLogger } from '@lm_fe/env';
+const { Tree, TreeSelect, Select, Table, Dropdown } = LazyAntd
+
 
 // 不限定默认格子宽度
 const TABLE_CELL_WIDTH = 200;
 const browserClient = Browser.client || {};
-mchcLogger.log('browserClient', browserClient)
 export interface MyBaseTableProps extends TableProps<any> {
   columns?: any;
   renderTitle?(): React.ReactNode

@@ -1,5 +1,5 @@
 import { map, get, isNil, set, dropRight, join } from 'lodash';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import {safe_json_parse as strToJson,safe_json_stringify as jsonToStr, formatDateTime, formatTime} from '@lm_fe/utils';
 
 //数据转换

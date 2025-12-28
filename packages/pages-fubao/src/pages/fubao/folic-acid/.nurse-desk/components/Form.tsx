@@ -3,14 +3,17 @@ import {
   CloseOutlined,
   SaveOutlined
 } from '@ant-design/icons';
-import { BaseEditPanelForm, fromApi } from '@lm_fe/components_m';
+import { BaseEditPanelForm, fromApi, LazyAntd, resolveFubaoPath } from '@lm_fe/components_m';
+import { mchcEnv, mchcUtils } from '@lm_fe/env';
+import { SLocal_History } from '@lm_fe/service';
 import { request } from '@lm_fe/utils';
-import { Button, Modal, Space, Table, message } from 'antd';
+import { Button, message, Modal, Space } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 import { cloneDeep, get, isEmpty, omit, size } from 'lodash';
 import React from 'react';
-import { checkAge, checkIdNo } from './func';
 import { tableColumn } from './tableColumn';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
 class AdmissionForm extends BaseEditPanelForm {
   state = {
     printModalVisible: false,
@@ -37,7 +40,7 @@ class AdmissionForm extends BaseEditPanelForm {
           this.setState({
             IDCardLoading: false,
           });
-          return message.info(`${e.data}，请重新读卡`);
+          return mchcEnv.info(`${e.data}，请重新读卡`);
         }
         if (e && e.data && e.data.includes('{')) {
           d = JSON.parse(e.data);
@@ -46,7 +49,7 @@ class AdmissionForm extends BaseEditPanelForm {
           });
         }
         if (d.name) {
-          const values = { name: d.name, idType: 1, idNO: d.idno, age: checkAge(d.idno) };
+          const values = { name: d.name, idType: 1, idNO: d.idno, age: mchcUtils.checkAge(d.idno) };
           return this.form?.setFieldsValue(values);
         }
       });
@@ -61,7 +64,7 @@ class AdmissionForm extends BaseEditPanelForm {
 
   // 地址组件 触发按钮
   getEvents = () => ({
-    //查询就诊卡号是否存在
+    //查询门诊号是否存在
     handleInputBlur: async (e: any) => {
       const { data } = this.props;
       const id = get(data, 'id');
@@ -139,7 +142,7 @@ class AdmissionForm extends BaseEditPanelForm {
       (get(changedValues, 'idType') || get(changedValues, 'idNO'))
     ) {
       const idNO = get(allValues, 'idNO');
-      const personal = checkIdNo(idNO, false);
+      const personal = mchcUtils.checkIdNo(idNO)
       if (personal.status) {
         form &&
           form.setFieldsValue({
@@ -149,7 +152,7 @@ class AdmissionForm extends BaseEditPanelForm {
             age: personal.age,
           });
       } else {
-        message.warn(`${get(personal, 'message')}`);
+        message.warning(`${get(personal, 'message')}`);
       }
     }
   };
@@ -160,11 +163,14 @@ class AdmissionForm extends BaseEditPanelForm {
     if (!get(data, 'id')) form.resetFields();
 
     //删除keepAliveProvider缓存
-    await updateTabs(get(tabs, `tabsMapping./folic-acid/file-management/list`));
-    routerPath && (await deleteTab(routerPath));
-    history && history.push('/folic-acid/file-management/list');
-    const { path, search } = get(tabs, `tabsMapping.${routerPath}`);
-    keepAliveProviderRef?.current.removeCache(`${path}.name.${search}`);
+    // await updateTabs(get(tabs, `tabsMapping./folic-acid/file-management/list`));
+    // routerPath && (await deleteTab(routerPath));
+    // history && history.push('/folic-acid/file-management/list');
+    // const { path, search } = get(tabs, `tabsMapping.${routerPath}`);
+    // keepAliveProviderRef?.current.removeCache(`${path}.name.${search}`);
+
+    SLocal_History.closeAndPush(resolveFubaoPath(`/folic-acid/file-management/list`))
+
   };
   renderCancelBtn = () => {
     return (

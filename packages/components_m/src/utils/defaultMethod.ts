@@ -1,6 +1,6 @@
 import { request } from '@lm_fe/utils';
 import { get, isEmpty, isNil, keyBy, keys, map, set } from 'lodash';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 /**
  * 获取所有资源，默认取999999位
@@ -102,7 +102,7 @@ export const transferDataByDate = (data: any[] = [], dateName = 'visitDate') => 
   const newData = map(data, (item) => {
     return {
       ...item,
-      [dateName]: moment(get(item, dateName)).format('YYYY-MM-DD'),
+      [dateName]: dayjs(get(item, dateName)).format('YYYY-MM-DD'),
     };
   });
   map(keys(keyBy(newData, dateName)), (key) => {

@@ -1,8 +1,11 @@
 // import aImg from '@/assets/imgs/images/a.jpg';
 // import bImg from '@/assets/imgs/images/b.png';
-import { Button, Col, Input, Modal, Row, Table } from 'antd';
+import { LazyAntd } from '@lm_fe/components';
+import { Button, Col, Input, Modal, Row } from 'antd';
 import React, { Component } from 'react';
 import './index.less';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
 export default class Index extends Component {
   state = {
     isShowModal: false,
@@ -14,10 +17,7 @@ export default class Index extends Component {
   };
 
   async componentDidMount() {
-    // const { pregnancyData, type = 1 } = this.props;
-    // const pregnancyId = get(pregnancyData, 'id') || get(getUrlQuery(), 'id');
-    // const list = await api.image.getReportList(pregnancyId, type);
-    // this.setState({ tableData: list });
+
   }
 
   handleBtnClick = (text: any, record: any, type: number) => {

@@ -1,7 +1,7 @@
-import { ICommonOption, mchcEnv, mchcUtils, optionKey不详, optionKey其他, optionKey否 } from "@lm_fe/env";
-import { getSearchParamsValue, safe_json_parse_arr } from "@lm_fe/utils";
-import { IFubao_CervicalCancerScreening } from "./type";
+import { mchcUtils } from "@lm_fe/env";
+import { safe_json_parse_arr } from "@lm_fe/utils";
 import { cloneDeep } from "lodash";
+import { IFubao_CervicalCancerScreening } from "./type";
 
 
 
@@ -24,12 +24,12 @@ export function processTwoCancer_remote(data: IFubao_CervicalCancerScreening) {
 
 
     //病史情况
-    let cervicalCancerMedicalHistory = (['previousCervicalScreening', 'gynecologicalDiseasesHistory'] as const)
-        .reduce((obj, k) => {
-            return mchcUtils.noteToCommonOption(obj, k)
-        }, data.cervicalCancerMedicalHistory)
+    // let cervicalCancerMedicalHistory = (['previousCervicalScreening', 'gynecologicalDiseasesHistory'] as const)
+    //     .reduce((obj, k) => {
+    //         return mchcUtils.noteToCommonOption(obj, k)
+    //     }, data.cervicalCancerMedicalHistory)
 
-    data.cervicalCancerMedicalHistory = cervicalCancerMedicalHistory
+    data.cervicalCancerMedicalHistory = mchcUtils.autoNoteToCommonOption(data.cervicalCancerMedicalHistory)
 
     //妇科检查
     let cervicalCancerGynecologicExamination = (['vulva', 'secretions', 'vaginal', 'cervix', 'zg', 'appendix'] as const)
@@ -61,20 +61,20 @@ export function processTwoCancer_local(_data: IFubao_CervicalCancerScreening) {
 
     //病史情况
 
-    let cervicalCancerMedicalHistory = (['previousCervicalScreening', 'gynecologicalDiseasesHistory'] as const)
-        .reduce((obj, k) => {
-            return mchcUtils.commonOptionToNote(obj, k)
-        }, data.cervicalCancerMedicalHistory)
+    // let cervicalCancerMedicalHistory = (['previousCervicalScreening', 'gynecologicalDiseasesHistory'] as const)
+    //     .reduce((obj, k) => {
+    //         return mchcUtils.commonOptionToNote(obj, k)
+    //     }, data.cervicalCancerMedicalHistory)
 
-    data.cervicalCancerMedicalHistory = cervicalCancerMedicalHistory
+    data.cervicalCancerMedicalHistory = mchcUtils.autoCommonOptionToNote(data.cervicalCancerMedicalHistory)
 
     //妇科检查
-    let cervicalCancerGynecologicExamination = (['vulva', 'secretions', 'vaginal', 'cervix', 'zg', 'appendix'] as const)
-        .reduce((obj, k) => {
-            return mchcUtils.commonOptionToNote(obj, k)
-        }, data.cervicalCancerGynecologicExamination)
+    // let cervicalCancerGynecologicExamination = (['vulva', 'secretions', 'vaginal', 'cervix', 'zg', 'appendix'] as const)
+    //     .reduce((obj, k) => {
+    //         return mchcUtils.commonOptionToNote(obj, k)
+    //     }, data.cervicalCancerGynecologicExamination)
 
-    data.cervicalCancerGynecologicExamination = cervicalCancerGynecologicExamination
+    // data.cervicalCancerGynecologicExamination = cervicalCancerGynecologicExamination
 
     //诊断及指导
     data.cervicalCancerDiagnosisAndGuidance = mchcUtils.commonOptionToNote(data.cervicalCancerDiagnosisAndGuidance, 'screeningResults')

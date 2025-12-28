@@ -1,19 +1,17 @@
-import React, { Component } from 'react';
-import { Button } from 'antd';
-import moment from 'moment';
-import { get, set, isEmpty, forEach, size } from 'lodash';
 import { IMchc_Doctor_OutpatientHeaderInfo, SLocal_State } from "@lm_fe/service";
-import { mchcModal } from '../../modals';
-function getFutureDate(num: number) {
-  return moment().add(num, 'days').format('YYYY-MM-DD');
-}
+import { getFutureDate } from '@lm_fe/utils';
+import { Button } from 'antd';
+import dayjs from 'dayjs';
+import { forEach, get, isEmpty, set } from 'lodash';
+import React, { Component } from 'react';
+
 class Index extends Component<{ form: any }> {
 
   handleBtnClick = () => {
     const { form } = this.props;
     const pregnancyData = form.getFieldValue();
 
-    mchcModal.open('高危因素管理', {
+    window.mchc_modal.open('高危因素管理', {
       modal_data: {
         data: pregnancyData,
         pregnancyId: pregnancyData?.id,
@@ -37,7 +35,7 @@ class Index extends Component<{ form: any }> {
     });
     if (isEmpty(addRecord)) {
       addRecord = {
-        eventDate: moment(),
+        eventDate: dayjs(),
         doctor: get(basicInfo, 'firstName'),
         highriskGrade: get(data, 'highriskGrade'),
         highriskNote: get(data, 'highriskNote'),

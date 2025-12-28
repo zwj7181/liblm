@@ -1,5 +1,0 @@
-const { readdirSync } = require('fs')
-const { resolve } = require('path')
-const data = readdirSync(resolve(__dirname, './src/cli'))
-.map(_ => resolve(__dirname, './src/cli', _))
-console.log('data', data)

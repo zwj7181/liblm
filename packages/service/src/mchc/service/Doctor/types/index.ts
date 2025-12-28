@@ -9,6 +9,8 @@ export * from './IMchc_Doctor_VteAssessForm'
 export * from './IMchc_Doctor_RiskRecordsOfOutpatient'
 export * from './IMchc_Doctor_Pregnancymh'
 export * from './IMchc_Doctor_FirstVisitPastmhOutpatient'
+export * from './IMchc_Doctor_FirstVisitPresentmhOutpatient'
+export * from './IMchc_Doctor_RvisitAfterDeliveryInfoOfOutpatient'
 
 
 

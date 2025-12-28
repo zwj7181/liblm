@@ -2,15 +2,19 @@ import { CalendarOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icon
 import { Button, Card, Checkbox, Col, Collapse, Form, List, Popconfirm, Row, message } from 'antd';
 import classnames from 'classnames';
 import { compact, find, first, get, isEmpty, keyBy, keys, last, map, replace, set, split, values } from 'lodash';
-import moment from 'moment';
-import QRCode from 'qrcode.react';
+import dayjs from 'dayjs';
+import { QRCode_L } from '@lm_fe/components';
+
 import React, { Component } from 'react';
 import { createInformedConsent, getInformedConsents, updateInformedConsent } from './method';
-import { CaseTempleteEdit, DataSelect, SelectTip, deleteResourcesByID } from '@lm_fe/components_m';
+import { CaseTempleteEdit, DataSelect, deleteResourcesByID } from '@lm_fe/components_m';
+import { SelectTip } from '@lm_fe/pages';
+
 import { SLocal_Dictionary } from '@lm_fe/service';
 import { getSearchParamsValue } from '@lm_fe/utils';
 import { getTemplateById } from '@lm_fe/components_m';
 import './index.less';
+import { mchcEnv } from '@lm_fe/env';
 const signStates = [
   { label: '已签', value: '1' },
   { label: '拒签', value: '2' },
@@ -70,7 +74,7 @@ export class InformedConsent extends Component {
       ...informedConsent,
       content,
       pregnancy: pregnancyData,
-      createDate: moment().utc().format(),
+      createDate: dayjs().utc().format(),
       documentTemplate: get(informedConsent, 'documentTemplate'),
     };
     if (informedConsent.id) {
@@ -78,7 +82,7 @@ export class InformedConsent extends Component {
     } else {
       informedConsent = await createInformedConsent(data);
     }
-    message.success('操作成功');
+    mchcEnv.success('操作成功');
     this.setState({
       informedConsent,
     });
@@ -276,7 +280,7 @@ export class InformedConsent extends Component {
         </Col>
         <Col className="patient-informed-consent-detail" span={19}>
           <div style={{ display: 'none' }}>
-            <QRCode id="qrCode" value={qrCodeData} size={80} />
+            <QRCode_L id="qrCode" value={qrCodeData} size={80} />
           </div>
           {isEmpty(informedConsent) && !isNew ? (
             <SelectTip />
@@ -288,7 +292,7 @@ export class InformedConsent extends Component {
                     url="document-templates?moduleType.equals=1&page=0&size=9999"
                     labelKey="title"
                     valueKey="id"
-                    dropdownMatchSelectWidth={350}
+                    popupMatchSelectWidth={350}
                     onChange={this.handleConsentChange}
                     value={get(informedConsent, 'documentTemplate.id')}
                   />
@@ -311,8 +315,8 @@ export class InformedConsent extends Component {
               <CaseTempleteEdit
                 key={get(informedConsent, 'id') || Math.random()}
                 containerProps={{ ...containerProps, height: containerProps.height - 88 }}
-                content={get(informedConsent, 'content')}
-                onSave={this.handleSave}
+                value={get(informedConsent, 'content')}
+                onChange={this.handleSave}
                 toolbars={false}
                 mode="STRICT"
                 hiddenButton={isAllPregnancies}

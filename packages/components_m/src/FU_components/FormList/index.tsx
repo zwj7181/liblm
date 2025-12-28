@@ -1,15 +1,14 @@
-import { uuid } from '@lm_fe/utils';
-import { Button, Form, Input, Space } from 'antd';
-import React, { useEffect, useRef } from 'react';
+import { Button, Form } from 'antd';
+import React, { useEffect } from 'react';
 import { useMarshal } from '../../utils/useMarshal';
-import FormSection, { IFormSectionProps } from '../../BaseModalForm/FormSection';
-import { IMchc_FormDescriptions_Field } from '@lm_fe/service';
-import { RenderEditItemStandalone, formatFormConfig } from '../../BaseModalForm/utils';
-import { TCommonComponent } from '../types';
-import { mchcLogger } from '@lm_fe/env';
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { parse_form_item_name, set_form_item_name } from 'src/utils';
+// import FormSection, { IFormSectionProps } from '../../BaseModalForm/FormSection';
+import { IMchc_FormDescriptions_Field, SMchc_FormDescriptions } from '@lm_fe/service';
 import { cloneDeep } from 'lodash';
+
+import { MyIcon } from '@lm_fe/components';
+import { MyFormSection } from '../FormSection';
+import { IFormSectionProps } from '../FormSection/types';
+import { TCommonComponent } from '../types';
 interface IProps extends IFormSectionProps {
     defaultData?: any
     config: IMchc_FormDescriptions_Field
@@ -39,12 +38,12 @@ export const MyFormList_必须搭配Form使用: TCommonComponent<IProps, string 
                             const configs = cloneDeep(formDescriptions)
                             const arr = configs.map(f => {
                                 if (!f) return f!
-                                const nArr = parse_form_item_name(f)
+                                const nArr = SMchc_FormDescriptions.parse_form_item_name(f)
                                 const k1 = nArr[0]
                                 if (!isNaN(Number.parseInt(k1)))
                                     return f
                                 nArr.unshift(name)
-                                set_form_item_name(f, nArr)
+                                SMchc_FormDescriptions.set_form_item_name(f, nArr)
                                 return f
 
                             })
@@ -52,10 +51,10 @@ export const MyFormList_必须搭配Form使用: TCommonComponent<IProps, string 
                             return (
                                 <div style={{ display: 'flex' }}>
                                     <div style={{ flex: 1 }}>
-                                        <FormSection key={key} disableAll={disabled} formDescriptions={arr} />
+                                        <MyFormSection key={key} disableAll={disabled} formDescriptions={arr} />
                                     </div>
                                     <div style={{ width: 20, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                        <MinusCircleOutlined rev={''} onClick={() => remove(name)} />
+                                        <MyIcon value='MinusCircleOutlined' rev={''} onClick={() => remove(name)} />
                                     </div>
                                 </div>
                             )
@@ -63,7 +62,7 @@ export const MyFormList_必须搭配Form使用: TCommonComponent<IProps, string 
                         )
                     }
                     <Form.Item>
-                        <Button type="dashed" onClick={() => add(defaultData)} block icon={<PlusOutlined rev={''} />}>
+                        <Button type="dashed" onClick={() => add(defaultData)} block icon={<MyIcon value='PlusOutlined' rev={''} />}>
 
                         </Button>
                     </Form.Item>

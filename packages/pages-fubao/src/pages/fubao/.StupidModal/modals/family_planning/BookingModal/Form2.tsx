@@ -1,8 +1,11 @@
-import { SModel_EarlyPregnancyCheckSurgeryType, stupidEnums } from '../../../../.stupid_model';
-import { Col, DatePicker, Divider, Form, Input, message, Radio, Row, Select } from 'antd';
+import { LazyAntd } from '@lm_fe/components';
+import { Col, Divider, Form, Input, Radio, Row } from 'antd';
 import React, { useEffect } from "react";
+import { SModel_EarlyPregnancyCheckSurgeryType, stupidEnums } from '../../../../.stupid_model';
 import { TCommonData } from './Form0';
 import { IStepFormComponentType } from './StepModal';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
 const { Item } = Form
 const CheckboxGroup = Radio.Group
 const Form1: IStepFormComponentType<TCommonData, any> = function Form1({ form, commonData }) {

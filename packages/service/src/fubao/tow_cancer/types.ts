@@ -18,6 +18,8 @@ export interface IFubao_womenHealthcareMenstrualHistory {
     "dysmenorrhea__": ICommonOption[],
     "menopause": number,
     "menopauseNote": string,
+    "menopause__": ICommonOption[],
+
     "id": 119,
     "menarche": 11,
     "menstrualCycle": 11,

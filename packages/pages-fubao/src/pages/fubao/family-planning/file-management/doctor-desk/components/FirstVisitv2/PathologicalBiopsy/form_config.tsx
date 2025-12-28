@@ -6,8 +6,8 @@ export const form_config: IMchc_FormDescriptions_Field_Nullable[] = [{
     "name": "病史情况",
     "flag": "专科病例-妇科肿瘤-病史情况",
     "sort": 0,
-    "createdTime": "2024-01-29T17:50:20+08:00",
-    "updatedTime": "2024-01-29T17:50:20+08:00",
+   
+   
     
     "fields": [{
         "id": 19470,
@@ -24,9 +24,9 @@ export const form_config: IMchc_FormDescriptions_Field_Nullable[] = [{
         "isNewRow": 0,
         "formItemLayout": {'labelCol':{'span':8},'wrapperCol':{'span':16}},
         
-        "isActive": 1,
-        "createdTime": "2024-01-29T17:50:20+08:00",
-        "updatedTime": "2024-01-29T17:50:20+08:00",
+      
+       
+       
         
     }, {
         "id": 19471,
@@ -43,9 +43,9 @@ export const form_config: IMchc_FormDescriptions_Field_Nullable[] = [{
         "isNewRow": 0,
         "formItemLayout": {'labelCol':{'span':4},'wrapperCol':{'span':20}},
         
-        "isActive": 1,
-        "createdTime": "2024-01-29T17:50:20+08:00",
-        "updatedTime": "2024-01-29T17:50:20+08:00",
+      
+       
+       
         
     }, {
         "id": 19472,
@@ -62,9 +62,9 @@ export const form_config: IMchc_FormDescriptions_Field_Nullable[] = [{
         "isNewRow": 1,
         "formItemLayout": {'labelCol':{'span':8},'wrapperCol':{'span':16}},
         
-        "isActive": 1,
-        "createdTime": "2024-01-29T17:50:20+08:00",
-        "updatedTime": "2024-01-29T17:50:20+08:00",
+      
+       
+       
         
     }, {
         "id": 19473,
@@ -81,9 +81,9 @@ export const form_config: IMchc_FormDescriptions_Field_Nullable[] = [{
         "isNewRow": 0,
         "formItemLayout": {'labelCol':{'span':8},'wrapperCol':{'span':16}},
         
-        "isActive": 1,
-        "createdTime": "2024-01-29T17:50:20+08:00",
-        "updatedTime": "2024-01-29T17:50:20+08:00",
+      
+       
+       
         
     }]
 }, {
@@ -92,8 +92,8 @@ export const form_config: IMchc_FormDescriptions_Field_Nullable[] = [{
     "name": "体格情况",
     "flag": "专科病例-妇科肿瘤-体格情况",
     "sort": 0,
-    "createdTime": "2024-01-29T17:50:20+08:00",
-    "updatedTime": "2024-01-29T17:50:20+08:00",
+   
+   
     
     "fields": [{
         "id": 19474,
@@ -110,9 +110,9 @@ export const form_config: IMchc_FormDescriptions_Field_Nullable[] = [{
         "isNewRow": 0,
         "formItemLayout": {'labelCol':{'span':8},'wrapperCol':{'span':16}},
         
-        "isActive": 1,
-        "createdTime": "2024-01-29T17:50:20+08:00",
-        "updatedTime": "2024-01-29T17:50:20+08:00",
+      
+       
+       
         
     }, {
         "id": 19475,
@@ -129,9 +129,9 @@ export const form_config: IMchc_FormDescriptions_Field_Nullable[] = [{
         "isNewRow": 0,
         "formItemLayout": {'labelCol':{'span':8},'wrapperCol':{'span':16}},
         
-        "isActive": 1,
-        "createdTime": "2024-01-29T17:50:20+08:00",
-        "updatedTime": "2024-01-29T17:50:20+08:00",
+      
+       
+       
         
     }, {
         "id": 19476,
@@ -148,9 +148,9 @@ export const form_config: IMchc_FormDescriptions_Field_Nullable[] = [{
         "isNewRow": 0,
         "formItemLayout": {'labelCol':{'span':8},'wrapperCol':{'span':16}},
         
-        "isActive": 1,
-        "createdTime": "2024-01-29T17:50:20+08:00",
-        "updatedTime": "2024-01-29T17:50:20+08:00",
+      
+       
+       
         
     }]
 }, {
@@ -159,8 +159,8 @@ export const form_config: IMchc_FormDescriptions_Field_Nullable[] = [{
     "name": "检验检查",
     "flag": "专科病例-妇科肿瘤-检验检查",
     "sort": 0,
-    "createdTime": "2024-01-29T17:50:20+08:00",
-    "updatedTime": "2024-01-29T17:50:20+08:00",
+   
+   
     
     "fields": [{
         "id": 19477,
@@ -177,9 +177,9 @@ export const form_config: IMchc_FormDescriptions_Field_Nullable[] = [{
         "isNewRow": 0,
         "formItemLayout": {'labelCol':{'span':8},'wrapperCol':{'span':16}},
         
-        "isActive": 1,
-        "createdTime": "2024-01-29T17:50:20+08:00",
-        "updatedTime": "2024-01-29T17:50:20+08:00",
+      
+       
+       
         
     }, {
         "id": 19478,
@@ -196,9 +196,9 @@ export const form_config: IMchc_FormDescriptions_Field_Nullable[] = [{
         "isNewRow": 0,
         "formItemLayout": {'labelCol':{'span':4},'wrapperCol':{'span':20}},
         
-        "isActive": 1,
-        "createdTime": "2024-01-29T17:50:20+08:00",
-        "updatedTime": "2024-01-29T17:50:20+08:00",
+      
+       
+       
         
     }]
 }, {
@@ -207,8 +207,8 @@ export const form_config: IMchc_FormDescriptions_Field_Nullable[] = [{
     "name": "电子画板",
     "flag": "专科病例-妇科肿瘤-电子画板",
     "sort": 0,
-    "createdTime": "2024-01-29T17:50:20+08:00",
-    "updatedTime": "2024-01-29T17:50:20+08:00",
+   
+   
     
     "fields": [{
         "id": 19479,
@@ -225,9 +225,9 @@ export const form_config: IMchc_FormDescriptions_Field_Nullable[] = [{
         "isNewRow": 0,
         "formItemLayout": {'labelCol':{'span':0},'wrapperCol':{'span':24}},
         
-        "isActive": 1,
-        "createdTime": "2024-01-29T17:50:20+08:00",
-        "updatedTime": "2024-01-29T17:50:20+08:00",
+      
+       
+       
         
     }]
 }, {
@@ -236,8 +236,8 @@ export const form_config: IMchc_FormDescriptions_Field_Nullable[] = [{
     "name": "诊断及处理",
     "flag": "专科病例-妇科肿瘤-诊断及处理",
     "sort": 0,
-    "createdTime": "2024-01-29T17:50:20+08:00",
-    "updatedTime": "2024-01-29T17:50:20+08:00",
+   
+   
     
     "fields": [{
         "id": 19480,
@@ -254,9 +254,9 @@ export const form_config: IMchc_FormDescriptions_Field_Nullable[] = [{
         "isNewRow": 0,
         "formItemLayout": {'labelCol':{'span':4},'wrapperCol':{'span':20}},
         
-        "isActive": 1,
-        "createdTime": "2024-01-29T17:50:20+08:00",
-        "updatedTime": "2024-01-29T17:50:20+08:00",
+      
+       
+       
         
     }, {
         "id": 19481,
@@ -273,9 +273,9 @@ export const form_config: IMchc_FormDescriptions_Field_Nullable[] = [{
         "isNewRow": 0,
         "formItemLayout": {'labelCol':{'span':4},'wrapperCol':{'span':20}},
         
-        "isActive": 1,
-        "createdTime": "2024-01-29T17:50:20+08:00",
-        "updatedTime": "2024-01-29T17:50:20+08:00",
+      
+       
+       
         
     }, {
         "id": 19482,
@@ -292,9 +292,9 @@ export const form_config: IMchc_FormDescriptions_Field_Nullable[] = [{
         "isNewRow": 1,
         "formItemLayout": {'labelCol':{'span':8},'wrapperCol':{'span':16}},
         
-        "isActive": 1,
-        "createdTime": "2024-01-29T17:50:20+08:00",
-        "updatedTime": "2024-01-29T17:50:20+08:00",
+      
+       
+       
         
     }, {
         "id": 19483,
@@ -311,9 +311,9 @@ export const form_config: IMchc_FormDescriptions_Field_Nullable[] = [{
         "isNewRow": 0,
         "formItemLayout": {'labelCol':{'span':0},'wrapperCol':{'span':24}},
         
-        "isActive": 1,
-        "createdTime": "2024-01-29T17:50:20+08:00",
-        "updatedTime": "2024-01-29T17:50:20+08:00",
+      
+       
+       
         
     }, {
         "id": 19484,
@@ -330,9 +330,9 @@ export const form_config: IMchc_FormDescriptions_Field_Nullable[] = [{
         "isNewRow": 0,
         "formItemLayout": {'labelCol':{'span':0},'wrapperCol':{'span':24}},
         
-        "isActive": 1,
-        "createdTime": "2024-01-29T17:50:20+08:00",
-        "updatedTime": "2024-01-29T17:50:20+08:00",
+      
+       
+       
         
     }, {
         "id": 19485,
@@ -349,9 +349,9 @@ export const form_config: IMchc_FormDescriptions_Field_Nullable[] = [{
         "isNewRow": 1,
         "formItemLayout": {'labelCol':{'span':8},'wrapperCol':{'span':16}},
         
-        "isActive": 1,
-        "createdTime": "2024-01-29T17:50:20+08:00",
-        "updatedTime": "2024-01-29T17:50:20+08:00",
+      
+       
+       
         
     }, {
         "id": 19486,
@@ -368,9 +368,9 @@ export const form_config: IMchc_FormDescriptions_Field_Nullable[] = [{
         "isNewRow": 0,
         "formItemLayout": {'labelCol':{'span':8},'wrapperCol':{'span':16}},
         
-        "isActive": 1,
-        "createdTime": "2024-01-29T17:50:20+08:00",
-        "updatedTime": "2024-01-29T17:50:20+08:00",
+      
+       
+       
         
     }]
 }]

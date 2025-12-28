@@ -17,6 +17,7 @@
     justify-content: center;
     align-items: center;
     position: relative;
+
     .mian-icon {
       position: absolute;
       top: 50%;
@@ -25,16 +26,20 @@
       color: #fff;
       cursor: pointer;
     }
+
     .mian-back {
       left: 150px;
     }
+
     .mian-last {
       right: 150px;
       // transform: rotate(180deg);
     }
+
     .icon-disabled {
       display: none;
     }
+
     .prenatal-modal-container_mian-content {
       width: 1000px;
       height: 700px;
@@ -42,41 +47,8 @@
       display: flex;
       flex-direction: column;
       background-color: #fff;
-      .mian-content-header {
-        width: 100%;
-        height: 60px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        .header-title {
-          font-size: 16px;
-          color: #fff;
-          font-weight: 600;
-        }
-        .mian-content-header-handle {
-          position: absolute;
-          right: 0;
-          .mian-content-header-handle-btn-content {
-            margin-right: 60px;
-            .border-left {
-              border-top-right-radius: 0;
-              border-bottom-right-radius: 0;
-            }
-            .border-right {
-              border-top-left-radius: 0;
-              border-bottom-left-radius: 0;
-            }
-          }
-          .mian-content-header-handle-icon {
-            font-size: 22px;
-            // color: #fff;
-            position: absolute;
-            right: 10px;
-            top: 17%;
-          }
-        }
-      }
+
+  
       .mian-content-footer {
         width: 100%;
         height: 50px;
@@ -84,26 +56,31 @@
         align-items: center;
         justify-content: center;
       }
+
       .mian-content-details {
         flex: 1;
         width: 100%;
-        padding-left: 20px;
-        padding-right: 20px;
+        // padding-left: 20px;
+        // padding-right: 20px;
+
         .details_show {
           background: #fff;
           height: 100%;
           position: relative;
+
           .spin {
             position: absolute;
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
           }
+
           .pdf-container {
             overflow-x: hidden;
             width: calc(100% - 2px);
             height: 550px;
           }
+
           .bmi-wrapper,
           .fetus-wrapper,
           .pregnogram-wrapper {
@@ -115,6 +92,7 @@
       }
     }
   }
+
   .prenatal-modal-container_bottom {
     width: 100%;
     height: 160px;
@@ -123,6 +101,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
     .bottom_item {
       display: flex;
       align-items: center;
@@ -135,12 +114,14 @@
       margin-right: 20px;
       font-size: 16px;
       cursor: pointer;
+
       .checkbox-custom {
         position: absolute;
         top: 10px;
         right: 10px;
         z-index: 1002;
       }
+
       .bottom_item-mask {
         width: 100%;
         height: 100%;

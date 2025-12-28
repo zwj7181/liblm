@@ -9,6 +9,7 @@ import { Button, message } from 'antd';
 import { isNil, map } from 'lodash';
 import React from 'react';
 import { queryFormDescriptions } from '../config/form';
+import { mchcEnv } from '@lm_fe/env';
 export default class Query extends BaseQuery {
   state = { queryFormDescriptions };
   renderBtn = () => (
@@ -26,7 +27,7 @@ export default class Query extends BaseQuery {
   );
 
   handleExport = async () => {
-    message.info('暂无开放此功能，敬请期待！');
+    mchcEnv.info('暂无开放此功能，敬请期待！');
     return;
     const data = await this.form.getFieldsValue();
     let queryData = {};

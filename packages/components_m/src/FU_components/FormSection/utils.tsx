@@ -1,12 +1,10 @@
-import { QuestionCircleOutlined } from '@ant-design/icons';
-import { mchcEnv } from "@lm_fe/env";
-import { IMchc_FormDescriptions_Field, IMchc_FormDescriptions_Field_Nullable } from "@lm_fe/service";
-import { safe_json_parse, safe_json_parse_arr } from "@lm_fe/utils";
+import { IMchc_FormDescriptions_Field, IMchc_FormDescriptions_Field_Nullable, SMchc_FormDescriptions } from "@lm_fe/service";
+import { safe_json_parse, safe_json_parse_arr, safeExec } from "@lm_fe/utils";
 import { Col, Form, FormItemProps, Row, Tooltip } from "antd";
 import { get, isNumber } from "lodash";
 import React from "react";
-import { format_form_item_name_and_label, parse_form_item_name } from "src/utils";
-import styles from './index.module.less';
+
+import { MyIcon } from '@lm_fe/components';
 function wrap(col: any) {
     return isNumber(col) ? { span: col } : col
 }
@@ -45,17 +43,16 @@ function setFormItemLayout(config: IMchc_FormDescriptions_Field, targetLabelCol:
 
 
     span = _config.span ?? layoutObj?.span ?? formItemLayout.span ?? inputProps.span
-    offset = _config.offset ?? formItemLayout.offset ?? inputProps.offset
-    push = _config.push ?? formItemLayout.push ?? inputProps.push
-    pull = _config.pull ?? formItemLayout.pull ?? inputProps.pull
+    offset = _config.offset ?? formItemLayout.offset ?? (inputProps as any).offset
+    push = _config.push ?? formItemLayout.push ?? (inputProps as any).push
+    pull = _config.pull ?? formItemLayout.pull ?? (inputProps as any).pull
 
 
-    config.span = span
+    config.span = config.form_hidden ? 0 : span
     config.offset = offset
     config.push = push
     config.pull = pull
     config.formItemLayout = { labelCol: _config.label ? wrap(labelCol) : 0, wrapperCol: _config.label ? wrap(wrapperCol) : 24 }
-    _config.labelCol && console.log('config', config)
     return config
 }
 function setInputProps(config: IMchc_FormDescriptions_Field) {
@@ -66,7 +63,7 @@ function setInputProps(config: IMchc_FormDescriptions_Field) {
 
 
 
-    const label = config.label
+    const label = config.label ?? ''
 
 
 
@@ -85,7 +82,7 @@ export function formatFormConfig(__config: IMchc_FormDescriptions_Field, targetL
     const config = { ...__config }
     const _targetLabelCol = Number(targetLabelCol ?? 4)
 
-    format_form_item_name_and_label(config)
+    SMchc_FormDescriptions.format_form_item_name_and_label(config)
     config.__format = true
     config.specialConfig = safe_json_parse(config.specialConfig) as any
     config.inputProps = safe_json_parse(config.inputProps) ?? config.inputPropsFn?.() as any
@@ -113,46 +110,31 @@ export function formatFormConfig(__config: IMchc_FormDescriptions_Field, targetL
 }
 export function RenderEditItem(config: any, ReactNode: React.ReactNode, defaultOptions: FormItemProps<any> & { styles?: any } = {}) {
     const _config = formatFormConfig(config, defaultOptions?.labelCol?.span)
-    const { rules, inputProps, key, label, required } = _config;
-
+    const { rules, inputProps, key, label, } = _config;
+    const safe_rules = safe_json_parse(rules)
+    const required = safeExec(_config.required as any) ?? _config.required
     // let name = key?.includes('.') ? key.split('.') : key;
-    let name = parse_form_item_name(config)
-    const unit = get(config, 'unit') || get(inputProps, 'unit');
-    const tip = get(config, 'tip') || get(inputProps, 'tip');
-    const labelAlign = get(inputProps, 'labelAlign');
+    let name = SMchc_FormDescriptions.parse_form_item_name(config)
+
+    const placeholder = get(inputProps, 'placeholder') || '';
+    const labelAlign = get(_config, 'labelAlign') ?? get(inputProps, 'labelAlign');
     const colon = get(inputProps, 'colon');
     const { styles: s = {}, ...o } = defaultOptions
     const labelCol: any = _config.formItemLayout?.labelCol ?? defaultOptions.labelCol ?? {}
     const wrapperCol: any = _config.formItemLayout?.wrapperCol ?? defaultOptions.wrapperCol ?? {}
+    const label_node = render_form_label(_config)
+    const cal_rules = required ? [{ required: true, message: placeholder ?? ('请填写' + (label ?? '')) }] : []
     return (
         <Form.Item
+            hidden={_config.form_hidden}
             {...o}
-
             style={{ ...s }}
-            // valuePropName={{ ...get(others, 'valuePropName') }}
             labelAlign={labelAlign}
             colon={colon}
             key={key}
-            label={
-                label ? (
-                    <span title={label}>
-                        {label}
-                        {unit ? <span className={styles["form-item-label-unit"]}>({unit})</span> : ''}
-                        {tip ? <Tooltip
-
-                            title={tip}
-                        >
-                            <QuestionCircleOutlined style={{ cursor: 'help', marginLeft: 2 }} />
-                        </Tooltip> : null}
-                        {(mchcEnv.isDev && config?.id) ? <span className={styles["form-item-label-unit"]}>({config?.id ?? '??'},{config.key})</span> : ''}
-
-                    </span>
-                ) : (
-                    (mchcEnv.isDev && config?.id) ? <span className={styles["form-item-label-unit"]}>({config?.id},{config.key})</span> : ''
-                )
-            }
+            label={label_node}
             name={name}
-            rules={required ? [{ required: true, message: '请填写' + label }] : safe_json_parse_arr(rules)}
+            rules={safe_rules || cal_rules}
             labelCol={labelCol}
             wrapperCol={wrapperCol}
 
@@ -164,16 +146,15 @@ export function RenderEditItem(config: any, ReactNode: React.ReactNode, defaultO
 };
 export function RenderEditItemStandalone(config: any, ReactNode: React.ReactNode, defaultOptions: FormItemProps<any> & { styles?: any } = {}) {
     const _config = formatFormConfig(config, defaultOptions?.labelCol?.span)
-    const { inputProps, key, label } = _config;
+    const { inputProps, key } = _config;
 
-    const unit = get(config, 'unit') ?? get(inputProps, 'unit');
     const colon = get(inputProps, 'colon') ?? true;
     const { styles: s = {}, } = defaultOptions
     const labelCol: any = _config.formItemLayout?.labelCol ?? defaultOptions.labelCol ?? {}
     const wrapperCol: any = _config.formItemLayout?.wrapperCol ?? defaultOptions.wrapperCol ?? {}
     return (
         <Row
-
+            hidden={_config.form_hidden}
             style={{ ...s, marginBottom: 6 }}
 
             key={key}
@@ -181,12 +162,11 @@ export function RenderEditItemStandalone(config: any, ReactNode: React.ReactNode
         >
             <Col {...labelCol}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', height: '100%', margin: '0 8px 0 2px' }}>
-                    <span title={label}>
-                        {label}
-                        {unit ? <span className={styles["form-item-label-unit"]}>({unit})</span> : ''}
-                        {(mchcEnv.isDev && config?.id) ? <span className={styles["form-item-label-unit"]}>({config?.id ?? '??'},{config.key})</span> : ''}
-                        {colon ? ':' : ''}
-                    </span>
+                    {
+                        render_form_label(_config)
+                    }
+                    {colon ? ':' : ''}
+
                 </div>
             </Col>
             <Col {...wrapperCol}>
@@ -194,4 +174,27 @@ export function RenderEditItemStandalone(config: any, ReactNode: React.ReactNode
             </Col>
         </Row>
     );
+};
+
+export function render_form_label(config: IMchc_FormDescriptions_Field,) {
+    const { inputProps, label, title } = config;
+    const _label = label || title
+    let name_str = SMchc_FormDescriptions.get_form_item_name_str(config)
+    const unit = get(config, 'unit') || get(inputProps, 'unit');
+    const tip = get(config, 'tip') || get(inputProps, 'tip');
+
+    const label_node = _label ? (
+        <span title={_label} style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            {_label}
+            {unit ? <sub style={{ fontSize: 8 }}>{unit}</sub> : ''}
+            {tip
+                ? <Tooltip title={tip} >
+                    <MyIcon value='QuestionCircleOutlined' style={{ cursor: 'help', marginLeft: 2 }} />
+                </Tooltip>
+                : null
+            }
+
+        </span>
+    ) : ''
+    return label_node
 };

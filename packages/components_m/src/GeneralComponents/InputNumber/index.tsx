@@ -1,18 +1,29 @@
-import { Checkbox, InputNumber, InputNumberProps } from 'antd';
-import './index.less';
+import { Checkbox, InputNumber, Input, InputNumberProps, InputProps } from 'antd';
 import React from 'react';
-import { getInputStyle } from '../../utils';
+import { getInputStyle } from '@lm_fe/components';
+
+
 // .ant-input-affix-wrapper-borderless
 const UNKNOWN_NUMBER_SYMBOL = 2147483647
-export default function MyInputNumber(props: InputNumberProps & { unknown?: boolean }) {
-  const { unknown, value, onChange, placeholder, ...others } = props
+type IProps = InputNumberProps
+function MyInputNumber(props: Omit<IProps, 'onChange'> & { unknown?: boolean, warn?: boolean, onChange?: (v: any) => void }) {
+  const { unknown, value, onChange, placeholder, warn, disabled, ...others } = props
   const _style = getInputStyle(props)
   const isUnkown = !!unknown && value === UNKNOWN_NUMBER_SYMBOL
-  const node = <InputNumber {...others} placeholder={placeholder ?? '请输入数值'} style={_style} controls={false} value={isUnkown ? undefined : value} onChange={onChange} />
-  return unknown ? <span>
+  if (unknown) {
+    _style.flex = 1;
+  }
+  if (warn) {
+    _style.color = 'red';
+  }
+  // const node = <Input disabled={disabled} {...others} placeholder={placeholder ?? '请输入数值'} allowClear style={_style} type='number' value={isUnkown ? undefined : value!} onChange={e => onChange?.(e.target.value)} />
+  const node = <InputNumber {...others} placeholder={placeholder ?? '请输入'} style={{ width: '100%', ..._style }} value={isUnkown ? undefined : value} onChange={onChange} />
+
+  return unknown ? <span style={{ display: 'flex', alignItems: 'center' }}>
     {node}
     <span style={{ marginLeft: 6 }}>
       <Checkbox
+        disabled={disabled}
         checked={isUnkown}
         skipGroup
         onChange={e => {
@@ -25,3 +36,16 @@ export default function MyInputNumber(props: InputNumberProps & { unknown?: bool
     </span>
   </span> : node
 }
+function DisplayFC(props: Omit<IProps, 'onChange'> & { unknown?: boolean, warn?: boolean, onChange?: (v: any) => void }) {
+  const { unknown, value, onChange, placeholder, warn, disabled, ...others } = props
+  const _style = getInputStyle(props)
+  const isUnkown = !!unknown && value === UNKNOWN_NUMBER_SYMBOL
+  if (isUnkown) {
+    return <span>不详</span>
+  }
+  if (warn) {
+    _style.color = 'red';
+  }
+  return <span title='DisplayFC' style={_style}>{value}</span>
+}
+export default Object.assign(MyInputNumber, { DisplayFC })

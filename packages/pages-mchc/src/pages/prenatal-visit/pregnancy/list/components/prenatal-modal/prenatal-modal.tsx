@@ -1,11 +1,11 @@
-import { ArrowLeftOutlined, ArrowRightOutlined, CloseOutlined, PrinterOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Spin } from 'antd';
+import { MyIcon, PDFPreview_View } from '@lm_fe/components_m';
+import { BmiCanvas, FetusCanvas, FetusCanvasNICHD, Pregnogram, mchcModal__ } from '@lm_fe/pages';
+import { request, sleep } from '@lm_fe/utils';
+import { Button, Checkbox } from 'antd';
 import classnames from 'classnames';
 import { cloneDeep, findIndex, get, includes, map, remove, size } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import { PRENATALLIST, prenatalEnum, prenatalToResource, previewEnum, printapi } from './constant';
-import { BmiCanvas, FetusCanvas, FetusCanvasNICHD, PDFPreview_View, Pregnogram, mchcModal } from '@lm_fe/components_m';
-import { request } from '@lm_fe/utils';
 import './index.less';
 interface IProps {
   [key: string]: any;
@@ -67,28 +67,14 @@ export default function PrenatalModal({ ...props }: IProps) {
     };
     setLoading(true);
     try {
-      const { pdfdata } = (await request.post('/api/pdf-preview', requestData, { headers: { isLoading: false } })).data;
+      const { pdfdata } = (await request.post('/api/pdf-preview', requestData,)).data;
+      setPreviewData({ ...previewData, [type]: pdfdata });
       setLoading(false);
-      const pdfurl = base64TopdfUrl(pdfdata);
-      setPreviewData({ ...previewData, [type]: pdfurl });
     } catch (error) {
       setLoading(false);
     }
   }
-  // base64数据转pdfUrl
-  function base64TopdfUrl(code: any) {
-    code = code.replace(/[\n\r]/g, '');
-    var raw = window.atob(code);
-    let rawLength = raw.length;
-    //转换成pdf.js能直接解析的Uint8Array类型
-    let uInt8Array = new Uint8Array(rawLength);
-    for (let i = 0; i < rawLength; ++i) {
-      uInt8Array[i] = raw.charCodeAt(i);
-    }
-    const blob = new Blob([uInt8Array], { type: 'application/pdf' }); //转成pdf类型
-    const blobURL = window.URL.createObjectURL(blob);
-    return blobURL;
-  }
+
 
   // 全部预览请求方法
   async function getAllPreviewData() {
@@ -121,8 +107,7 @@ export default function PrenatalModal({ ...props }: IProps) {
       setLoading(true);
       const { pdfdata } = (await request.post('/api/pdf-preview-document', requestData)).data;
       setLoading(false);
-      const pdfurl = base64TopdfUrl(pdfdata);
-      setAllPreviewData(pdfurl);
+      setAllPreviewData(pdfdata);
     } catch (error) {
       setLoading(false);
     }
@@ -164,7 +149,7 @@ export default function PrenatalModal({ ...props }: IProps) {
 
   // 左右选择
   function handleIcon(type: string) {
-    return () => {
+    return async () => {
       let newCount = currentCount,
         newCurrentPreview;
       if (type == 'last') {
@@ -173,8 +158,11 @@ export default function PrenatalModal({ ...props }: IProps) {
         newCount++;
       }
       newCurrentPreview = get(PRENATALLIST, `[${newCount}].type`);
+      setLoading(true);
+      await sleep(0.3)
       setCurentPreview(newCurrentPreview);
       setCurrentCount(newCount);
+      setLoading(false);
     };
   }
   // 关闭浮层
@@ -184,10 +172,13 @@ export default function PrenatalModal({ ...props }: IProps) {
 
   // 选择底部的展示
   function handleClickItem(type: prenatalEnum) {
-    return () => {
+    return async () => {
       const index = findIndex(PRENATALLIST, (item) => item.type == type);
+      setLoading(true);
+      await sleep(0.3)
       setCurrentCount(index);
       setCurentPreview(type);
+      setLoading(false);
     };
   }
 
@@ -237,7 +228,7 @@ export default function PrenatalModal({ ...props }: IProps) {
 
 
 
-    mchcModal.open('print_modal', {
+    mchcModal__.open('print_modal', {
       modal_data: {
         requestConfig: {
           url: printUrl,
@@ -280,9 +271,9 @@ export default function PrenatalModal({ ...props }: IProps) {
     });
   }
   function detailsShow() {
-    if (loading) {
-      return <Spin className="spin" tip="文件加载中，请稍等..." />;
-    }
+    // if (loading) {
+    //   return <Spin className="spin" tip="文件加载中，请稍等..." />;
+    // }
     if (preview == previewEnum.singleView) {
       if (curentPreviw == prenatalEnum.growthCurve) {
         const { system } = props;
@@ -298,11 +289,11 @@ export default function PrenatalModal({ ...props }: IProps) {
       } else if (curentPreviw == prenatalEnum.fundalImage) {
         return <Pregnogram {...props} hidePrintBtn={true} />;
       }
-      return <PDFPreview_View file={get(previewData, `${curentPreviw}`)} />;
+      return <PDFPreview_View data={get(previewData, `${curentPreviw}`)} />;
     } else {
       return (
         <>
-          <PDFPreview_View file={allPreviewData} />
+          <PDFPreview_View data={allPreviewData} />
         </>
       );
     }
@@ -312,48 +303,46 @@ export default function PrenatalModal({ ...props }: IProps) {
   return (
     <div className="prenatal-modal-container">
       <div className="prenatal-modal-container_mian">
-        <ArrowLeftOutlined
+        <MyIcon
+          value='ArrowLeftOutlined'
           type="icon-backx"
           className={classnames('mian-icon mian-back', { 'icon-disabled': currentCount == 0 })}
           onClick={handleIcon('last')}
         />
-        <ArrowRightOutlined
+        <MyIcon
+          value='ArrowRightOutlined'
           type="icon-backx"
           className={classnames('mian-icon mian-last', { 'icon-disabled': currentCount == 7 })}
           onClick={handleIcon('next')}
         />
         <div className="prenatal-modal-container_mian-content">
-          <div className="mian-content-header">
-            <span className="header-title">首检病历</span>
-            <div className="mian-content-header-handle">
-              <div className="mian-content-header-handle-btn-content">
-                <Button
-                  type={preview == previewEnum.singleView ? 'primary' : 'default'}
-                  className="border-left"
-                  onClick={handlePreview(previewEnum.singleView)}
-                >
-                  单页预览
-                </Button>
-                <Button
-                  type={preview == previewEnum.fullView ? 'primary' : 'default'}
-                  className="border-right"
-                  onClick={handlePreview(previewEnum.fullView)}
-                >
-                  全部预览
-                </Button>
-              </div>
-              <CloseOutlined
-                type="icon-close"
-                className="mian-content-header-handle-icon"
-                onClick={handleClose}
-              />
+          <div style={{ height: 40, padding: '12px 24px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            {/* <span >首检病历</span> */}
+            <div>
+              {/* <Button
+                type={preview == previewEnum.singleView ? 'primary' : 'default'}
+                onClick={handlePreview(previewEnum.singleView)}
+              >
+                单页预览
+              </Button> */}
+              {/* <Button
+                type={preview == previewEnum.fullView ? 'primary' : 'default'}
+                onClick={handlePreview(previewEnum.fullView)}
+              >
+                全部预览
+              </Button> */}
             </div>
+            <MyIcon
+              value='CloseOutlined'
+              style={{ fontSize: 22 }}
+              onClick={handleClose}
+            />
           </div>
-          <div className="mian-content-details" style={{ overflowY: 'scroll' }}>
+          <div className="mian-content-details" style={{ overflowY: 'auto' }}>
             <div className="details_show">{detailsShow()}</div>
           </div>
           <div className="mian-content-footer">
-            <Button type="primary" disabled={isPrint} onClick={handlePrint} icon={<PrinterOutlined type="icon-print" />}>
+            <Button type="primary" disabled={isPrint} onClick={handlePrint} icon={<MyIcon value='PrinterOutlined' type="icon-print" />}>
               打印
             </Button>
           </div>

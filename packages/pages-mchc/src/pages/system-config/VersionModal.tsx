@@ -53,7 +53,7 @@ export default function VersionModal({ id, type = 'default', children }: IProps)
         destroyOnClose
         title="后台版本信息"
         width={960}
-        visible={visible}
+        open={visible}
         onCancel={handleVersionCancel}
         footer={
           <Button type="primary" onClick={handleVersionCancel}>

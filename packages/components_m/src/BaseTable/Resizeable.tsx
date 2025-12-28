@@ -1,28 +1,11 @@
-import React from 'react';
-import { Resizable } from 'react-resizable';
-export const ResizableTitle = (props) => {
-  const { onResize, width, ...restProps } = props;
+import React, { lazy, Suspense } from 'react';
 
-  if (!width) {
-    return <th {...restProps} />;
-  }
+const Inner = lazy(() => import('./Resizeable_Inner'));
 
-  return (
-    <Resizable
-      width={width}
-      height={0}
-      handle={
-        <span
-          className="react-resizable-handle"
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        />
-      }
-      onResize={onResize}
-      draggableOpts={{ enableUserSelectHack: false }}
-    >
-      <th {...restProps} />
-    </Resizable>
-  );
-};
+const ResizableTitle = (props: any) => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <Inner {...props} />
+  </Suspense>
+);
+
+export { ResizableTitle };

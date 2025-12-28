@@ -1,5 +1,5 @@
 import { map, get, set } from 'lodash';
-import moment from 'moment';
+import dayjs from 'dayjs';
 export const fromApi = (data: any[], nativeFormDescriptions: any) => {
   const resultArray = map(data, item => {
     const result = { ...item };
@@ -19,7 +19,7 @@ export const fromApi = (data: any[], nativeFormDescriptions: any) => {
           set(result, `${key}.keyNote`, get(item, `${path}Note`));
           break;
         case 'moment':
-          set(result, key, moment(get(item, path)));
+          set(result, key, dayjs(get(item, path)));
           break;
         case 'default':
         default:

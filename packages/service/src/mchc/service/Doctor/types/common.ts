@@ -1,11 +1,11 @@
-import { MchcTypes, MchcType_default, MchcType_越秀妇幼 } from "@lm_fe/env"
+import { MCHC_TYPE_MAP, MchcTypes } from "@lm_fe/env"
 import { IMchc_Pregnancy } from "../../Pregnancy"
 
 
 
 
 
-export interface IMchc_Doctor_Diagnoses<T extends MchcTypes = MchcType_default> {
+export interface IMchc_Doctor_Diagnoses<T extends MchcTypes = 'mchc'> {
     categoryCode: null
     categoryName: null
     createDate: string
@@ -27,7 +27,7 @@ export interface IMchc_Doctor_Diagnoses<T extends MchcTypes = MchcType_default> 
     preNote: string
     pregnancy: IMchc_Pregnancy
     remark: null
-    serialNo: T extends MchcType_越秀妇幼 ? string : never
+    serialNo: T extends MCHC_TYPE_MAP['越秀妇幼'] ? string : never
     sort: number
     // 兼容
     visible: boolean

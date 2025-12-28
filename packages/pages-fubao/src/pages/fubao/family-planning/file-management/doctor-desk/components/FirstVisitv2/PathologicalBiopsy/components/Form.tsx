@@ -2,7 +2,7 @@ import { BaseEditPanelForm } from '@lm_fe/components_m';;
 import { get } from 'lodash';
 import { Space } from 'antd';
 import { FormInstance } from 'antd/lib/form';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import React from 'react';
 export default class AdmissionForm extends BaseEditPanelForm {
   renderBtns = () => {
@@ -24,15 +24,15 @@ export default class AdmissionForm extends BaseEditPanelForm {
         'earlyPregnancyCheckDiagnosisAndTreatment.appointmentWeeksLater',
       );
       if (appointmentWeeksLater === 1) {
-        const appointmentSpecificDate = moment().add(7, 'd');
+        const appointmentSpecificDate = dayjs().add(7, 'd');
         form && form.setFieldsValue({ earlyPregnancyCheckDiagnosisAndTreatment: { appointmentSpecificDate } });
       }
       if (appointmentWeeksLater === 2) {
-        const appointmentSpecificDate = moment().add(14, 'd');
+        const appointmentSpecificDate = dayjs().add(14, 'd');
         form && form.setFieldsValue({ earlyPregnancyCheckDiagnosisAndTreatment: { appointmentSpecificDate } });
       }
       if (appointmentWeeksLater === 3) {
-        const appointmentSpecificDate = moment().add(21, 'd');
+        const appointmentSpecificDate = dayjs().add(21, 'd');
         form && form.setFieldsValue({ earlyPregnancyCheckDiagnosisAndTreatment: { appointmentSpecificDate } });
       }
     }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { BaseQuery } from '@lm_fe/components_m'
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { Input, message, Button } from 'antd';
 import {
   SearchOutlined,

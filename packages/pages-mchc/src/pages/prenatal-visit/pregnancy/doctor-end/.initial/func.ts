@@ -129,4 +129,9 @@ export const physicalKeys = [
   'physiologicalreflection',
   'pathologicalreflection',
   'edema',
+  // 郫都新增
+  'lungCondition', // 肺部
+  'heartCondition',//心脏
+  'limbCondition',//四肢
+  'electrocardiogram',//心电图
 ];

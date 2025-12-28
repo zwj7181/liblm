@@ -1,6 +1,6 @@
-import { MyBaseList, mchcModal } from "@lm_fe/components_m";
+import { MyBaseList } from '@lm_fe/pages';
 import { APP_CONFIG } from "@lm_fe/env";
-import { formatDateTime, formatDateTimeNoSecond, getMomentObj, getSearchParamsAll, safe_json_parse } from "@lm_fe/utils";
+import { formatDateTime, getSearchParamsAll, safe_json_parse } from "@lm_fe/utils";
 
 import React from "react";
 
@@ -187,21 +187,6 @@ export default function RequestLog() {
                     }
                 ]
             },
-            // {
-            //     title: '响应详情',
-            //     dataIndex: 'resData',
-            //     ellipsis: true,
-            //     width: APP_CONFIG.CELL_WIDTH_MIDDLE,
-            //     align: 'center',
-            //     render: (text, record) => <a onClick={() => {
-            //         mchcModal.open('test', {
-            //             modal_data: {
-            //                 content: <div>2222</div>
-            //             }
-            //         })
-            //     }
-            //     }>{'查看详情'}</a>,
-            // },
         ]}
     />
 }

@@ -1,11 +1,9 @@
-import { mchcEvent, mchcLogger } from '@lm_fe/env';
+import { SMchc_FormDescriptions } from '@lm_fe/service';
 import { temp_reander } from '@lm_fe/utils';
 import React, { lazy, useEffect, useState } from 'react';
 import { LoadingPlaceholder } from '../LoadingPlaceholder';
 import { IFormSectionProps } from './types';
-import { message } from 'antd';
-import { isFunction, isObject } from 'lodash';
-import { get_form_config } from './helper';
+export { formatFormConfig } from './utils';
 
 const _MyFormSection_Inner = lazy(() => import('./Inner'));
 function __MyFormSection_Inner_PRE(props: IFormSectionProps) {
@@ -15,10 +13,10 @@ function __MyFormSection_Inner_PRE(props: IFormSectionProps) {
     const [ok, setOk] = useState(false)
     useEffect(() => {
 
-  
-        get_form_config(formDescriptions)
+
+        SMchc_FormDescriptions.filter_form_config(formDescriptions)
             .then((arr: any[]) => {
-                
+
                 const remove = temp_reander(
 
                     {

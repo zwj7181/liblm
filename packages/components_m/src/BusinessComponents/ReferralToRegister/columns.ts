@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 const columns = [
   {
@@ -68,7 +68,7 @@ export const transValuesToForm = (data = []) => {
     return result;
   }
   for (let i = 0; i < data.length; i++) {
-    const element = { ...data[i], referralDate: moment(data[i]['referralDate']) };
+    const element = { ...data[i], referralDate: dayjs(data[i]['referralDate']) };
     result.push(element);
   }
   return result;
@@ -80,7 +80,7 @@ export const transFormToValues = (data = []) => {
     return result;
   }
   for (let i = 0; i < data.length; i++) {
-    const element = { ...data[i], referralDate: moment(data[i]['referralDate']).format('YYYY-MM-DD') };
+    const element = { ...data[i], referralDate: dayjs(data[i]['referralDate']).format('YYYY-MM-DD') };
     result.push(element);
   }
   return result;

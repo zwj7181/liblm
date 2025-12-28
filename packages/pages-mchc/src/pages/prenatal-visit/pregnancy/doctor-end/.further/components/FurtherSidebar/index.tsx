@@ -1,55 +1,35 @@
-import { ProjectOutlined, SettingOutlined } from '@ant-design/icons';
-import Diagnoses from '../../../.components/Diagnoses';
-import { IMchc_Doctor_Diagnoses, IMchc_Doctor_FirstVisitDiagnosisOutpatient, IMchc_Doctor_OutpatientHeaderInfo, IMchc_Doctor_RvisitInfoOfOutpatient, IMchc_Pregnancy, TIdType, TIdTypeCompatible } from '@lm_fe/service';
-import { Button, Collapse, Spin, Timeline } from 'antd';
+import { GestationalWeekProjectTree, MyLazyComponent, OkButton } from '@lm_fe/components_m';
+import { mchcConfig, mchcEnv, mchcUtils } from '@lm_fe/env';
+import { use_provoke } from '@lm_fe/provoke';
+import { IMchc_Doctor_Diagnoses, IMchc_Doctor_OutpatientHeaderInfo, IMchc_Doctor_RvisitInfoOfOutpatient, TIdTypeCompatible } from '@lm_fe/service';
+import { request } from '@lm_fe/utils';
+import { Card, Collapse, Timeline } from 'antd';
 import classnames from 'classnames';
-import { get, isEmpty, isEqual, join, map, size, slice } from 'lodash';
+import { get, isEmpty, join, map, size, slice } from 'lodash';
 import React, { useEffect, useState } from 'react';
+import Diagnoses from '../../../.components/Diagnoses';
 import DiagTable from './diag-table';
 import './index.less';
 import ManagementPlan from './management-plan';
 import PrenatalTree from './prenatal-tree';
 import SurveyList from './survey-list';
-import { CustomIcon, FormConfig, GestationalWeekProjectTree, LoadingPlaceholder } from '@lm_fe/components_m'
-import { mchcEnv, mchcUtils } from '@lm_fe/env';
-import { request } from '@lm_fe/utils';
-interface HomeState {
-  collapseActiveKey: string[];
-  isShowHisModal: boolean;
-  isShowListModal: boolean;
-  isShowManageModal: boolean;
-  lackReports: string;
-  recentPlanData: any;
-  sidebarTab: any;
-  prenatalTreeData: any;
-  templateData: any;
 
-
-
-}
 interface IProps {
   visitsData?: IMchc_Doctor_RvisitInfoOfOutpatient
   headerInfo: IMchc_Doctor_OutpatientHeaderInfo
   id: TIdTypeCompatible
 
-  changePreeclampsia(b: boolean): void
-  changeScreening(b: boolean): void
-  changeSyphilis(b: boolean): void
 
   diagnosesList: IMchc_Doctor_Diagnoses[]
-  changePreventPreeclampsia(b: boolean): void,
-  isShowPreventPreeclampsia: boolean
   furtherRefresh(): void
-  diagnosesWord: string
-  getHighriskDiagnosis(id: TIdTypeCompatible): void
   serialNo: string
 
   saveHeaderInfo(h: IMchc_Doctor_OutpatientHeaderInfo): void,
   setDiagnosesList(list: any[]): void,
-  setDiagnosesWord(t: string): void,
 
 }
 export default function FurtherSidebar(props: IProps) {
+  const sys_theme = use_provoke(s => s.sys_theme)
 
 
   const {
@@ -57,22 +37,15 @@ export default function FurtherSidebar(props: IProps) {
     id,
     visitsData,
 
-    changePreventPreeclampsia,
-    isShowPreventPreeclampsia,
-    changePreeclampsia,
-    changeScreening,
-    changeSyphilis,
     diagnosesList,
     furtherRefresh,
-    diagnosesWord,
-    getHighriskDiagnosis,
     saveHeaderInfo,
     setDiagnosesList,
-    setDiagnosesWord,
     serialNo,
   } = props;
 
-
+  if (mchcConfig.get('医生端_复诊左侧隐藏'))
+    return null
 
   const [isShowHisModal, set_isShowHisModal] = useState(false)
   const [isShowListModal, set_isShowListModal] = useState(false)
@@ -95,11 +68,21 @@ export default function FurtherSidebar(props: IProps) {
   useEffect(() => {
 
     getLackReports();
-    getPlanData();
+
     return () => {
 
     }
   }, [])
+  useEffect(() => {
+
+    const planData = get(visitsData, `visitPlans`, []);
+
+    set_recentPlanData(slice(planData, 0, 2))
+
+    return () => {
+
+    }
+  }, [visitsData])
 
 
 
@@ -112,11 +95,6 @@ export default function FurtherSidebar(props: IProps) {
 
 
 
-  async function getPlanData(visitsData = props.visitsData) {
-    const planData = get(visitsData, `visitPlans`, []);
-
-    set_recentPlanData(slice(planData, 0, 2))
-  };
 
   async function getLackReports(visitsData = props.visitsData) {
     const lackReports = get(visitsData, `lackReports`, []);
@@ -124,10 +102,8 @@ export default function FurtherSidebar(props: IProps) {
     set_lackReports(join(lackReports || [], '，'))
   };
 
-  function closeModal(type: 'isShowListModal' | 'isShowHisModal' | 'isShowManageModal') {
-    if (type === 'isShowListModal') {
-      set_isShowListModal(false)
-    }
+  function closeModal(type: 'isShowHisModal' | 'isShowManageModal') {
+
     if (type === 'isShowHisModal') {
       set_isShowHisModal(false)
     }
@@ -142,8 +118,7 @@ export default function FurtherSidebar(props: IProps) {
       case 'hisBtn':
         set_isShowHisModal(true)
         break;
-      case 'listBtn':
-        set_isShowListModal(true)
+
 
         break;
       case 'manageBtn':
@@ -160,12 +135,12 @@ export default function FurtherSidebar(props: IProps) {
 
   function renderSiderBar() {
 
-    return visitsData?.id ? (
+    return (
       <div className="sider-container">
         <div className="main-content">
           {sidebarTab == 1 && (
             <div className="prenatal-visit-main_return-sidebar">
-              <Collapse defaultActiveKey={collapseActiveKey}>
+              <Collapse destroyOnHidden size='small' defaultActiveKey={collapseActiveKey} bordered={false}>
                 <Collapse.Panel
                   header={
                     <span style={{ marginLeft: '10px' }}>
@@ -181,47 +156,41 @@ export default function FurtherSidebar(props: IProps) {
                 >
                   <Diagnoses
                     serialNo={serialNo}
-                    diagnosesWord={diagnosesWord}
-                    getHighriskDiagnosis={getHighriskDiagnosis}
-                    changeDiagnosesTemplate={(v: boolean) => { }}
-                    changePreeclampsia={changePreeclampsia}
-                    changePreventPreeclampsia={changePreventPreeclampsia}
-                    changeScreening={changeScreening}
-                    changeSyphilis={changeSyphilis}
                     saveHeaderInfo={saveHeaderInfo}
                     setDiagnosesList={setDiagnosesList}
-                    setDiagnosesWord={setDiagnosesWord}
-                    visitData={visitsData}
                     headerInfo={headerInfo}
                     diagnosesList={diagnosesList}
-                    isShowDiagnosesTemplate={false}
-                    noshowlist={false}
-                    isShowDiagnosesTemplatets={false}
                     isAllPregnancies={false}
 
-                    getDiagnosesList={() => { }}
 
                     page="return"
                   />
                 </Collapse.Panel>
 
                 <Collapse.Panel
-                  header={
-                    <span style={{ marginLeft: '10px' }}>
-                      {!!lackReports ? '缺少检验报告' : '必查检验检查'}
-                      <Button
-                        className="header-btn"
-                        icon={<CustomIcon type={'icon-batch'} />}
-                        onClick={(e) => handleBtnClick(e, 'listBtn')}
-                      >
-                        必查清单
-                      </Button>
-                    </span>
+                  header={!!lackReports ? '缺少检验报告' : '必查检验检查'}
+                  extra={
+                    <OkButton
+                      type='dashed'
+                      size='small'
+                      onClick={(e) => {
+                        set_isShowListModal(true)
+
+                        // mchcModal__.open('bf_form', {
+                        //   modal_data: {
+                        //     title: '必查清单-检验检查',
+                        //     history_args: { relationId: getSearchParamsValue('id')! }
+                        //   }
+                        // })
+                      }}
+                    >
+                      必查清单
+                    </OkButton>
                   }
                   key="2"
                   id="further-check-item"
                 >
-                  <GestationalWeekProjectTree pregnancyId={mchcUtils.getDoctorEndId()} />
+                  <GestationalWeekProjectTree pregnancyId={mchcUtils.single_id()} />
                 </Collapse.Panel>
 
                 {/* <Collapse.Panel header="产前筛查与诊断" key="3">
@@ -229,17 +198,15 @@ export default function FurtherSidebar(props: IProps) {
 
                 {
                   mchcEnv.is('广三') || <Collapse.Panel
-                    header={
-                      <span style={{ marginLeft: '10px' }}>
-                        产检计划
-                        <Button
-                          className="header-btn"
-                          icon={<SettingOutlined />}
-                          onClick={(e) => handleBtnClick(e, 'manageBtn')}
-                        >
-                          产检管理
-                        </Button>
-                      </span>
+                    header={'产检计划'}
+                    extra={
+                      <OkButton
+                        type='dashed'
+                        size='small'
+                        onClick={(e) => handleBtnClick(e, 'manageBtn')}
+                      >
+                        产检管理
+                      </OkButton>
                     }
                     key="4"
                   >
@@ -271,15 +238,18 @@ export default function FurtherSidebar(props: IProps) {
             </div>
           )} */}
         </div>
-        <div className="tab-content">
+        <div className="tab-content" style={{ background: sys_theme.bg_color }}>
           <div
-            className={classnames('tab-item', { active: sidebarTab == 1 })}
+            style={{ color: sidebarTab == 1 ? sys_theme.colorPrimary : '' }}
+            className={classnames('tab-item',)}
             onClick={handleTabClick.bind(this, 1)}
           >
             诊断
           </div>
           <div
-            className={classnames('tab-item', { active: sidebarTab == 2 })}
+            style={{ color: sidebarTab == 2 ? sys_theme.colorPrimary : '' }}
+
+            className={classnames('tab-item',)}
             onClick={handleTabClick.bind(this, 2)}
           >
             产检树
@@ -292,7 +262,7 @@ export default function FurtherSidebar(props: IProps) {
           </div> */}
         </div>
       </div>
-    ) : <LoadingPlaceholder height={480} />
+    )
   };
   function handleTabClick(value: any) {
     if (value == 2) {
@@ -360,35 +330,39 @@ export default function FurtherSidebar(props: IProps) {
 
 
   return (
-    <>
+    <Card size='small' styles={{ body: { padding: 0 } }} style={{ width: 260, height: '100%', marginRight: 8, overflow: 'auto' }}>
 
-      {renderSiderBar()}
-      {isShowHisModal && <DiagTable
+      <MyLazyComponent size='middle'>
+        {renderSiderBar()}
+        {isShowHisModal && <DiagTable
 
 
-        isShowHisModal={isShowHisModal}
-        closeModal={closeModal}
-        visitsData={visitsData}
-        headerInfo={headerInfo}
-
-      />}
-      {isShowListModal && (
-        <SurveyList
-          headerInfo={headerInfo}
-          isAllPregnancies={false}
-          furtherRefresh={furtherRefresh}
-          isShowListModal={isShowListModal} closeModal={closeModal}
-        />
-      )}
-      {isShowManageModal && (
-        <ManagementPlan
-          isShowManageModal={isShowManageModal}
-          headerInfo={headerInfo}
+          isShowHisModal={isShowHisModal}
           closeModal={closeModal}
-        />
-      )}
+          visitsData={visitsData}
+          headerInfo={headerInfo}
 
+        />}
+        {isShowListModal && (
+          <SurveyList
+            headerInfo={headerInfo}
+            isAllPregnancies={false}
+            furtherRefresh={furtherRefresh}
+            isShowListModal={true}
+            closeModal={() => {
+              set_isShowListModal(false)
+            }}
+          />
+        )}
+        {isShowManageModal && (
+          <ManagementPlan
+            isShowManageModal={isShowManageModal}
+            headerInfo={headerInfo}
+            closeModal={closeModal}
+          />
+        )}
 
-    </>
+      </MyLazyComponent>
+    </Card>
   );
 }

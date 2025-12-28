@@ -1,16 +1,18 @@
-import React, { Component } from 'react';
-import { Form, Button, Table, Select, DatePicker } from 'antd';
+import { ExportOutlined, RedoOutlined, SearchOutlined } from '@ant-design/icons';
+import { LazyAntd, RangePicker_L } from '@lm_fe/components';
+import { Button, Form } from 'antd';
 import { FormInstance } from 'antd/es/form/Form';
-import { SearchOutlined, RedoOutlined, ExportOutlined } from '@ant-design/icons';
+import React, { Component } from 'react';
 import { tableColumns1, tableColumns2 } from './config/table';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
 const { Option } = Select;
-const { RangePicker } = DatePicker;
+
 export default class List extends Component {
   form: FormInstance | null = null;
   state = {
     selectedValue: '1',
   };
-  handleSearch = (values = {}) => {};
+  handleSearch = (values = {}) => { };
   handleChange = (value: any) => {
     this.setState({ selectedValue: value });
   };
@@ -18,7 +20,7 @@ export default class List extends Component {
     this.form && this.form.resetFields();
     this.handleSearch(this.form?.getFieldsValue());
   };
-  handleExport = async () => {};
+  handleExport = async () => { };
   renderBtn = () => (
     <React.Fragment>
       <Button icon={<RedoOutlined />} onClick={this.handleReset}>
@@ -58,15 +60,15 @@ export default class List extends Component {
                     </Select>
                   </Form.Item>
                   <Form.Item label="" name="date">
-                    <RangePicker
+                    <RangePicker_L
                       picker={
                         selectedValue === '2'
                           ? 'year'
                           : selectedValue === '3'
-                          ? 'quarter'
-                          : selectedValue === '4'
-                          ? 'month'
-                          : 'date'
+                            ? 'quarter'
+                            : selectedValue === '4'
+                              ? 'month'
+                              : 'date'
                       }
                       format="YYYY-MM-DD"
                       style={{ width: 216 }}

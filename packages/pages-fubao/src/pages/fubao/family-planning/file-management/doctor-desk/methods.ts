@@ -4,7 +4,7 @@ import { get } from 'lodash';
 
 export const getPatientByID = async (id: string) => {
   const patient = await request.get(`/api/pac-patients/${id}`);
-  return patient;
+  return patient.data;
 };
 
 // 从 PatientCase 中获取数据

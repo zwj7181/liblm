@@ -1,5 +1,5 @@
 import { map, get, isEmpty, set, dropRight, join, cloneDeep } from 'lodash';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import {safe_json_parse as strToJson,safe_json_stringify as jsonToStr, formatDateTime, formatTime} from '@lm_fe/utils';
 
 
@@ -68,7 +68,7 @@ export const modifyValueToForm = (values: any) => {
       }
     }
     if (key === 'appointmentDate') {
-      set(cloneValues, key, moment(itemValue));
+      set(cloneValues, key, dayjs(itemValue));
     }
     if (key === 'postoperationMissions') {
       const checkBoxValue = {

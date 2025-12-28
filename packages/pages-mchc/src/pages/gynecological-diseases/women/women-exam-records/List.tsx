@@ -26,13 +26,13 @@ export class List extends BaseList {
     const { updateWomenExamRecordsEditingId } = this.props;
     // await updateWomenExamRecordsEditingId(undefined);
     const { history } = this.props;
-    SLocal_History.historyPush(`/gynecological-diseases/women/women-exam-records/add?patientId=${patientId}`,);
+    SLocal_History.safe_history_push(`/gynecological-diseases/women/women-exam-records/add?patientId=${patientId}`,this.props);
   };
 
   handleEdit = (rowData: any) => () => {
     const { id } = rowData;
     const { history } = this.props;
-    SLocal_History.historyPush(`/gynecological-diseases/women/women-exam-records/edit?id=${id}`,);
+    SLocal_History.safe_history_push(`/gynecological-diseases/women/women-exam-records/edit?id=${id}`,this.props);
   };
 }
 export default List;

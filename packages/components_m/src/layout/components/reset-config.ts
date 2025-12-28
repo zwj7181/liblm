@@ -9,7 +9,7 @@ export const resetFormDescriptions = {
       { max: 16, message: '密码不能超过16位' },
     ],
     inputProps: {
-      placeholder: '请输入旧密码',
+      
     },
   },
   password: {
@@ -22,7 +22,7 @@ export const resetFormDescriptions = {
       { max: 16, message: '密码不能超过16位' },
     ],
     inputProps: {
-      placeholder: '请输入新密码',
+      
     },
   },
   passwordConfirm: {
@@ -41,7 +41,7 @@ export const resetFormDescriptions = {
       }),
     ],
     inputProps: {
-      placeholder: '请输入确认密码',
+      
       dependencies: ['password'],
     },
   },

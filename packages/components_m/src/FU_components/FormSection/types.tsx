@@ -1,8 +1,9 @@
-import { IMchc_FormDescriptions_Field_Nullable, IMchc_FormDescriptions_MIX } from '@lm_fe/service';
-import { FormItemProps } from 'antd';
+import { IMchc_FormDescriptions_MIX, IMchc_TableConfig } from '@lm_fe/service';
+import { FormInstance, FormItemProps } from 'antd';
 import { SizeType } from 'antd/lib/config-provider/SizeContext';
 import React from 'react';
 import { RenderEditItem } from './utils';
+import { AnyObject } from '@lm_fe/utils';
 
 // import commonStyles from '../themes/common.less'
 export interface IFormSectionProps {
@@ -11,25 +12,24 @@ export interface IFormSectionProps {
     renderEditItem?: (key: string, ReactNode: React.ReactNode, others?: FormItemProps) => React.ReactNode
     renderEditItemInner?: typeof RenderEditItem
     formDescriptions?: IMchc_FormDescriptions_MIX
-    id?: number | string
+    initialValues?: AnyObject
     formName?: string
     data?: any
     extraData?: any
-    form?: any
-    products?: any
+    form?: FormInstance
     events?: any
     disableAll?: boolean
     defaultOptions?: FormItemProps
-    onExtra?: () => void
-    registrationEvents?: any
     size?: SizeType
     sectionName?: string
     span?: number
     inline?: boolean
-    targetLabelCol?: number
+    targetLabelCol?: number // 标签占据的 span, 默认是 2
     defaultFormItemLayout?: string
     defaultRequired?: boolean
     requiredKeys?: { [x: string]: boolean }
+    bf_config?: IMchc_TableConfig
+
 }
 
 

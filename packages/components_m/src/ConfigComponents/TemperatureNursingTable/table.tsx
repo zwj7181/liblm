@@ -1,4 +1,3 @@
-import { formatTimeToStandard } from '@/utils/format';
 import { mchcEnv } from '@lm_fe/env';
 import { MyPressure } from '../../FU_components/PressureInput';
 import { APP_CONFIG } from '../../utils/constants';

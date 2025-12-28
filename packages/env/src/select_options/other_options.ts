@@ -1,5 +1,6 @@
-import { mchcEnv } from "src/env";
-import { getPresetOptions, getSameOptions, getSimpleOptions } from "./preset_options";
+
+import { isFunction } from "lodash";
+import { getPresetOptions, getSameOptions, getSimpleOptions, ICommonOption } from "./preset_options";
 
 function toOptions(data: any) {
     if (typeof data === 'string') {
@@ -49,16 +50,9 @@ const appointmentCycleOptions = () => [
     { label: '1天后', value: 1 },
     { label: '2天后', value: 2 },
     { label: '3天后', value: 3 },
-
-    ...(
-        mchcEnv.is('广三')
-            ? []
-            : [
-                { label: '4天后', value: 4 },
-                { label: '5天后', value: 5 },
-                { label: '6天后', value: 6 },
-            ]
-    )
+    { label: '4天后', value: 4 },
+    { label: '5天后', value: 5 },
+    { label: '6天后', value: 6 },
 ]
 
 // 下次复诊 时间段
@@ -135,7 +129,7 @@ const urokinaseOptions = [
 const ogttOptions = getSimpleOptions('正常,GDM,未查', { useDefault: false })
 
 // 无、有
-const nhOptions = [
+const nhOptions: ICommonOption[] = [
     { label: '无', value: false },
     { label: '有', value: true },
 ];
@@ -147,9 +141,9 @@ const nhiOptions = [
 ];
 
 // 否、是
-const nyOptions = [
+const nyOptions: ICommonOption[] = [
     { label: '否', value: false },
-    { label: '是', value: true },
+    { label: '是', value: true, },
 ];
 
 // 正常、其他
@@ -177,12 +171,7 @@ const downsScreenOptions = [
     { label: '高风险', value: 2 },
 ];
 
-// 产前诊断
-const prenatalDiagnosisOptions = [
-    { label: '正常', value: 1 },
-    { label: '异常', value: 2 },
-    { label: '拒绝产前诊断和知情同意书', value: 4 },
-];
+
 
 // 受孕方式
 const conceiveModeOptions = [
@@ -424,7 +413,6 @@ export const otherOptions = {
     rhythmOptions,
     liverOptions,
     downsScreenOptions,
-    prenatalDiagnosisOptions,
     conceiveModeOptions,
     engagementOptions,
     hbOptions,
@@ -448,4 +436,9 @@ export const otherOptions = {
     highriskOptions,
     diagnosisOptions,
     WEBSOCKETMAPS,
+}
+export function getOtherOptions(key: keyof typeof otherOptions,) {
+    let options = otherOptions[key] ?? []
+    if (isFunction(options)) options = options()
+    return options as unknown as ICommonOption[]
 }

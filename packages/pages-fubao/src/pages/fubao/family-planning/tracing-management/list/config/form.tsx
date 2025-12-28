@@ -31,7 +31,7 @@ export const queryFormDescriptions = {
     },
   },
   idNO: {
-    label: '就诊卡号',
+    label: '门诊号',
     inputType: 'input',
     filterType: '',
   },

@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { TreeSelect } from 'antd';
 import { map, omit } from 'lodash';
 import { request } from '@lm_fe/utils';
 import { DataNode } from 'antd/lib/tree';
+
+import { LazyAntd } from '@lm_fe/components';
+
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
+
 export default (props: any) => {
   const [menus, setMenus] = useState<DataNode[]>([]);
 
@@ -32,7 +37,7 @@ export default (props: any) => {
       placeholder="请选择父级菜单"
       allowClear
       treeData={menus}
-      dropdownMatchSelectWidth={300}
+      popupMatchSelectWidth={300}
       {...props}
     />
   );

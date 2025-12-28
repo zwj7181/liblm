@@ -46,7 +46,7 @@ export default function CockpitModal({ visible, onCancle, ...prps }: Iprops) {
     <Modal
       className="cockpit-container"
       title="可视化驾驶舱"
-      visible={visible}
+      open={visible}
       style={{ top: '48px' }}
       width={1000}
       onCancel={handleCancel}

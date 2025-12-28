@@ -1,7 +1,9 @@
+import { LazyAntd } from '@lm_fe/components';
+import { Button, message } from 'antd';
 import React, { Component } from 'react';
-import { Table, Button, message } from 'antd';
+import { isBase } from '../../../utils/func';
 import EditableCell from '../../MyTable/TableEditableCell';
-import { isArr, isBase } from '../../../utils/func';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
 
 // 产前 孕产史 表格
 // 写死字段
@@ -522,7 +524,7 @@ export default class PDPHTable extends Component<PDPHTableProp, PDPHTableState> 
   handleRowSelectChange = (selectedRowKeys: Array<number | string>): void => {
     const { value } = this.state;
     if (value[value.length - 1].childId === selectedRowKeys[0]) {
-      message.warn('此栏信息不可编辑与删除');
+      message.warning('此栏信息不可编辑与删除');
       return;
     }
     this.setState({ selectedRowKeys });

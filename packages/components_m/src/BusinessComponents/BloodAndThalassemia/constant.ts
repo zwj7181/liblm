@@ -1,6 +1,6 @@
 import { get } from "lodash";
 
-export default [
+const deletionsOptions = [
   { label: '未检出常见地贫基因变异', value: '未检出常见地贫基因变异' },
   { label: 'β地中海贫血基因CD14-15突变', value: 'β地中海贫血基因CD14-15突变' },
   { label: 'β地中海贫血基因CD17突变', value: 'β地中海贫血基因CD17突变' },
@@ -26,10 +26,86 @@ export default [
   { label: 'a地中海贫血基因WS突变', value: 'a地中海贫血基因WS突变' },
   { label: 'a地中海贫血基因CS突变', value: 'a地中海贫血基因CS突变' },
 ];
-
+export const cols = [
+  {
+    dataIndex: 'gender',
+    title: '',
+    align: 'center',
+    editable: false,
+    width: 80,
+  },
+  {
+    dataIndex: 'hB',
+    title: 'Hb(g/L)',
+    align: 'center',
+    editable: true,
+    width: 80,
+  },
+  {
+    dataIndex: 'mCV',
+    title: 'MCV(fl)',
+    align: 'center',
+    editable: true,
+    width: 80,
+  },
+  {
+    dataIndex: 'mCH',
+    title: 'MCH(pg)',
+    align: 'center',
+    editable: true,
+    width: 80,
+  },
+  {
+    dataIndex: 'hbA2',
+    title: 'HbA2(%)',
+    editable: true,
+    align: 'center',
+    width: 80,
+  },
+  {
+    dataIndex: 'bg',
+    title: 'ABO血型',
+    align: 'center',
+    inputType: 'normal_select',
+    inputProps: {
+      type: 'aboMapping',
+    },
+    editable: true,
+    width: 100,
+  },
+  {
+    dataIndex: 'rh',
+    title: 'RH血型',
+    align: 'center',
+    inputType: 'normal_select',
+    inputProps: {
+      type: 'rhMapping',
+    },
+    editable: true,
+    width: 100,
+  },
+  {
+    dataIndex: 'deletions',
+    title: '地贫基因型',
+    align: 'center',
+    editable: true,
+    inputType: 'select_tag_with_options',
+    inputProps: {
+      options: deletionsOptions,
+    },
+    width: 500,
+  },
+  {
+    dataIndex: 'otherNote',
+    title: '其它异常',
+    align: 'center',
+    editable: true,
+    width: 300,
+  },
+];
 
 export function getNewDatasource(value: any) {
-  const newDatasource: any = [
+  const newDatasource: any[] = [
     {
       key: 'male',
       gender: '女方',

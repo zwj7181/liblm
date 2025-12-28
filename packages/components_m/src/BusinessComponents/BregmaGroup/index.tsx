@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Select } from 'antd';
+import { Form, Input } from 'antd';
 import MultiplicationInput from './MultiplicationInput';
 import styles from './index.less';
+import { LazyAntd } from '@lm_fe/components';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
+
 export default function BregmaGroup({ name = 'bregma1+bregma2+bregma3', inputProps = [], ...rest }) {
   const names = name.split('+');
   const [visible, setVisible] = useState(false);

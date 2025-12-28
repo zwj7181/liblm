@@ -1,15 +1,13 @@
-import { HighlightOutlined, ClearOutlined } from '@ant-design/icons';
-import { mchcEvent, mchcLogger } from '@lm_fe/env';
+import { mchcEnv, mchcEvent, mchcLogger } from '@lm_fe/env';
 import { base64_to_image, safe_json_parse } from '@lm_fe/utils';
+import { MyColor, MyIcon } from '@noah-libjs/components';
 import { Button, Layout, Popover, Slider, Switch } from 'antd';
 import classnames from 'classnames';
 import { get, isString } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
-import { HuePicker } from 'react-color';
 import styles from './index.module.less';
 import { init_delete_control } from './init_delete_control';
-import { MyImageEditorEvents, IMyImageEditorProps, RealCanvas, RealListenCbs, default_legends, event_process, real_fabric } from './utils';
-init_delete_control()
+import { IMyImageEditorProps, MyImageEditorEvents, RealCanvas, RealListenCbs, default_legends, event_process, real_fabric } from './utils';
 
 const { Sider, Content } = Layout;
 
@@ -49,14 +47,23 @@ function MyImageEditor_Inner(props: IMyImageEditorProps) {
   const [strokeWidth, set_strokeWidth] = useState(1)
   const [fontSize, set_fontSize] = useState(18)
   const [__checked, set_checked] = useState(!!value)
-
+  const [loaded, set_loaded] = useState(false)
   useEffect(() => {
-    createContainner()
+    mchcEnv
+      .ds([s => s.lm_libs.fabric_5_2_0['fabric.min.js']])
+      .then(() => set_loaded(true))
   }, [])
 
   useEffect(() => {
-    initCanvas()
-  }, [value])
+    loaded && initCanvas()
+  }, [value, loaded])
+
+  useEffect(() => {
+    if (loaded) {
+      init_delete_control()
+      createContainner()
+    }
+  }, [loaded])
 
 
 
@@ -74,13 +81,12 @@ function MyImageEditor_Inner(props: IMyImageEditorProps) {
 
   function createContainner() {
     const w = gyImageEditorRef?.current?.clientWidth
-    mchcLogger.log('ww', { w })
     if (!containner.current) {
 
       const count = legends.length ?? 0
       const len = count ? 200 : 0
 
-      containner.current = new real_fabric.Canvas('c', {
+      containner.current = new (real_fabric()).Canvas('c', {
         backgroundColor: '#fff',
         width: gyImageEditorRef?.current?.clientWidth! - len,
         height: 460,
@@ -104,7 +110,7 @@ function MyImageEditor_Inner(props: IMyImageEditorProps) {
         // 兼容base64 图片
         const img_el = await base64_to_image(value)
         if (img_el) {
-          const img = new real_fabric.Image(img_el,)
+          const img = new (real_fabric()).Image(img_el,)
           containner.current?.add(img)
         }
       }
@@ -121,10 +127,10 @@ function MyImageEditor_Inner(props: IMyImageEditorProps) {
     const __events: RealListenCbs = {
       drop(options) {
         const item = legend_item.current
-        real_fabric.util.loadImage(
-          get(item, 'img'),
+        real_fabric().util.loadImage(
+          get(item, 'img')!,
           (img) => {
-            let legimg = new real_fabric.Image(img, {
+            let legimg = new (real_fabric()).Image(img, {
               left: options.e.offsetX,
               top: options.e.offsetY,
               width: get(item, 'width'),
@@ -207,7 +213,7 @@ function MyImageEditor_Inner(props: IMyImageEditorProps) {
     containner.current!.isDrawingMode = false;
     containner.current!.selection = false;
 
-    textObject.current = new real_fabric.Textbox('', {
+    textObject.current = new (real_fabric()).Textbox('', {
       left: mouseFrom.current.x,
       top: mouseFrom.current.y,
       fontSize: fontSize,
@@ -227,7 +233,7 @@ function MyImageEditor_Inner(props: IMyImageEditorProps) {
     let top = mouseFrom.current.y;
     let width = mouseTo.current.x - mouseFrom.current.x;
     let height = mouseTo.current.y - mouseFrom.current.y;
-    let canvasObject = new real_fabric.Rect({
+    let canvasObject = new (real_fabric()).Rect({
       left: left,
       top: top,
       width: width,
@@ -247,7 +253,7 @@ function MyImageEditor_Inner(props: IMyImageEditorProps) {
     let radius =
       Math.sqrt((mouseTo.current.x - left) * (mouseTo.current.x - left) + (mouseTo.current.y - top) * (mouseTo.current.y - top)) /
       2;
-    let canvasObject = new real_fabric.Circle({
+    let canvasObject = new (real_fabric()).Circle({
       left: left,
       top: top,
       stroke: colors,
@@ -265,7 +271,7 @@ function MyImageEditor_Inner(props: IMyImageEditorProps) {
     let top = mouseFrom.current.y;
     let height = mouseTo.current.y - mouseFrom.current.y;
     let width = Math.sqrt(Math.pow(height, 2) + Math.pow(height / 2.0, 2));
-    let canvasObject = new real_fabric.Triangle({
+    let canvasObject = new (real_fabric()).Triangle({
       left: left,
       top: top,
       width: width,
@@ -281,7 +287,7 @@ function MyImageEditor_Inner(props: IMyImageEditorProps) {
 
     createContainner()
 
-    let canvasObject = new real_fabric.Line([mouseFrom.current.x, mouseFrom.current.y, mouseTo.current.x, mouseTo.current.y], {
+    let canvasObject = new (real_fabric()).Line([mouseFrom.current.x, mouseFrom.current.y, mouseTo.current.x, mouseTo.current.y], {
       fill: colors,
       stroke: colors,
       strokeWidth: strokeWidth,
@@ -352,7 +358,7 @@ function MyImageEditor_Inner(props: IMyImageEditorProps) {
 
   //擦除
   function handleFreeErase() {
-    if (!real_fabric.EraserBrush) return
+    if (!real_fabric().EraserBrush) return
     if (freeErase.current) {
       freeErase.current = false;
 
@@ -370,7 +376,7 @@ function MyImageEditor_Inner(props: IMyImageEditorProps) {
       containner.current!.isDrawingMode = true;
       // 设置自由绘画模式 画笔颜色与画笔线条大小
 
-      containner.current!.freeDrawingBrush = new real_fabric.EraserBrush(containner.current!);
+      containner.current!.freeDrawingBrush = new (real_fabric()).EraserBrush(containner.current!);
 
       containner.current!.freeDrawingBrush.width = 20;
       currentType.current = 'free';
@@ -390,8 +396,8 @@ function MyImageEditor_Inner(props: IMyImageEditorProps) {
       triangleFlag.current = false;
       lineFlag.current = false;
 
-      if (real_fabric.PencilBrush) {
-        containner.current!.freeDrawingBrush = new real_fabric.PencilBrush(containner.current!);
+      if (real_fabric().PencilBrush) {
+        containner.current!.freeDrawingBrush = new (real_fabric()).PencilBrush(containner.current!);
       }
 
 
@@ -536,11 +542,10 @@ function MyImageEditor_Inner(props: IMyImageEditorProps) {
   };
 
   //颜色设置
-  function handleGradePicker(e: any) {
-    const colors = e.hex;
-    containner.current!.freeDrawingBrush.color = colors;
+  function handleGradePicker(css: any) {
+    containner.current!.freeDrawingBrush.color = css;
 
-    set_colors(colors)
+    set_colors(css)
   };
 
   //粗细设置
@@ -606,7 +611,7 @@ function MyImageEditor_Inner(props: IMyImageEditorProps) {
         </div>
         <div className={styles["picker"]} style={{ width: 300 }}>
           <span>颜色</span>
-          <HuePicker width={'300'} color={colors} onChange={handleGradePicker} />
+          <MyColor width={'300'} color={colors} onChange={handleGradePicker} />
         </div>
       </>
     );
@@ -622,13 +627,14 @@ function MyImageEditor_Inner(props: IMyImageEditorProps) {
         </div>
         <div className={styles["picker"]} style={{ width: 300 }}>
           <span>颜色</span>
-          <HuePicker width={'300'} color={colors} onChange={handleGradePicker} />
+          <MyColor width={'300'} color={colors} onChange={handleGradePicker} />
         </div>
       </>
     );
   };
 
 
+  if (!loaded) return '加载中...'
 
   return (
     <div>
@@ -684,9 +690,9 @@ function MyImageEditor_Inner(props: IMyImageEditorProps) {
                     <Button onClick={handleRedo} icon={<span className={classnames(styles["button-icon"], styles["forward"])}></span>}></Button>
                   </Popover>
                   {
-                    (real_fabric as any).EraserBrush
+                    (real_fabric() as any)?.EraserBrush
                       ? <Popover placement="left" content={<span>擦除</span>}>
-                        <Button onClick={handleFreeErase} icon={<ClearOutlined />}></Button>
+                        <Button onClick={handleFreeErase} icon={<MyIcon value='ClearOutlined' />}></Button>
                       </Popover>
                       : null
                   }

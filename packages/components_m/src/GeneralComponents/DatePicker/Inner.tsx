@@ -1,11 +1,14 @@
+import { DatePicker_L, MonthPicker_L, TimePicker_L, UNKNOWN_TIME_SYMBOL } from '@lm_fe/components';
 import { mchcLogger } from '@lm_fe/env';
-import { Checkbox, DatePicker } from 'antd';
-import moment, { Moment } from 'moment';
+import { Checkbox } from 'antd';
+import dayjs from 'dayjs';
 import React, { memo, useCallback } from 'react';
 import { TCommonComponent } from '../../FU_components/types';
-import { getInputStyle } from '../../utils';
-import { ICusDatePickerProps, UNKNOWN_TIME_SYMBOL, areEqual, formatProps, getIsUnknown, getUnknown, handleChangeValue } from './utils';
-export { ICusDatePickerProps, UNKNOWN_TIME_SYMBOL } from './utils';
+import { getInputStyle } from '@lm_fe/components';
+
+
+import { ICusDatePickerProps, areEqual, formatProps, getIsUnknown, getUnknown, handleChangeValue } from './utils';
+export { ICusDatePickerProps } from './utils';
 function CusDatePicker(_props: ICusDatePickerProps) {
   const props = formatProps(_props)
   const {
@@ -16,6 +19,7 @@ function CusDatePicker(_props: ICusDatePickerProps) {
     maxDate,
     validDate,
     getPopupContainer,
+    time_only,
     format,
     style,
     ...rest
@@ -29,7 +33,7 @@ function CusDatePicker(_props: ICusDatePickerProps) {
     (date?: any) => {
       let result = undefined;
       if (!!date) {
-        result = moment(date);
+        result = dayjs(date, format);
       }
       return result;
     },
@@ -38,30 +42,30 @@ function CusDatePicker(_props: ICusDatePickerProps) {
 
 
   const handleChange = (date?: any, dateString?: string) => {
+    mchcLogger.log('handleChange', date, dateString)
     const newValue = handleChangeValue(props, date)
-    mchcLogger.log('newValue', { newValue, props })
     onChange?.(newValue);
   }
 
   const disabledDate = useCallback(
-    (current: Moment) => {
-      const dateStr = moment(current).format('YYYY-MM-DD');
+    (current: any) => {
+      const dateStr = dayjs(current).format('YYYY-MM-DD');
       if (validDate) {
         return dateStr.includes(validDate);
       }
 
       if (minDate) {
         if (minDate === 'now') {
-          return current < moment().endOf('day');
+          return current < dayjs().endOf('day');
         }
-        return current < moment(minDate).endOf('day');
+        return current < dayjs(minDate).endOf('day');
       }
 
       if (maxDate) {
         if (maxDate === 'now') {
-          return current > moment().endOf('day');
+          return current > dayjs().endOf('day');
         }
-        return current > moment(maxDate).endOf('day');
+        return current > dayjs(maxDate).endOf('day');
       }
       return false;
     },
@@ -73,18 +77,33 @@ function CusDatePicker(_props: ICusDatePickerProps) {
 
   return (
     <span>
-      <DatePicker
-        getPopupContainer={getPopupContainer}
-        value={isUnknown ? null : transValue(value)}
-        onChange={handleChange}
-        disabledDate={disabledDate}
-        format={format}
-        {...rest}
-        style={_style}
-        placeholder='请选择日期或时间'
-      // disabled={isUnknown}
+      {
+        props.time_only
+          ? <TimePicker_L
+            getPopupContainer={getPopupContainer}
+            value={isUnknown ? null : transValue(value)}
+            onChange={handleChange}
+            disabledDate={disabledDate}
+            format={format}
+            {...rest}
+            style={_style}
+            placeholder={__DEV__ ? format : '请选择'}
+          />
+          : <DatePicker_L
+            getPopupContainer={getPopupContainer}
+            value={isUnknown ? null : transValue(value)}
+            onChange={handleChange}
+            disabledDate={disabledDate}
+            format={format}
 
-      />
+            {...rest}
+            style={_style}
+            placeholder={__DEV__ ? format + '+' : '请选择'}
+
+          // disabled={isUnknown}
+
+          />
+      }
       {
         getUnknown(props) ? <span style={{ marginLeft: 6 }}>
           <Checkbox checked={isUnknown}
@@ -105,7 +124,7 @@ function CusDatePicker(_props: ICusDatePickerProps) {
   );
 }
 const df = memo<ICusDatePickerProps>(CusDatePicker, areEqual)
-CusDatePicker.MonthPicker = DatePicker.MonthPicker;
+CusDatePicker.MonthPicker = MonthPicker_L;
 const MyDatePickerInner: TCommonComponent<ICusDatePickerProps, string> = df
 
 export default MyDatePickerInner 

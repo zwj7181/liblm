@@ -6,7 +6,7 @@ export const modalFormDescriptions = {
     inputType: 'normal_select',
     special_config: '{"type":"userTypeMapping"}',
     inputProps: {
-      placeholder: '请选择账号类型',
+      
     },
     layout: '1/2',
   },
@@ -15,7 +15,7 @@ export const modalFormDescriptions = {
     label: '过期',
     inputType: 'single_date_picker',
     inputProps: {
-      placeholder: '请选择过期日期',
+      
     },
     layout: '1/2',
 
@@ -26,7 +26,7 @@ export const modalFormDescriptions = {
     rules: [{ required: true, message: '登录账号是必填项' }],
     inputType: 'input',
     inputProps: {
-      placeholder: '请输入登录账号',
+      
     },
     layout: '1/2',
   },
@@ -41,7 +41,7 @@ export const modalFormDescriptions = {
       // { max: 16, message: '密码不能超过16位' },
     ],
     inputProps: {
-      placeholder: '请输入登录密码',
+      
     },
     layout: '1/2',
   },
@@ -51,7 +51,7 @@ export const modalFormDescriptions = {
   //   rules: [{ required: false, message: '头像是必填项' }],
   //   inputType: 'input',
   //   inputProps: {
-  //     placeholder: '请输入头像',
+  //     
   //   },
   // },
   firstName: {
@@ -60,7 +60,7 @@ export const modalFormDescriptions = {
     rules: [{ required: true, message: '姓名是必填项' }],
     inputType: 'input',
     inputProps: {
-      placeholder: '请输入姓名',
+      
     },
     layout: '1/2',
   },
@@ -70,7 +70,7 @@ export const modalFormDescriptions = {
   //   rules: [{ required: true, message: '邮箱是必填项' }],
   //   inputType: 'input',
   //   inputProps: {
-  //     placeholder: '请输入邮箱',
+  //     
   //   },
   // },
   groups: {
@@ -79,7 +79,7 @@ export const modalFormDescriptions = {
     rules: [{ required: true, message: '角色是必选项' }],
     inputType: 'roles',
     inputProps: {
-      placeholder: '请选择角色',
+      
     },
     layout: '1/1',
   },
@@ -97,7 +97,7 @@ export const resetFormDescriptions = {
       { max: 16, message: '密码不能超过16位' },
     ],
     inputProps: {
-      placeholder: '请输入登录密码',
+      
     },
   },
 };

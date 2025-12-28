@@ -1,6 +1,7 @@
 import { CloseOutlined, SaveOutlined } from '@ant-design/icons';
-import { BaseEditPanelForm, fubaoHistoryPush } from '@lm_fe/components_m';
-import { mchcUtils } from '@lm_fe/env';
+import { BaseEditPanelForm, fubaoHistoryPush, resolveFubaoPath } from '@lm_fe/components_m';
+import { mchcEnv, mchcUtils } from '@lm_fe/env';
+import { SLocal_History } from '@lm_fe/service';
 import { Button, Space, message } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 import { get, size } from 'lodash';
@@ -11,7 +12,7 @@ export default class AdmissionForm extends BaseEditPanelForm {
     handleIDNumberChange: (id: string) => {
       if (id === 'residenceAddress') {
         const value = this.form?.getFieldValue('permanentResidenceAddress');
-        !value && message.info('请先填写完整的户口地址信息！');
+        !value && mchcEnv.info('请先填写完整的户口地址信息！');
         value && this.form?.setFieldsValue({ residenceAddress: value });
       }
     },
@@ -37,7 +38,7 @@ export default class AdmissionForm extends BaseEditPanelForm {
             age: personal.age,
           });
       } else {
-        message.warn(`${get(personal, 'message')}`);
+        message.warning(`${get(personal, 'message')}`);
       }
     }
   };
@@ -48,11 +49,14 @@ export default class AdmissionForm extends BaseEditPanelForm {
     if (!get(data, 'id')) form.resetFields();
 
     //删除keepAliveProvider缓存
-    await updateTabs(get(tabs, `tabsMapping./family-planning/file-management/list`));
-    routerPath && (await deleteTab(routerPath));
-    fubaoHistoryPush('/family-planning/file-management/list', this.props as any);
-    const { path, search } = get(tabs, `tabsMapping.${routerPath}`);
-    keepAliveProviderRef?.current.removeCache(`${path}.name.${search}`);
+    // await updateTabs(get(tabs, `tabsMapping./family-planning/file-management/list`));
+    // routerPath && (await deleteTab(routerPath));
+    // fubaoHistoryPush('/family-planning/file-management/list', this.props as any);
+    // const { path, search } = get(tabs, `tabsMapping.${routerPath}`);
+    // keepAliveProviderRef?.current.removeCache(`${path}.name.${search}`);
+
+    SLocal_History.closeAndPush(resolveFubaoPath('/family-planning/file-management/list'))
+
   };
   renderCancelBtn = () => {
     return (

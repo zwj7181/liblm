@@ -1,32 +1,31 @@
-import { PrinterOutlined, SaveOutlined } from '@ant-design/icons';
 import {
   BaseEditPanelFormFC,
-  formatTimeToDate,
-  mchcModal
+  MyIcon
 } from '@lm_fe/components_m';
 
-import { IMchc_Doctor_OutpatientHeaderInfo, IMchc_HusbandBaseInfoOfOutpatient, SLocal_History, SLocal_State, SMchc_Doctor } from '@lm_fe/service';
+import { mchcEnv } from '@lm_fe/env';
+import { BF_Wrap2 } from '@lm_fe/pages';
+import { IMchc_Doctor_OutpatientHeaderInfo, IMchc_HusbandBaseInfoOfOutpatient, SMchc_Doctor } from '@lm_fe/service';
 import { getSearchParamsValue } from '@lm_fe/utils';
-import { Button, Form, Popconfirm, message } from 'antd';
-import { get, map, set } from 'lodash';
-import { isMoment } from 'moment';
-import React, { useEffect, useState } from 'react';
-import { form_config } from './form_config';
+import { Button, Form, message } from 'antd';
 import { FormInstance } from 'antd/es/form/Form';
-function transformDate(pregnancyData: any) {
-  map(pregnancyData, (value, key) => {
-    if (isMoment(value)) {
-      set(pregnancyData, key, formatTimeToDate(value));
-    }
-  });
-  return pregnancyData;
-}
+import { get } from 'lodash';
+import React, { useEffect, useState } from 'react';
+
 interface IProps {
   isSingle?: boolean
   headerInfo: IMchc_Doctor_OutpatientHeaderInfo
   form?: FormInstance
 }
 export function HusbandInfo({ headerInfo, isSingle, form = Form.useForm()[0] }: IProps) {
+
+  const { config, Wrap } = BF_Wrap2({
+    default_conf: {
+      tableColumns: () => import('./form_config'),
+      title: '孕册管理-丈夫基本信息',
+    },
+
+  })
 
 
   const [data, setData] = useState<IMchc_HusbandBaseInfoOfOutpatient>()
@@ -58,7 +57,7 @@ export function HusbandInfo({ headerInfo, isSingle, form = Form.useForm()[0] }: 
       <Button
         size="large"
         type="primary"
-        icon={<SaveOutlined />}
+        icon={<MyIcon value='SaveOutlined' />}
         htmlType="submit"
         onClick={handleFinish}
       >
@@ -76,7 +75,7 @@ export function HusbandInfo({ headerInfo, isSingle, form = Form.useForm()[0] }: 
           id: get(data, 'id'),
         };
         const newData = await SMchc_Doctor.updateHusbandBaseInfoOfOutpatient(params);
-        message.success(`修改成功`);
+        mchcEnv.success(`修改成功`);
         setData(newData)
 
 
@@ -96,14 +95,16 @@ export function HusbandInfo({ headerInfo, isSingle, form = Form.useForm()[0] }: 
   // return <FormSectionForm form={form} formDescriptions={form_config()} onValuesChange={(a, b) => {
   //   console.log('onValuesChange', { a, b })
   // }} />
-  return <BaseEditPanelFormFC form={form} formDescriptions={form_config()}
-    renderBtns={form => {
-      return <>
-        {renderSubmitBtn()}
-      </>
-    }}
+  return <Wrap>
+    <BaseEditPanelFormFC form={form} formDescriptions={config?.tableColumns}
+      renderBtns={form => {
+        return <>
+          {renderSubmitBtn()}
+        </>
+      }}
 
-  />
+    />
+  </Wrap>
 
 }
 export default HusbandInfo

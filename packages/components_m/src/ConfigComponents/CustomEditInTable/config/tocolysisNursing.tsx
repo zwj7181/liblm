@@ -4,7 +4,7 @@
 import { mchcEnv } from '@lm_fe/env';
 import { formatDateTimeNoSecond, } from '@lm_fe/utils';
 import { MODAL_TEMPLATE_TYPES } from '@lm_fe/env';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { MyPressure } from '../../../FU_components/PressureInput';
 import { APP_CONFIG } from '../../../utils/constants';
 export const tableColumns: any = [

@@ -1,9 +1,15 @@
-import { MyBaseList } from '@lm_fe/components_m';
+import { MyBaseList } from '@lm_fe/pages';
+
 import { ModelService, SLocal_History } from '@lm_fe/service';
 import React from 'react';
 import { tableColumns } from './config/table';
 import { Button } from 'antd';
-const s = new ModelService({ n: 'FolateManagementFile', prePath: '/', apiPrefix: `/fb/api`, fuckPage: true })
+const s = new ModelService({
+  n: 'FolateManagementFile', prePath: '/',
+
+  // apiPrefix: `/fb/api`,
+  fuckPage: true
+})
 
 export function List(props: {}) {
   return <MyBaseList

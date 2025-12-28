@@ -1,5 +1,5 @@
-import { mchcStore, mchcUtils } from "@lm_fe/env"
-import { IMchc_Dictionaries } from "../../mchc"
+import { mchcUtils } from "@lm_fe/env"
+import { IMchc_Dictionaries, IMchc_Dictionaries_Enumeration } from "../../mchc"
 
 
 
@@ -12,11 +12,7 @@ export type ILocal_Dic = {
 
 
 export const SLocal_Dictionary = {
-  getDictionaries() {
-    const store = mchcStore.state
-    const { dictionaries = {} } = store
-    return dictionaries as ILocal_Dic
-  },
+
 
   /**
    *
@@ -24,15 +20,7 @@ export const SLocal_Dictionary = {
    * @param type string 字典类型
    */
   getDictionariesEnumerations(type: string) {
-    const dictionaries = this.getDictionaries()
-    dictionaries
-    const object = dictionaries?.[type];
-    if (!object) {
-      console.warn(`字典${type}不存在!`);
-      return []
-    }
-    const enumerations = object?.enumerations ?? [];
-    return enumerations;
+    return mchcUtils.getDictionariesEnumerations(type) as IMchc_Dictionaries_Enumeration[]
   },
 
   /**

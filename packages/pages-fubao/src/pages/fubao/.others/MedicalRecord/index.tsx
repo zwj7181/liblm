@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Col, Row, Checkbox, Button, message } from 'antd';
 import { last, map, size, get, set, isPlainObject, isArray } from 'lodash';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { getResources } from '@lm_fe/components_m';
 import { getAllPrenatalDiagnosesByPatientId, transformMedicalRecordData } from './method';
 import './index.less';
@@ -48,7 +48,7 @@ export default class FirstVisit extends Component {
           newRecord = transformMedicalRecordData(newRecord);
         }
         set(newRecord, 'id', -Math.random());
-        set(newRecord, 'visitDate', moment());
+        set(newRecord, 'visitDate', dayjs());
         set(newRecord, 'visitType', null);
         set(newRecord, 'doctor', get(user, 'basicInfo.firstName'));
         onImport(newRecord);

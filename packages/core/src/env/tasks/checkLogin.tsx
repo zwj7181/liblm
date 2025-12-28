@@ -1,7 +1,5 @@
-import { SLocal_Version, SMchc_Common } from '@lm_fe/service';
-import { Button, notification } from "antd";
+import { SMchc_Common } from '@lm_fe/service';
 
-import React from 'react';
 export function checkLogin() {
     checkLogin_Inner()
 }

@@ -1,0 +1,64 @@
+[package]
+name = "helper"
+version = "0.1.13"
+edition = "2021"
+
+[dependencies]
+clap = { version = "4.5.16", features = ["derive"] }
+flate2 = "1.1.0"
+tar = "0.4.44"
+reqwest = { version = "0.12", features = ["json"] }
+tokio = { version = "1.39.3", features = ["full"] }
+regex = { version = "1.*", features = ["std"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1"
+tower-http = { version = "0.5.0", features = ["full"] }
+tower = { version = "0.5", features = ["full"] }
+hyper = { version = "1", features = ["full"] }
+hyper-util = { version = "0.1.8", features = ["full"] }
+axum = "0.7.5"
+tracing = "0.1"
+tracing-subscriber = "0.3"
+windows-elevate = "0.1.0"
+self-replace = "1.5.0"
+lm_fe_rust = { path = "../../mchc-helper-tools/members/rust" }
+anyhow = "1.0.91"
+html5ever = "0.27.0"
+markup5ever_rcdom = "0.3.0"
+fs_extra = "1.3.0"
+inquire = "0.7.5"
+scraper = "0.12"
+config = "0.13"
+sea-orm = { version = "0.12", features = [
+    "runtime-tokio-native-tls",
+    "sqlx-mysql",
+    "macros",
+] }
+colored="3.0.0"
+[dependencies.windows]
+version = "0.60.0"
+features = [
+    # "Data_Xml_Dom",
+    # "UI_Xaml_Controls",
+    # "Win32_Security",
+    "Win32_System_Ole",
+    "Win32_System_Memory",
+    "Win32_System_DataExchange",
+    "Win32_UI_WindowsAndMessaging",
+    "Win32_Graphics_Gdi",
+    "Win32_UI_Input_KeyboardAndMouse",
+
+    "Win32_Foundation",
+    "Win32_UI_Controls",
+    "Win32_UI_Shell",
+    # "Win32_Web_InternetExplorer", 
+
+
+    # "Win32_System_Com",
+    # "Win32_Web_MsHtml",
+    # "Win32_System_Ole",
+    # "Win32_System_SystemServices",
+
+]
+[build-dependencies]
+embed-resource = "3.0.2"

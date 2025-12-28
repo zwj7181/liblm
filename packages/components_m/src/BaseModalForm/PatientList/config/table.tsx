@@ -1,4 +1,3 @@
-import { formatTimeToStandard } from '@/utils/format';
 export const tableColumns = [
   {
     title: '门诊号',

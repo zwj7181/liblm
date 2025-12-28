@@ -3,12 +3,12 @@ import { mchcEnv } from "@lm_fe/env"
 const 建瓯_config = {
     "needNotThisTime": false,
     "ignoreKeys": [
-        "children.childGender",
-        "children.childLiving",
-        "children.childDeathTime",
-        "children.childDeathNote",
-        "children.sequelaNote",
-        "children.neonateWeight"
+        "_children.childGender",
+        "_children.childLiving",
+        "_children.childDeathTime",
+        "_children.childDeathNote",
+        "_children.sequelaNote",
+        "_children.neonateWeight"
     ],
     "tableColumns": [
         { "key": "gravidityindex", "title": "孕次", "width": 30, "editor": { "input_type": "input" } },
@@ -34,24 +34,25 @@ const 建瓯_config = {
                 {
                     "key": "children.childGender", "title": "性别", "width": 30,
                     "editor": {
-                        "input_type": "select", "input_props": {
-                            "options": [
-                                { "label": "男", "value": 1 }, { "label": "女", "value": 2 }, { "label": "未知", "value": 3 }]
+                        "input_type": "MS", "input_props": {
+                            uniqueKey: '性别3',
+
+                            // "options": [{ "label": "男", "value": 1 }, { "label": "女", "value": 2 }, { "label": "未知", "value": 3 }]
                         }
                     }
                 },
                 {
                     "key": "children.childLiving", "title": "生存", "width": 30, "editor":
-                        { "input_type": "select", "input_props": { "options": [{ "label": "健在", "value": true }, { "label": "死亡", "value": false }] } }
+                        { "input_type": "MS", "input_props": { "options": [{ "label": "健在", "value": true }, { "label": "死亡", "value": false }] } }
                 },
                 {
                     "key": "children.childDeformity", "title": "畸形", "width": 30, "editor":
-                        { "input_type": "select", "input_props": { "options": [{ "label": "是", "value": "是" }, { "label": "否", "value": "否" }] } }
+                        { "input_type": "MS", "input_props": { "options": [{ "label": "是", "value": "是" }, { "label": "否", "value": "否" }] } }
                 },
                 // {
                 //     "key": "children.childGender", "title": "性别", "width": 30,
                 //     "editor": {
-                //         "input_type": "select", "input_props": {
+                //         "input_type": "MS", "input_props": {
                 //             "options": [
                 //                 { "label": "男", "value": 1 }, { "label": "女", "value": 2 }, { "label": "未知", "value": 3 }]
                 //         }
@@ -67,7 +68,7 @@ const 建瓯_config = {
                 },
                 {
                     "key": "operationType", "title": "手术产式", "width": 50, "editor": {
-                        "input_type": "select",
+                        "input_type": "MS",
                         "input_props": { "options": [{ "label": " ", "value": " " }, { "label": "剖宫产", "value": "cesareanSection" }, { "label": "吸引产", "value": "vacuumAssisted" }, { "label": "钳产", "value": "forceps" }, { "label": "臀助产", "value": "breechMidwifery" }] }
                     }
                 }
@@ -82,7 +83,7 @@ const 建瓯_config = {
 
 
 
-        { "key": "exceptionalcase", "title": "其他", "width": 200, "editor": { "input_type": "input" } }
+        { "key": "exceptionalcase", "title": "其他", "width": 200, "editor": { "input_type": "MA", "input_props": { memorieskey: '孕产史-特殊情况' } } }
     ]
 }
 
@@ -94,7 +95,14 @@ export function getConfig() {
     return {
         "pregnancyId": 0,
         "needNotThisTime": false,
-        "ignoreKeys": ["children.childGender", "children.childLiving", "children.childDeathTime", "children.childDeathNote", "children.sequelaNote", "children.neonateWeight"],
+        "ignoreKeys": [
+            "_children.childGender",
+            "_children.childLiving",
+            "_children.childDeathTime",
+            "_children.childDeathNote",
+            "_children.sequelaNote",
+            "_children.neonateWeight"
+        ],
         "tableColumns":
             [
                 { "key": "gravidityindex", "title": "孕次", "width": 30, "editor": { "input_type": "input" } },
@@ -123,7 +131,8 @@ export function getConfig() {
                         },
                         {
                             "key": "operationType", "title": "手术产式", "width": 50, "editor": {
-                                "input_type": "select", "input_props": {
+                                "input_type": "MS",
+                                "input_props": {
                                     "options": [
                                         { "label": " ", "value": " " },
                                         { "label": "剖宫产", "value": "cesareanSection" },
@@ -152,9 +161,10 @@ export function getConfig() {
                         {
                             "key": "children.childGender", "title": "性别", "width": 30,
                             "editor": {
-                                "input_type": "select",
+                                "input_type": "MS",
                                 "input_props": {
-                                    "options": [{ "label": "男", "value": 1 }, { "label": "女", "value": 2 }, { "label": "未知", "value": 3 }]
+                                    uniqueKey: '性别3',
+                                    // "options": [{ "label": "男", "value": 1 }, { "label": "女", "value": 2 }, { "label": "未知", "value": 3 }]
                                 }
                             }
                         },
@@ -164,7 +174,7 @@ export function getConfig() {
                             "title": "生存",
                             "width": 30,
                             "editor": {
-                                "input_type": "select", "input_props": { "options": [{ "label": "健在", "value": true }, { "label": "死亡", "value": false }] }
+                                "input_type": "MS", "input_props": { "options": [{ "label": "健在", "value": true }, { "label": "死亡", "value": false }] }
                             }
                         },
                         { "key": "children.childDeathTime", "width": 100, "title": "死亡时间", "editor": { "input_type": "filterDateInput" } },
@@ -173,7 +183,7 @@ export function getConfig() {
                     ]
                 },
                 { "key": "hospital", "title": "分娩医院", "width": 80, "editor": { "input_type": "input" } },
-                { "key": "exceptionalcase", "title": "特殊情况", "width": 200, "editor": { "input_type": "input" } }
+                { "key": "exceptionalcase", "title": "特殊情况", "width": 200, "editor": { "input_type": "MA", "input_props": { memorieskey: '孕产史-特殊情况' } } }
             ]
     }
 }

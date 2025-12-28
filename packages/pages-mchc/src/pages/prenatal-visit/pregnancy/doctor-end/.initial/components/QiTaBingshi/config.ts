@@ -1,310 +1,109 @@
-import { FormConfig } from '@lm_fe/components_m';
-import { otherOptions as Options } from '@lm_fe/env';
 
-const config: Array<FormConfig> = [
-  {
-    name: 'menarche',
-    key: '.menstrualHistory.menarche',
-    label: '初潮',
-    input_type: 'input',
-    span: 5,
-    rules: [{ required: true }],
-    unit: '岁',
-    input_props: { type: 'number' },
-  },
-  {
-    name: 'menstrualCycle',
-    key: '.menstrualHistory.menstrualCycle',
-    label: '周期',
-    input_type: 'input',
-    span: 5,
-    rules: [{ required: true }],
-    unit: '天',
-    input_props: { type: 'number' },
-  },
-  {
-    name: 'menstrualPeriod',
-    key: '.menstrualHistory.menstrualPeriod',
-    label: '持续天数',
-    input_type: 'input',
-    span: 5,
-    rules: [{ required: true }],
-    unit: '天',
-    input_props: { type: 'number' },
-  },
-  {
-    name: 'dysmenorrhea',
-    key: '.menstrualHistory.dysmenorrhea',
-    label: '痛经',
-    input_type: 'checkbox',
-    span: 7,
-    rules: [{ required: true }],
-    input_props: {
-      type: 'group',
-      options: Options.nhOptions,
-    },
-  },
-  {
-    name: 'maritalStatus',
-    key: '.maritalStatus',
-    label: '婚姻史',
-    input_type: 'checkbox',
-    span: 10,
-    rules: [{ required: true }],
-    input_props: {
-      type: 'group',
-      options: Options.maritalStatusOptions,
-    },
-  },
-  {
-    name: 'maritalYears',
-    key: '.maritalYears',
-    label: '本次结婚年龄',
-    input_type: 'input',
-    span: 5,
-    rules: [{ required: true }],
-    unit: '岁',
-    input_props: { type: 'number' },
-  },
-  {
-    name: 'nearRelation',
-    key: '.nearRelation',
-    label: '近亲结婚',
-    input_type: 'checkbox',
-    span: 7,
-    rules: [{ required: true }],
-    input_props: {
-      type: 'group',
-      options: Options.nyOptions,
-    },
-  },
+import { ICommonOption, otherOptions } from '@lm_fe/env';
+import { not_yes_input } from '@lm_fe/pages';
+import { defineFormConfig } from '@lm_fe/service';
+import { form_config_家族史 } from 'src/pages/prenatal-visit/pregnancy/common';
+import { 个人史_pack } from 'src/pages/prenatal-visit/pregnancy/nurse-end/archival-information/form/个人史';
 
-  { name: '', key: '', label: '个人史', header_label: true, just_header: true, input_type: '' },
-  {
-    name: 'smoke',
-    key: '.personalProfile.smoke(Note)',
-    label: '吸烟',
-    input_type: 'checkbox',
-    span: 18,
-    rules: [{ required: true }],
-    input_props: {
-      type: 'custom',
-      inputNeedFillWidth: true,
-      renderData: [
-        {
-          key: 'smoke',
-          label: '',
-          options: Options.nhOptions,
-          extraEditors: [
-            {
-              key: true,
-              editors: [{ name: '', key: '', label: '', input_type: 'input' }],
-            },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    name: 'alcohol',
-    key: '.personalProfile.alcohol(Note)',
-    label: '饮酒',
-    input_type: 'checkbox',
-    span: 18,
-    rules: [{ required: true }],
-    input_props: {
-      type: 'custom',
-      inputNeedFillWidth: true,
-      renderData: [
-        {
-          key: 'alcohol',
-          label: '',
-          options: Options.nhOptions,
-          extraEditors: [
-            {
-              key: true,
-              editors: [{ name: '', key: '', label: '', input_type: 'input' }],
-            },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    name: 'hazardoussubstances',
-    key: '.personalProfile.hazardoussubstances(Note)',
-    label: '接触有害物质',
-    input_type: 'checkbox',
-    span: 18,
-    rules: [{ required: true }],
-    input_props: {
-      type: 'custom',
-      inputNeedFillWidth: true,
-      renderData: [
-        {
-          key: 'hazardoussubstances',
-          label: '',
-          options: Options.nhOptions,
-          extraEditors: [
-            {
-              key: true,
-              editors: [{ name: '', key: '', label: '', input_type: 'input' }],
-            },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    name: 'radioactivity',
-    key: '.personalProfile.radioactivity(Note)',
-    label: '接触放射线',
-    input_type: 'checkbox',
-    span: 18,
-    rules: [{ required: true }],
-    input_props: {
-      type: 'custom',
-      inputNeedFillWidth: true,
-      renderData: [
-        {
-          key: 'radioactivity',
-          label: '',
-          options: Options.nhOptions,
-          extraEditors: [
-            {
-              key: true,
-              editors: [{ name: '', key: '', label: '', input_type: 'input' }],
-            },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    name: 'personalProfileOther',
-    key: '.personalProfile.other(Note)',
-    label: '其他',
-    input_type: 'checkbox',
-    span: 18,
-    input_props: {
-      type: 'custom',
-      inputNeedFillWidth: true,
-      renderData: [
-        {
-          key: 'other',
-          label: '',
-          options: Options.nhOptions,
-          extraEditors: [
-            {
-              key: true,
-              editors: [{ name: '', key: '', label: '', input_type: 'input' }],
-            },
-          ],
-        },
-      ],
-    },
-  },
+function get_无有option(suffix?: string) {
+  const options: ICommonOption[] = [
+    { value: false, label: '无' },
+    { value: true, label: '有', warning: true, inputType: 'Input', suffix },
+  ]
+  return options
+}
 
-  { name: '', key: '', label: '家族史', header_label: true, just_header: true, input_type: '' },
-  {
-    name: 'hypertension',
-    key: '.familyHistory.hypertension(Note)',
-    label: '高血压',
-    input_type: 'checkbox',
-    span: 18,
-    rules: [{ required: true }],
-    input_props: {
-      type: 'custom',
-      inputNeedFillWidth: true,
-      renderData: [
-        {
-          key: 'hypertension',
-          label: '',
-          options: Options.nhOptions,
-          extraEditors: [
-            {
-              key: true,
-              editors: [{ name: '', key: '', label: '', input_type: 'input' }],
-            },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    name: 'diabetes',
-    key: '.familyHistory.diabetes(Note)',
-    label: '糖尿病',
-    input_type: 'checkbox',
-    span: 18,
-    rules: [{ required: true }],
-    input_props: {
-      type: 'custom',
-      inputNeedFillWidth: true,
-      renderData: [
-        {
-          key: 'diabetes',
-          label: '',
-          options: Options.nhOptions,
-          extraEditors: [
-            {
-              key: true,
-              editors: [{ name: '', key: '', label: '', input_type: 'input' }],
-            },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    name: 'birthdefects',
-    key: '.familyHistory.birthdefects(Note)',
-    label: '先天畸形',
-    input_type: 'checkbox',
-    span: 18,
-    rules: [{ required: true }],
-    input_props: {
-      type: 'custom',
-      inputNeedFillWidth: true,
-      renderData: [
-        {
-          key: 'birthdefects',
-          label: '',
-          options: Options.nhOptions,
-          extraEditors: [
-            {
-              key: true,
-              editors: [{ name: '', key: '', label: '', input_type: 'input' }],
-            },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    name: 'familyHistoryOther',
-    key: '.familyHistory.other(Note)',
-    label: '其他',
-    input_type: 'checkbox',
-    span: 18,
-    input_props: {
-      type: 'custom',
-      inputNeedFillWidth: true,
-      renderData: [
-        {
-          key: 'other',
-          label: '',
-          options: Options.nhOptions,
-          extraEditors: [
-            {
-              key: true,
-              editors: [{ name: '', key: '', label: '', input_type: 'input' }],
-            },
-          ],
-        },
-      ],
-    },
-  },
-];
+export default defineFormConfig(
+  [
+    { name: 'id', form_hidden: true },
+    {
+      "key": "menarche",
+      "label": "初潮",
 
-export default config;
+      "inputType": "InputNumber",
+      required: true,
+      "inputProps": { 'unit': '岁' },
+      layout: '1/3',
+    }, {
+      "key": "menstrualCycle",
+      "label": "月经周期",
+
+      "inputType": "InputNumber",
+      required: true,
+      "inputProps": { 'unit': '天' },
+      layout: '1/3',
+
+    }, {
+      "key": "menstrualPeriod",
+      "label": "月经持续天数",
+
+      "inputType": "InputNumber",
+      required: true,
+      "inputProps": {},
+      layout: '1/3',
+
+    }, {
+      "key": "menstrualVolume",
+      "label": "经量",
+      disabled_check: true,
+      "inputType": "MA",
+      required: true,
+      "inputProps": { 'options': '多,中,少' },
+      layout: '1/3',
+
+    },
+    {
+      "key": "maritalYears",
+      "label": "结婚年龄",
+
+      "inputType": "InputNumber",
+
+      "inputProps": {},
+      layout: '1/3',
+    },
+    {
+      "key": "maritalStatus",
+      "label": "婚姻史",
+
+      "inputType": "MC",
+      required: true,
+      "inputProps": { 'options': otherOptions['maritalStatusOptions'], marshal: 0 },
+      layout: '1/3',
+
+    },
+    // {
+    //   "key": "dysmenorrhea__",
+    //   "label": "痛经",
+
+    //   "inputType": "MC",
+    //   required: true,
+    //   "inputProps": { options: get_无有option() },
+    //   layout: '1/3',
+
+    // },
+    not_yes_input('dysmenorrhea', '痛经'),
+
+
+    {
+      "key": "nearRelation",
+      "label": "近亲结婚",
+
+      "inputType": "MC",
+      required: true,
+      "inputProps": { 'options': otherOptions['nyOptions'], marshal: 0 },
+
+      layout: '1/3',
+
+    },
+    {
+      inputType: 'check_invert_button',
+      layout: '1/3',
+
+    },
+    {
+      label: '个人史',
+      children: 个人史_pack(true, true)
+    },
+
+    form_config_家族史()
+  ]);

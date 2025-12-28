@@ -1,7 +1,8 @@
-import { MchcTypes, MchcType_default, MchcType_越秀妇幼 } from "@lm_fe/env"
+import { MCHC_TYPE_MAP, MchcTypes } from '@lm_fe/env'
 
-export interface IMchc_Doctor_OutpatientHeaderInfo<T extends MchcTypes = MchcType_default> {
+export interface IMchc_Doctor_OutpatientHeaderInfo<T extends MchcTypes = MCHC_TYPE_MAP['mchc']> {
     age: number
+    tags: string | null
     birthInsurance: false
     checkupNO: string
     cicatrixLable: string
@@ -11,7 +12,7 @@ export interface IMchc_Doctor_OutpatientHeaderInfo<T extends MchcTypes = MchcTyp
     edd: string
     g: number
     gesweek: string
-    hbvReportCardRemind: T extends MchcType_越秀妇幼 ? boolean : never
+    hbvReportCardRemind: T extends MCHC_TYPE_MAP['越秀妇幼'] ? boolean : never
     highRiskDiagnosis: string
     highriskLable: string
     highriskNote?: string
@@ -26,12 +27,37 @@ export interface IMchc_Doctor_OutpatientHeaderInfo<T extends MchcTypes = MchcTyp
     p: number
     pregnancyCaseLable: string
     printLetterOfConsent: null
-    recordstate: "1" | "0" | "6",
+    recordstate: '1' | '0' | '6'
     tabPage: 'Initial'
     thrombusLable: string
     highriskGrade?: string
 
-
     // nurse
     // "sureEdd" : "2023-05-11",
+    // append
+    alertAssessment?: {
+        pregnancyId: 3
+        type: 31
+        templateId: null
+        value?: {
+            id: 47
+            type: 31
+            systemType: null
+            pid: 31
+            val: 'IVF/ART'
+            code: null
+            mnemonic: null
+            wb: null
+            sort: null
+            depid: null
+            userid: null
+            diagnosisCode: null
+            categoryCode: null
+            categoryName: null
+            icdCode: null
+            active: null
+            personal: false
+        }[]
+        first: false
+    }
 }

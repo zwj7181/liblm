@@ -1,6 +1,6 @@
 import { CloseOutlined, SaveOutlined } from '@ant-design/icons';
 import { BaseEditPanelForm } from '@lm_fe/components_m';
-import { mchcUtils } from '@lm_fe/env';
+import { mchcEnv, mchcUtils } from '@lm_fe/env';
 import { SLocal_History } from '@lm_fe/service';
 import { fubaoRequest as request } from '@lm_fe/utils';
 import { Button, Space, message } from 'antd';
@@ -44,12 +44,12 @@ export default class AdmissionForm extends BaseEditPanelForm {
     handleIDNumberChange: (id: string) => {
       if (id === 'residenceAddress') {
         const value = this.form?.getFieldValue('permanentResidenceAddress');
-        !value && message.info('请先填写完整的户口地址信息！');
+        !value && mchcEnv.info('请先填写完整的户口地址信息！');
         value && this.form?.setFieldsValue({ residenceAddress: value });
       }
     },
 
-    //查询就诊卡号是否存在
+    //查询门诊号是否存在
     handleInputBlur: async (e: any) => {
       const { data } = this.props;
       const id = get(data, 'id');
@@ -67,7 +67,7 @@ export default class AdmissionForm extends BaseEditPanelForm {
         });
         const data = res.data
         if (get(data, 'data.pageData').length > 0) {
-          message.error('就诊卡号已存在！');
+          message.error('门诊号已存在！');
         }
       }
     },
@@ -93,7 +93,7 @@ export default class AdmissionForm extends BaseEditPanelForm {
             age: personal.age,
           });
       } else {
-        message.warn(`${get(personal, 'message')}`);
+        message.warning(`${get(personal, 'message')}`);
       }
     }
 

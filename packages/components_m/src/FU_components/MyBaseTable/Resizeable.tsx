@@ -1,4 +1,3 @@
-import { Resizable } from 'react-resizable';
 export const ResizableTitle = (props) => {
   const { onResize, width, ...restProps } = props;
 

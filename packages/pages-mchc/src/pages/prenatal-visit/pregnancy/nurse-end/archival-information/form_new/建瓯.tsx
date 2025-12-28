@@ -1,10 +1,9 @@
-import { get_check_invert_values } from "@lm_fe/components_m";
-import { mchcEnv } from "@lm_fe/env";
-import { IMchc_FormDescriptions_Field_Nullable } from "@lm_fe/service";
-import { __obdriver_read, month1_12 } from "../form/common";
+import { defineFormConfig, IMchc_FormDescriptions_Field_Nullable } from "@lm_fe/service";
+import { form_config_家族史 } from "../../../common";
+import { __obdriver_read, month1_12, unmarry_deps } from "../form/common";
+import { 既往史_pack } from "../form/既往史";
 import { 转入登记_config } from "../form/转入登记";
 import { 高危管理_config } from "../form/高危管理";
-import { 既往史_pack } from "../form/既往史";
 
 function 孕妇基本信息_config_建瓯() {
 
@@ -34,7 +33,6 @@ function 孕妇基本信息_config_建瓯() {
                 "inputType": "MS",
                 required: true,
                 "inputProps": { options: '本省、本市、本县、省外', marshal: 0 },
-                isActive: mchcEnv.is('建瓯'),
                 layout: '1/3',
             },
             {
@@ -43,7 +41,6 @@ function 孕妇基本信息_config_建瓯() {
                 "inputType": "MS",
                 required: true,
                 "inputProps": { options: '城镇,农村', marshal: 0 },
-                isActive: mchcEnv.is('建瓯'),
                 layout: '1/3',
             },
             {
@@ -52,7 +49,6 @@ function 孕妇基本信息_config_建瓯() {
                 "inputType": "MS",
                 required: true,
                 "inputProps": { options: '是,否', marshal: 0 },
-                isActive: mchcEnv.is('建瓯'),
                 layout: '1/3',
             },
             {
@@ -64,14 +60,19 @@ function 孕妇基本信息_config_建瓯() {
                 layout: '1/3',
             },
 
-
+            {
+                "key": "baseInfo.workplace",
+                "label": "工作单位",
+                "inputType": "input",
+                layout: '1/3',
+            },
 
             {
                 "key": "baseInfo.idType",
                 "label": "证件类型",
                 "inputType": "MS",
                 "rules": [{ "required": true, "message": "证件类型是必填项" }],
-                "inputProps": { optionKey: '证件类型', marshal: 0 },
+                "inputProps": { uniqueKey: '证件类型', marshal: 0 },
                 layout: '1/3',
             }, {
                 "key": "baseInfo.idNO",
@@ -133,33 +134,33 @@ function 孕妇基本信息_config_建瓯() {
                 "key": "baseInfo.occupation",
                 "label": "职业",
                 "inputType": "MS",
-                "inputProps": { optionKey: '职业s', marshal: 0 },
+                "inputProps": { uniqueKey: '职业s', marshal: 0 },
                 layout: '1/3',
             },
             {
                 "key": "baseInfo.maritalStatus",
                 "label": "婚姻状况",
                 "inputType": "MS",
-
-                "inputProps": { optionKey: '婚姻', marshal: 0 },
+                required: true,
+                "inputProps": { uniqueKey: '婚姻', marshal: 0 },
                 layout: '1/3',
             }, {
                 "key": "baseInfo.education",
                 "label": "文化程度",
                 "inputType": "MS",
-                "inputProps": { optionKey: '文化程度s', marshal: 0 },
+                "inputProps": { uniqueKey: '文化程度s', marshal: 0 },
                 layout: '1/3',
             },
-            {
-                "key": "baseInfo.nearRelation",
-                "label": "是否近亲结婚",
-                "inputType": "MC",
-                "inputProps": {
-                    options: '否,是',
-                    marshal: 0
-                },
-                layout: '1/3',
-            },
+            // {
+            //     "key": "baseInfo.nearRelation",
+            //     "label": "是否近亲结婚",
+            //     "inputType": "MC",
+            //     "inputProps": {
+            //         options: '否,是',
+            //         marshal: 0
+            //     },
+            //     layout: '1/3',
+            // },
 
             {
                 "key": "baseInfo.maritalAge",
@@ -179,7 +180,8 @@ function 孕妇基本信息_config_建瓯() {
                 "inputType": "input",
                 "rules": [{ "required": true, "message": "联系人是必填项" }],
                 showDeps: {
-                    "baseInfo.maritalStatus": [2, 3, 5]
+                    ...unmarry_deps
+
                 },
                 layout: '1/3',
             }, {
@@ -188,7 +190,8 @@ function 孕妇基本信息_config_建瓯() {
                 "inputType": "input",
                 "rules": [{ "required": true, "message": "联系电话是必填项" }, { "type": "string", "min": 11, "message": "请输入11位手机号码" }, { "max": 11, "message": "请输入正确的手机号码格式" }],
                 showDeps: {
-                    "baseInfo.maritalStatus": [2, 3, 5]
+                    ...unmarry_deps
+
                 },
                 layout: '1/3',
             }, {
@@ -197,7 +200,7 @@ function 孕妇基本信息_config_建瓯() {
                 "inputType": "input",
                 "rules": [{ "required": true, "message": "关系是必填项" }],
                 showDeps: {
-                    "baseInfo.maritalStatus": [2, 3, 5]
+                    ...unmarry_deps
                 },
                 layout: '1/3',
             },
@@ -241,14 +244,12 @@ const 既往史_建瓯_pluse = (isPure = false) => {
             "inputType": "MC",
             "inputProps": { marshal: 1, options: '无,异常i' },
             "key": `${isPure ? '' : 'pregnancyInfo.'}heart`,
-            isActive: mchcEnv.in(['建瓯']),
             required: isPure,
             layout: '1/3',
         },
         {
             // "key": "pregnancyInfo.lung",
             "key": `${isPure ? '' : 'pregnancyInfo.'}lung`,
-            isActive: mchcEnv.in(['建瓯']),
             required: isPure,
             "label": "肺",
             "inputType": "MC",
@@ -260,7 +261,6 @@ const 既往史_建瓯_pluse = (isPure = false) => {
         {
             // "key": "pregnancyInfo.nephropathyNote",
             "key": `${isPure ? '' : 'pregnancyInfo.'}nephropathyNote`,
-            isActive: mchcEnv.in(['建瓯']),
             required: isPure,
             "label": "肾",
             "inputType": "MC",
@@ -272,7 +272,6 @@ const 既往史_建瓯_pluse = (isPure = false) => {
         {
             // "key": "pregnancyInfo.hepaticDiseaseNote",
             "key": `${isPure ? '' : 'pregnancyInfo.'}hepaticDiseaseNote`,
-            isActive: mchcEnv.in(['建瓯']),
             required: isPure,
             "label": "肝",
             "inputType": "MC",
@@ -285,7 +284,6 @@ const 既往史_建瓯_pluse = (isPure = false) => {
         {
             // "key": "pregnancyInfo.psychosis",
             "key": `${isPure ? '' : 'pregnancyInfo.'}psychosis`,
-            isActive: mchcEnv.in(['建瓯']),
             required: isPure,
             "label": "精神病",
             "inputType": "MC",
@@ -297,7 +295,6 @@ const 既往史_建瓯_pluse = (isPure = false) => {
         {
             // "key": "pregnancyInfo.hematopathyNote",
             "key": `${isPure ? '' : 'pregnancyInfo.'}hematopathyNote`,
-            isActive: mchcEnv.in(['建瓯']),
             required: isPure,
             "label": "血液病",
             "inputType": "MC",
@@ -311,7 +308,6 @@ const 既往史_建瓯_pluse = (isPure = false) => {
         {
             // "key": "pregnancyInfo.anemia",
             "key": `${isPure ? '' : 'pregnancyInfo.'}anemia`,
-            isActive: mchcEnv.in(['建瓯']),
             required: isPure,
             "label": "贫血",
             "inputType": "MC",
@@ -324,7 +320,6 @@ const 既往史_建瓯_pluse = (isPure = false) => {
         {
             // "key": "pregnancyInfo.hyperthyroidism",
             "key": `${isPure ? '' : 'pregnancyInfo.'}hyperthyroidism`,
-            isActive: mchcEnv.in(['建瓯']),
             required: isPure,
             "label": "甲亢",
             "inputType": "MC",
@@ -337,7 +332,6 @@ const 既往史_建瓯_pluse = (isPure = false) => {
         {
             // "key": "pregnancyInfo.epilepsyNote",
             "key": `${isPure ? '' : 'pregnancyInfo.'}epilepsyNote`,
-            isActive: mchcEnv.in(['建瓯']),
             required: isPure,
             "label": "癫痫",
             "inputType": "MC",
@@ -350,7 +344,6 @@ const 既往史_建瓯_pluse = (isPure = false) => {
         {
             // "key": "pregnancyInfo.gynaecologyProcedureHistory",
             "key": `${isPure ? '' : 'pregnancyInfo.'}gynaecologyProcedureHistory`,
-            isActive: mchcEnv.in(['建瓯']),
             required: isPure,
             "label": "妇科手术史",
 
@@ -364,7 +357,7 @@ const 既往史_建瓯_pluse = (isPure = false) => {
 }
 
 
-export function 既往史_pack_建瓯(isPure = false, needOther = false) {
+export function 既往史_pack_建瓯(isPure = false, needOther = false): any[] {
     const res = [
         ...既往史_建瓯_pluse(isPure),
         ...既往史_pack(isPure, needOther),
@@ -375,9 +368,7 @@ export function 既往史_pack_建瓯(isPure = false, needOther = false) {
 }
 
 const 既往史_config_建瓯 = () => {
-    if (!mchcEnv.is('建瓯')) {
-        return null
-    }
+
     const config: IMchc_FormDescriptions_Field_Nullable = {
         "name": "既往史",
         "children": [
@@ -387,13 +378,7 @@ const 既往史_config_建瓯 = () => {
                 "key": "既往史一键勾选",
                 "label": "一键勾选",
                 "inputType": "check_invert_button",
-                inputPropsFn() {
-                    return {
-                        check_invert_values: {
-                            ...get_check_invert_values([config]),
-                        }
-                    }
-                },
+     
                 layout: '1/3',
             },
 
@@ -433,7 +418,6 @@ const 丈夫基本信息_config_建瓯 = () => {
             "inputType": "Input",
 
             "inputProps": {},
-            isActive: mchcEnv.is('建瓯'),
             isNewRow: 1,
             layout: '1/3',
         },
@@ -443,23 +427,20 @@ const 丈夫基本信息_config_建瓯 = () => {
             "inputType": "MS",
 
             "inputProps": { options: '好、良好、差', marshal: 0 },
-            isActive: mchcEnv.is('建瓯'),
             layout: '1/3',
         },
 
-        mchcEnv.in(['建瓯']) ? {
+        {
             "key": "partnerInfo.hfmh",
             "label": "家族史",
             "inputType": "checkbox_group_object",
 
             "inputProps": {
-                optionKey: '家族史',
-
+                uniqueKey: '家族史',
             },
             layout: '1/1',
             "isNewRow": 1,
-        }
-            : null,
+        },
         {
             "key": "partnerInfo.partnerIdType",
             "label": "证件类型",
@@ -628,7 +609,12 @@ function 本次孕产信息_config_建瓯() {
                 layout: '1/3',
             },
 
-
+            {
+                key: 'pregnancyInfo.gestationalWeek',
+                "label": "孕周",
+                layout: '1/3',
+                "inputType": "input",
+            },
             {
                 "key": "pregnancyInfo.preweight",
                 "label": "孕前体重(kg)",
@@ -696,14 +682,6 @@ function 本次孕产信息_config_建瓯() {
                 "key": "本次孕产信息一键勾选",
                 "label": "一键勾选",
                 "inputType": "check_invert_button",
-                inputPropsFn() {
-                    return {
-                        check_invert_values: {
-                            ...get_check_invert_values([config]),
-                            'pregnancyInfo.fmh': [{ nothing: true }, null]
-                        }
-                    }
-                },
                 layout: '1/3',
 
             },
@@ -773,7 +751,7 @@ function 本次孕产信息_config_建瓯() {
                 "label": "病毒感染",
                 "inputType": "MC",
                 required: true,
-                "inputProps": { optionKey: '无有i', marshal: 1 },
+                "inputProps": { uniqueKey: '无有i', marshal: 1 },
                 layout: '1/3',
             },
             {
@@ -781,7 +759,7 @@ function 本次孕产信息_config_建瓯() {
                 "label": "服避孕药",
                 "inputType": "MC",
                 required: true,
-                "inputProps": { optionKey: '无有i', marshal: 1 },
+                "inputProps": { uniqueKey: '无有i', marshal: 1 },
                 layout: '1/3',
             },
             {
@@ -789,7 +767,7 @@ function 本次孕产信息_config_建瓯() {
                 "label": "剧吐",
                 "inputType": "MC",
                 required: true,
-                "inputProps": { optionKey: '无有', marshal: 1 },
+                "inputProps": { uniqueKey: '无有', marshal: 1 },
                 layout: '1/3',
             },
             {
@@ -797,7 +775,7 @@ function 本次孕产信息_config_建瓯() {
                 "label": "阴道出血",
                 "inputType": "MC",
                 required: true,
-                "inputProps": { optionKey: '无有', marshal: 1 },
+                "inputProps": { uniqueKey: '无有', marshal: 1 },
                 layout: '1/3',
             },
             {
@@ -805,24 +783,15 @@ function 本次孕产信息_config_建瓯() {
                 "label": "发热",
                 "inputType": "MC",
                 required: true,
-                "inputProps": { optionKey: '无有', marshal: 1 },
+                "inputProps": { uniqueKey: '无有', marshal: 1 },
                 layout: '1/3',
             },
 
 
 
 
-            {
-                "key": "pregnancyInfo.fmh",
-                "label": "家族史",
-                "inputType": "checkbox_group_object",
+            form_config_家族史('pregnancyInfo'),
 
-                "inputProps": {
-                    optionKey: '家族史',
-                },
-                layout: '1/1',
-                "isNewRow": 1,
-            },
 
 
             {
@@ -916,7 +885,6 @@ const 孕产史_config_建瓯 = () => {
                 "label": "妊娠合并症史",
                 "inputType": 'MC',
                 inputProps: { options: '无,有i', marshal: 1 },
-                isActive: mchcEnv.is('建瓯'),
                 // required: true,
                 layout: '1/3',
             },
@@ -928,14 +896,12 @@ const 孕产史_config_建瓯 = () => {
                     options: '无,有i', marshal: 1
                 },
                 // required: true,
-                isActive: mchcEnv.is('建瓯'),
                 layout: '1/3',
             },
             {
                 "key": "pregnancyHistory",
                 "label": "备注",
                 "inputType": "text_area",
-                isActive: mchcEnv.is('建瓯'),
                 // required: true,
                 layout: '2/3',
             },
@@ -943,12 +909,16 @@ const 孕产史_config_建瓯 = () => {
     }
     return config
 }
-export const __lazy_config: IMchc_FormDescriptions_Field_Nullable[] = [
-    孕妇基本信息_config_建瓯(),
-    丈夫基本信息_config_建瓯(),
-    本次孕产信息_config_建瓯(),
-    既往史_config_建瓯(),
-    孕产史_config_建瓯(),
-    高危管理_config(),
-    转入登记_config(),
-]
+
+
+export default defineFormConfig(
+    [
+        孕妇基本信息_config_建瓯(),
+        丈夫基本信息_config_建瓯(),
+        本次孕产信息_config_建瓯(),
+        既往史_config_建瓯(),
+        孕产史_config_建瓯(),
+        高危管理_config(),
+        转入登记_config(),
+    ]
+)

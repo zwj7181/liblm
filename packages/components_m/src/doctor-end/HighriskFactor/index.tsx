@@ -1,7 +1,7 @@
 import { message } from 'antd';
 import { request } from '@lm_fe/utils';
 import { levelOptionsobj } from '../common';
-import { Button, Col, Form, Input, Modal, Row, Select, Tabs, Timeline, Tree } from 'antd';
+import { Button, Col, Form, Input, Modal, Row, Tabs, Timeline } from 'antd';
 import classNames from 'classnames';
 import {
   cloneDeep,
@@ -25,6 +25,11 @@ import styles from './index.module.less';
 import { formatDate } from '@lm_fe/utils';
 import { SMchc_Common, SMchc_TemplateTrees } from '@lm_fe/service';
 import { mchcConfig, mchcUtils } from '@lm_fe/env';
+
+import { LazyAntd } from '@lm_fe/components';
+
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
 const boundSymbol = ':';
 interface IndexState {
   expandedKeys: any;
@@ -81,11 +86,11 @@ export class HighriskFactor extends Component<IProps, IndexState> {
   async componentDidMount() {
     const highriskVersion = mchcConfig.get('highriskVersion')
     this.setLevolOptions(highriskVersion);
-   
+
     const treeData = await SMchc_TemplateTrees.getTemplateTree(highriskVersion);
     this.highRiskTreeDataMapping = keyBy(treeData, 'id');
 
- 
+
     const highriskNote_ = split(get(this.props, 'data.highriskNote'), ',') || [];
     let selectTree: any = [];
     map(highriskNote_, (item) => {
@@ -511,7 +516,7 @@ export class HighriskFactor extends Component<IProps, IndexState> {
     return (
       <Modal
         className={styles["highrisk-pop"]}
-        visible={visible}
+        open={visible}
         width={1000}
         onCancel={this.handleClose}
         onOk={this.handleSubmit}

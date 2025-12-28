@@ -1,5 +1,5 @@
 import React, { Component, Suspense } from 'react';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { get } from 'lodash';
 import MyComponent from '../index';
 import './index.less';
@@ -81,7 +81,7 @@ export default class EditableCell extends Component<EditableCellProps> {
         return opt.label;
       }
       if (editor.input_type === 'date' && get(editor, 'input_props.format')) {
-        return value ? moment(value).format(get(editor, 'input_props.format')) : '';
+        return value ? dayjs(value).format(get(editor, 'input_props.format')) : '';
       }
       if (editor.input_type == 'checkbox') {
         return value ? '√' : value;
@@ -102,6 +102,8 @@ export default class EditableCell extends Component<EditableCellProps> {
             <RenderComponent
               editing={editing}
               {...editor}
+              {...(editor.input_props || {})}
+              marshal={0}
               disabled={this.props.disabled}
               onChange={(val: any) => this.handleChange(val)}
               value={this.state.value}

@@ -1,7 +1,7 @@
-import { CloseOutlined } from '@ant-design/icons';
+import { getInputStyle, MyIcon } from '@lm_fe/components';
 import { AutoComplete, Button } from 'antd';
 import React from 'react';
-import { getInputStyle } from '../../utils';
+
 import { MyAutoCompleteProps } from './types';
 import { useConfig_MyAutoComplete } from './useConfig';
 
@@ -9,7 +9,7 @@ import { useConfig_MyAutoComplete } from './useConfig';
 export default function MyAutoCompleteInner(props: MyAutoCompleteProps) {
 
   const {
-    dropdownMatchSelectWidth = 120,
+    popupMatchSelectWidth = 120,
     getPopupContainer = () => document.body,
     options: _options,
     style = {},
@@ -24,16 +24,17 @@ export default function MyAutoCompleteInner(props: MyAutoCompleteProps) {
 
   // const [dirty, setDirty] = useState(false)
 
-  const { safeOnChange, onBlur, options, remove } = useConfig_MyAutoComplete(props)
+  const { safeOnChange, onBlur, options, remove, init_value } = useConfig_MyAutoComplete(props)
+
 
   return (
     <AutoComplete
-      dropdownMatchSelectWidth={dropdownMatchSelectWidth}
+      popupMatchSelectWidth={popupMatchSelectWidth}
       style={_style}
       // bordered={false}
       allowClear
       {...rest}
-      value={value ?? defaultValue}
+      value={init_value ?? defaultValue}
       onBlur={onBlur}
       onChange={safeOnChange}
       // options={options}
@@ -44,14 +45,14 @@ export default function MyAutoCompleteInner(props: MyAutoCompleteProps) {
       {options.map((item) => (
         <AutoComplete.Option key={item.value} value={item.value}>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <div title={item.label} style={{ flex: 1, textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>{item.label}</div>
+            <div title={item.label} style={{ flex: 1, textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap',color: item.warning ? 'red' : '' }}>{item.label}</div>
             {
               item.id
                 ? <Button
                   title="删除"
                   size='small'
                   type='dashed'
-                  icon={<CloseOutlined />}
+                  icon={<MyIcon value='CloseOutlined' />}
                   onClick={e => {
                     e.stopPropagation()
                     remove(item)

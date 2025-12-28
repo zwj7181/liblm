@@ -1,13 +1,14 @@
+import { DatePicker_L } from '@lm_fe/components';
+import { SLocal_State, SMchc_FormDescriptions } from '@lm_fe/service';
+import { Col, Input, Row } from 'antd';
+import { get, includes, isEmpty, map } from 'lodash';
+import dayjs from 'dayjs';
 import React from 'react';
-import moment from 'moment';
-import { Row, Col, Input, DatePicker } from 'antd';
-import { get, map, isEmpty, includes } from 'lodash';
 import DynamicForm from '../../BaseModalForm/DynamicForm';
-import { formDescriptionsFromApi, formDescriptionsWithoutSectionApi } from '../../utils/adapter';
 import CheckboxGroup from '../../ConfigComponents/CheckboxGroup';
 import NormalSelect from '../../selects/NormalSelect';
 import ReferralOrganizationSelect from '../../selects/ReferralOrganizationSelect';
-import { SLocal_State, SMchc_FormDescriptions } from '@lm_fe/service';
+import { formDescriptionsWithoutSectionApi } from '../../utils/adapter';
 const deliveryForm = ['deliveryDate', 'deliveryGestationalWeek', 'deliveryMode'];
 const terminationForm = ['closingDate', 'closingGestationalWeek', 'closingNote'];
 const referralForm = [
@@ -36,7 +37,7 @@ class RecordSate extends DynamicForm {
       form.setFieldsValue({
         referralOutReason: get(value, 'reason'),
         referralOutReferralDate: get(value, 'referralDate')
-          ? moment(get(value, 'referralDate'))
+          ? dayjs(get(value, 'referralDate'))
           : get(value, 'referralDate'),
         referralOutReferralOrganization: get(value, 'referralOrganization'),
         referralOutReferralDept: get(value, 'referralDept'),
@@ -93,7 +94,7 @@ class RecordSate extends DynamicForm {
           customFormItemLayout: get(formDescription, 'formItemLayout') || {},
         });
       case 'single_date_picker':
-        return renderEditItem(formDescriptionKey, <DatePicker {...get(formDescription, 'inputProps')} />, {
+        return renderEditItem(formDescriptionKey, <DatePicker_L {...get(formDescription, 'inputProps')} />, {
           customFormItemLayout: get(formDescription, 'formItemLayout') || {},
         });
       case 'text_area':

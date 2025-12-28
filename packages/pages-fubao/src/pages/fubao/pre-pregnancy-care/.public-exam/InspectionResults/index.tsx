@@ -1,13 +1,14 @@
 import React from 'react';
 import { message } from 'antd';
 import { get } from 'lodash';
-import {BaseEditPanel} from '@lm_fe/components_m';
+import { BaseEditPanel } from '@lm_fe/components_m';
 import { formDescriptionsWithoutSectionApi } from '@lm_fe/components_m';
 import { valueToApi, valueToForm } from '../config/adapter';
 import Form from './components/Form';
 import { fubaoRequest as request } from '@lm_fe/utils';
 import { SMchc_FormDescriptions } from '@lm_fe/service';
 import { getSearchParamsValue } from '@lm_fe/utils';
+import { mchcEnv } from '@lm_fe/env';
 export default class BasicInfo extends BaseEditPanel<any> {
   static defaultProps = {
     baseUrl: '/api/progestation/check/saveProgestationCheckArchivesInspectionCheck', request,
@@ -22,7 +23,7 @@ export default class BasicInfo extends BaseEditPanel<any> {
 
   extraEvents = {
     handleClickReport: (name: any) => {
-      message.info('暂未开放此功能，敬请期待；');
+      mchcEnv.info('暂未开放此功能，敬请期待；');
     },
     reportStyleInit: () => {
       return {
@@ -42,19 +43,23 @@ export default class BasicInfo extends BaseEditPanel<any> {
     // 获取配置文件
     const formDescriptions = await SMchc_FormDescriptions.getModuleParseCache(moduleName);
     this.setState({ spinning: false });
-    
+
     const formDescriptionsWithoutSection = formDescriptionsWithoutSectionApi(formDescriptions);
     if (type === 'wife') {
       res = id
-        ? await request.get(
+        ? (
+          await request.get(
             `/api/progestation/check/getByProgestationCheckArchivesId?progestationCheckArchivesId.equals=${id}&fileType.equals=2&childrenSign.equals=5`,
           )
+        ).data
         : {};
     } else {
       res = id
-        ? await request.get(
+        ? (
+          await request.get(
             `/api/progestation/check/getByProgestationCheckArchivesId?progestationCheckArchivesId.equals=${id}&fileType.equals=1&childrenSign.equals=5`,
           )
+        ).data
         : {};
     }
     if (res) {
@@ -90,11 +95,11 @@ export default class BasicInfo extends BaseEditPanel<any> {
 
     const res = (await request.post(baseUrl, params)).data
     if (get(res, 'code') === 1) {
-      
+
       let newData = get(res, 'data.0');
       this.setState({ newData });
     } else {
-      
+
     }
   };
 }

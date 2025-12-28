@@ -1,11 +1,14 @@
-import { BaseListOld, getFutureDate } from '@lm_fe/components_m';
+import { BaseListOld } from '@lm_fe/components_m';
 import { formatDate, request } from '@lm_fe/utils';
 import { message } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 import { get, isNil, set } from 'lodash';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import Table from './components/Table';
+import { getFutureDate } from '@lm_fe/utils';
+
 import { tableColumns } from './config/table';
+import { mchcEnv } from '@lm_fe/env';
 export default class List extends BaseListOld {
   staticDefaultQuery = {
     'type.equals': 2,
@@ -47,7 +50,7 @@ export default class List extends BaseListOld {
         systolic: get(rowData, 'physicalExamMeasure.systolic3'),
         diastolic: get(rowData, 'physicalExamMeasure.diastolic3'),
       },
-      createDate: moment(get(rowData, 'createDate')),
+      createDate: dayjs(get(rowData, 'createDate')),
     });
     this.setState({
       editKey: get(rowData, 'editKey') || get(rowData, 'id'),
@@ -63,7 +66,7 @@ export default class List extends BaseListOld {
     }
     const mockKey = new Date().toString();
     const addData = {
-      createDate: moment(getFutureDate(0)),
+      createDate: dayjs(getFutureDate(0)),
       createUser: { id: get(user, 'basicInfo.id') },
       editKey: mockKey,
     };
@@ -77,7 +80,7 @@ export default class List extends BaseListOld {
   };
 
   handleItemSave = (rowData: any) => async () => {
-    const { baseUrl, pregnancyData } = this.props;
+    const { baseUrl, head_info } = this.props;
     await this.form?.validateFields();
     const formData = this.form?.getFieldsValue();
     const physicalExamMeasure = {
@@ -100,13 +103,13 @@ export default class List extends BaseListOld {
     if (get(data, 'id')) {
       await request.put(baseUrl, data);
     } else {
-      set(data, 'outpatientNO', get(pregnancyData, 'outpatientNO'));
-      set(data, 'name', get(pregnancyData, 'name'));
+      set(data, 'outpatientNO', get(head_info, 'outpatientNO'));
+      set(data, 'name', get(head_info, 'name'));
       set(data, 'type', 2);
       await request.post(baseUrl, data);
     }
     this.form?.resetFields();
-    message.success('保存成功');
+    mchcEnv.success('保存成功');
     await this.setState({
       editKey: undefined,
     });

@@ -17,7 +17,6 @@ interface TokenRuleArr {
 /* ========================== 重构getRenderData function ================================ */
 
 export function getRenderData(config: Array<FormConfig>, data: any): Array<FormConfig> {
-  console.log('ssbb getRenderData', config, data)
   if (!data || !config) return config;
   const rConfig = cloneDeep(config);
   const clonedata = cloneDeep(data);

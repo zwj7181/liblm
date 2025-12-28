@@ -1,16 +1,19 @@
-import { EventEmitter, IRequest_AxiosRequestConfig, request, } from '@lm_fe/utils';
+import { AnyObject, EventEmitter, expect_array, IRequest_AxiosRequestConfig, request, } from '@lm_fe/utils';
 
 import { mchcLogger } from '@lm_fe/env';
 import { AxiosRequestConfig } from 'axios';
-import { get, isNil, isNumber, isObject } from 'lodash';
-import moment from 'moment';
+import { get, isNil, isNumber, isObject, set } from 'lodash';
+import dayjs from 'dayjs';
 import { IResponseDataType, TPageOption } from './common';
 import { TIdTypeCompatible } from './types';
 
 interface IConfig {
+  ignore_usr?: boolean
+  ignore_env?: boolean
   n?: string,
   prePath?: string,
-  addictionalParams?: { [x: string]: any },
+  get_fuck_page?: T_GET_FUCK_PAGE,
+  addictionalParams?: AnyObject,
   needTransferParams?: boolean,
   needTransferSourceData?: boolean,
   apiPrefix?: string,
@@ -39,34 +42,34 @@ interface IBaseRequse<T> {
 }
 
 export class ModelService<T extends { id?: TIdTypeCompatible } = any> extends EventEmitter<{}> implements IBaseRequse<T> {
+  ignore_usr?: boolean
+  ignore_env?: boolean
   eventTypeStore: any;
-  addictionalParams: { [x: string]: any };
+  addictionalParams: AnyObject;
   name: string;
   needPageSuffix = false;
-  needTransferParams = false;
-  needTransferSourceData = false;
+  needTransferParams = true;
+  needTransferSourceData = true;
   useListSourceCount = false;
   fuckPage = false;
+  get_fuck_page?: T_GET_FUCK_PAGE;
   prePath: string;
   preFix: string;
   static CONFIG = { successCode: [200, 1, 0] }
   static onErrMessage?: (r: { code: number, msg: string, res: any }) => void
 
   constructor(data: IConfig = {}) {
-    let { n, prePath = '', addictionalParams = {}, needTransferParams = true, needTransferSourceData = true, apiPrefix = '/api', useListSourceCount, fuckPage } = data
+    let { n, prePath = '', addictionalParams = {}, apiPrefix = '/api', ...others } = data
     super();
     if (n?.startsWith('/api')) {
       n = n.slice(4)
       apiPrefix = '/api'
     }
     this.name = n!;
-    this.needTransferParams = needTransferParams;
-    this.needTransferSourceData = needTransferSourceData;
     this.addictionalParams = { ...addictionalParams, ...(prePath ? { deleteFlag: 0 } : {}) };
-    this.useListSourceCount = useListSourceCount ?? false
-    this.fuckPage = fuckPage ?? false
     this.prePath = prePath;
     this.preFix = apiPrefix;
+    Object.assign(this, others)
     // this.exceptionKeys.push(...Object.keys(addictionalParams))
   }
 
@@ -76,13 +79,15 @@ export class ModelService<T extends { id?: TIdTypeCompatible } = any> extends Ev
     const params = options.params || { page: 1, size: 20 };
     const { current = 1, pageSize = 20, ...otherParams } = params;
 
-    if (this.fuckPage) {
-      const result = await this.getFuckPage({ params })
-
+    if (this.fuckPage || this.get_fuck_page) {
+      const fn = this.get_fuck_page || this.getFuckPage.bind(this)
+      const result = await fn(options)
+      mchcLogger.log('xxg', result)
+      let data: T[] = get(result, 'pageData') ?? []
       return {
-        data: result.pageData,
+        data,
         pagination: {
-          total: result.totalElements,
+          total: result.totalElements ?? data.length,
           current,
           pageSize,
         },
@@ -90,12 +95,13 @@ export class ModelService<T extends { id?: TIdTypeCompatible } = any> extends Ev
     }
     if (this.useListSourceCount) {
       // const result = await this._get<any>(`${this.name}`, this.tranferGetOption({ params }));
-      const result = await this._request<T[]>({ method: 'GET', url: this.getUrl(this.name, '/get'), ...this.tranferGetOption({ params }) });
-      mchcLogger.log('useListSourceCount', result)
+      mchcLogger.log('useListSourceCount', this)
+      const result = await this._request<T[]>({ method: 'GET', url: this.getUrl(this.name, '/get'), ...this.tranferGetOption(options) });
+      const list_data = expect_array(result.data)
       return {
-        data: result.data,
+        data: list_data,
         pagination: {
-          total: result._XTotalCount ?? 0,
+          total: result._XTotalCount ?? list_data.length ?? 0,
           current,
           pageSize,
         },
@@ -111,22 +117,20 @@ export class ModelService<T extends { id?: TIdTypeCompatible } = any> extends Ev
       //     pageSize,
       //   },
       // };
-      const a1: any = await this.getList({ params })
-      mchcLogger.log('ggt', { a1 })
+      const a1: any = await this.getList(options)
       if (isNumber(a1._XTotalCount))
         return {
-          data: a1,
+          data: a1 as T[],
           pagination: {
             total: a1._XTotalCount,
             current,
             pageSize,
           },
         };
-      const a2 = await this.getCount({ params });
-      mchcLogger.log('ggt', { a1, a2 })
+      const a2 = await this.getCount(options);
 
       return {
-        data: a1,
+        data: a1 as T[],
         pagination: {
           total: a2,
           current,
@@ -135,7 +139,7 @@ export class ModelService<T extends { id?: TIdTypeCompatible } = any> extends Ev
       };
     }
   }
-  async getFuckPage(options?: AxiosRequestConfig) {
+  async getFuckPage(options?: IRequest_AxiosRequestConfig) {
     const result = await this._get<{
       pageData: T[],
       pageNumber: number,
@@ -219,7 +223,7 @@ export class ModelService<T extends { id?: TIdTypeCompatible } = any> extends Ev
   transferSubmitData(data: Partial<T>) {
     if (!data) return {};
     return Object.keys(data).reduce((a, k) => {
-      const v = data[k]
+      const v = get(data, k)
       const value = this.transferParamsValue(k, v);
       return {
         ...a,
@@ -278,19 +282,19 @@ export class ModelService<T extends { id?: TIdTypeCompatible } = any> extends Ev
   }
   transferParamsValue(key: string, value: any) {
     if (this.DateTimeKeys.includes(key)) {
-      const result = moment(value);
+      const result = dayjs(value);
       return result.isValid() ? result.format('YYYY-MM-DD HH:mm:ss') : value;
     }
     if (this.DateMinute.includes(key)) {
-      const result = moment(value);
+      const result = dayjs(value);
       return result.isValid() ? result.format('YYYY-MM-DD HH:mm') : value;
     }
     if (this.DateKeys.includes(key)) {
-      const result = moment(value);
+      const result = dayjs(value);
       return result.isValid() ? result.format('YYYY-MM-DD') : value;
     }
     if (this.TimeKeys.includes(key)) {
-      const result = moment(value);
+      const result = dayjs(value);
       return result.isValid() ? result.format('HH:mm:ss') : value;
     }
     if (this.jsonKeys.includes(key)) {
@@ -303,19 +307,20 @@ export class ModelService<T extends { id?: TIdTypeCompatible } = any> extends Ev
     if (!data) return {} as T;
     if (!this.needTransferSourceData) return data;
     return Object.keys(data).reduce((a, k) => {
-      const v = data[k]
+      const v = get(data, k)
       const value = this.getAdvancedValue(k, v);
-      a[k] = value;
+      set(a as any, k, value);
       if (value !== v && !Number.isNaN(value)) {
         const backKey = `_${k}`;
-        a[backKey] = v;
+        set(a as any, backKey, v);
+
       }
       return a;
     }, {} as T);
   }
   getAdvancedValue = (key: string, value: any) => {
     if (this.DateTimeKeys.includes(key) || this.DateKeys.includes(key) || this.DateMinute.includes(key)) {
-      return value ? moment(value) : value;
+      return value ? dayjs(value) : value;
     }
     if (this.jsonKeys.includes(key)) {
       let v: any;
@@ -327,15 +332,17 @@ export class ModelService<T extends { id?: TIdTypeCompatible } = any> extends Ev
       return v;
     }
     if (this.TimeKeys.includes(key)) {
-      return value ? moment(`1970-1-1 ${value}`) : value;
+      return value ? dayjs(`1970-1-1 ${value}`) : value;
     }
     return value;
   }
   getPath(path: string = '') {
     return `/${this.name}${path}`;
   }
-  async _request<T>(config: AxiosRequestConfig) {
+  async _request<T>(config: IRequest_AxiosRequestConfig) {
     // config.url = `${this.preFix}${this.prePath}${config.url}`
+    config.ignore_usr = config.ignore_usr ?? this.ignore_usr
+    config.ignore_env = config.ignore_env ?? this.ignore_env
 
     let res = await request.ins(config);
     let resData: IResponseDataType<T> = res?.data
@@ -392,3 +399,10 @@ export class ModelService<T extends { id?: TIdTypeCompatible } = any> extends Ev
 }
 
 
+export type T_GET_FUCK_PAGE<T = any> = (options?: IRequest_AxiosRequestConfig) => Promise<{
+  pageData: T[];
+  pageNumber: number;
+  pageSize: number;
+  totalElements: number;
+  totalPages: number;
+}>

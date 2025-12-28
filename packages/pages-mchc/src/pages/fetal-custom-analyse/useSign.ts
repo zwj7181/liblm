@@ -68,7 +68,7 @@ export default function useSign() {
                     setQrCodeIdentity(qrCodeIdentity)
                     setQrCodeBase64(qrCodeBase64)
                 } else {
-                    message.warn('服务错误！')
+                    message.warning('服务错误！')
                 }
             })
             .finally(() => setQrCodeBase64Loading(false))

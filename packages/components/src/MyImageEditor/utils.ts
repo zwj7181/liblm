@@ -16,44 +16,41 @@ export type RealListenCbs = {
 }
 
 
-import img1 from './images/img1.png';
-import img2 from './images/img2.png';
-import img3 from './images/img3.png';
-import img4 from './images/img4.png';
-import img5 from './images/img5.png';
+
 import { Canvas, ICanvasOptions, IEvent } from 'fabric/fabric-impl';
+import { mchcEnv } from '@lm_fe/env';
 
 
-export const real_fabric = (_fabric.fabric ?? _fabric) as unknown as RealType
+export const real_fabric = () => (window.fabric) as unknown as RealType
 
 
 export const default_legends = [
     {
-        img: img1,
+        img: mchcEnv.gs(_ => _.lm_imgs.mie['img1.png']),
         width: 331,
         height: 144,
         label: '女性外生殖器'
     },
     {
-        img: img2,
+        img: mchcEnv.gs(_ => _.lm_imgs.mie['img2.png']),
         width: 305,
         height: 213,
         label: '子宫'
     },
     {
-        img: img3,
+        img: mchcEnv.gs(_ => _.lm_imgs.mie['img3.png']),
         width: 68,
         height: 67,
         label: '细菌'
     },
     {
-        img: img4,
+        img: mchcEnv.gs(_ => _.lm_imgs.mie['img4.png']),
         width: 52,
         height: 59,
         label: '宫颈癌病毒'
     },
     {
-        img: img5,
+        img: mchcEnv.gs(_ => _.lm_imgs.mie['img5.png']),
         width: 70,
         height: 70,
         label: '阴道滴虫'
@@ -67,8 +64,8 @@ export interface IMyImageEditorProps {
 }
 
 export const MyImageEditorEvents = {
-    save: 'MyImageEditor:save',
-    create: 'MyImageEditor:create'
+    save: 'mie:save',
+    create: 'mie:create'
 }
 
 export function event_process(con: RealCanvas, __events: RealListenCbs) {

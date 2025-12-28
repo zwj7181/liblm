@@ -3,6 +3,7 @@ import { Button, message } from 'antd';
 import React from 'react';
 import { queryFormDescriptions } from '../config/form';
 import { BaseQuery } from '@lm_fe/components_m';
+import { mchcEnv } from '@lm_fe/env';
 
 class Query extends BaseQuery {
   state = { queryFormDescriptions };
@@ -19,7 +20,7 @@ class Query extends BaseQuery {
         console.log('-----------message ws信息(叶酸管理)-------------', e, e.data);
         let d = {};
         if (e && e.data && !e.data.includes('{')) {
-          return message.info(`${e.data}，请重新读卡`);
+          return mchcEnv.info(`${e.data}，请重新读卡`);
         }
         if (e && e.data && e.data.includes('{')) {
           d = JSON.parse(e.data);

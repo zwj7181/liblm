@@ -1,7 +1,10 @@
-import React, { Component } from 'react';
-import { Select, Button, DatePicker, Modal } from 'antd';
-import moment from 'moment';
+import { DatePicker_L, LazyAntd } from '@lm_fe/components';
 import { getOrderTime } from '@lm_fe/components_m';
+import { Button, Modal } from 'antd';
+import dayjs from 'dayjs';
+import React, { Component } from 'react';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
 export default class Index extends Component<{ isShowMenzhen: boolean, closeModal(a: 'isShowMenzhen', b?: string, c?: string): void }, any> {
   state = {
     menzhenDate: new Date(),
@@ -32,7 +35,7 @@ export default class Index extends Component<{ isShowMenzhen: boolean, closeModa
   handleOk = () => {
     const { closeModal } = this.props;
     const { menzhenDate } = this.state;
-    closeModal('isShowMenzhen', `糖尿病日间门诊(${moment(menzhenDate).format('YYYY-MM-DD')})`, 'prescription');
+    closeModal('isShowMenzhen', `糖尿病日间门诊(${dayjs(menzhenDate).format('YYYY-MM-DD')})`, 'prescription');
     // service.shouzhen.makeOutpatientAppointment(menzhenDate);
   };
 
@@ -61,9 +64,9 @@ export default class Index extends Component<{ isShowMenzhen: boolean, closeModa
       >
         <span>预约时间</span>
 
-        <DatePicker
+        <DatePicker_L
           allowClear={false}
-          value={moment(menzhenDate)}
+          value={dayjs(menzhenDate)}
           onChange={(date, dateString) => this.handleDateChange(date, dateString)}
         />
       </Modal>

@@ -1,32 +1,39 @@
 {
     "name": "@lm_fe/utils",
-    "version": "0.1.92",
+    "version": "0.2.2",
     "description": "",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "build": "rollup -c rollup.config.js",
         "build:watch": "rollup -c rollup.config.js --watch",
         "clean": "rimraf dist",
-        "prebuild": "yarn clean"
+        "prebuild": "pnpm clean"
     },
     "main": "dist/index.js",
     "directories": {
         "lib": "dist"
     },
+    "types": "dist/types.d.ts",
     "files": [
         "dist"
     ],
     "publishConfig": {
         "access": "public"
     },
-    "keywords": [],
-    "author": "",
-    "license": "MIT",
-    "peerDependencies": {
+    "devDependencies": {
+        "rollup": "^2.70.2"
+    },
+    "dependencies": {
+        "@lm_fe/static": "*",
+        "@noah-libjs/request": "*",
+        "@noah-libjs/utils": "*",
         "axios": ">=0.26.1",
-        "moment": "2.x",
+        "dayjs": "^1.11.13",
         "reconnecting-websocket": "4.x",
         "store": "2.x"
     },
-    "gitHead": "8c702604f6c4ea0ec69f9e463ce040c308849144"
+    "keywords": [],
+    "author": "",
+    "license": "MIT",
+    "gitHead": "607e3267c47fa08e9a13c7794ef66d1f1fb0c93f"
 }

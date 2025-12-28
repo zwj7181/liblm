@@ -1,31 +1,27 @@
-import {
-  FilterOutlined,
-  PlusOutlined, SearchOutlined
-} from '@ant-design/icons';
+import { ContainerDimensions, LazyAntd, MyIcon } from '@lm_fe/components';
 import { Browser } from '@lm_fe/utils';
 import {
-  Button, Checkbox, Input, InputNumber, Space, Table
+  Input, InputNumber, Space
 } from 'antd';
 import { TableProps } from 'antd/lib/table';
 import { FilterDropdownProps } from 'antd/lib/table/interface';
 import classnames from 'classnames';
+import dayjs from 'dayjs';
 import { compact, get, indexOf, map, set } from 'lodash';
-import moment from 'moment';
 import { ReactNode, useEffect, useRef, useState } from 'react';
-import ContainerDimensions from 'react-container-dimensions';
-import store from 'store';
+
+import { mchcEnv } from '@lm_fe/env';
+import React from 'react';
+import { OkButton } from '../FU_components';
 import {
   CustomIcon
 } from '../GeneralComponents/CustomIcon';
 import styles from './index.module.less';
 import { ResizableTitle } from './Resizeable';
-import { OkButton } from '../FU_components';
-import React from 'react';
-import { mchcEnv } from '@lm_fe/env';
 
 // 不限定默认格子宽度
 const TABLE_CELL_WIDTH = 200;
-const browserVersion = Browser.client || {};
+const browserVersion = Browser.client;
 interface IProps extends TableProps<any> {
   otherTableProps?: TableProps<any>
   containerProps: any
@@ -104,7 +100,7 @@ export function BaseTable(props: IProps) {
       case 'number':
         return Number(get(rowDataPrev, dataIndex)) - Number(get(rowDataNext, dataIndex));
       case 'date':
-        return moment(get(rowDataPrev, dataIndex)).diff(moment(get(rowDataNext, dataIndex)));
+        return dayjs(get(rowDataPrev, dataIndex)).diff(dayjs(get(rowDataNext, dataIndex)));
       case 'string':
       default:
         return String(get(rowDataPrev, dataIndex)).localeCompare(String(get(rowDataPrev, dataIndex)));
@@ -151,7 +147,7 @@ export function BaseTable(props: IProps) {
           <OkButton
             type="primary"
             onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
-            icon={<SearchOutlined />}
+            icon={<MyIcon value='SearchOutlined' />}
             style={{ width: 90 }}
           >
             查询
@@ -194,7 +190,7 @@ export function BaseTable(props: IProps) {
           cellHeaderAction,
           'filterIcon',
           <div className={styles["filter-block"]}>
-            <FilterOutlined />
+            <MyIcon value='FilterOutlined' />
           </div>,
         );
       }
@@ -212,12 +208,12 @@ export function BaseTable(props: IProps) {
     const { onAdd, addText, disabled } = props;
     if (onAdd) {
       return (
-        <OkButton disabled={disabled} icon={<PlusOutlined />} type="primary" onClick={onAdd}>
+        <OkButton disabled={disabled} icon={<MyIcon value='PlusOutlined' />} type="primary" onClick={onAdd}>
           {addText || '新增'}
         </OkButton>
       );
     }
-    return;
+    return null;
   };
 
   const handleColumnsChange = (checkedColumns: any) => {
@@ -264,15 +260,15 @@ export function BaseTable(props: IProps) {
               <OkButton
                 className={styles["global-base-table_title-operations-left_filter"]}
                 type="link"
-                icon={<FilterOutlined />}
+                icon={<MyIcon value='FilterOutlined' />}
                 onClick={handleQueryClick}
               >
                 <div style={{ display: 'inline-flex', marginLeft: '5px' }}>
                   筛选
                   {queryVisible ? (
-                    <CustomIcon type="icon-down" style={{ fontSize: '20px' }} />
+                    <CustomIcon type="icon-down" />
                   ) : (
-                    <CustomIcon type="icon-dropdown" style={{ fontSize: '20px' }} />
+                    <CustomIcon type="icon-dropdown" />
                   )}
                 </div>
               </OkButton>
@@ -323,7 +319,7 @@ export function BaseTable(props: IProps) {
   // 如果一个页面多次引用此组件，则添加唯一标记id
   const selector = `#t_${tableId} thead.ant-table-thead`;
 
-  console.log('scrollY', restHeight)
+  // console.log('scrollY', restHeight)
   return (
     <div className={classnames('global-base-table', className)} id={`t_${tableId}`}>
       {!isFucking广三 && renderTitle()}
@@ -343,7 +339,7 @@ export function BaseTable(props: IProps) {
             console.log('scrollY', height, scrollY, theadHeight)
             // console.log({ aa: height - theadHeight - 40 < 50, y: height - theadHeight - 40 });
             return (
-              <Table
+              <LazyAntd.Table
                 footer={isFucking广三 ? renderTitle : undefined}
                 size={size}
                 onRow={(record) => {
@@ -390,7 +386,6 @@ export function BaseTable(props: IProps) {
         </ContainerDimensions>
       </div>
 
-      {/* <div className={styles["global-base-table_footer"]}>{pagination && <Pagination size="small" {...pagination} />}</div> */}
       <div
         ref={extraRef}
         className={styles["global-base-table_extra-footer"]}

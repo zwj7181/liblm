@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Row, Col, InputNumber, Input, Select, AutoComplete } from 'antd';
-import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
-import styles from './index.less';
+import { LazyAntd, MyIcon } from '@lm_fe/components';
 import { SLocal_Dictionary } from '@lm_fe/service';
+import { AutoComplete, Button, Col, Input, InputNumber, Row } from 'antd';
+import React, { useEffect, useState } from 'react';
+import styles from './index.less';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
 interface IProps {
   value: object;
   onChange?: (value: any) => void;
@@ -153,7 +155,7 @@ export default function FetalUltrasound({ value = [], onChange = () => { } }: IP
               size="small"
               type="text"
               title="删除胎儿信息"
-              icon={<MinusCircleOutlined />}
+              icon={<MyIcon value='MinusCircleOutlined' />}
               onClick={() => handleSubtract(index)}
             ></Button>
           )}
@@ -183,7 +185,7 @@ export default function FetalUltrasound({ value = [], onChange = () => { } }: IP
   return (
     <div className={styles["fetal-ultrasound-wrapper"]}>
       <div className={styles["fetal-ultrasound-title"]}>
-        <Button icon={<PlusOutlined />} title="增加胎儿信息" onClick={handleAdd}>
+        <Button icon={<MyIcon value='PlusOutlined' />} title="增加胎儿信息" onClick={handleAdd}>
           增加
         </Button>
       </div>

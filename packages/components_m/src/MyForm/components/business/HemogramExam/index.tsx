@@ -1,8 +1,10 @@
+import { LazyAntd } from '@lm_fe/components';
+import { cloneDeep, get, isEmpty, map, set } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { Table } from 'antd';
-import { get, map, cloneDeep, set, isEmpty } from 'lodash';
 import BaseFormComponent from '../../../../BaseFormComponent';
 import './index.less';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
 const cols = [
   {
     dataIndex: 'name',

@@ -1,6 +1,17 @@
-import { mchcLogger } from "src/logger"
+import { all_files } from '@lm_fe/static';
+import { hasOwn, isString, load_src, simple_decrypt, simple_decrypt_str } from '@lm_fe/utils';
+import { mchcLogger } from "src/logger";
 
-interface IMacro {
+type TCB = (a: typeof all_files) => string
+export function gs(cb: TCB) {
+    return `${getMacroValue('PUBLIC_PATH')}${cb(all_files)}`
+}
+export function ds(cb: (TCB | string)[]) {
+    return load_src(
+        cb.map(_ => isString(_) ? _ : gs(_))
+    )
+}
+export interface IMacro {
     appName: any
     devMode: false,
     WITH_THEME: "true",
@@ -19,6 +30,7 @@ interface IMacro {
         branch: "gysy-from-p9"
     }
     HOST_URL: string
+    __HOST_URL: string
 }
 
 
@@ -39,6 +51,16 @@ function getMacro() {
         }
     }
     macroCache = macroCache ?? {}
+
+    if (!hasOwn(macroCache, 'HOST_URL')) {
+        Object.defineProperty(macroCache, 'HOST_URL', {
+            get() {
+                let raw = macroCache?.__HOST_URL!
+
+                return simple_decrypt_str(raw)
+            },
+        })
+    }
     return macroCache
 }
 export function getMacroValue<T extends keyof IMacro>(key: T) {
@@ -52,7 +74,11 @@ export function isDev() {
         return false
     }
 }
+
 export function getMonacoLoaderPath() {
-    return `${getMacroValue('PUBLIC_PATH')}lib/monaco-editor@0.36.1/min/vs`
+    // return `${getMacroValue('PUBLIC_PATH')}lib/monaco-editor@0.36.1/min/vs`
+    // return mchcEnv.gs(_ => `${_.lm_libs["monaco-editor-0.52.0"].min}vs`)
+    return gs(_ => `${_.lm_libs['monaco-editor-0.36.1'].min}vs`)
 }
-export const mchcMacro = getMacro()
+
+export const mchcMacro = (window as any).mchcMacro = getMacro()

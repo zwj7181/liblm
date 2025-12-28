@@ -125,7 +125,7 @@ export const tableColumns = [
     align: 'center',
     inputType: 'MyAutoComplete',
     inputProps: {
-      optionKey: '宫底高度s',
+      uniqueKey: '宫底高度s',
     },
     width: APP_CONFIG.CELL_WIDTH_SMALL,
   },

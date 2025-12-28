@@ -1,6 +1,4 @@
 import { ICommonOption } from "@lm_fe/env";
-import { IMchc_Doctor_Diagnoses } from "./common";
-import { IMchc_Doctor_Pregnancymh } from "./IMchc_Doctor_Pregnancymh";
 
 
 export interface IMchc_Doctor_FirstVisitPastmhOutpatient {

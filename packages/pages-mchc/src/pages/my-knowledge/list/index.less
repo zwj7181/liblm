@@ -1,0 +1,35 @@
+.table-title-span {
+  color: #007aff;
+  cursor: pointer;
+}
+.read-content {
+  display: flex;
+  justify-content: center;
+  .cus-icon {
+    font-size: 20px;
+    margin-right: 10px;
+  }
+  .icon-read {
+    color: #6d7278;
+  }
+  .icon-noread {
+    color: #007aff;
+    position: relative;
+    &::after {
+      content: ' ';
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      top: -4px;
+      right: 0px;
+      border-radius: 50%;
+      background-color: #fd617f;
+    }
+  }
+  .noread {
+    color: #007aff;
+  }
+  .read {
+    color: #6d7278;
+  }
+}

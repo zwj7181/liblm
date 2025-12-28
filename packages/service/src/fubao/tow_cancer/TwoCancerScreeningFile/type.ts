@@ -20,6 +20,24 @@ export interface IFubao_TwoCancerScreeningFile {
     "registerPerson": "超级管理员",
     "testingFacility": "超级管理员",
     "deleteFlag": "0",
+
+
+
+
+
+
+
+
+
+    "sjscbh": "cs_1838156050122633216",
+    "poorWomenCard": 1,
+    "openId": "1852654",
+    "fileStatus": number,
+
+
+
+
+
     "womenHealthcareMenstrualHistory": {
         "dysmenorrhea": number,
         "dysmenorrheaNote": string,

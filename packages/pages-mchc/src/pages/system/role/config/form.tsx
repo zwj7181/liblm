@@ -1,3 +1,5 @@
+import { mchcEnv } from "@lm_fe/env";
+
 export const modalFormDescriptions = {
   name: {
     key: 'name',
@@ -5,7 +7,7 @@ export const modalFormDescriptions = {
     rules: [{ required: true, message: '角色代码是必填项' }],
     inputType: 'input',
     inputProps: {
-      placeholder: '请输入角色代码',
+
     },
   },
   nickname: {
@@ -14,7 +16,7 @@ export const modalFormDescriptions = {
     rules: [{ required: true, message: '角色名称是必填项' }],
     inputType: 'input',
     inputProps: {
-      placeholder: '请输入角色名称',
+
     },
   },
   groupdesc: {
@@ -23,7 +25,7 @@ export const modalFormDescriptions = {
     rules: [{ required: true, message: '角色描述是必填项' }],
     inputType: 'text_area',
     inputProps: {
-      placeholder: '请输入角色描述',
+
     },
   },
   groupRanks: {
@@ -31,6 +33,7 @@ export const modalFormDescriptions = {
     label: '等级分类',
     inputType: 'MyEditTable',
     inputProps: {
+      marshal: 0,
       showEdit: true,
       formDescriptions: [
         {
@@ -54,9 +57,9 @@ export const modalFormDescriptions = {
         {
           dataIndex: 'administrator',
           title: '管理',
-          inputType: 'MC',
+          inputType: 'MySwitch',
           inputProps: {
-            options: '是,否',
+            options: mchcEnv.get_other_options('nyOptions'),
             marshal: 0
           },
         },
@@ -70,7 +73,7 @@ export const modalFormDescriptions = {
   //   label: '管理权限',
   //   inputType: 'tree_select',
   //   inputProps: {
-  //     placeholder: '请输入管理权限',
+  //     
   //   },
   // },
   // test: {
@@ -79,7 +82,7 @@ export const modalFormDescriptions = {
   //   rules: [{ required: true, message: 'test是必填项' }],
   //   inputType: 'input',
   //   inputProps: {
-  //     placeholder: '请输入test值',
+  //     
   //   },
   // },
 };

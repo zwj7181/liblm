@@ -1,11 +1,13 @@
-import React, { Component } from 'react';
-import { Form, Modal, Input, DatePicker, message, Select } from 'antd';
-import { FormInstance } from 'antd/lib/form';
-import { cloneDeep, map, set, get, keys } from 'lodash';
-import moment, { isMoment } from 'moment';
 import { formatTimeToDate, momentDate } from '@/utils/format';
+import { DatePicker_L, LazyAntd } from '@lm_fe/components';
+import { isMoment, request } from '@lm_fe/utils';
+import { Form, Input, message, Modal } from 'antd';
+import { FormInstance } from 'antd/lib/form';
+import { cloneDeep, get, keys, map, set } from 'lodash';
+import dayjs from 'dayjs';
+import React, { Component } from 'react';
 import { getScheduByDateAndProjectId } from '../../utils';
-import { request } from '@lm_fe/utils';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
 const StateOptions = [
   {
     label: '预约',
@@ -116,7 +118,7 @@ export default class ModalForm extends Component<any, any> {
   };
   disabledDate(current: any) {
     // Can not select days before today and today
-    return current && current < moment().startOf('day');
+    return current && current < dayjs().startOf('day');
   }
   render() {
     const { visible, onCancel } = this.props as any;
@@ -130,9 +132,9 @@ export default class ModalForm extends Component<any, any> {
         wrapperCol={{ span: 20 }}
         onValuesChange={this.handleChange}
       >
-        <Modal title="编辑预约信息" width={800} onOk={this.handleSubmit} visible={visible} onCancel={onCancel}>
+        <Modal title="编辑预约信息" width={800} onOk={this.handleSubmit} open={visible} onCancel={onCancel}>
           <Form.Item name="appointmentDate" label="预约日期">
-            <DatePicker disabledDate={this.disabledDate} />
+            <DatePicker_L disabledDate={this.disabledDate} />
           </Form.Item>
           <Form.Item name="timeRange" label="时间段">
             <Select options={timeRangeOption} />

@@ -1,4 +1,4 @@
-const data: { [x: string]: { [x: string]: string[] } } = {
+const area_data: { [x: string]: { [x: string]: string[] } } = {
   北京市: {
     市辖区: [
       '东城区',
@@ -2338,4 +2338,4 @@ const data: { [x: string]: { [x: string]: string[] } } = {
 }
 
 
-export default data
+export default area_data

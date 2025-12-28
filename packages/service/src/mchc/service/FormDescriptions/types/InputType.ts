@@ -36,6 +36,8 @@ export type IMchc_FormDescriptions_InputType = "single_date_picker" |
     "InputNumber" |
     "address" |
     "MyAddress" |
+    "MyColor" |
+    "MySwitch" |
     "radio" |
     "month_picker" |
     "single_time_picker" |

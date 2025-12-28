@@ -4,7 +4,7 @@ import { PlusOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { IBaseProps } from '.';
 import DropContainer from '../components/drop-continer';
 import { checkDisabledHalfDay, getWeekStartEnd, openBookingModal, getOperationNum, getResidue } from '../util';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { get, map as _map } from 'lodash';
 import { TMorningOrAfternoon } from '../type';
 import { NurseTypesMapping } from '../../file-management/doctor-desk/components/FirstVisitv2/config';
@@ -49,7 +49,7 @@ export default function DateSelect(props: IProps) {
             .fill(0)
             .map((_, colIndex) => {
               const date = startDayOfWeek.clone().add(colIndex, 'day');
-              const isToday = date.isSame(moment(), 'day');
+              const isToday = date.isSame(dayjs(), 'day');
 
               return (
                 <td style={{ textAlign: 'center', lineHeight: `${headHeight}px`, height: headHeight }}>
@@ -85,7 +85,7 @@ export default function DateSelect(props: IProps) {
                   const item = realDataArr.filter((_) => _.appointmentDate.isSame(targetStartMoment, 'day'));
                   const scheduling = scheduleArr.find((_) => _.schedulingDate.isSame(targetStartMoment, 'day'));
                   const disabled = checkDisabledHalfDay(scheduling, morningOrAfternoon);
-                  const isToday = targetStartMoment.isSame(moment(), 'day');
+                  const isToday = targetStartMoment.isSame(dayjs(), 'day');
                   const residueObj = getResidue(activeOperationType, scheduling);
 
                   return (

@@ -15,16 +15,16 @@ class CervicalCancerScreening_Service extends ModelService<IFubao_CervicalCancer
         const commitData = processTwoCancer_local(_data)
         let data: IFubao_CervicalCancerScreening
         if (isPut) {
-            data = await this.put(commitData, { successText: '操作成功！' })
+            data = await this.put(commitData, {})
         } else {
-            data = await SFubao_CervicalCancerRecord.post(commitData, { successText: '操作成功！' })
+            data = await SFubao_CervicalCancerRecord.post(commitData, {})
         }
         return processTwoCancer_remote(data)
     }
 }
 
 export const SFubao_CervicalCancerScreening = new CervicalCancerScreening_Service({
-    apiPrefix: '/fb/api',
+    // apiPrefix: '/fb/api',
     prePath: '/two/cancer/screening',
     n: 'CervicalCancerScreening',
 })

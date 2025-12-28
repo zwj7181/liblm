@@ -1,12 +1,15 @@
-import { SelectTip, deleteResourcesByID } from '@lm_fe/components_m';
+import { deleteResourcesByID } from '@lm_fe/components_m';
+import { SelectTip } from '@lm_fe/pages';
+
+import { getTemplateById } from '@lm_fe/components_m';
+import { mchcEnv } from '@lm_fe/env';
 import { SLocal_Dictionary } from '@lm_fe/service';
 import { getSearchParamsValue } from '@lm_fe/utils';
-import { Card, Col, List, Row, Tag, message } from 'antd';
+import { Card, Col, List, Row, Tag } from 'antd';
 import classnames from 'classnames';
+import dayjs from 'dayjs';
 import { compact, find, first, get, isEmpty, keyBy, keys, map, replace, set, size, split } from 'lodash';
-import moment from 'moment';
 import React, { Component } from 'react';
-import { getTemplateById } from '@lm_fe/components_m';
 import './index.less';
 import {
   createInformedConsent,
@@ -93,7 +96,7 @@ export class InformedConsent extends Component {
       ...informedConsent,
       content,
       prenatalPatient: pregnancyData,
-      createDate: moment().utc().format(),
+      createDate: dayjs().utc().format(),
       documentTemplate: get(informedConsent, 'documentTemplate'),
     };
     if (informedConsent.id) {
@@ -101,7 +104,7 @@ export class InformedConsent extends Component {
     } else {
       informedConsent = await createInformedConsent(data);
     }
-    message.success('操作成功');
+    mchcEnv.success('操作成功');
     this.setState({
       informedConsent,
     });
@@ -205,7 +208,7 @@ export class InformedConsent extends Component {
         size="small"
         bordered={false}
         title="报告列表"
-        // extra={<PlusCircleOutlined onClick={this.handleAdd} />}
+      // extra={<PlusCircleOutlined onClick={this.handleAdd} />}
       >
         {/* <Collapse>
           {map(siderPanels, (siderPanel, key) => {
@@ -268,8 +271,8 @@ export class InformedConsent extends Component {
               {/* <CaseTempleteEdit
                 key={get(informedConsent, 'id') || Math.random()}
                 containerProps={{ ...containerProps, height: containerProps.height - 88 }}
-                content={get(informedConsent, 'content')}
-                onSave={this.handleSave}
+                value={get(informedConsent, 'content')}
+                onChange={this.handleSave}
                 toolbars={false}
                 mode="STRICT"
               /> */}

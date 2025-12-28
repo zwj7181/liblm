@@ -1,11 +1,11 @@
 import { map, get, set } from 'lodash';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { formatDate, safe_json_parse, safe_json_stringify } from '@lm_fe/utils';
 
 //数据转换
 export const valueToApi = (values: any, user: any) => {
   if (!get(values, 'followUpDate')) {
-    set(values, 'followUpDate', moment());
+    set(values, 'followUpDate', dayjs());
   }
   if (!get(values, 'followUpPerson')) {
     set(values, 'followUpPerson', get(user, 'firstName'));
@@ -13,7 +13,7 @@ export const valueToApi = (values: any, user: any) => {
 
   map(values, (data, index) => {
     if (index === 'followUpDate') {
-      set(values, index, data ? moment(data) : null);
+      set(values, index, data ? dayjs(data) : null);
     }
     if (
       [

@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Tree, Spin } from 'antd';
+import { Modal,  Spin } from 'antd';
 import { uniq } from 'lodash';
 import { request, safe_json_parse } from '@lm_fe/utils';
 import styles from './index.less';
+
+import { LazyAntd } from '@lm_fe/components';
+
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
 export default function ReaultModal({ visible, title, defaultValue, onOk, onCancel, pregnancyId, admissionId }: any) {
   const [treeData, setTreeData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -57,7 +62,7 @@ export default function ReaultModal({ visible, title, defaultValue, onOk, onCanc
     <Modal
       centered
       destroyOnClose
-      visible={visible}
+      open={visible}
       title={title}
       width={750}
       onOk={handleOk}

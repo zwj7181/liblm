@@ -1,4 +1,4 @@
-import { MchcTypes, MchcType_广三 } from "@lm_fe/env"
+import { MCHC_TYPE_MAP, MchcTypes } from "@lm_fe/env"
 import { IMchc_Admission_bloodTransfusionDocumentDocument } from "./IMchc_Admission_bloodTransfusionDocumentDocument"
 import { IMchc_Admission_breastMilkDocument } from "./IMchc_Admission_breastMilkDocument"
 import { IMchc_Admission_firstCareDocument } from "./IMchc_Admission_firstCareDocument"
@@ -16,7 +16,6 @@ import { IMchc_Admission_productionTimeDocument } from "./IMchc_Admission_produc
 import { IMchc_Admission_tireDischargeRecord } from "./IMchc_Admission_tireDischargeRecord"
 import { IMchc_Admission_tocolysisDocument } from "./IMchc_Admission_tocolysisDocument"
 import { IMchc_Admission_urinaryRetentionDocument } from "./IMchc_Admission_urinaryRetentionDocument"
-
 export type IMchc_Admission_Document<T extends MchcTypes = MchcTypes> =
 
     {
@@ -28,7 +27,7 @@ export type IMchc_Admission_Document<T extends MchcTypes = MchcTypes> =
         "code": string,
         "name": string,
         "date": string
-        "inEmrId": T extends MchcType_广三 ? number : void
+        "inEmrId": T extends MCHC_TYPE_MAP['广三'] ? number : void
         "fetalCount": null,
         "nurse": string,
         "vteAssessDocument": null,
@@ -60,10 +59,83 @@ export type IMchc_Admission_Document<T extends MchcTypes = MchcTypes> =
         "neonateCareDocument": IMchc_Admission_neonateCareDocument[],
         "cesareanDocument": null,
         "cesareanFetusDocument": null,
-        "labourStageDocument": null,
+        "labourStageDocument"?: {
+            "id": number,
+            "recordTime": string,
+            "fetalcount": number,
+            "gravidity": number,
+            "parity": number,
+            "gestationWeek": string,
+            "parturientTime": "2025-05-08 15:03",
+            "deliverytime1": string,
+            "deliverytime2": string,
+            "deliverytime3": string,
+            "deliverytime4": string,
+            "deliverytime5": string,
+            "deliverytime6": string,
+            "deliveryType1": string,
+            "deliveryType2": string,
+            "deliveryType3": string,
+            "deliveryType4": string,
+            "deliveryType5": string,
+            "deliveryType6": string,
+            "processNuringImage": string,
+            "partogramBase64": string
+            "partogramAddress": string
+        },
         "labourStageRecordDocument": IMchc_Admission_labourStageRecordDocument[],
         "labourDocument": IMchc_Admission_LabourDocument,
-        birthCertificate: any
+        birthCertificate: {
+            "id": 75,
+            "name": null,
+            "inpatientNO": null,
+            "babyInpatientNO": null,
+            "gestationalWeek": "34",
+            "newbornName1": null,
+            "newbornGender1": "女",
+            "newbornWeight1": "1850",
+            "newbornHeight1": "42",
+            "deliverytime1": "2023-03-01T02:18",
+            "newbornName2": null,
+            "newbornGender2": "男",
+            "newbornWeight2": "2270",
+            "newbornHeight2": "44",
+            "deliverytime2": "2023-03-01T02:20",
+            "newbornName3": null,
+            "newbornGender3": null,
+            "newbornWeight3": null,
+            "newbornHeight3": null,
+            "deliverytime3": null,
+            "newbornName4": null,
+            "newbornGender4": null,
+            "newbornWeight4": null,
+            "newbornHeight4": null,
+            "deliverytime4": null,
+            "otherNote": null,
+            "deliveryNurse": null,
+            "deliveryNurse1": null,
+            "deliveryDoctor": "曾毅",
+            "deliveryDoctor1": null,
+            "motherName": "蔡焕真",
+            "motherAge": 35,
+            "motherNationality": "中国",
+            "motherEthnic": null,
+            "motherTelephone": "18028171320",
+            "motherIdType": null,
+            "motherIdNO": "440583198802191029",
+            "fatherName": null,
+            "fatherAge": null,
+            "fatherNationality": null,
+            "fatherEthnic": null,
+            "fatherTelephone": null,
+            "fatherIdType": null,
+            "fatherIdNO": null,
+            "receiveName": null,
+            "relationship": null,
+            "receiveIdType": null,
+            "receiveIdNO": null,
+            "deleteFlag": false
+        }[]
         "neonateDocument": IMchc_Admission_NeonateDocument[],
         "bloodTransfusionDocument": IMchc_Admission_bloodTransfusionDocumentDocument[],
         "inductionLabourDocument": null,
@@ -112,6 +184,7 @@ export type IMchc_Admission_Document<T extends MchcTypes = MchcTypes> =
             note: string
             sign: string
             transferOutTime: string
+            __apgar: any
         }[],
         "transvaginalDeviceList": null,
         "inpatientEmrBaseInfo": IMchc_Admission_InpatientEmrBaseInfo
@@ -124,5 +197,5 @@ export type IMchc_Admission_DocumentListItem<T extends MchcTypes> = {
     "code": string
     "name": string
     "date": string
-    "inEmrId": T extends MchcType_广三 ? number : void
+    "inEmrId": T extends MCHC_TYPE_MAP['广三'] ? number : void
 }

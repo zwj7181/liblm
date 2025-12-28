@@ -1,17 +1,16 @@
-import React from 'react';
-import { PanelWithChild } from '@lm_fe/components_m';
+import { LoadingPlaceholder, PanelWithChild, PanelWithChildFC } from '@lm_fe/components_m';
+import React, { useEffect, useState } from 'react';
 import BasicInfo from '../../../gynecological-diseases/two-cancers/edit';
-import SurveyReport from './components/SurveyReport';
-import FollowUp from './components/FollowUp';
 import CervicalCarcinoma from './components/CervicalCarcinoma';
 import MammaryCancer from './components/MammaryCancer';
-import InformedConsent from '../../../premarital-care/.public-exam/InformedConsent';
-import ImageReport from './components/ImageReport';
-import { Space } from 'antd';
-import { get, map } from 'lodash';
-import { getSearchParamsValue, fubaoRequest as request } from '@lm_fe/utils';
-import classnames from 'classnames';
-import styles from './index.module.less';
+// import SurveyReport from './components/SurveyReport';
+// import ImageReport from './components/ImageReport';
+import { DoctorEnd_ImageReport, DoctorEnd_SurveyReport } from '@lm_fe/pages-mchc';
+
+import { getSearchParamsAll, getSearchParamsValue, fubaoRequest as request, sleep } from '@lm_fe/utils';
+import { get } from 'lodash';
+import { mchcLogger } from '@lm_fe/env';
+import { Result } from 'antd';
 console.log('PanelWithChild styles', PanelWithChild.styles)
 const tabs = [
   {
@@ -22,14 +21,14 @@ const tabs = [
     key: 'MammaryCancer',
     title: '乳腺癌筛查',
   },
-  // {
-  //   key: 'SurveyReport',
-  //   title: '检验检查',
-  // },
-  // {
-  //   key: 'ImageReport',
-  //   title: '影像报告',
-  // },
+  {
+    key: 'SurveyReport',
+    title: '检验检查',
+  },
+  {
+    key: 'ImageReport',
+    title: '影像报告',
+  },
   // {
   //   key: 'InformedConsent',
   //   title: '文书管理',
@@ -48,119 +47,85 @@ const tabs = [
   // },
 ];
 
-export default class panel extends PanelWithChild {
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      data: {},
-      activeKey: '',
-    };
-  }
-  async componentDidMount() {
-    const id = getSearchParamsValue('id');
-    let data = id ? (await request.get(`/api/two/cancer/screening/getTwoCancerScreeningFile/page?id.equals=${id}`)).data : {};
-    if (data) {
-      data = get(data, 'data.pageData.0');
+export default function TowCancerExam(props: any) {
+  const [loading, setLoading] = useState(false)
+
+  const [data, setData] = useState<any>()
+  const id = getSearchParamsValue('id')!;
+  const cervicalCancerScreeningId = getSearchParamsValue('cervicalCancerScreeningId');
+  const breastCancerScreeningId = getSearchParamsValue('breastCancerScreeningId');
+  const breastCancerXRayId = getSearchParamsValue('breastCancerXRayId');
+  async function fetch_data() {
+
+
+
+    if (id) {
+      let _data = id ? (await request.get(`/api/two/cancer/screening/getTwoCancerScreeningFile/page?id.equals=${id}`, { unboxing: true })).data : {};
+      return get(_data, 'pageData.0') ?? {}
     }
-    const activeKey = get(this.props, 'routerQuery.activeKey') || (__DEV__ ? 'MammaryCancer' : 'CervicalCarcinoma');
-    this.setState({
-      data,
-      activeKey,
-    });
-  }
-  renderHeader = () => {
-    const { data } = this.state;
-    return (
-      <div className={PanelWithChild.styles["panel-with-child_header"]}>
-        <div className={PanelWithChild.styles["panel-with-child_header-item"]}>
-          <span className={PanelWithChild.styles["panel-with-child_header-item-label"]}>姓名:</span>
-          <span className={PanelWithChild.styles["panel-with-child_header-item-value"]}>{get(data, 'name')}</span>
-        </div>
-        <div className={PanelWithChild.styles["panel-with-child_header-item"]}>
-          <span className={PanelWithChild.styles["panel-with-child_header-item-label"]}>性别:</span>
-          <span className={PanelWithChild.styles["panel-with-child_header-item-value"]}>女</span>
-        </div>
-        <div className={PanelWithChild.styles["panel-with-child_header-item"]}>
-          <span className={PanelWithChild.styles["panel-with-child_header-item-label"]}>年龄:</span>
-          <span className={PanelWithChild.styles["panel-with-child_header-item-value"]}>{get(data, 'age')}</span>
-        </div>
-        <div className={PanelWithChild.styles["panel-with-child_header-secend-item"]}>
-          <span className={PanelWithChild.styles["panel-with-child_header-secend-item-label"]}>门诊号:</span>
-          <span className={PanelWithChild.styles["panel-with-child_header-secend-item-value"]}>{get(data, 'outpatientNo')}</span>
-        </div>
-      </div>
-    );
-  };
-  handleClickTab = (activeKey: any) => async () => {
-    this.setState({
-      activeKey,
-    });
-  };
-  getIcon = (tab: any) => {
-    const { activeKey } = this.state;
-    if (activeKey === tab.key) {
-      return <div className={styles["circle-icon"]}></div>;
+
+    if (__DEV__) {
+      await sleep(2 * 1000)
+      return null
     }
-    return null;
-  };
-  renderTabs = () => {
-    const { activeKey } = this.state;
-    return (
-      <div className={PanelWithChild.styles["panel-with-child-desk-tabs"]}>
-        {map(tabs, (tab) => (
-          <div
-            key={tab.key}
-            onClick={this.handleClickTab(tab.key)}
-            className={classnames(PanelWithChild.styles['panel-with-child-desk-tabs-item'], {
-              [PanelWithChild.styles['panel-with-child-desk-tabs-item-active']]: activeKey === tab.key,
-            })}
-          >
-            <Space>
-              {/* {this.getIcon(tab)} */}
-              {tab.title}
-            </Space>
-          </div>
-        ))}
-      </div>
-    );
-  };
-  renderContent = () => {
-    const { basicInfo, system } = this.props as any;
-    const id = getSearchParamsValue('id');
-    const cervicalCancerScreeningId = get(this.props, 'routerQuery.cervicalCancerScreeningId');
-    const breastCancerScreeningId = get(this.props, 'routerQuery.breastCancerScreeningId');
-    const breastCancerXRayId = get(this.props, 'routerQuery.breastCancerXRayId');
-    const { data, activeKey } = this.state;
-    return (
-      <div className={classnames([styles["hj-desk"], PanelWithChild.styles["panel-with-child-desk"]])}>
-        {this.renderTabs()}
-        <div className={PanelWithChild.styles["panel-with-child-desk-content"]}>
-          {activeKey === 'CervicalCarcinoma' && (
-            <CervicalCarcinoma
-              id={id}
-              basicInfo={basicInfo}
-              basicData={data}
-              system={system}
-              cervicalCancerScreeningId={cervicalCancerScreeningId}
+
+
+    return (await request.post<{ twoCancerScreening: any }>(`/api/two/cancer/screening/login`, getSearchParamsAll())).data?.twoCancerScreening
+
+  }
+
+
+  useEffect(() => {
+
+    fetch_data().then(res => {
+      mchcLogger.log('fetch', { res })
+      setData(res)
+
+    })
+    return () => {
+
+    }
+  }, [])
+
+
+
+  const empty_node = loading ? <LoadingPlaceholder /> : <Result status="warning" title="请先建档" extra={null} />
+
+  return data ? <div style={{ height: '100%', }}>
+
+
+    {
+      <PanelWithChildFC
+
+        headerItems={
+          [
+            { title: '姓名', value: get(data, 'name') },
+            { title: '年龄', value: get(data, 'age') },
+            { title: '门诊号', value: get(data, 'outpatientNo') },
+            // { title: '联系电话', value: get(data, 'gynecologicalPatient.telephone') },
+          ]
+        }
+
+        tabItems={[
+
+
+
+
+
+          {
+            key: 'CervicalCarcinoma', title: '宫颈癌', node: <CervicalCarcinoma id={data.id} basicData={data} cervicalCancerScreeningId={cervicalCancerScreeningId}
             />
-          )}
-          {activeKey === 'MammaryCancer' && (
-            <MammaryCancer
-              id={id}
-              basicInfo={basicInfo}
-              basicData={data}
-              system={system}
-              breastCancerScreeningId={breastCancerScreeningId}
-              breastCancerXRayId={breastCancerXRayId}
+          },
+          {
+            key: 'MammaryCancer', title: '乳腺癌', node: <MammaryCancer id={data.id} basicData={data} breastCancerScreeningId={breastCancerScreeningId} breastCancerXRayId={breastCancerXRayId}
             />
-          )}
-          {activeKey === 'SurveyReport' && <SurveyReport />}
-          {activeKey === 'ImageReport' && <ImageReport />}
-          {activeKey === 'InformedConsent' && <InformedConsent />}
-          {activeKey === 'FollowUp' && <FollowUp />}
-          {activeKey === 'BasicInfo' && <BasicInfo id={id} basicInfo={basicInfo} basicData={data} />}
-        </div>
-      </div>
-    );
-  };
+          },
+          { key: 'SurveyReport', title: '检验检查', node: <DoctorEnd_SurveyReport headerInfo={data as any} /> },
+          { key: 'ImageReport', title: '影像报告', node: <DoctorEnd_ImageReport headerInfo={data as any} /> },
+          // { key: 'InformedConsent', title: '', node: <InformedConsent /> },
+          { key: 'BasicInfo', title: '基本信息', node: <BasicInfo id={data.id} basicData={data} /> },
+        ]}
+      />
+    }
+  </div> : empty_node
 }

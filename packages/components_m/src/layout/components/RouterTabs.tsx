@@ -1,13 +1,15 @@
 import React from 'react';
 import { map, get, last, compact, isEmpty, indexOf, keys } from 'lodash';
-import { Dropdown, Menu, Divider } from 'antd';
+import { Menu, Divider } from 'antd';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { CustomIcon } from '../../GeneralComponents/CustomIcon';
 import { TabButton, TabIProps } from './TabButton';
-import { withRouter } from 'react-router-dom';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
 import { updateTabs, deleteTab, deleteAllTabs, deleteRightTabsByKey, deleteOtherTabsByKey } from '@/actions/tabs';
 import './RouterTabs.less';
+import { LazyAntd } from '@lm_fe/components';
 interface IProps {
   style?: any;
   dispatch?: any;

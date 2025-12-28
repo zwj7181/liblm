@@ -1,46 +1,43 @@
-import { stupidModal } from '../../../../.StupidModal';
-import { renderForm0_shared } from '../../../../family-planning/tracing-management/list/components/table1/components/ModalForm';
-import { valueToForm } from '../../../../family-planning/tracing-management/list/components/table1/config/adapter';
+import { DatePicker_L, LazyAntd } from '@lm_fe/components';
+import { mchcLogger } from '@lm_fe/env';
+import { SLocal_State } from '@lm_fe/service';
 import {
+  AutoComplete,
+  Button,
   Col,
-  DatePicker,
   Divider,
   Form,
   Input,
-  Radio,
-  Row,
-  Select,
-  Space,
-  AutoComplete,
   InputNumber,
-  Button,
+  Row,
 } from 'antd';
 import { TextAreaProps } from 'antd/lib/input';
+import dayjs, { Dayjs } from 'dayjs';
 import { debounce } from 'lodash';
-import moment, { Moment } from 'moment';
+
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  IModel_EarlyPregnancyCheckSurgeryType,
+  IModel_EarlyPregnancyCheckSurgeryType_OptionalPregnancy,
+  IModel_FamilyPlaningSchedulingDetails,
+  SModel_EarlyPregnancyCheckSurgeryType,
+  SModel_FamilyPlaningSchedulingDetails,
+  stupidEnums
+} from '../../../../.stupid_model';
+import {
+  checkDisabledHalfDay,
+  getAttendanceOfThisDay,
+  getOperationNum,
+  getSchedulingData
+} from '../../../../family-planning/booking-management/util';
+import { renderForm0_shared } from '../../../../family-planning/tracing-management/list/components/table1/components/ModalForm';
+import { valueToForm } from '../../../../family-planning/tracing-management/list/components/table1/config/adapter';
 import { EExaminationStatus } from './constant';
 import { InformedConsentTable } from './informedConsentTable';
 import { bookingService } from './service';
 import { IStepFormComponentType } from './StepModal';
 import { StupidRadioGroup, TStupidRadioOptions } from './StupidRadioGroup';
-import {
-  checkDisabledHalfDay,
-  getAttendanceOfThisDay,
-  getOperationNum,
-  getSchedulingData,
-  getYearStartEnd,
-} from '../../../../family-planning/booking-management/util';
-import { SLocal_State } from '@lm_fe/service';
-import {
-  IModel_EarlyPregnancyCheckSurgeryType,
-  IModel_EarlyPregnancyCheckSurgeryType_OptionalPregnancy,
-  IModel_EarlyPregnancySurgicalTemplate,
-  IModel_FamilyPlaningSchedulingDetails,
-  SModel_EarlyPregnancyCheckSurgeryType,
-  SModel_FamilyPlaningSchedulingDetails,
-  stupidEnums,
-} from '../../../../.stupid_model';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
 
 
 // import InformedConsent from './InformedConsent'
@@ -61,14 +58,14 @@ function TextareWithButton(props: TextAreaProps & { onValueCheck: (v: string) =>
         type="primary"
         style={{ position: 'absolute', right: 2, bottom: 2 }}
         onClick={() => {
-          stupidModal.open('TemplateModal', {
-            modalData: {
-              patientId: 1,
-              onValueCheck(v) {
-                props.onValueCheck(v[0]);
-              },
-            },
-          });
+          // stupidModal.open('TemplateModal', {
+          //   modalData: {
+          //     patientId: 1,
+          //     onValueCheck(v) {
+          //       props.onValueCheck(v[0]);
+          //     },
+          //   },
+          // });
         }}
       >
         模板
@@ -118,7 +115,7 @@ const Form0: IStepFormComponentType<TCommonData, any> = function Form0({ form, s
       });
     }
   }
-  function handleDateChange(date: Moment | null) {
+  function handleDateChange(date: Dayjs | null) {
     if (!date) return;
     Promise.all([
       getSchedulingData(date),
@@ -140,10 +137,11 @@ const Form0: IStepFormComponentType<TCommonData, any> = function Form0({ form, s
   }
   useEffect(() => {
     const date = remoteData?.appointmentDate;
+    mchcLogger.log('fuck date', { remoteData, commonData })
     if (remoteData) {
       setFormData({
-        appointmentPeople: remoteData?.appointmentPeople || SLocal_State.getUserData(),
-        registrationDate: remoteData?.registrationDate || moment(),
+        appointmentPeople: remoteData?.appointmentPeople || SLocal_State.getUserData().firstName,
+        registrationDate: remoteData?.registrationDate || dayjs(),
         ...remoteData,
         ...(remoteData.preoperativeExamination ? remoteData.preoperativeExamination : {}),
       });
@@ -178,7 +176,7 @@ const Form0: IStepFormComponentType<TCommonData, any> = function Form0({ form, s
         informedConsents: informedConsents.current,
         progressStatus:
           remoteData?.progressStatus ?? stupidEnums.EarlyPregnancyCheckSurgeryType.progressStatus.getValue('待签到'),
-        registrationDate: remoteData?.registrationDate || moment(),
+        registrationDate: remoteData?.registrationDate || dayjs(),
       };
       const p =
         !remoteData?.id ||
@@ -244,7 +242,7 @@ const Form0: IStepFormComponentType<TCommonData, any> = function Form0({ form, s
             </Item>
           </Col>
           <Col xs={8}>
-            <Item label="就诊卡号" name="outpatientNo" rules={requiredRule}>
+            <Item label="门诊号" name="outpatientNo" rules={requiredRule}>
               <Input disabled={selected || disabled} />
             </Item>
           </Col>
@@ -278,7 +276,7 @@ const Form0: IStepFormComponentType<TCommonData, any> = function Form0({ form, s
           </Col>
           <Col xs={8}>
             <Item label="接诊日期" name="admissionTime" rules={[{ required: false }]}>
-              <DatePicker format="YYYY-MM-DD" disabled={selected || disabled} />
+              <DatePicker_L format="YYYY-MM-DD" disabled={selected || disabled} />
             </Item>
           </Col>
           <Col xs={16}>
@@ -388,7 +386,7 @@ const Form0: IStepFormComponentType<TCommonData, any> = function Form0({ form, s
 
           <Col xs={8}>
             <Item label="预约日期" name="appointmentDate" rules={requiredRule}>
-              <DatePicker
+              <DatePicker_L
                 disabled={status === '待签到' || status === '超时' ? false : disabled}
                 format="YYYY-MM-DD"
                 onChange={(e) => {
@@ -457,7 +455,7 @@ const Form0: IStepFormComponentType<TCommonData, any> = function Form0({ form, s
         <Row>
           <Col xs={8}>
             <Item label="登记日期" name="registrationDate" rules={requiredRule}>
-              <DatePicker format="YYYY-MM-DD" disabled />
+              <DatePicker_L format="YYYY-MM-DD" disabled />
             </Item>
           </Col>
 

@@ -1,32 +1,37 @@
-import React from 'react';
-import { message } from 'antd';
-import { get } from 'lodash';
-import Form from './components/Form';
-import { valueToApi, valueToForm } from '../config/adapter';
-import { BaseEditPanel, formDescriptionsWithoutSectionApi } from '@lm_fe/components_m';
-import { SMchc_FormDescriptions } from '@lm_fe/service';
+import { BaseEditPanelFormFC } from '@lm_fe/components_m';
+import { BF_Wrap2 } from '@lm_fe/pages';
 import { getSearchParamsValue, fubaoRequest as request } from '@lm_fe/utils';
-export default class MedicalHistory extends BaseEditPanel<any> {
-  static defaultProps = {
-    baseUrl: '/api/premarital/check/savePremaritalCheckArchivesMedicalHistory', request,
-    moduleName: 'wife-premarital-care-medical-history',
-    title: '病史情况',
-    Form,
-  };
+import { get } from 'lodash';
+import React, { useEffect, useState } from 'react';
+import form_config from './form_config';
+import { mchcLogger, mchcUtils } from '@lm_fe/env';
+import { Form } from 'antd';
+interface IProps {
+  type: 'husband' | 'wife'
+}
+export default function MedicalHistory(props: IProps) {
+  const { type } = props
+  const [data, setdata] = useState<any>({})
+  const [form] = Form.useForm()
+  const { Wrap, config } = BF_Wrap2({
+    default_conf: {
+      title: `婚前检查-病史情况${type}`,
+      tableColumns: form_config
+    }
+  })
+  useEffect(() => {
 
-  async componentDidMount() {
-    this.handleInit();
-  }
+    handleInit();
 
-  handleInit = async () => {
-    const { routerQuery, moduleName, type } = this.props as any;
-    const id = get(this.props, 'id') || getSearchParamsValue('id');
+    return () => {
+
+    }
+  }, [])
+
+  async function handleInit() {
+    const id = get(props, 'id') || getSearchParamsValue('id');
     let res: any;
     let data: any;
-    // 获取配置文件
-    const formDescriptions = await SMchc_FormDescriptions.getModuleParseCache(moduleName);
-    this.setState({ spinning: false });
-    const formDescriptionsWithoutSection = formDescriptionsWithoutSectionApi(formDescriptions);
     if (type === 'wife') {
       res = id
         ? (
@@ -47,23 +52,21 @@ export default class MedicalHistory extends BaseEditPanel<any> {
     if (res) {
       data = get(res, 'data.0');
       data = { ...data, ...get(data, 'premaritalCheckArchivesMedicalHistoryVM') };
+      data = mchcUtils.autoNoteToCommonOption(data)
     }
 
-    data = id ? valueToForm(data, formDescriptionsWithoutSection) : {};
 
-    const formKey = get(data, 'id') || Math.random();
-
-    this.setState({ formDescriptions, formDescriptionsWithoutSection, data, formKey });
+    mchcLogger.log('setFieldsValue xx', form, data)
+    
+    form.setFieldsValue(data)
+    setdata(data)
   };
 
-  handleSubmit = async (values: any) => {
-    const { formDescriptionsWithoutSection, data, newData } = this.state as any;
-    const { baseUrl, filesData, type } = this.props as any;
+  async function handleSubmit(values: any) {
+    const { baseUrl, filesData, type } = props as any;
     let { premaritalCheckArchivesMedicalHistoryVM } = data;
-    if (newData) {
-      premaritalCheckArchivesMedicalHistoryVM = get(newData, 'premaritalCheckArchivesMedicalHistoryVM');
-    }
-    let params = valueToApi(values, formDescriptionsWithoutSection);
+
+    let params = values;
     let premaritalCheckArchivesDetailId = get(filesData, 'womanPremaritalCheckArchivesDetailVM.id');
     if (type === 'husband') {
       premaritalCheckArchivesDetailId = get(filesData, 'manPremaritalCheckArchivesDetailVM.id');
@@ -74,15 +77,17 @@ export default class MedicalHistory extends BaseEditPanel<any> {
       ...params,
       premaritalCheckArchivesDetailId,
     };
+    params = mchcUtils.autoCommonOptionToNote(params)
+    const _res = await request.post('/api/premarital/check/savePremaritalCheckArchivesMedicalHistory', params)
 
-    const _res = await request.post(baseUrl, params)
-    const res = _res.data
-    if (get(res, 'code') === 1) {
-      
-      let newData = get(res, 'data.0');
-      this.setState({ newData });
-    } else {
-      
-    }
   };
+  return <Wrap>
+    <BaseEditPanelFormFC
+      form={form}
+      onFinish={async v => {
+        handleSubmit(v)
+      }}
+      formDescriptions={config?.tableColumns}
+    />
+  </Wrap>
 }

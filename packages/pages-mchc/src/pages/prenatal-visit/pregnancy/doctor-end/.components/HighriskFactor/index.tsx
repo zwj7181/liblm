@@ -1,11 +1,10 @@
-import { message } from '@/components/antd-design/message';
 import request from '@/lib/request';
 import { levelOptionsobj } from '@/pages/highrisk-management/configuration/contants';
 import { api } from '@/pages/prenatal-visit/pregnancy/doctor-end/api';
 import { formatTimeToDate } from '@/utils/format';
 import { size } from '@antv/util';
-import { mchcConfig, mchcUtils } from '@lm_fe/env';
-import { Button, Col, Form, Input, Modal, Row, Select, Tabs, Timeline, Tree } from 'antd';
+import { mchcConfig, mchcEnv, mchcUtils } from '@lm_fe/env';
+import { Button, Col, Form, Input, message, Modal, Row, Tabs, Timeline } from 'antd';
 import classNames from 'classnames';
 import {
   cloneDeep,
@@ -28,6 +27,12 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import './index.less';
 import React from 'react';
+
+import { LazyAntd } from '@lm_fe/components';
+
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
+
 const boundSymbol = ':';
 interface IndexState {
   expandedKeys: any;
@@ -211,7 +216,7 @@ class Index extends Component<IProps, IndexState> {
     }
     const res = await request.put('/api/doctor/assessHighRisk', post);
     // const ress = await request.get('/api/doctor/getOutpatientHeaderInfo?id=' + get(data, `id`));
-    message.success('信息保存成功');
+    mchcEnv.success('信息保存成功');
     // saveHeaderInfo({
     //   ...this.props.data,
     //   ...pick(post, ['infectionNote', 'highriskNote']),
@@ -516,7 +521,7 @@ class Index extends Component<IProps, IndexState> {
     return (
       <Modal
         className="highrisk-pop"
-        visible={visible}
+        open={visible}
         width={1000}
         onCancel={this.handleClose}
         onOk={this.handleSubmit}

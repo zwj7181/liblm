@@ -1,6 +1,11 @@
+import { DatePicker_L, LazyAntd } from '@lm_fe/components';
+import { AutoComplete, Form, Input } from 'antd';
 import React from 'react';
-import { Form, Input, AutoComplete, Select, DatePicker } from 'antd';
 import { ItemProps } from './index';
+
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
+
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   key: string;
   editing: boolean;
@@ -44,7 +49,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
       break;
     case 'date':
       inputNode = (
-        <DatePicker
+        <DatePicker_L
           onChange={(date, dateString) => {
             record[dataIndex] = dateString;
           }}

@@ -1,7 +1,10 @@
 import React from 'react';
 import { get, map, last, keyBy, indexOf, isEqual } from 'lodash';
-import { Radio, Select, Checkbox, Row, Col, Input } from 'antd';
+import { Radio, Checkbox, Row, Col, Input } from 'antd';
 import { mchcUtils } from '@lm_fe/env'
+import { GeneralComponents_DictionarySelect_Display } from './Display';
+import { LazyAntd } from '@lm_fe/components';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
 interface IProps {
   mode?: 'single' | 'multiple';
   type?: 'radio' | 'checkbox' | 'select';
@@ -13,14 +16,8 @@ interface IProps {
   disabled?: boolean
 }
 const FIX_OTHER_VALUE = 99;
-const SelectDisplay = (props: any) => {
 
-  const { uniqueKey, value } = props;
-  const label = mchcUtils.getDictionaryLabel(uniqueKey, value)
-  return <>{label}</>;
-};
-const DictionarySelectDisplay = SelectDisplay;
-class DictionarySelect extends React.Component<IProps> {
+class GeneralComponents_DictionarySelect extends React.Component<IProps> {
   static defaultProps = {
     mode: 'single',
     type: 'select',
@@ -33,7 +30,7 @@ class DictionarySelect extends React.Component<IProps> {
     selectedData: undefined,
   };
 
-  static Display = DictionarySelectDisplay;
+  static Display = GeneralComponents_DictionarySelect_Display;
 
   componentDidMount() {
     const { value } = this.props;
@@ -217,7 +214,7 @@ class DictionarySelect extends React.Component<IProps> {
         <Col flex="1">
           <Select
             {...others}
-            dropdownMatchSelectWidth
+            popupMatchSelectWidth
             mode={mode}
             allowClear
             showSearch
@@ -262,4 +259,4 @@ class DictionarySelect extends React.Component<IProps> {
     }
   }
 }
-export default DictionarySelect;
+export default GeneralComponents_DictionarySelect;

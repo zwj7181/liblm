@@ -1,8 +1,8 @@
 
 
-import { formatDate, formatDateTime } from '@lm_fe/utils';
-import { PickerDateProps } from 'antd/lib/date-picker/generatePicker';
-import moment, { Moment } from 'moment';
+import { formatDate, formatDateTimeNoSecond } from '@lm_fe/utils';
+import { UNKNOWN_TIME_SYMBOL } from '@lm_fe/components'
+import dayjs, { Dayjs } from 'dayjs';
 export const defaultGetPopupContainer = () => document.body
 
 export function areEqual(prevProps: any, nextProps: any) {
@@ -15,8 +15,8 @@ export function areEqual(prevProps: any, nextProps: any) {
     return true
 
 }
-export const UNKNOWN_TIME_SYMBOL = '1970-01-01 00:00:00'
 export type ICusDatePickerProps = {
+    time_only?: boolean,
     value?: any
     onChange?: any
     valueType?: any
@@ -27,7 +27,7 @@ export type ICusDatePickerProps = {
     format?: any
     showUnknown?: boolean
     unknown?: boolean
-} & Omit<PickerDateProps<Moment>, 'value'>
+} & Omit<PickerDateProps<Dayjs>, 'value'>
 
 export function getUnknown(props: ICusDatePickerProps) {
 
@@ -42,7 +42,16 @@ export function formatProps(props: ICusDatePickerProps) {
 
 
     const data = { ...props }
-    data.format = data.format ?? (data.showTime ? formatDateTime.format : formatDate.format)
+    if (!data.format) {
+
+        if (props.time_only) {
+            data.format = 'HH:mm'
+        } else {
+            data.format = data.showTime ? formatDateTimeNoSecond.format : formatDate.format
+
+        }
+    }
+
     data.getPopupContainer = data.getPopupContainer ?? defaultGetPopupContainer
     return data
 }
@@ -58,10 +67,10 @@ export function getIsUnknown(props: ICusDatePickerProps) {
 export const handleChangeValue = ({ valueType, format }: ICusDatePickerProps, date?: any,) => {
     let result = date;
     if (valueType && date) {
-        result = moment(date).format(valueType);
+        result = dayjs(date).format(valueType);
     }
     if (format && date) {
-        result = moment(date).format(format);
+        result = dayjs(date).format(format);
     }
     return result
 

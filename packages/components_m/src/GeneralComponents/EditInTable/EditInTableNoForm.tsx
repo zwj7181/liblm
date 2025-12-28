@@ -18,8 +18,8 @@ import {
 } from 'lodash';
 import React, { Component } from 'react';
 import BaseTable from './BaseTable';
-import moment, { isMoment } from 'moment';
-import { formatTimeToDate } from '@/utils/format';
+import dayjs from 'dayjs';
+import { formatDate, isMoment } from '@lm_fe/utils';
 export const tableColumnsSpecialInputType = ['select_tag_with_options', 'tree_select_v2', 'tree_select'];
 export default ({ tableColumns, changeImmediate = true }) => {
   class EditInTable extends Component {
@@ -108,7 +108,7 @@ export default ({ tableColumns, changeImmediate = true }) => {
           const inputType = get(allColumnsMapping, `${key}.inputType`);
           let tempValue = value;
           if (inputType === 'single_date_picker') {
-            tempValue = moment(tempValue);
+            tempValue = dayjs(tempValue);
           }
           if (key !== 'key') {
             if (Object.prototype.toString.call(value) === '[object Object]') {
@@ -189,7 +189,7 @@ export default ({ tableColumns, changeImmediate = true }) => {
         const names = split(key, '-');
         let tempValue = value;
         if (isMoment(tempValue)) {
-          tempValue = formatTimeToDate(tempValue);
+          tempValue = formatDate(tempValue);
         }
         set(dataSourceObj, `${names[0]}.${names[1]}`, tempValue);
       });

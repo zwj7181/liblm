@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 import React, { useMemo } from 'react';
 import { IBaseProps } from '.';
 import DropContainer from '../components/drop-continer';
@@ -25,7 +25,7 @@ export default function DateSelect(props: IProps) {
 
   const rowHeight = `${100 / 6}%`;
   return (
-    <div style={{ flex: 1, display: 'flex', justifyContent: 'center', overflowY: 'scroll' }}>
+    <div style={{ flex: 1, display: 'flex', justifyContent: 'center', overflowY: 'auto' }}>
       <table width="98%" style={{ height: '100%' }} cellSpacing={0} cellPadding={0} border={1} borderColor="#EDEEF6">
         <tr style={{ height: 30, backgroundColor: '#F9F9FC' }}>
           {Array(7)
@@ -77,7 +77,7 @@ export default function DateSelect(props: IProps) {
                               padding: '6px 8px',
                               opacity: isInThisMonth ? 1 : 0.4,
                             }}
-                            className={`month-item ${targetStartMoment.isSame(moment(), 'day') ? 'today' : ''}`}
+                            className={`month-item ${targetStartMoment.isSame(dayjs(), 'day') ? 'today' : ''}`}
                           >
                             <div className="head-line">
                               <div>

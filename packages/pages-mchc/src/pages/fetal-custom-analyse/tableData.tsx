@@ -1,5 +1,7 @@
+import { LazyAntd } from "@lm_fe/components";
 import React from "react";
-import { Select } from "antd";
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
 export declare type AnalyseType = 'Nst' | 'Krebs' | 'Fischer' | 'Sogc' | 'Cst' | 'Cstoct';
 let id = 0
 function Opts({ m, ...o }: { m: any[][] }) {

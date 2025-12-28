@@ -1,6 +1,7 @@
 import { CloseOutlined, SaveOutlined } from '@ant-design/icons';
-import { BaseEditPanelForm, fubaoHistoryPush, getBMI } from '@lm_fe/components_m';
-import { mchcUtils } from '@lm_fe/env';
+import { BaseEditPanelForm, fubaoHistoryPush, getBMI, resolveFubaoPath } from '@lm_fe/components_m';
+import { mchcEnv, mchcUtils } from '@lm_fe/env';
+import { SLocal_History } from '@lm_fe/service';
 import { Button, Space, message } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 import { get, size } from 'lodash';
@@ -16,7 +17,7 @@ export default class AdmissionForm extends BaseEditPanelForm {
           'premaritalCheckArchivesBasicInformation',
           'permanentResidenceAddress',
         ]);
-        !value && message.info('请先填写完整的户口地址信息！');
+        !value && mchcEnv.info('请先填写完整的户口地址信息！');
         value &&
           this.form?.setFieldsValue({
             womanPremaritalCheckArchivesDetailVM: {
@@ -34,7 +35,7 @@ export default class AdmissionForm extends BaseEditPanelForm {
           'premaritalCheckArchivesBasicInformation',
           'permanentResidenceAddress',
         ]);
-        !value && message.info('请先填写完整的户口地址信息！');
+        !value && mchcEnv.info('请先填写完整的户口地址信息！');
         value &&
           this.form?.setFieldsValue({
             manPremaritalCheckArchivesDetailVM: {
@@ -49,7 +50,7 @@ export default class AdmissionForm extends BaseEditPanelForm {
           'premaritalCheckArchivesBasicInformation',
           'residenceAddress',
         ]);
-        !value && message.info('请先填写完整的居住地址信息！');
+        !value && mchcEnv.info('请先填写完整的居住地址信息！');
         value &&
           this.form?.setFieldsValue({
             manPremaritalCheckArchivesDetailVM: {
@@ -165,11 +166,14 @@ export default class AdmissionForm extends BaseEditPanelForm {
     // history && history.push('/premarital-care/file-management');
 
     //删除keepAliveProvider缓存
-    await updateTabs(get(tabs, `tabsMapping./premarital-care/file-management`));
-    routerPath && (await deleteTab(routerPath));
-    fubaoHistoryPush('/premarital-care/file-management', this.props as any);
-    const { path, search } = get(tabs, `tabsMapping.${routerPath}`);
-    keepAliveProviderRef?.current.removeCache(`${path}.name.${search}`);
+    // await updateTabs(get(tabs, `tabsMapping./premarital-care/file-management`));
+    // routerPath && (await deleteTab(routerPath));
+    // fubaoHistoryPush('/premarital-care/file-management', this.props as any);
+    // const { path, search } = get(tabs, `tabsMapping.${routerPath}`);
+    // keepAliveProviderRef?.current.removeCache(`${path}.name.${search}`);
+    SLocal_History.closeAndPush(resolveFubaoPath('/premarital-care/file-management'))
+    // SLocal_History.closeCurrentTab()
+
   };
 
   handleSaveAndNext = () => {
@@ -211,6 +215,7 @@ export default class AdmissionForm extends BaseEditPanelForm {
         disabled={false}
       >
         {get(data, 'fileStatus') === 2 ? '保存' : '保存并审核'}
+        {/* 保存 */}
       </Button>
     );
   };

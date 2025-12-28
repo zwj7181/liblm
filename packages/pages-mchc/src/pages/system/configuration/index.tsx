@@ -3,7 +3,8 @@ import { Button, message } from 'antd';
 import { get } from 'lodash';
 import { tableColumns } from './config/table';
 import { request } from '@lm_fe/utils';
-import { MyBaseList } from '@lm_fe/components_m';
+import { MyBaseList } from '@lm_fe/pages';
+
 async function handleRefreshConfig() {
   request.get<{ code: number, msg: string }>('/api/flushConfiguration', { showMsg: true });
 

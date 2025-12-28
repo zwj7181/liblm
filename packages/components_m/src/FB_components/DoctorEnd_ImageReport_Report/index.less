@@ -1,0 +1,73 @@
+.prenatal-visit-main_image {
+  height: 100%;
+  padding: 10px 20px;
+  overflow-y: auto;
+  background-color: #fff;
+  .isShot {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    padding-right: 24px;
+    &::after {
+      position: absolute;
+      top: 50%;
+      right: 6px;
+      width: 18px;
+      height: 18px;
+      color: #0e318d;
+      font-size: 12px;
+      line-height: 14px;
+      text-align: center;
+      border: 1px solid #0e318d;
+      border-radius: 50%;
+      transform: translateY(-50%);
+      content: '\62CD';
+    }
+  }
+}
+
+.prenatal-visit-main_image-modal {
+  .ant-modal-body {
+    height: 90vh;
+    padding: 0;
+  }
+
+  img {
+    width: 100%;
+  }
+
+  .image-search {
+    .image-msg {
+      margin: 10px;
+    }
+
+    .image-btn {
+      margin: 0 12px 12px 0;
+    }
+  }
+}
+
+.img-report-modal {
+  height: 95vh;
+  .ant-modal-content {
+    height: 100%;
+    .ant-modal-body {
+      height: calc(100% - 50px);
+      text-align: center;
+    }
+  }
+  .img-container {
+    height: calc(100% - 50px);
+    margin-bottom: 4px;
+    overflow: auto;
+    .hideContent {
+      display: none;
+    }
+    .isShow {
+      display: block;
+    }
+    img {
+      width: 100%;
+    }
+  }
+}

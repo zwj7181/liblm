@@ -39,11 +39,11 @@ export const getInformedConsents = async (outpatientNO) => {
   // const result = [
   //   {
   //     id: 1,
-  //     name: `${formatDateToStandardApi(moment())} PB20-740 核型分析 待审核`,
+  //     name: `${formatDateToStandardApi(dayjs())} PB20-740 核型分析 待审核`,
   //   },
   //   {
   //     id: 2,
-  //     name: `${formatDateToStandardApi(moment())} PB20-741 CMA 待分析`,
+  //     name: `${formatDateToStandardApi(dayjs())} PB20-741 CMA 待分析`,
   //   },
   // ];
   // return result;
@@ -51,20 +51,20 @@ export const getInformedConsents = async (outpatientNO) => {
 
 export const getInformedConsentById = async (id) => {
   const result = await request.get(`/api/prenatal-patient-documents/${id}`);
-  return result;
+  return result.data;
 };
 
 export const createInformedConsent = async (data) => {
   const result = await request.post('/api/prenatal-patient-documents', data);
-  return result;
+  return result.data;
 };
 
 export const updateInformedConsent = async (data) => {
   const result = await request.put('/api/prenatal-patient-documents', data);
-  return result;
+  return result.data;
 };
 
 export const getAllDiagnosisByPatientId = async (patientId: number) => {
   const result = await request.get(`/api/findDiagnosisByDateVisitType/${patientId}`);
-  return result;
+  return result.data;
 };

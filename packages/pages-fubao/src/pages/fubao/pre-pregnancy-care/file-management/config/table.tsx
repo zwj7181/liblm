@@ -23,7 +23,7 @@ export const tableColumns = [
     },
   },
   {
-    title: '女方就诊卡号',
+    title: '女方门诊号',
     dataIndex: 'womanOutpatientNo',
     width: APP_CONFIG.CELL_WIDTH_SMALL,
   },
@@ -51,7 +51,7 @@ export const tableColumns = [
     },
   },
   {
-    title: '男方就诊卡号',
+    title: '男方门诊号',
     dataIndex: 'manOutpatientNo',
     width: APP_CONFIG.CELL_WIDTH_SMALL,
   },

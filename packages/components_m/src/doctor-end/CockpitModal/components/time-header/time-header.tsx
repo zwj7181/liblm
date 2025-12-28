@@ -1,8 +1,8 @@
-import React, { useContext, useCallback, useEffect, useState } from 'react';
-import { Modal, Space, Button, DatePicker } from 'antd';
-const { RangePicker } = DatePicker;
-import moment from 'moment';
+import { RangePicker_L } from '@lm_fe/components';
+import { Space } from 'antd';
 import classnames from 'classnames';
+import dayjs from 'dayjs';
+import React, { useEffect, useState } from 'react';
 import { getDateArray } from '../../methods/assist-methods';
 import './index.less';
 interface Iprops {
@@ -56,9 +56,9 @@ export default function TimeHeader({ title, onChange, ...props }: Iprops) {
           >
             本月
           </div>
-          <RangePicker
+          <RangePicker_L
             onChange={handleChange}
-            value={currentFocus == selectTyle.custom ? [moment(selectDate[0]), moment(selectDate[1])] : null}
+            value={currentFocus == selectTyle.custom ? [dayjs(selectDate[0]), dayjs(selectDate[1])] : null}
           />
         </Space>
       </div>

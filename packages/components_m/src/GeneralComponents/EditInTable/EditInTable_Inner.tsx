@@ -1,8 +1,8 @@
-import { DeleteOutlined } from '@ant-design/icons';
+import { MyCheckbox, MyIcon } from '@lm_fe/components';
 import { mchcEnv, mchcLogger } from '@lm_fe/env';
-import { SMchc_Admission } from '@lm_fe/service';
-import { formatDateTimeNoSecond, getSearchParamsValue, request, uuid } from '@lm_fe/utils';
-import { Button, Form, Popconfirm, Space, TablePaginationConfig, message } from 'antd';
+import { IMchc_FormDescriptions_Field, SMchc_Admission } from '@lm_fe/service';
+import { AnyObject, expect_array, formatDateTimeNoSecond, getSearchParamsValue, ICommonOption, identity, isArray, objectify, request, uuid } from '@lm_fe/utils';
+import { Button, Form, message, Space, TablePaginationConfig } from 'antd';
 import {
   cloneDeep,
   concat,
@@ -14,10 +14,10 @@ import {
   isNil,
   keys,
   map,
-  set, size, split
+  set, size
 } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
-import { IMyBaseList_ColumnType } from 'src/FU_components';
+import { IMyBaseList_ColumnType } from 'src/FU_components/MyBaseList/types';
 import BaseFormComponent, { componentMap } from '../../BaseFormComponent';
 import { BaseTable } from '../../BaseTable';
 import { FFF, PopconfirmComponent } from './components';
@@ -35,16 +35,30 @@ export default function GeneralComponents_EditInTable_Inner(innerProps: IEditInT
     auditorSign: defaultSign,
   }
   const {
+    sp,
     defaultInputData = {},
     type = 'modal',
     changeImmediate = true,
     RenderOtherActions = DefaultRenderOtherActions,
     disabled: disabledAll,
     formInstance,
-    beforeAdd,
+    EditInTable_beforeAdd,
     fd_append_row = []
   } = innerProps
 
+
+  const isSetLast = useRef(false);
+  const [_formInstance] = Form.useForm()
+  const [isEditing, setIsEditing] = useState(false)
+  const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([])
+  const [dataSource, setDataSource] = useState<any[]>([])
+  const [pageSize, setPageSize] = useState(10)
+  const [pageIdx, setPageIdx] = useState(1)
+  const [row_filter_data, setRow_filter_data] = useState<ICommonOption[]>([])
+
+  const [userSignOptions, setUserSignOptions] = useState<{ "name": string, "login": string }[]>([])
+
+  const old_dataSource = useRef<any[]>([]);
 
 
   function _defaultInputData() {
@@ -58,26 +72,21 @@ export default function GeneralComponents_EditInTable_Inner(innerProps: IEditInT
       // recordDate: formatDateTimeNoSecond()
     }
   }
-  const _tableColumns = innerProps.tableColumns ?? []
-  const isShowCalcInputOutput = mchcEnv.is('广三') && _tableColumns.some(_ => _.title?.includes('出量'))
+  const _tableColumns = expect_array<IMchc_FormDescriptions_Field>(innerProps.tableColumns ?? innerProps.fds).filter(identity)
+  const isShowCalcInputOutput = _tableColumns.some(_ => _.title?.includes('出量'))
+  const 出入量_options = () => dataSource.map(_ => ({ label: _.recordTime, value: _.key }))
   const __tableColumns = type == 'modal' ? [..._tableColumns, {
     title: '操作',
     fixed: 'right',
     align: 'center',
     width: 40,
     render(a: any, b: any, index: number) {
-      if (b.disabled || disabledAll) return null
+      if (row_disabled(b)) return null
       const v = getItem(dataSource, pagination, index)
 
 
       return <>
-        {/* <CalInputOutput hidden={!isShowCalcInputOutput || b.disabled} arr={dataSource} onSelect={v =>
-          calcInputAndOutput(dataSource, v, cur.key,isShowCalcInputOutput)
-            .then(newRow => {
-              addOneOrMany(newRow)
-            })} /> */}
-        {/* <Button size='small' onClick={e => openModal(v)}>编辑</Button> */}
-        <Button icon={<DeleteOutlined />} type={b.modifyFlag ? 'ghost' : 'text'} size='small' danger onClick={e => handleDeleteOne(v)}></Button>
+        <Button icon={<MyIcon value='DeleteOutlined' />} type={b.modifyFlag ? 'dashed' : 'text'} size='small' danger onClick={e => handleDeleteOne(v)}></Button>
       </ >
     }
   }] : _tableColumns
@@ -89,16 +98,7 @@ export default function GeneralComponents_EditInTable_Inner(innerProps: IEditInT
   let addedNum = useRef(0);
   let onChangeRef = useRef(safeOnChange);
   onChangeRef.current = safeOnChange
-  const isSetLast = useRef(false);
-  const [_formInstance] = Form.useForm()
-  const [isEditing, setIsEditing] = useState(false)
-  const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([])
-  const [dataSource, setDataSource] = useState<any[]>([])
-  const [oldDataSource, setOldDataSource] = useState<any[]>([])
-  const [pageSize, setPageSize] = useState(10 ?? 8)
-  const [pageIdx, setPageIdx] = useState(1)
 
-  const [userSignOptions, setUserSignOptions] = useState<{ "name": string, "login": string }[]>([])
 
   const rawValue = useRef<any[]>([])
 
@@ -106,6 +106,7 @@ export default function GeneralComponents_EditInTable_Inner(innerProps: IEditInT
   const pagination = innerProps.pagination ?? {
     pageSizeOptions: ['5', '10', '20', '40'],
     pageSize,
+    size: 'small',
     onChange(page, pageSize) {
       setPageIdx(page)
       setPageSize(pageSize!)
@@ -115,7 +116,7 @@ export default function GeneralComponents_EditInTable_Inner(innerProps: IEditInT
     showSizeChanger: true,
     position: ['bottomCenter']
   }
-  function safeOnChange(v: any) {
+  function safeOnChange(v: any[]) {
 
     innerProps.onChange?.(v)
     rawValue.current = v
@@ -149,18 +150,22 @@ export default function GeneralComponents_EditInTable_Inner(innerProps: IEditInT
 
     const _curIdx = (pageIdx - 1) * pageSize
     const formData = dataSource.slice(_curIdx, _curIdx + pageSize)
-    setFormData(formData)
-    console.log('useEffect form', dataSource, formData, _curIdx)
 
+    setFormData(formData)
+
+    // console.log('useEffect form', dataSource, formData, _curIdx)
+    mchcEnv.setGlobalCache('doc_arr', dataSource)
   }, [pageIdx, pageSize, dataSource])
 
   useEffect(() => {
 
-    request.get<{ "name": string, "login": string }[]>('/api/getUserSign')
-      .then(res => {
-        const list = res.data ?? []
-        setUserSignOptions(list)
-      })
+    if (mchcEnv.is('广三')) {
+      request.get<{ "name": string, "login": string }[]>('/api/getUserSign')
+        .then(res => {
+          const list = res.data ?? []
+          setUserSignOptions(list)
+        })
+    }
 
     return () => {
 
@@ -168,29 +173,22 @@ export default function GeneralComponents_EditInTable_Inner(innerProps: IEditInT
   }, [])
 
 
-  const mapFormDataToDatasource = (formData: object = __formInstance.getFieldsValue(), changedKey: string = '') => {
-    const __list = [...dataSource]
-    map(formData, (tempValue, key) => {
-      const modifyFlag = changedKey === key
-      const names = split(key, '+');
-      const id = names[0]
-      const idx = __list.findIndex(_ => _.key == id)
-      if (modifyFlag) {
-        set(__list, `${idx}.modifyFlag`, true);
-      }
-      set(__list, `${idx}.${names[1]}`, tempValue);
+  const mapFormDataToDatasource = (formData: AnyObject = __formInstance.getFieldsValue(), changedKey: string = '') => {
+    const __list = [...dataSource].map(_ => {
+      const form_item = formData[_.key] || {}
+      if (!form_item) return _
+      return { ..._, ...form_item, modifyFlag: true }
+    })
 
-    });
-
-    return __list;
+    return Object.values(__list);
   }
 
-  function processNewData(row: any) {
+  function processNewData(row: AnyObject) {
 
     const newData = Object.assign({}, row, _defaultInputData(), { key: genRandomKey(), })
-    return beforeAdd?.(newData, rawValue.current) ?? newData
+    return EditInTable_beforeAdd?.(newData, rawValue.current) ?? newData
   }
-  function addOne(row: any) {
+  function addOne(row: AnyObject) {
     // if (type === 'modal') {
     //   return openModal()
     // }
@@ -205,7 +203,7 @@ export default function GeneralComponents_EditInTable_Inner(innerProps: IEditInT
 
   };
 
-  function addMany(row: any[] = []) {
+  function addMany(row: AnyObject[] = []) {
     // if (type === 'modal') {
     //   return openModal()
     // }
@@ -220,7 +218,7 @@ export default function GeneralComponents_EditInTable_Inner(innerProps: IEditInT
 
 
   };
-  function addOneOrMany(row: any | any[] = {}) {
+  function addOneOrMany(row: AnyObject | AnyObject[] = {}) {
     // if (type === 'modal') {
     //   return openModal()
     // }
@@ -228,21 +226,15 @@ export default function GeneralComponents_EditInTable_Inner(innerProps: IEditInT
     if (!row) return
     let newData = Array.isArray(row) ? addMany(row) : addOne(row)
     const _pageIdx = Math.ceil(newData.length / pagination.pageSize!)
-    setOldDataSource(dataSource)
 
     setPageIdx(_pageIdx)
     safeOnChange?.(newData);
 
   };
 
-  function handleEdit() {
-    setFormData(dataSource);
-    setIsEditing(true)
-    setOldDataSource(dataSource)
 
-  };
 
-  function getAllColumnsMapping(_tableColumns: any) {
+  function getAllColumnsMapping(_tableColumns: AnyObject) {
     let tempColumns: any = [];
     map(_tableColumns, (col) => {
       const colChildren = get(col, 'children');
@@ -256,29 +248,22 @@ export default function GeneralComponents_EditInTable_Inner(innerProps: IEditInT
   };
 
   function setFormData(_rows: any[]) {
-    const formData = {};
-    // const allColumns = getAllColumnsMapping(tableColumns);
-    // const allColumnsMapping = keyBy(allColumns, 'dataIndex');
-    map(_rows, (item, index) => {
-      map(item, (value, key) => {
-        // const inputType = get(allColumnsMapping, `${key}.inputType`);
-        let tempValue = value;
-        // if (inputType === 'single_date_picker') {
-        //   tempValue = moment(tempValue);
-        // }
-        const formItemId = genFormItemName(item, key)
-        if (key !== 'key') {
-          set(formData, `${formItemId}`, tempValue);
 
-        }
-      });
-    });
-    console.log('form', formData)
-    // __formInstance.resetFields();
-    __formInstance.setFieldsValue(formData);
-    return formData
+    const old_form_data = __formInstance.getFieldsValue()
+    const old_form_keys = Object.keys(old_form_data)
+    const form_data_keys = _rows.filter(_ => !_.disabled).map(f => f.key.toString())
+
+    if (form_data_keys.every(f => old_form_keys.includes(f)) && old_form_keys.every(f => form_data_keys.includes(f))) {
+      return
+    }
+
+
+    const x = objectify(_rows, _ => _.key)
+    __formInstance.setFieldsValue(x);
   };
-
+  function row_disabled(rowData: any) {
+    return rowData.disabled || disabledAll
+  }
   async function handleDelete() {
 
     const cloneData = cloneDeep(dataSource);
@@ -313,22 +298,13 @@ export default function GeneralComponents_EditInTable_Inner(innerProps: IEditInT
 
   };
 
-  function handleCancel() {
-    setFormData(oldDataSource);
-    setIsEditing(false)
-    setDataSource(dataSource.slice(0, dataSource.length - addedNum.current))
-
-
-
-    addedNum.current = 0;
-  };
 
 
 
 
 
 
-  const handleFieldsChange = debounce(function handleFieldsChange(changedFields: any[], allFields: object) {
+  const handleFieldsChange = debounce(function handleFieldsChange(changedFields: AnyObject[], allFields: AnyObject) {
     const changedKey = keys(changedFields)[0]
     mchcLogger.log('changedFields', { allFields, changedFields })
     if (changeImmediate) {
@@ -343,15 +319,22 @@ export default function GeneralComponents_EditInTable_Inner(innerProps: IEditInT
 
   // 添加 getDataSource 方法，重新渲染预览模式下的表格数据，主要是针对非输入项的 mapping 值
   function getDataSource() {
-    return map(dataSource, (rowData) => {
+    const arr = map(dataSource, (rowData) => {
       const tempRowData = { ...rowData };
 
       return tempRowData;
-    });
+    })
+    if (size(row_filter_data) !== 0) {
+      return arr.filter(_ => row_filter_data.some(f => {
+        if (!f.value) return true
+        return !isNil(_[f.value])
+      }))
+    }
+    return arr
   };
 
 
-  function syncData(formData: object = __formInstance.getFieldsValue(), changedKey: string = '') {
+  function syncData(formData: AnyObject = __formInstance.getFieldsValue(), changedKey: string = '') {
     const d = mapFormDataToDatasource(formData, changedKey)
     safeOnChange(d)
   }
@@ -366,27 +349,7 @@ export default function GeneralComponents_EditInTable_Inner(innerProps: IEditInT
 
   function getColumns(_tableColumns: any): any {
     const arr = map(_tableColumns, (col: IMyBaseList_ColumnType) => {
-      const is签名 = col.title?.includes('签名')
-      // 签名特殊处理
-      if (is签名) {
-        col.inputType = 'MS';
-        col.inputProps = col.inputProps ?? {}
-        col.inputProps.options = userSignOptions.map(_ => ({ value: _.login, label: `${_.name}(${_.login})` }))
-        col.inputProps.style = { width: 360 }
-        col.inputProps.marshal = 0
-        col.inputProps.mode = 'tags'
-        col.inputProps.isPop = true
-        // col.width = 170
 
-        col.processRemote = (v?: string) => {
-          const str = v || ''
-          return str.replaceAll('/', ',')
-        }
-        col.processLocal = (v?: string) => {
-          const str = v || ''
-          return str.replaceAll(',', '/')
-        }
-      }
 
       const dataIndex = Array.isArray(col.dataIndex) ? col.dataIndex.join(',') : (col.dataIndex ?? '')
       const inputType: keyof typeof componentMap = col.inputType as any
@@ -408,16 +371,16 @@ export default function GeneralComponents_EditInTable_Inner(innerProps: IEditInT
           render(__value: any, _: any, rowIndex: any) {
             const rowData: any = getItem(dataSource, pagination, rowIndex)
             if (!rowData) return ''
-            const formItemId = genFormItemName(rowData, dataIndex)
-            const realValue = __formInstance.getFieldValue(formItemId)
+            const calc_disabled = row_disabled(rowData)
+            // const realValue = get(__formInstance.getFieldValue(rowData.key), dataIndex)
 
             // const C: any = componentMap[inputType] ?? (() => null)
             const DisplayFC = componentMap[inputType]?.DisplayFC
             // const v = getItem(dataSource,pagination,rowIndex)
-            const _displayNode = DisplayFC ? <DisplayFC record={rowData} disabled={rowData.disabled} value={realValue} {...inputProps} /> : __value
-            const displayNode = is签名 ? displaySign(__value) : _displayNode
+            const _displayNode = DisplayFC ? <DisplayFC record={rowData} disabled={rowData.disabled} value={__value} {...inputProps} /> : __value
+            if (calc_disabled) return col.render ? col.render(__value, _, rowIndex) : _displayNode
             const common = {
-              disabled: rowData.disabled || disabledAll,
+              disabled: row_disabled(rowData),
               popupStyle: { zIndex: 9999 },
               dropdownStyle: { zIndex: 9999 },
               style: { zIndex: 9999 },
@@ -432,12 +395,12 @@ export default function GeneralComponents_EditInTable_Inner(innerProps: IEditInT
                 C={BaseFormComponent}
                 CProps={common}
               >
-                {displayNode}
+                {_displayNode}
               </PopconfirmComponent > : <BaseFormComponent {...common} style={{}} />
 
-            ) : displayNode
+            ) : _displayNode
             return <Form.Item
-              name={formItemId}
+              name={[rowData.key, dataIndex]}
               style={{
                 margin: 0,
                 // display: 'inline-block'
@@ -460,7 +423,14 @@ export default function GeneralComponents_EditInTable_Inner(innerProps: IEditInT
   const mergedDataSource = getDataSource();
   return (
     <>
-
+      {
+        isArray(sp)
+          ? <div style={{ padding: '6px 12px' }}>
+            <span>筛选：</span>
+            <MyCheckbox type='multiple' options={sp} marshal={2} onChange={setRow_filter_data} />
+          </div>
+          : null
+      }
 
       <Form
 
@@ -507,7 +477,7 @@ export default function GeneralComponents_EditInTable_Inner(innerProps: IEditInT
                         const res = await SMchc_Admission.calculateTotalInputAndOutput(listData.slice(startIdx, endidx + 1))
                         return res
                       } else {
-                        message.warn('请先选定一条记录以计算出入量！');
+                        message.warning('请先选定一条记录以计算出入量！');
                         return null
                       }
                     },
@@ -517,14 +487,16 @@ export default function GeneralComponents_EditInTable_Inner(innerProps: IEditInT
                         inputType: 'MS',
                         name: 'k1',
                         label: '开始时间',
-                        inputProps: { options: dataSource.map(_ => ({ label: _.recordTime, value: _.key })), marshal: 0 }
+                        inputProps: {
+                          options: 出入量_options, marshal: 0
+                        }
                       },
                       {
                         inputType: 'MS',
                         name: 'k2',
                         label: '结束时间',
 
-                        inputProps: { options: dataSource.map(_ => ({ label: _.recordTime, value: _.key })), marshal: 0 }
+                        inputProps: { options: 出入量_options, marshal: 0 }
                       },
                     ]
                   }}
@@ -578,9 +550,7 @@ function DefaultRenderOtherActions(props: IRenderOtherActionsProps) {
   );
 }
 
-function genFormItemName(item: any, key: string,) {
-  return `${item?.key}+${key}`
-}
+
 
 function genRandomKey() {
   return uuid().split('-').join('')

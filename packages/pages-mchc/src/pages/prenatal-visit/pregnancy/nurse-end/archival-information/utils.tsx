@@ -1,10 +1,10 @@
-import { ALLOW_CALC_EDD_BASED_ON_IVF, GetAgeByBirthDay, getBMI, mchcModal } from "@lm_fe/components_m";
-import { ICommonOption, mchcLogger, mchcUtils } from "@lm_fe/env";
+import { GetAgeByBirthDay, getBMI } from "@lm_fe/components_m";
+import { mchcLogger, mchcUtils } from "@lm_fe/env";
+import { conceive_fuck_edd, mchcModal__ } from "@lm_fe/pages";
 import { SLocal_Calculator, SLocal_History, SLocal_State, SMchc_Common } from "@lm_fe/service";
-import { formatDate } from "@lm_fe/utils";
+import { formatDate, set } from "@lm_fe/utils";
 import { FormInstance, message } from "antd";
 import { get, includes, keys, size, values } from "lodash";
-import moment from "moment";
 
 
 // Form onValuesChange
@@ -19,6 +19,7 @@ export async function archivalInformation_onValuesChange(changedValues: any, all
     const is身份证 = __key === 'baseInfo.idNO'
     const is出生日期 = __key === 'baseInfo.dob'
     const is末次月经 = __key === 'pregnancyInfo.lmp'
+    const is预产期 = __key === 'pregnancyInfo.edd'
     const is受孕方式 = __key === 'pregnancyInfo.conceiveMode__'
     const is婚姻状况 = __key === 'baseInfo.maritalStatus'
 
@@ -67,7 +68,7 @@ export async function archivalInformation_onValuesChange(changedValues: any, all
         if (computedData) {
             form.setFieldsValue({
                 baseInfo: {
-                    // dob: moment(`${idNO.substr(6, 4)}-${idNO.substr(10, 2)}-${idNO.substr(12, 2)}`),
+                    // dob: dayjs(`${idNO.substr(6, 4)}-${idNO.substr(10, 2)}-${idNO.substr(12, 2)}`),
                     dob: computedData.birth,
                     nationality: computedData.nationality,
                     nativeplace: computedData.province,
@@ -93,7 +94,7 @@ export async function archivalInformation_onValuesChange(changedValues: any, all
 
             form.setFieldsValue({
                 partnerInfo: {
-                    // dob: moment(`${idNO.substr(6, 4)}-${idNO.substr(10, 2)}-${idNO.substr(12, 2)}`),
+                    // dob: dayjs(`${idNO.substr(6, 4)}-${idNO.substr(10, 2)}-${idNO.substr(12, 2)}`),
                     partnerDob: computedData.birth,
                     partnerNationality: computedData.nationality,
                     partnerNativeplace: computedData.province,
@@ -112,12 +113,18 @@ export async function archivalInformation_onValuesChange(changedValues: any, all
 
     if (is末次月经 && get(allValues, `pregnancyInfo.conceiveMode.key`) !== 1) {
         const lmp = formatDate(get(changedValues, 'pregnancyInfo.lmp'))!;
-        const value = await SLocal_Calculator.calcEddBasedOnLmp(lmp);
+        const pregnancyInfo = await SLocal_Calculator.lmp_计算_edd_gestationalWeek(lmp);
+        form.setFieldsValue({
+            pregnancyInfo,
+        });
+    }
+    if (is预产期) {
+        const edd = formatDate(get(changedValues, 'pregnancyInfo.edd'))!;
+        const value = SLocal_Calculator.calGestationalWeekBySureEdd(edd);
 
         form.setFieldsValue({
             pregnancyInfo: {
-                edd: moment(value),
-                sureEdd: moment(value),
+                gestationalWeek: value,
             },
         });
     }
@@ -168,28 +175,11 @@ export async function archivalInformation_onValuesChange(changedValues: any, all
 
 
     if (is受孕方式) {
-        const data = __value as ICommonOption[]
-        const checkedValues = data?.[0]?.value
-        const textArr: any[] = data?.[0]?.text ?? []
-        const 移植时间 = textArr[0]
-        const 天数 = textArr[1] ?? 0
-        const 胚胎数 = textArr[2] ?? 0
-        const isIVF = checkedValues === 1
-
-        if (isIVF && 移植时间) {
-
-            const value = await SLocal_Calculator.calcEddBasedOnIVF(移植时间, 天数)
-            console.log('vv is受孕方式', value)
-            mchcModal.confirmOnce({
-                title: '根据胚胎移植时间，是否调整预产期B超时间？',
-                storeKey: ALLOW_CALC_EDD_BASED_ON_IVF,
-                cb: () => form?.setFieldsValue({
-                    pregnancyInfo: {
-                        sureEdd: value,
-                    },
-                })
-            })
-        }
+        conceive_fuck_edd(__value).then(edd => {
+            form?.setFieldsValue(
+                set({}, 'pregnancyInfo.sureEdd', edd)
+            )
+        })
     }
 };
 function getKeyAndValue(changedValues: any) {
@@ -206,7 +196,7 @@ function getKeyAndValue(changedValues: any) {
     return { __key, __value }
 }
 export function archivalInformation_onPrint(id: any) {
-    mchcModal.open('print_modal', {
+    mchcModal__.open('print_modal', {
         modal_data: {
             requestData: {
                 url: '/api/pdf-preview',

@@ -15,5 +15,8 @@ export * from './Dictionaries'
 export * from './Admission'
 export * from './Address'
 export * from './ThalassemiaFollowUp'
+export * from './Knowledges'
+export * from './TableConfig'
+export * from './Courses'
 
 export * from './types'

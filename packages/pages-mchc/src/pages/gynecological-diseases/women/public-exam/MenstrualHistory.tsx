@@ -7,6 +7,7 @@ import {
   // fubaoRequest as request 
 } from '@lm_fe/utils';
 import { message } from 'antd';
+import { mchcEnv } from '@lm_fe/env';
 interface IProps extends BaseEditPanelIProps {
   data?: any;
 }
@@ -56,12 +57,12 @@ export class MenstrualHistory extends BaseEditPanel<IProps> {
       };
     if (get(params, 'id')) {
       await request.put(baseUrl, params);
-      message.success(`修改${title}成功`);
+      mchcEnv.success(`修改${title}成功`);
     } else {
       const result = (await request.post(baseUrl, params)).data
       const { updateWomenExamRecordsEditingId } = this.props;
       // await updateWomenExamRecordsEditingId(get(result, 'id'));
-      message.success(`新增${title}成功`);
+      mchcEnv.success(`新增${title}成功`);
     }
   };
 }

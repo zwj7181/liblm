@@ -6,7 +6,7 @@ interface ISpecialConfig_Single {
 
 
 interface ISpecialConfig_Number {
-    type: "moment"
+    type: "dayjs()"
 }
 
 

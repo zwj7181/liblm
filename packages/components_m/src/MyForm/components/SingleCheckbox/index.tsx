@@ -1,7 +1,6 @@
-import { map } from 'lodash';
-import React, { useState, useEffect } from 'react';
 import { Checkbox } from 'antd';
-import { get } from '@antv/util';
+import { get, map } from 'lodash';
+import React from 'react';
 export default function SingleCheckbox({ options, checked, onChange }: any) {
   function onHandleChange(value: any) {
     return () => {

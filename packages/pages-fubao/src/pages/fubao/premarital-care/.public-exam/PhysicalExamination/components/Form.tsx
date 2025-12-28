@@ -4,6 +4,7 @@ import { ArrowRightOutlined } from '@ant-design/icons';
 import { get } from 'lodash';
 import { FormInstance } from 'antd/lib/form';
 import { BaseEditPanelForm, getBMI } from '@lm_fe/components_m';
+import { mchcLogger } from '@lm_fe/env';
 export const formItemLayout = {
   // layout: 'horizontal',
   labelCol: {
@@ -101,6 +102,7 @@ export default class Form extends BaseEditPanelForm {
   // 地址组件 触发按钮
   getEvents = () => ({
     handleButton: (id: string, isCheck: boolean) => {
+      mchcLogger.log('premaritalCheckArchivesPhysicalExaminationVM isCheck',{id,isCheck})
       // 一键勾选
       if (id === 'selectBtn' && isCheck) {
         const form = this.form as unknown as FormInstance;
@@ -138,31 +140,31 @@ export default class Form extends BaseEditPanelForm {
         const form = this.form as unknown as FormInstance;
         form &&
           form.setFieldsValue({
-            specialBody: { key: undefined, keyNote: undefined },
-            specialFace: { key: undefined, keyNote: undefined },
-            mentalState: { key: undefined, keyNote: undefined },
-            skinHair: { key: undefined, keyNote: undefined },
-            intelligence: { key: undefined, keyNote: undefined },
-            limbsSpinal: { key: undefined, keyNote: undefined },
+            specialBody: { key: null, keyNote: undefined },
+            specialFace: { key: null, keyNote: undefined },
+            mentalState: { key: null, keyNote: undefined },
+            skinHair: { key: null, keyNote: undefined },
+            intelligence: { key: null, keyNote: undefined },
+            limbsSpinal: { key: null, keyNote: undefined },
           });
       }
       if (id === 'selectBtn2' && !isCheck) {
         const form = this.form as unknown as FormInstance;
         form &&
           form.setFieldsValue({
-            skinMucousMembrane: { key: undefined, keyNote: undefined },
-            thyroid: { key: undefined, keyNote: undefined },
-            breast: { key: undefined, keyNote: undefined },
-            breathSounds: { key: undefined, keyNote: undefined },
-            rale: { key: undefined, keyNote: undefined },
-            heartrhythm: { key: undefined, keyNote: undefined },
-            noise: { key: undefined, keyNote: undefined },
-            liver: { key: undefined, keyNote: undefined },
-            spleen: { key: undefined, keyNote: undefined },
-            spine: { key: undefined, keyNote: undefined },
-            physiologicalReflection: { key: undefined, keyNote: undefined },
-            pathologicalReflection: { key: undefined, keyNote: undefined },
-            lowerLimbEdema: { key: undefined, keyNote: undefined },
+            skinMucousMembrane: { key: null, keyNote: undefined },
+            thyroid: { key: null, keyNote: undefined },
+            breast: { key: null, keyNote: undefined },
+            breathSounds: { key: null, keyNote: undefined },
+            rale: { key: null, keyNote: undefined },
+            heartrhythm: { key: null, keyNote: undefined },
+            noise: { key: null, keyNote: undefined },
+            liver: { key: null, keyNote: undefined },
+            spleen: { key: null, keyNote: undefined },
+            spine: { key: null, keyNote: undefined },
+            physiologicalReflection: { key: null, keyNote: undefined },
+            pathologicalReflection: { key: null, keyNote: undefined },
+            lowerLimbEdema: { key: null, keyNote: undefined },
           });
       }
     },

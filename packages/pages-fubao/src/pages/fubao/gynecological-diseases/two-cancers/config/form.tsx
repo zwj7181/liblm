@@ -1,6 +1,6 @@
 export const queryFormDescriptions = {
   outpatientNo: {
-    label: '就诊卡号',
+    label: '门诊号',
     inputType: 'input',
     filterType: '',
   },
@@ -16,6 +16,11 @@ export const queryFormDescriptions = {
   },
   name: {
     label: '姓名',
+    inputType: 'input',
+    filterType: '',
+  },
+  unitName: {
+    label: '检测单位',
     inputType: 'input',
     filterType: '',
   },

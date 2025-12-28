@@ -1,29 +1,34 @@
 {
   "compilerOptions": {
     "outDir": "dist",
-    "module": "esnext",
-    "target": "esnext",
-    "lib": ["esnext", "dom"],
-    "sourceMap": false,
-    "jsx": "react",
-    "baseUrl": ".",
-    "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "moduleResolution": "node",
-    "forceConsistentCasingInFileNames": true,
-    "noImplicitReturns": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true,
+    "jsx": "react",
+    "module": "esnext",
+    "target": "es5",
     "allowJs": true,
-    "skipLibCheck": true,
+    "noUnusedLocals": false,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": false,
+    "declaration": true,
+    "baseUrl": ".",
+    "declarationMap": false,
+    "strictNullChecks": true,
     "experimentalDecorators": true,
-    "strict": true,
-    "declaration":true,
 
   },
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
   ],
-  "exclude": ["node_modules", "build", "dist", "scripts", "src/.umi/*", "webpack", "jest"]
+  "exclude": [
+    "node_modules",
+    "build",
+    "dist",
+    "scripts",
+    "src/.umi/*",
+    "webpack",
+    "jest"
+  ]
 }

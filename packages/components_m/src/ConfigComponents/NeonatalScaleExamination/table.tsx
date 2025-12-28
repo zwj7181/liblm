@@ -49,7 +49,7 @@ export const tableColumns1 = [
     dataIndex: 'headAndNeck',
     inputType: 'MyAutoComplete',
     inputProps: {
-      optionKey: '头颈s',
+      uniqueKey: '头颈s',
     },
 
     editable: true,
@@ -60,7 +60,7 @@ export const tableColumns1 = [
     title: '腹部',
     inputType: 'MyAutoComplete',
     inputProps: {
-      optionKey: '腹部s',
+      uniqueKey: '腹部s',
     },
     dataIndex: 'abdomen',
     editable: true,
@@ -71,7 +71,7 @@ export const tableColumns1 = [
     title: '生殖器及会阴部',
     inputType: 'MyAutoComplete',
     inputProps: {
-      optionKey: '生殖器s',
+      uniqueKey: '生殖器s',
     },
 
     dataIndex: 'genital',
@@ -85,7 +85,7 @@ export const tableColumns1 = [
     editable: true,
     inputType: 'MyAutoComplete',
     inputProps: {
-      optionKey: '四肢s',
+      uniqueKey: '四肢s',
     },
 
     align: 'center',
@@ -348,7 +348,7 @@ export const tableColumns2 = [
     //   {
     //     title: '内容(入量)',
     //     inputType: 'MyAutoComplete',
-    //     inputProps: { optionKey: '入量s' },
+    //     inputProps: { uniqueKey: '入量s' },
     //     dataIndex: 'takeinType',
     //     editable: true,
     //     align: 'center',
@@ -378,7 +378,7 @@ export const tableColumns2 = [
     //   {
     //     title: '内容(出量)',
     //     inputType: 'MyAutoComplete',
-    //     inputProps: { optionKey: '出量s' },
+    //     inputProps: { uniqueKey: '出量s' },
     //     dataIndex: 'outputType',
     //     editable: true,
     //     align: 'center',
@@ -658,7 +658,7 @@ export const tableColumns3 = [
     //   {
     //     title: '内容(入量)',
     //     inputType: 'MyAutoComplete',
-    //     inputProps: { optionKey: '入量s' },
+    //     inputProps: { uniqueKey: '入量s' },
     //     dataIndex: 'takeinType',
     //     editable: true,
     //     align: 'center',
@@ -688,7 +688,7 @@ export const tableColumns3 = [
     //   {
     //     title: '内容(出量)',
     //     inputType: 'MyAutoComplete',
-    //     inputProps: { optionKey: '出量s' },
+    //     inputProps: { uniqueKey: '出量s' },
     //     dataIndex: 'outputType',
     //     editable: true,
     //     align: 'center',

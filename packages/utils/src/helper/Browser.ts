@@ -23,6 +23,7 @@ export const Browser = (function (window: IWin) {
 		//chorme
 		chrome = window.chrome || false,
 		System = {
+			version: '',
 			clientHeight: window.document.body.clientHeight,
 			name: "",
 			type: "",

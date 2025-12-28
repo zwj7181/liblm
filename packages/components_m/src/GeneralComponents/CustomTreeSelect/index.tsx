@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { TreeSelect } from 'antd';
 import { get } from 'lodash';
+import { LazyAntd } from '@lm_fe/components';
+
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
 export default class CustomTreeSelect extends Component {
   handleChange = (data) => {
     const { onChange } = this.props;
@@ -13,7 +15,7 @@ export default class CustomTreeSelect extends Component {
       <TreeSelect
         {...rest}
         allowClear
-        dropdownMatchSelectWidth={get(this.props, 'dropdownMatchSelectWidth') || 350}
+        popupMatchSelectWidth={get(this.props, 'popupMatchSelectWidth') || 350}
         getPopupContainer={getPopupContainer}
         style={{ width: '100%' }}
         treeData={options}

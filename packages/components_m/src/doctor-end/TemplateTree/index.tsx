@@ -1,15 +1,12 @@
-import React, { Component } from 'react';
-import { Tooltip, Button, Modal, Input, Tree, Row, Col } from 'antd';
-import { map, isEmpty, forEach, concat, includes, isUndefined, get, set } from 'lodash';
-import {
-  PlusCircleOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  ArrowUpOutlined,
-  ArrowDownOutlined,
-} from '@ant-design/icons';
-import './index.less';
+import { LazyAntd, MyIcon } from '@lm_fe/components';
 import { request } from '@lm_fe/utils';
+import { Button, Col, Input, Modal, Row, Tooltip } from 'antd';
+import { concat, forEach, get, includes, isEmpty, isUndefined, map } from 'lodash';
+import React, { Component } from 'react';
+import './index.less';
+
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
 const operationMapping = {
   new: '新增模板',
   add: '新增子模板',
@@ -284,18 +281,18 @@ export default class Index extends Component<IndexProps, IndexState> {
         {pid === 0 ? (
           <div className="handle-icon" onClick={() => this.handleTreeItem('add')}>
             <Tooltip placement="bottom" title="添加子模板">
-              <PlusCircleOutlined />
+              <MyIcon value='PlusCircleOutlined' />
             </Tooltip>
           </div>
         ) : null}
         <div className="handle-icon" onClick={() => this.handleTreeItem('edit')}>
           <Tooltip placement="bottom" title="修改">
-            <EditOutlined />
+            <MyIcon value='EditOutlined' />
           </Tooltip>
         </div>
         <div className="handle-icon" onClick={() => this.handleTreeItem('delete')}>
           <Tooltip placement="bottom" title="删除">
-            <DeleteOutlined />
+            <MyIcon value='DeleteOutlined' />
           </Tooltip>
         </div>
         {/* <div className="handle-icon" onClick={() => this.handleTreeSort('DOWN')}>
@@ -354,7 +351,7 @@ export default class Index extends Component<IndexProps, IndexState> {
     const treeData = this.transferTemplateData(templateData);
 
     return (
-      <div style={{ minHeight: 160,padding:'12px 0' }}>
+      <div style={{ minHeight: 160, padding: '12px 0' }}>
         {editable ? (
           <div className="add-btn">
             <Button size="small" onClick={this.handleAddBtnClick}>

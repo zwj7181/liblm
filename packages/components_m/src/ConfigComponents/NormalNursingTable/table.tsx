@@ -177,7 +177,7 @@ export const tableColumns = [
     //   {
     //     title: '内容(入量)',
     //     inputType: 'MyAutoComplete',
-    //     inputProps: { optionKey: '入量s' },
+    //     inputProps: { uniqueKey: '入量s' },
     //     dataIndex: 'takeinType',
     //     editable: true,
     //     align: 'center',
@@ -216,7 +216,7 @@ export const tableColumns = [
     //   {
     //     title: '内容(出量)',
     //     inputType: 'MyAutoComplete',
-    //     inputProps: { optionKey: '出量s' },
+    //     inputProps: { uniqueKey: '出量s' },
     //     dataIndex: 'outputType',
     //     editable: true,
     //     align: 'center',

@@ -1,41 +1,32 @@
-import moment, { Moment, isMoment } from 'moment';
+import { formatDate, formatDateTime, formatDateTimeNoSecond } from '@lm_fe/utils';
+import dayjs, { Dayjs } from 'dayjs';
 import { map } from 'lodash';
 export const momentDate = (date: any) => {
-  if (date) return moment(date);
+  if (date) return dayjs(date);
   return '';
 };
-export const formatTimeToStandard = (date: any, format = 'YYYY-MM-DD HH:mm:ss') => {
-  const formatedDate = moment(date).format(format);
-  if (date && formatedDate !== 'Invalid date') {
-    return formatedDate;
-  }
-  return '';
+export const formatTimeToStandard = (date: any) => {
+  return formatDateTime(date);
+
 };
 export const formatTimeToDate = (date: any) => {
-  const formatedDate = moment(date).format('YYYY-MM-DD');
-  if (date && formatedDate !== 'Invalid date') {
-    return formatedDate;
-  }
-  return '';
+  return formatDate(date);
 };
 export const formatTimeToYearMonth = (date: any) => {
-  const formatedDate = moment(date).format('YYYY-MM-DD HH:mm');
-  if (date && formatedDate !== 'Invalid date') {
-    return formatedDate;
-  }
-  return '';
+  return formatDateTimeNoSecond(date);
+
 };
-export const formatTimeToUTC = (date: any) => moment(date).utc().format();
-export const formatTimeToApi = (date: Moment) => date.format();
-export const formatTimeToStandardApi = (date: Moment, format = 'YYYY-MM-DD HH:mm:ss') => {
-  const formatedDate = moment(date).format(format);
+export const formatTimeToUTC = (date: any) => dayjs(date).toDate().toUTCString();
+export const formatTimeToApi = (date: Dayjs) => date.format();
+export const formatTimeToStandardApi = (date: Dayjs, format = 'YYYY-MM-DD HH:mm:ss') => {
+  const formatedDate = dayjs(date).format(format);
   if (date && formatedDate !== 'Invalid date') {
     return formatedDate;
   }
   return undefined;
 };
-export const formatDateToStandardApi = (date: Moment, format = 'YYYY-MM-DD') => {
-  const formatedDate = moment(date).format(format);
+export const formatDateToStandardApi = (date: Dayjs, format = 'YYYY-MM-DD') => {
+  const formatedDate = dayjs(date).format(format);
   if (date && formatedDate !== 'Invalid date') {
     return formatedDate;
   }

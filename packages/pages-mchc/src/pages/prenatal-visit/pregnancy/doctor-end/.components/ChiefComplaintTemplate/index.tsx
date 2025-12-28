@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Modal, Tabs } from 'antd';
 import { map, join, get } from 'lodash';
-import TemplateTree from '../TemplateTree';
+import DoctorEnd_TemplateTree from '../TemplateTree';
 import './index.less';
 interface IndexProps {
   closeModal: Function;
@@ -77,7 +77,7 @@ export default class Index extends Component<IndexProps, IndexState> {
       >
         <Tabs defaultActiveKey={activeTabKey} onChange={this.handleTabChange}>
           <Tabs.TabPane tab={<Button className="list-btn">科室模板</Button>} key="1">
-            <TemplateTree
+            <DoctorEnd_TemplateTree
               type={16}
               depid={2}
               checkable={true}
@@ -87,7 +87,7 @@ export default class Index extends Component<IndexProps, IndexState> {
             />
           </Tabs.TabPane>
           <Tabs.TabPane tab={<Button className="list-btn">个人模板</Button>} key="2">
-            <TemplateTree
+            <DoctorEnd_TemplateTree
               type={17}
               userid={get(basicInfo, 'id')}
               checkable={true}

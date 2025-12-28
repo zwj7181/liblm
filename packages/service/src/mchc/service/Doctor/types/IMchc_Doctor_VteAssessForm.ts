@@ -1,4 +1,4 @@
-import { MchcTypes, MchcType_广三 } from "@lm_fe/env"
+import { MCHC_TYPE_MAP, MchcTypes } from "@lm_fe/env"
 
 interface IMchc_Doctor_VteAssessForm_广三<T extends MchcTypes> {
     id: number
@@ -36,4 +36,4 @@ interface IMchc_Doctor_VteAssessForm_广三<T extends MchcTypes> {
     note1: number
     note2: number
 }
-export type IMchc_Doctor_VteAssessForm<T extends MchcTypes> = T extends MchcType_广三 ? IMchc_Doctor_VteAssessForm_广三<T> : IMchc_Doctor_VteAssessForm_广三<T>
+export type IMchc_Doctor_VteAssessForm<T extends MchcTypes> = T extends MCHC_TYPE_MAP['广三'] ? IMchc_Doctor_VteAssessForm_广三<T> : IMchc_Doctor_VteAssessForm_广三<T>

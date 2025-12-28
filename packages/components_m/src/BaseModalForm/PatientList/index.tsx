@@ -1,14 +1,13 @@
-import React from 'react';
-import Table from './components/Table';
-import Query, { queryValues } from './components/Query';
-import { tableColumns } from './config/table';
-import {BaseList} from '../../BaseList';
-import { Button } from 'antd';
-import { EyeOutlined, ImportOutlined } from '@ant-design/icons';
+import { MyIcon } from '@lm_fe/components';
 import { request } from '@lm_fe/utils';
-import queryString from 'query-string';
-import { map, concat, keyBy, values } from 'lodash';
-export default class List extends BaseList {
+import { Button } from 'antd';
+import { concat, keyBy, values } from 'lodash';
+import React from 'react';
+import BaseListOld from 'src/BaseListOld';
+import Query, { queryValues } from './components/Query';
+import Table from './components/Table';
+import { tableColumns } from './config/table';
+export default class List extends BaseListOld {
   static defaultProps = {
     baseUrl: '/api/wives',
     baseTitle: '档案',
@@ -50,10 +49,10 @@ export default class List extends BaseList {
         return (
           <>
             <Button className="table-action-btn" onClick={this.handleView(rowData)}>
-              <EyeOutlined title="查看" />
+              <MyIcon value='EyeOutlined' title="查看" />
             </Button>
             <Button title="导入" className="table-action-btn" type="primary" onClick={this.handleExport(rowData)}>
-              <ImportOutlined />
+              <MyIcon value='ImportOutlined' />
             </Button>
           </>
         );
@@ -94,7 +93,7 @@ export default class List extends BaseList {
         ...defaultQuery,
         [`${value}.contains`]: queryValue,
       };
-      const tempData = await request.get(`${baseUrl}?${queryString.stringify(query as object)}`);
+      const tempData = await request.get(`${baseUrl}`, { params: query });
       dataSource = concat(dataSource, tempData);
     }
     dataSource = values(keyBy(dataSource, 'id'));

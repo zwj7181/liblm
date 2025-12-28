@@ -1,20 +1,26 @@
-//  产科住院-入院登记-查看登记详情-病历文书-缩宫素静脉点滴观察表
-import { IMchc_FormDescriptions_Field } from '@lm_fe/service';
-import React from 'react';
-import { FormSectionForm } from '../../BaseModalForm/FormSectionForm';
+import React, { useEffect } from 'react';
+// import { FormSectionForm } from '../../BaseModalForm/FormSectionForm';
+import { MyFormSectionForm } from '../FormSection/FormSectionForm';
 import CommonFormTabs from './CommonFormTabs';
-import { ICommonFormTabsProps } from './types';
-import { FormInstance, FormProps } from 'antd';
-interface IFormTabsProps<T = any> extends ICommonFormTabsProps<T> {
-    fds?: IMchc_FormDescriptions_Field[]
-    forms?: FormInstance[]
-    FormSize?: FormProps['size']
+import { IFormTabsProps } from './types';
+import { useFormTabs } from './utils';
 
-}
-export default function FormTabs<T = any>(props: IFormTabsProps<T>) {
-    const { value = [], fds = [], onChange, forms = [], FormSize, disabled } = props
+function _FormTabs<T = any>(props: IFormTabsProps<T>) {
+    const { value = [], fds = [], onChange, on_row_value_change, form, FormSize, disabled } = props
+    const { forms: _forms } = useFormTabs()
+    const forms = props.forms || _forms
+    useEffect(() => {
+        if ([value, forms].every(Array.isArray)) {
+            value.forEach((v, idx) => {
+                const f = forms[idx]
+                f?.setFieldsValue(v)
 
+            })
+        }
+        return () => {
 
+        }
+    }, [value])
 
 
 
@@ -24,11 +30,12 @@ export default function FormTabs<T = any>(props: IFormTabsProps<T>) {
         <CommonFormTabs<any>
             renderTabNode={(data, index) => {
                 return (
-                    <FormSectionForm disableAll={disabled} size={FormSize} form={forms[index]} data={data} formDescriptions={fds} onValuesChange={(changedValues, values) => {
-                        console.log('www', data, values)
-                        debugger
-                        value[index] = { ...data, ...values } as any
-                        onChange?.([...value], index, changedValues)
+                    <MyFormSectionForm disableAll={disabled} size={FormSize} form={forms[index]} data={data} formDescriptions={fds} onValuesChange={(changed_item, item) => {
+                        // debugger
+                        value[index] = { ...data, ...item } as any
+                        // onChange?.([...value],)
+                        onChange?.(value,)
+                        on_row_value_change?.(value, index, changed_item, form)
                     }} />
                 )
             }}
@@ -40,3 +47,5 @@ export default function FormTabs<T = any>(props: IFormTabsProps<T>) {
 
     </div>
 }
+
+export default _FormTabs

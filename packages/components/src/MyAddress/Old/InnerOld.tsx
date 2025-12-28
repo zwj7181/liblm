@@ -3,7 +3,7 @@ import { Button, Cascader, Input, Tooltip } from 'antd';
 import { cloneDeep, get, map } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { IMyAddressProps } from '../type';
-import defaultOptions from './options';
+import { get_old_address_options } from './options';
 
 export default function MyAddressOld({
   id,
@@ -24,42 +24,14 @@ export default function MyAddressOld({
 
   const [pcasv, setPcasv] = useState<string[]>([]);
   const [detail, setDetail] = useState('');
-  const [options, setOptions] = useState<any>(defaultOptions);
+  const [options, setOptions] = useState<any[]>([]);
   const [text, setText] = useState('');
 
-  useEffect(() => {
-
-
-  }, []);
 
   useEffect(() => {
-    if (!needStreet) {
-      const newOptions = map(defaultOptions, (option) => {
-        if (get(option, 'value') === '广东省') {
-          return {
-            children: map(get(option, 'children'), (item) => {
-              return {
-                label: get(item, 'label'),
-                value: get(item, 'value'),
-                children: map(get(item, 'children'), (city) => {
-                  return {
-                    label: get(city, 'label'),
-                    value: get(city, 'value'),
-                  };
-                }),
-              };
-            }),
-            label: get(option, 'label'),
-            value: get(option, 'value'),
-          };
-        }
-        return option;
-      });
-      setOptions(newOptions);
-      console.log('options newOptions', newOptions)
-
-    }
-    console.log('options', options)
+    get_old_address_options(needStreet).then(opt => {
+      setOptions(opt[0] as any[])
+    })
 
   }, []);
 

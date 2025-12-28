@@ -1,5 +1,6 @@
 import { APP_CONFIG } from "@lm_fe/components_m"
 import { get } from 'lodash';
+import React from 'react'
 export const tableColumns = [
   {
     title: '检查日期',

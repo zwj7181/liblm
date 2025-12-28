@@ -12,62 +12,45 @@ const tabToModuleName = {
 };
 export default {
   /** 获取表单配置 */
-  getFormConfig: async (isProduction: boolean) => {
-    const formDescriptionsJson = isProduction && safe_json_parse(sessionStorage.getItem('formDescriptionsJson'));
+  getFormConfig: async () => {
     const formPresent =
       get(
-        isProduction
-          ? get(formDescriptionsJson, 'prenatal-examination-present')
-          : (await request.get(`/api/form-descriptions?moduleName=prenatal-examination-present`)).data,
+        (await request.get(`/api/form-descriptions?moduleName=prenatal-examination-present`)).data,
         0,
       ) || {};
     const formPast =
       get(
-        isProduction
-          ? get(formDescriptionsJson, 'prenatal-examination-past')
-          : (await request.get(`/api/form-descriptions?moduleName=prenatal-examination-past`)).data,
+        (await request.get(`/api/form-descriptions?moduleName=prenatal-examination-past`)).data,
         0,
       ) || {};
     const formOther =
       get(
-        isProduction
-          ? get(formDescriptionsJson, 'prenatal-examination-other')
-          : (await request.get(`/api/form-descriptions?moduleName=prenatal-examination-other`)).data,
+        (await request.get(`/api/form-descriptions?moduleName=prenatal-examination-other`)).data,
         0,
       ) || {};
     const formPregnancyHistory =
       get(
-        isProduction
-          ? get(formDescriptionsJson, 'prenatal-examination-pregnancy-history')
-          : (await request.get(`/api/form-descriptions?moduleName=prenatal-examination-pregnancy-history`)).data,
+        (await request.get(`/api/form-descriptions?moduleName=prenatal-examination-pregnancy-history`)).data,
         0,
       ) || {};
     const formPhysical =
       get(
-        isProduction
-          ? get(formDescriptionsJson, 'prenatal-examination-physical')
-          : (await request.get(`/api/form-descriptions?moduleName=prenatal-examination-physical`)).data,
+        (await request.get(`/api/form-descriptions?moduleName=prenatal-examination-physical`)).data,
         0,
       ) || {};
     const formSpecial =
       get(
-        isProduction
-          ? get(formDescriptionsJson, 'prenatal-examination-special')
-          : (await request.get(`/api/form-descriptions?moduleName=prenatal-examination-special`)).data,
+        (await request.get(`/api/form-descriptions?moduleName=prenatal-examination-special`)).data,
         0,
       ) || {};
     const formSurvey =
       get(
-        isProduction
-          ? get(formDescriptionsJson, 'prenatal-examination-survey')
-          : (await request.get(`/api/form-descriptions?moduleName=prenatal-examination-survey`)).data,
+        (await request.get(`/api/form-descriptions?moduleName=prenatal-examination-survey`)).data,
         0,
       ) || {};
     const formDiagnoses =
       get(
-        isProduction
-          ? get(formDescriptionsJson, 'prenatal-examination-diagnoses')
-          : (await request.get(`/api/form-descriptions?moduleName=prenatal-examination-diagnoses`)).data,
+        (await request.get(`/api/form-descriptions?moduleName=prenatal-examination-diagnoses`)).data,
         0,
       ) || {};
 
@@ -102,12 +85,10 @@ export default {
 
   /** 根据预产期B超，更新当天产检孕周” */
   updateGesweekAlert: (pregnancyId: any, sureEdd: any) =>
-    request.get(`/api/updateGesweekAlert?pregnancyId=${pregnancyId}&sureEdd=${sureEdd}`).then(r => r.data),
+    request.get<{ remind: string }>(`/api/updateGesweekAlert?pregnancyId=${pregnancyId}&sureEdd=${sureEdd}`).then(r => r.data),
   updateGesweekBysureEdd: (data: any) => request.post(`/api/updateGesweekBysureEdd`, data).then(r => r.data),
 
-  /** 高危因素自动判定 */
-  autoCaseRecognition: (pregnancyId: any) =>
-    request.get(`/api/autoCaseRecognition?pregnancyId=${pregnancyId}`).then(r => r.data),
+
 
   /** 历史首检记录 */
   findFirstVisitOperatingRecord: (pregnancyId: any) =>

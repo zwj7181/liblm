@@ -1,20 +1,23 @@
+import { CalendarOutlined, DeleteOutlined, PlusCircleOutlined, PrinterOutlined, SaveOutlined } from '@ant-design/icons';
 import {
+  calEddByLmp,
   createResources,
   deleteResourcesByID,
   getResources,
   getResourcesByID,
   transferDataByDate,
-  updateResources,
-  calEddByLmp
+  updateResources
 } from '@lm_fe/components_m';
-import { fubaoRequest as request } from '@lm_fe/utils'
-import { CalendarOutlined, DeleteOutlined, PlusCircleOutlined, PrinterOutlined, SaveOutlined } from '@ant-design/icons';
-import { SelectTip, mchcModal } from '@lm_fe/components_m';
-import { Button, Card, Col, Collapse, Form, List, Modal, Popconfirm, Row, Tooltip, message } from 'antd';
+import { SelectTip } from '@lm_fe/pages';
+import { fubaoRequest as request } from '@lm_fe/utils';
+
+import { mchcEnv } from '@lm_fe/env';
+import { mchcModal__ } from '@lm_fe/pages';
+import { Button, Card, Col, Collapse, Form, List, Modal, Popconfirm, Row, Tooltip } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 import classnames from 'classnames';
+import dayjs from 'dayjs';
 import { debounce, first, get, isEmpty, keys, last, map, set, values } from 'lodash';
-import moment from 'moment';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import MedicalRecord from '../../../../../.others/MedicalRecord';
@@ -91,7 +94,7 @@ export class SecondVisit extends Component {
         const form = this.form as FormInstance;
         form.setFieldsValue({
           ...(isEmpty(syncPatientInfo) ? {} : fromApi(get(syncPatientInfo, 'prenatalDiagnosis'))),
-          visitDate: moment(),
+          visitDate: dayjs(),
           doctor: get(user, 'basicInfo.firstName'),
         });
       },
@@ -146,7 +149,7 @@ export class SecondVisit extends Component {
       },
     );
     await this.initData();
-    message.success('操作成功');
+    mchcEnv.success('操作成功');
   };
 
   handleDelete = (item) => async () => {
@@ -173,7 +176,7 @@ export class SecondVisit extends Component {
   handlePrint = () => {
     const { activeItem } = this.state;
 
-    mchcModal.open('print_modal', {
+    mchcModal__.open('print_modal', {
       modal_data: {
         request,
         requestData: {

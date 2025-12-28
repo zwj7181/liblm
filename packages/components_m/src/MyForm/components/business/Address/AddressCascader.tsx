@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { Cascader, Select, Input } from 'antd';
+import { Cascader, Input } from 'antd';
 import options, { getStreets } from './cascader-address-options';
+import { LazyAntd } from '@lm_fe/components';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
 interface AddressCascaderProps {
   onChange: Function;
   dispatch?: Function;
@@ -15,14 +17,12 @@ export default class AddressCascader extends Component<AddressCascaderProps> {
       onChange(`${val.join(',')}${SPLIT_KEY}${''}${SPLIT_KEY}${this.getDataFormProp(value).inputData}`);
     } else if (key === 1) {
       onChange(
-        `${this.getDataFormProp(value).cascaderData.join(',')}${SPLIT_KEY}${val.value}${SPLIT_KEY}${
-          this.getDataFormProp(value).inputData
+        `${this.getDataFormProp(value).cascaderData.join(',')}${SPLIT_KEY}${val.value}${SPLIT_KEY}${this.getDataFormProp(value).inputData
         }`,
       );
     } else if (key === 2) {
       onChange(
-        `${this.getDataFormProp(value).cascaderData.join(',')}${SPLIT_KEY}${
-          this.getDataFormProp(value).streetData
+        `${this.getDataFormProp(value).cascaderData.join(',')}${SPLIT_KEY}${this.getDataFormProp(value).streetData
         }${SPLIT_KEY}${val}`,
       );
     }

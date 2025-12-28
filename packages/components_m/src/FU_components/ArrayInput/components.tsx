@@ -1,41 +1,33 @@
-import { AutoComplete, Checkbox, InputNumber } from 'antd';
-import MyInputNumber from '../../GeneralComponents/InputNumber';
-import CusDatePicker from '../../GeneralComponents/DatePicker';
-import InputWithLabel from '../../GeneralComponents/InputWithLabel';
+import { Checkbox } from 'antd';
+import GeneralComponents_InputWithLabel from '../../GeneralComponents/InputWithLabel';
 import MultipleInputWithLabel from '../../GeneralComponents/MultipleInputWithLabel';
-import { MyInput } from '../MyInput';
 import { TOption } from './types';
-import { MyAutoComplete } from '../MyAutoComplete';
-import { MySelect } from '../../FU_components/MySelect';
 
-import { lazy } from 'react';
-import { MyCheckbox_Display, default as MyCheckbox } from '../../GeneralComponents/CheckboxWithInput_gold'
-// import MyCheckbox from '../../GeneralComponents/CheckboxWithInput_gold';
-// const MyCheckbox = lazy(() => import("../../GeneralComponents/CheckboxWithInput_gold"))
-// const MyCheckbox_Display = lazy(() => import("../../GeneralComponents/CheckboxWithInput_gold/Display"))
+import { pack_components } from '@lm_fe/components';
+import { AnyObject } from '@lm_fe/utils';
 export const componentMap: { [x in TOption['inputType']]: any } = {
-    MyAutoComplete,
-    MA: MyAutoComplete,
-    InputWithLabel,
+    // MyAutoComplete,
+    // MA: MyAutoComplete,
+    InputWithLabel: GeneralComponents_InputWithLabel,
     MultipleInputWithLabel,
-    CusDatePicker,
-    DatePicker: CusDatePicker,
-    MyInput,
-    Input: MyInput,
+    // CusDatePicker,
+    // DatePicker: CusDatePicker,
     CheckboxGroup: Checkbox.Group,
-    InputNumber: MyInputNumber,
-    MyInputNumber,
-    CheckboxWithInput: MyCheckbox,
-    MyCheckbox,
-    Checkbox: MyCheckbox,
-    MC: MyCheckbox,
-    MySelect,
-    MS: MySelect,
+    // InputNumber: MyInputNumber,
+    // MyInputNumber,
+    // input_number: MyInputNumber,
+    // CheckboxWithInput: MyCheckbox,
+    // MyCheckbox,
+    // Checkbox: MyCheckbox,
+    // MC: MyCheckbox,
+    // MySelect,
+    // MS: MySelect,
+    ...pack_components,
+
 }
-export const displayComponentMap: { [x: string]: any } = {
+export const displayComponentMap: AnyObject = {
 
     // CheckboxWithInput: MyCheckbox,
-    MyCheckbox: MyCheckbox_Display,
 }
 
 

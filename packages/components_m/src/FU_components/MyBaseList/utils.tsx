@@ -1,18 +1,19 @@
 import { IMchc_FormDescriptions_Field_Nullable } from "@lm_fe/service";
-import { MyBaseListProps } from "./types";
-import { get, isObject, isString } from "lodash";
-import { safe_json_parse, safe_json_parse_arr } from "@lm_fe/utils";
+import { IMyBaseList_ColumnType, MyBaseListProps } from "./types";
+import { get, isFunction, isNil, isObject, isString } from "lodash";
+import { AnyObject, safe_async_call, safe_json_parse, safe_json_parse_arr } from "@lm_fe/utils";
 import { ICommonOption } from "@lm_fe/env";
+import { useEffect, useState } from "react";
 export function formatProps(props: MyBaseListProps) {
   const _props = { ...props }
 
   return _props
 }
 
-export function tranformQueryData(values: { [x: string]: any }, searchConfig: IMchc_FormDescriptions_Field_Nullable[] = [], searchSchema: any[] = [], isFuck = false) {
+export function tranformQueryData(values: AnyObject, fds: IMchc_FormDescriptions_Field_Nullable[] = [], searchSchema: any[] = [], isFuck = false) {
   const newValues = { ...values }
 
-  const kvArr = searchConfig
+  const kvArr = fds
     .filter(_ => _)
     .map(_ => {
       const k = _?.name!
@@ -22,12 +23,12 @@ export function tranformQueryData(values: { [x: string]: any }, searchConfig: IM
   return kvArr.reduce((sum, [k, v]) => {
 
     if (isFuck) return { ...sum, [k]: v }
-    return { ...sum, ...calcKey(k, v, searchConfig, searchSchema) }
+    return { ...sum, ...calcKey(k, v, fds, searchSchema) }
   }, {})
 
 }
-function calcKey(k: string, v: any, searchConfig: IMchc_FormDescriptions_Field_Nullable[] = [], searchSchema: any[] = [],) {
-  const config = searchConfig?.find(_ => _?.name === k)
+function calcKey(k: string, v: any, fds: IMchc_FormDescriptions_Field_Nullable[] = [], searchSchema: any[] = [],) {
+  const config = fds?.find(_ => _?.name === k)
   if (config) {
     return calcKeyByType(k, v, config.inputType!, config.filterType?.split?.(',') ?? [])
   }
@@ -73,4 +74,45 @@ function calcKeyByType(k: string, v: any, type: string, filterType: string[] = [
     }
   }
   return f1 ? { [`${k}.${f1}`]: v } : { [k]: v }
+}
+export function get_dataIndex<T>(record?: IMyBaseList_ColumnType) {
+  const _dataIndex = record?.dataIndex ?? record?.name ?? record?.key
+  if (isString(_dataIndex) && _dataIndex.includes('.')) {
+    return _dataIndex.split('.')
+  }
+  return _dataIndex
+}
+export function get_title<T>(record?: IMyBaseList_ColumnType) {
+  const _title = record?.title ?? record?.label ?? record?.name
+
+  return _title
+}
+export function use_my_baselist<T>(props: MyBaseListProps) {
+  const { tableColumns } = props
+  const [table_columns, set_table_columns] = useState<IMyBaseList_ColumnType<T>[]>([])
+
+  useEffect(() => {
+
+    if (isFunction(tableColumns)) {
+      safe_async_call(tableColumns).then(data => {
+        if (Array.isArray(data)) {
+          set_table_columns(data.filter(_ => !isNil(_)))
+
+        } else {
+          set_table_columns(data.default.__lazy_config.filter(_ => !isNil(_)))
+
+        }
+      })
+    } else {
+      set_table_columns((tableColumns ?? []).filter(_ => !isNil(_)))
+
+    }
+
+    return () => {
+
+    }
+  }, [tableColumns])
+
+
+  return { table_columns }
 }

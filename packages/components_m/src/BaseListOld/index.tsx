@@ -1,18 +1,16 @@
-import BaseTable from '../BaseTableOld';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { MyIcon, validate_form } from '@lm_fe/components';
+import { mchcLogger } from '@lm_fe/env';
+import { formatDate, isMoment, request, Request } from '@lm_fe/utils';
 import { Button, Divider, Form, message, Popconfirm } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 import classnames from 'classnames';
-import { get, isArray, isFunction, isNil, join, map, pick, set } from 'lodash';
-import { isMoment } from 'moment';
+import { get, isArray, isFunction, isNil, map } from 'lodash';
 import React, { FC, lazy } from 'react';
 import BaseFormComponent from '../BaseFormComponent';
+import BaseTable from '../BaseTableOld';
+import { getDefaultRequiredRules } from '../utils/defaultMethod';
 import './index.less';
 import { getDataSource } from './methods';
-import { getDefaultRequiredRules } from '../utils/defaultMethod';
-import { formatDate, getMomentObj, request, Request } from '@lm_fe/utils';
-import { mchcLogger } from '@lm_fe/env';
-import { mchcModal } from '../modals';
 const BaseFormComponentDisplayFC = lazy(() => import('../BaseFormComponent/DisplayFC'))
 export interface IProps {
   request?: Request,
@@ -149,7 +147,7 @@ export default class BaseListOld extends React.Component<IProps, IState> {
             ExtraButton ? <ExtraButton rowData={rowData} /> : null
           }
           <Button type="link" size="small" onClick={this.handleEdit(rowData)}>
-            <EditOutlined className="global-table-action-icon global-table-action-view" />
+            <MyIcon value='EditOutlined' className="global-table-action-icon global-table-action-view" />
             编辑
           </Button>
           <Divider type="vertical" />
@@ -160,7 +158,7 @@ export default class BaseListOld extends React.Component<IProps, IState> {
             cancelText="取消"
           >
             <Button type="link" size="small">
-              <DeleteOutlined className="global-table-action-icon" />
+              <MyIcon value='DeleteOutlined' className="global-table-action-icon" />
               删除
             </Button>
           </Popconfirm>
@@ -195,8 +193,9 @@ export default class BaseListOld extends React.Component<IProps, IState> {
     const { baseUrl, baseTitle, toApi, needEditInTable, showAdd } = this.props;
     const { id } = this.state;
     const form = this.form as FormInstance;
-    await this.form?.validateFields();
-    const formData = form.getFieldsValue();
+    const formData = await validate_form(form)
+
+    if (!formData) return
     map(formData, (data, key) => {
       if (isMoment(data)) {
         formData[key] = formatDate(data);
@@ -244,11 +243,11 @@ export default class BaseListOld extends React.Component<IProps, IState> {
     const { needEditInTable, tableColumns } = this.props;
     if (needEditInTable) {
       const form = this.form as FormInstance;
-      // TODO: 通过 tableColumns 判断字段是否为时间格式，如果是，需要转换为 moment。(是否可以优化？)
+      // TODO: 通过 tableColumns 判断字段是否为时间格式，如果是，需要转换为 dayjs()。(是否可以优化？)
       // map(rowData, (item, dataIndex) => {
       //   const inputType = get(keyBy(tableColumns, 'dataIndex'), `${dataIndex}.inputType`);
       //   if (['single_date_picker', 'single_time_picker'].indexOf(inputType) > -1) {
-      //     set(rowData, dataIndex, momentDate(item));
+      //     set(rowData, dataIndex, dayjs()Date(item));
       //   }
       // });
       // map(tableColumns, (item) => {
@@ -283,7 +282,7 @@ export default class BaseListOld extends React.Component<IProps, IState> {
     const id = rowData?.id
     const that = this
     const url = this.props.baseUrl
-    mchcModal.open('modal_form', {
+    window.mchc_modal.open('modal_form', {
       width: '80vw',
 
       modal_data: {
@@ -480,7 +479,7 @@ export default class BaseListOld extends React.Component<IProps, IState> {
       editing,
       dataIndex,
       title,
-      inputType = 'input',
+      inputType,
       inputProps,
       rules,
       record,

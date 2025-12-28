@@ -1,8 +1,11 @@
-import React from 'react';
-import {BaseTable} from '../../../BaseTable';
-import { Table } from 'antd';
+import { LazyAntd } from '@lm_fe/components';
 import { get } from 'lodash';
-export default class ProductsTable extends BaseTable {
+import React from 'react';
+import BaseTableOld from 'src/BaseTableOld';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
+
+export default class ProductsTable extends BaseTableOld {
   renderTitle = () => {
     return <></>;
   };
@@ -18,7 +21,7 @@ export default class ProductsTable extends BaseTable {
           marginTop: 20,
           paddingBottom: 10,
           height: '100%',
-          overflowY: 'scroll',
+          overflowY: 'auto',
         }}
         {...rest}
         scroll={{ x: get(rest, 'scroll.x') || '100vw' }}

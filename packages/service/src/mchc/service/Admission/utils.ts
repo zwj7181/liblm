@@ -1,6 +1,7 @@
 import { MchcTypes } from "@lm_fe/env";
 import { IMchc_Admission_Document } from "./Document";
 import _, { isEmpty } from "lodash";
+import { AnyObject } from "@lm_fe/utils";
 
 export function processDocument<T extends MchcTypes>(doc: IMchc_Admission_Document<T>) {
     doc_sort(doc)
@@ -37,9 +38,9 @@ function doc_setDefault<T extends MchcTypes>(doc: IMchc_Admission_Document<T>) {
         {
             ..._,
 
-            apgar: Object.keys(_).reduce((sum, k) => {
-                return k.startsWith('apgar') ? { ...sum, [k]: _[k] } : sum
-            }, {})
+            // apgar: Object.keys(_).reduce((sum, k) => {
+            //     return k.startsWith('apgar') ? { ...sum, [k]: _[k] } : sum
+            // }, {})
         }
     ))
 }
@@ -50,7 +51,7 @@ function __setOneIfArrEmpty<T>(arr: T[]) {
     return isEmpty(arr) ? [] : arr
 }
 
-function __orderByDatetime<T extends { [x: string]: any }>(data: T[], key: keyof T) {
-    const res = (data ?? []).map(_ => ({ ..._, disabled: __DEV__ ? false : (_.disabled || !_.editFlag) }))
+function __orderByDatetime<T extends AnyObject>(data: T[], key: keyof T) {
+    const res = (data ?? []).map(_ => ({ ..._, disabled: (_.disabled || !_.editFlag) }))
     return res.sort((a, b) => +new Date(a[key]) - +new Date(b[key]))
 }

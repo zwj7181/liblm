@@ -1,8 +1,7 @@
+import { MyIcon } from '@lm_fe/components';
+import { Button, Input, InputNumber } from 'antd';
+import dayjs from 'dayjs';
 import React, { useState } from 'react';
-import moment from 'moment';
-import { cloneDeep } from 'lodash';
-import { Button, InputNumber, Input } from 'antd';
-import { PlusOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import Modal from './Modal';
 import styles from './index.less';
 const DATA = {
@@ -31,7 +30,7 @@ export default function DiagnosisList({ value = DATA, user, onChange }: any) {
   };
 
   const handleSelect = (val: string) => {
-    const addItem = { id: '', diagnosis: val, createDate: moment().format('YYYY-MM-DD'), note: '' };
+    const addItem = { id: '', diagnosis: val, createDate: dayjs().format('YYYY-MM-DD'), note: '' };
     if (value.list) {
       onChange({ ...value, list: [...value.list, addItem] });
     } else {
@@ -60,7 +59,7 @@ export default function DiagnosisList({ value = DATA, user, onChange }: any) {
   return (
     <div className={styles["diagnosis-wrapper"]}>
       <div className={styles["diagnosis-action"]}>
-        <Button icon={<PlusOutlined />} onClick={handleShow}>
+        <Button icon={<MyIcon value='PlusOutlined' />} onClick={handleShow}>
           添加诊断
         </Button>
       </div>
@@ -113,14 +112,14 @@ export default function DiagnosisList({ value = DATA, user, onChange }: any) {
                 <span className={styles["diagnosis-list-item-extra"]}>
                   <span className={styles["date"]}>{_.createDate}</span>
                   <Button type="text" onClick={() => handleDel(i)}>
-                    <CloseCircleOutlined />
+                    <MyIcon value='CloseCircleOutlined' />
                   </Button>
                 </span>
               </li>
             );
           })}
       </ul>
-      {visible && <Modal visible={visible} onCancel={onCancel} onSelect={handleSelect} />}
+      {visible && <Modal open={visible} onCancel={onCancel} onSelect={handleSelect} />}
     </div>
   );
 }

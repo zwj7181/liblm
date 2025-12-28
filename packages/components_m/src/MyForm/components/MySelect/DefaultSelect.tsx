@@ -1,7 +1,11 @@
 import { Component } from 'react';
 import { ICommonOption, mchcUtils, otherOptions } from '@lm_fe/env';
-import { Select } from 'antd';
 import { cloneDeep, get, isFunction, isString } from 'lodash';
+import { LazyAntd } from '@lm_fe/components';
+import React from 'react';
+
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
 interface DefaultSelectProps {
   onChange: Function;
   value: any;
@@ -51,7 +55,7 @@ class DefaultSelect extends Component<DefaultSelectProps> {
       multiple = false,
       tags = false,
       style = {},
-      dropdownMatchSelectWidth = true,
+      popupMatchSelectWidth = true,
       uniqueKey,
 
     } = this.props;
@@ -90,7 +94,7 @@ class DefaultSelect extends Component<DefaultSelectProps> {
         showSearch
         disabled={this.props.disabled}
         mode={selectMode}
-        dropdownMatchSelectWidth={dropdownMatchSelectWidth}
+        popupMatchSelectWidth={popupMatchSelectWidth}
         onChange={this.handleChange}
       >
         {this.renderOptions(cloneOptions)}

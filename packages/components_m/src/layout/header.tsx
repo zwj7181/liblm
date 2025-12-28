@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
 import storage from '@/utils/storage';
-import { ExclamationCircleOutlined, NodeIndexOutlined } from '@ant-design/icons';
-import { Badge, Divider, Dropdown, Layout, Menu, Modal, Select, Tooltip } from 'antd';
+import { Badge, Divider, Layout, Menu, Modal, Tooltip } from 'antd';
 import { get, isUndefined } from 'lodash';
+import React, { Component } from 'react';
 import { APP_CONFIG, WEBSOCKET_STATUS, WEBSOCKET_STATUS_TEXT } from '../utils/constants';
 import ClearCache from './components/ClearCache';
 import PregnancyToolbar from './components/PregnancyToolbar';
@@ -11,10 +10,11 @@ import BuildInfoModal from './components/build-info-modal/build-info-modal';
 
 // websocket services
 import protocolCheck, { getChromeVersion } from '@/utils/protocolCheck';
+import { LazyAntd, MyIcon } from '@lm_fe/components';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import './header.less';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
 interface IProps {
-  onToggle: any;
   collapsed: boolean;
   user?: any;
   location: any;
@@ -111,7 +111,7 @@ class Header extends Component<IProps, IState> {
     protocolCheck('lmcs://', function () {
       Modal.confirm({
         title: '未安装插件',
-        icon: <ExclamationCircleOutlined />,
+        icon: <MyIcon value='ExclamationCircleOutlined' />,
         content: '检测到您电脑OBIS外设驱动本地客户端未安装 请下载',
         onOk() {
           console.log('下载');
@@ -168,7 +168,7 @@ class Header extends Component<IProps, IState> {
                       size="small"
                       showArrow={false}
                       bordered={false}
-                      dropdownMatchSelectWidth={false}
+                      popupMatchSelectWidth={false}
                       onClick={(e: React.MouseEvent) => {
                         e.stopPropagation();
                       }}
@@ -240,7 +240,7 @@ class Header extends Component<IProps, IState> {
                   }
                 >
                   <Badge dot status={socketState === WEBSOCKET_STATUS['OPEN'] ? 'success' : 'error'}>
-                    <NodeIndexOutlined className="global-container-layout_header-right-dropdown-name" />
+                    <MyIcon value='NodeIndexOutlined' className="global-container-layout_header-right-dropdown-name" />
                   </Badge>
                 </Tooltip>
               </div>

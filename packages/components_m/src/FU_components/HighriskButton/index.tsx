@@ -1,7 +1,6 @@
+import { IMchc_Doctor_OutpatientHeaderInfo } from "@lm_fe/service";
 import { Button, ButtonProps } from 'antd';
 import React from 'react';
-import { IMchc_Doctor_OutpatientHeaderInfo } from "@lm_fe/service";
-import { mchcModal } from '../../modals';
 interface IValue {
   highriskGrade: string
   highriskNote: string
@@ -19,7 +18,7 @@ export function HighriskButton(props: IProps) {
 
   function handleBtnClick() {
 
-    mchcModal.open('高危因素管理', {
+    window.mchc_modal.open('高危因素管理', {
       modal_data: {
         pregnancyId: (value as any)?.id,
         data: value as any,

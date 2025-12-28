@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Select, Input, Row, Col } from 'antd';
+import { Input, Row, Col } from 'antd';
 import { get, map, join, set, split, compact, indexOf } from 'lodash';
 import { safe_json_parse } from '@lm_fe/utils';
+import { LazyAntd } from '@lm_fe/components';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
 interface IProps {
   config: {};
   value?: any;

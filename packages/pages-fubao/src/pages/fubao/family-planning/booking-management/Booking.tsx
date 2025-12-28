@@ -32,8 +32,8 @@
 //                         </Item>
 //                     </Col>
 //                     <Col xs={8}>
-//                         <Item label="就诊卡号" name="pregnancyOutpatientNO">
-//                             <Input placeholder="请输入就诊卡号" />
+//                         <Item label="门诊号" name="pregnancyOutpatientNO">
+//                             <Input placeholder="请输入门诊号" />
 //                         </Item>
 //                     </Col>
 //                     <Col xs={8}>
@@ -168,8 +168,8 @@
 //                         </Item>
 //                     </Col>
 //                     <Col xs={8}>
-//                         <Item label="就诊卡号" name="pregnancyOutpatientNO">
-//                             <Input placeholder="请输入就诊卡号" />
+//                         <Item label="门诊号" name="pregnancyOutpatientNO">
+//                             <Input placeholder="请输入门诊号" />
 //                         </Item>
 //                     </Col>
 //                     <Col xs={8}>
@@ -307,8 +307,8 @@
 //                         </Item>
 //                     </Col>
 //                     <Col xs={8}>
-//                         <Item label="就诊卡号" name="pregnancyOutpatientNO">
-//                             <Input placeholder="请输入就诊卡号" />
+//                         <Item label="门诊号" name="pregnancyOutpatientNO">
+//                             <Input placeholder="请输入门诊号" />
 //                         </Item>
 //                     </Col>
 //                     <Col xs={8}>

@@ -2,6 +2,7 @@ import React from 'react';
 import { get, map, size } from 'lodash';
 import { APP_CONFIG } from '@lm_fe/env';
 import { InputWithRange, PressureInput } from '@lm_fe/components_m';
+import { IMyBaseList_ColumnType } from '@lm_fe/pages';
 
 export const tableColumns = [
   {
@@ -226,3 +227,8 @@ export const tableColumns = [
     width: 68,
   },
 ];
+
+export const searchConfig: IMyBaseList_ColumnType[] = [
+  { label: '就诊卡号', inputType: 'input', name: 'outpatientNO', },
+  { label: '体检日期', inputType: 'rangeDate', name: 'createDate', },
+]

@@ -1,7 +1,8 @@
-import { DatePicker, Input, InputNumber } from 'antd';
+import { DatePicker_L } from '@lm_fe/components';
+import { Input, InputNumber } from 'antd';
 import classnames from 'classnames';
 import { get, isNil } from 'lodash';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import styles from './index.less';
 import { IInputWithLabelProps } from './types';
@@ -37,7 +38,7 @@ export default function InputWithLabel(props: IInputWithLabelProps) {
       setNewStyle({ ...newStyle, color: '#333' });
     }
     if (props.type === 'single_date_picker') {
-      value && setData(moment(value))
+      value && setData(dayjs(value))
     } else if (value === 0) {
       setData(String(value));
     } else {
@@ -95,7 +96,7 @@ export default function InputWithLabel(props: IInputWithLabelProps) {
       ) : (
         type === 'single_date_picker' ?
 
-          <DatePicker
+          <DatePicker_L
             className={styles["input-with-label_input"]}
             style={inputStyle}
             onChange={handleChange('number')}

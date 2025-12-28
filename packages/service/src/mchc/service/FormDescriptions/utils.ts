@@ -1,6 +1,8 @@
-import { mchcEnv } from "@lm_fe/env"
-import { IMchc_FormDescriptions, IMchc_FormDescriptions_Field, IMchc_FormDescriptions_Field_Nullable } from "./types"
+import { Common_Form_Config_Names, mchcEnv } from "@lm_fe/env"
 import { safe_json_parse } from "@lm_fe/utils"
+import { FormInstance } from "antd"
+import { get, isArray, isNumber, isString } from "lodash"
+import { IMchc_FormDescriptions, IMchc_FormDescriptions_Field, IMchc_FormDescriptions_Field_Nullable_Arr, IMchc_FormDescriptions_MIX } from "@noah-libjs/components"
 
 
 
@@ -70,14 +72,56 @@ export function setCache(name: string, data: IMchc_FormDescriptions<true>[]) {
     cache.expire = +new Date() + 10 * 60 * 1000
     fdCache[name] = cache
 }
-export function defineFormConfig(config: IMchc_FormDescriptions_Field_Nullable[], first_level_default?: Partial<IMchc_FormDescriptions_Field>) {
-    // if (first_level_default?.containerType && Array.isArray(config)) {
-    //     const filterData = config.filter(_ => _) as IMchc_FormDescriptions_Field[]
+export function defineFormConfig(config: IMchc_FormDescriptions_Field_Nullable_Arr, first_level_default?: Partial<IMchc_FormDescriptions_Field>) {
+    if (first_level_default && Array.isArray(config)) {
+        const filterData = config.filter(_ => _) as IMchc_FormDescriptions_Field[]
 
-    //     return filterData.map(_ => {
-    //         if (!_.children) return _
-    //         return { ..._, containerType: _.containerType ?? first_level_default.containerType }
-    //     })
-    // }
-    return config
+        config = filterData.map(_ => {
+            if (!_.children && !_.fields) return _
+            return {
+                ..._,
+                containerType: _.containerType ?? first_level_default.containerType,
+                remote_filter_key: _.remote_filter_key ?? first_level_default.remote_filter_key,
+            }
+        })
+    }
+    return { __lazy_config: config }
+}
+
+export function set_preset_form_config(confs: { name: Common_Form_Config_Names, conf: IMchc_FormDescriptions_MIX, handler?: (changed: any, all: any, form: FormInstance) => void }[]) {
+
+    mchcEnv.setEnvFormConfig(confs)
+}
+
+
+
+
+export function get_preset_form_config(name: Common_Form_Config_Names) {
+
+    const old = mchcEnv.getEnvFormConfig(name)
+
+    if (!old) return
+    return old
+}
+
+
+
+export function get_lazy(config: any) {
+    let d = (get(config, '__lazy_config') || get(config, 'default.__lazy_config')) as unknown as IMchc_FormDescriptions_Field_Nullable_Arr
+    return d
+}
+//
+
+
+
+
+export function parse_form_item_name_raw(name?: number | string | string[]) {
+    if (isArray(name)) return name as string[]
+    if (isNumber(name)) return [name.toString()]
+
+    if (!isString(name)) return []
+
+    let __name = name?.includes('.') ? name.split('.') : name;
+
+    return Array.isArray(__name) ? __name : [__name]
 }

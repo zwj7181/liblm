@@ -1,17 +1,15 @@
+import { MyIcon } from '@lm_fe/components';
+import { Button, message } from 'antd';
+import { cloneDeep } from 'lodash';
 import React from 'react';
+import BaseListOld from 'src/BaseListOld';
+import ModalForm from './components/ModalForm';
 import Table from './components/Table';
 import { tableColumns } from './config/table';
-import BaseList from '../../../BaseList';
-import { bindLifecycle } from 'react-keep-alive-pro';
-import ModalForm from './components/ModalForm';
-import { cloneDeep, get } from 'lodash';
-import { Button, Divider, Popconfirm } from 'antd';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import './index.less';
-import { message } from '../../../antd-design/message';
 
 // 列表
-export class TreatmentProgramTable extends BaseList {
+export class TreatmentProgramTable extends BaseListOld {
   static defaultProps = {
     baseUrl: '',
     baseTitle: '',
@@ -46,7 +44,7 @@ export class TreatmentProgramTable extends BaseList {
             <Button
               type="link"
               size="small"
-              icon={<EditOutlined className="global-table-action-icon" />}
+              icon={<MyIcon value='EditOutlined' className="global-table-action-icon" />}
               onClick={this.handleEdit(rowData)}
             >
               编辑
@@ -70,7 +68,7 @@ export class TreatmentProgramTable extends BaseList {
   async componentDidMount() {
     this.handleSearch();
   }
-  componentDidActivate() {}
+  componentDidActivate() { }
   handleEdit = (record: any) => () => {
     this.setState({
       visible: true,
@@ -155,4 +153,4 @@ export class TreatmentProgramTable extends BaseList {
     );
   };
 }
-export default bindLifecycle(TreatmentProgramTable);
+export default TreatmentProgramTable

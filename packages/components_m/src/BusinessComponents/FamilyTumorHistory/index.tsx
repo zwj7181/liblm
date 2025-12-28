@@ -1,8 +1,8 @@
-import BaseFormComponent from '../../BaseFormComponent';
-import { PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import { MyIcon } from '@lm_fe/components';
 import { Col, Row, Space } from 'antd';
-import { map, cloneDeep, set, get, isEmpty, isString, isString } from 'lodash';
+import { get, isEmpty, isString, map, set } from 'lodash';
 import React, { Component } from 'react';
+import BaseFormComponent from '../../BaseFormComponent';
 import styles from './index.less';
 export default class FamilyTumorHistory extends Component<any, any> {
   state = {
@@ -155,9 +155,9 @@ export default class FamilyTumorHistory extends Component<any, any> {
           }}
         >
           <Space>
-            <PlusCircleOutlined onClick={this.handleAdd} />
+            <MyIcon value='PlusCircleOutlined' onClick={this.handleAdd} />
             {this.state.childrens.length > 1 ? (
-              <MinusCircleOutlined
+              <MyIcon value='MinusCircleOutlined'
                 onClick={() => {
                   this.handleDelete(index);
                 }}

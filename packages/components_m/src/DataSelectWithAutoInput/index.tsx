@@ -1,19 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { Select, Col, Row, Space, Form, Input } from 'antd';
-import { filter } from 'lodash';
+import { AnyObject, request } from '@lm_fe/utils';
+import { Col, Form, Input } from 'antd';
 import { SelectProps } from 'antd/lib/select';
-import { request } from '@lm_fe/utils';
+import { filter } from 'lodash';
+import React, { useEffect, useState } from 'react';
+import { LazyAntd } from '@lm_fe/components';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
 interface IProps extends SelectProps<any> {
   labelKey?: string;
   valueKey?: string;
   method?: 'get' | 'post' | 'put';
   url?: string;
-  dataSource?: { [x: string]: any }[];
+  dataSource?: AnyObject[];
   form?: any;
 }
 export default ({ method = 'get', dataSource = [], form, ...rest }: IProps) => {
   const Option = Select.Option;
-  const [options, setOptions] = useState<{ [x: string]: any }>(dataSource);
+  const [options, setOptions] = useState<AnyObject>(dataSource);
   useEffect(() => {
     request[method](`/api/listInpatientBedDoctor`).then((r) => {
       setOptions(r.data);

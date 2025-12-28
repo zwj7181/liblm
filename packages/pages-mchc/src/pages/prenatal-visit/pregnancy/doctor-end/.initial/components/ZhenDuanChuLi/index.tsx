@@ -1,147 +1,128 @@
-import { PrinterOutlined, SaveOutlined, TableOutlined } from '@ant-design/icons';
-import DiabetesAppointment from '../../../.components/DiabetesAppointment';
+import { LazyAntd, MyIcon, useMyEffectSafe } from '@lm_fe/components';
+import { FormSectionForm, OkButton } from '@lm_fe/components_m';
+import { mchcEnv, mchcEvent, mchcUtils } from '@lm_fe/env';
+import { IMchc_Doctor_Diagnoses, IMchc_Doctor_FirstVisitDiagnosisOutpatient, IMchc_Doctor_OutpatientHeaderInfo, SMchc_Doctor, TIdType } from '@lm_fe/service';
+import { getFutureDate } from '@lm_fe/utils';
+import { Col, message, Modal, Row, Space } from 'antd';
+import { forEach, get, isNil } from 'lodash';
+import React, { useEffect, useState } from 'react';
 import Diagnoses from '../../../.components/Diagnoses';
-import DiagReminder from '../../../.components/DiagReminder';
-import PreventPreeclampsia from '../../../.components/PreventPreeclampsia';
 import ManagementPlan from '../../../.further/components/FurtherSidebar/management-plan';
-import requestMethods, { updateTabMethods } from '../../methods/request';
-import { FormConfig, HighRiskTableEntry, MyForm, getFormData, getFutureDate } from '@lm_fe/components_m';
-import { mchcEnv } from '@lm_fe/env';
-import { IMchc_Doctor_Diagnoses, IMchc_Doctor_FirstVisitDiagnosisOutpatient, IMchc_Doctor_OutpatientHeaderInfo, IMchc_Doctor_RvisitInfoOfOutpatient, IMchc_Pregnancy, TIdType, TIdTypeCompatible } from '@lm_fe/service';
-import { Button, Col, message, Modal, Row, Space, Table } from 'antd';
-import { forEach, get, isEqual, size } from 'lodash';
-import React, { useState, useEffect, useRef } from 'react';
-import config from './config';
 import './index.less';
-import { api } from '../../../.api';
-interface IProps {
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
 
-  canSave: boolean
-  noShowBtn: boolean
+import { BF_Wrap2, HighRiskTableEntry } from '@lm_fe/pages';
+import { FormInstance } from 'antd/es/form/Form';
+import { api } from '../../../.api';
+import { IInitial_Tab_props } from '../../types';
+interface IProps {
+  diagnosis_addon_btns?: (data?: IMchc_Doctor_FirstVisitDiagnosisOutpatient) => React.ReactNode
+  diagnosis_before_submit?: (submit: (values: any) => Promise<void>, data?: IMchc_Doctor_FirstVisitDiagnosisOutpatient, form?: FormInstance) => Promise<void>
+  disabled_save: boolean
   serialNo: string
 
-  changePreeclampsia(b: boolean): void
-  changeScreening(b: boolean): void
-  changeSyphilis(b: boolean): void
   headerInfo: IMchc_Doctor_OutpatientHeaderInfo,
-  visitData: IMchc_Doctor_RvisitInfoOfOutpatient
-  getFormHandler(v: any): void
   diagnosesList: IMchc_Doctor_Diagnoses[]
-  handleSave(v: any): void
-  zdFormConfig: FormConfig[]
-  changePreventPreeclampsia(b: boolean): void,
-  isShowPreventPreeclampsia: boolean
   handlePrint?(resource: string, id?: TIdType): void
-  changeDiagnosesTemplate(v: boolean): void
   setDiagnosesList(l: IMchc_Doctor_Diagnoses[]): void
-  setDiagnosesWord(v: string): void
   saveHeaderInfo(v: IMchc_Doctor_OutpatientHeaderInfo): void
-  diagnosesWord: string
-  getHighriskDiagnosis(v: TIdTypeCompatible): void
 
 }
 
 const Title = '诊断处理';
-const Config = config;
 const ClassName = 'zhen-duan-chu-li';
-function Index(props: IProps) {
+function Index(props: IProps & IInitial_Tab_props) {
 
   const { serialNo,
-    visitData,
     diagnosesList,
-    handleSave,
-    changeScreening,
-    changePreeclampsia,
     handlePrint: _handlePrint,
-    zdFormConfig,
-    noShowBtn,
-    canSave,
-    getFormHandler,
+    disabled_save,
 
 
     headerInfo,
-    changePreventPreeclampsia,
-    isShowPreventPreeclampsia,
-    changeSyphilis,
-    changeDiagnosesTemplate,
     setDiagnosesList,
-    setDiagnosesWord,
-    diagnosesWord,
-    getHighriskDiagnosis,
     saveHeaderInfo,
+    active,
+    diagnosis_before_submit,
+    diagnosis_addon_btns,
+    form
   } = props;
+  const preg_id = mchcUtils.single_id()
+
+  const { Wrap, config } = BF_Wrap2({ default_conf: { title: '门诊-诊断处理', tableColumns: () => import('./config') } })
 
 
-  const [formHandler, set_formHandler] = useState({})
-
-  const [isShowMenzhen, set_isShowMenzhen] = useState(false)
   const [isShowModifyRecord, set_isShowModifyRecord] = useState(false)
-  const [isShowDiagReminder, set_isShowDiagReminder] = useState(false)
   const [isShowManageModal, set_isShowManageModal] = useState(false)
 
   const [recordData, set_recordData] = useState([])
-
-
-  const myrefs = useRef()
-
+  const [visitData, setVisitData] = useState<IMchc_Doctor_FirstVisitDiagnosisOutpatient>()
 
 
   useEffect(() => {
 
-    if (formHandler.subscribe) {
-      formHandler.subscribe('advice.appointmentCycle', 'change', (val: any) => {
-        const day = val || 0;
-        formHandler['advice.appointmentDate'].actions.setValue(getFutureDate(day));
-      });
+    if (active) {
+      initData()
     }
 
-  }, [formHandler])
 
-  function setItemValue(val: string, key: string) {
-    if (key === 'prescription') {
-      let tempValue = formHandler.prescription.actions.getValue().value || '';
-      if (tempValue.indexOf(val) === -1) tempValue += `${val}；`;
-      formHandler.prescription.actions.setValue(tempValue);
+    return () => {
+
     }
+  }, [active])
+  useMyEffectSafe(props)(() => {
+    const rm = mchcEvent.on_rm('my_form', async e => {
+      // mchcEnv.logger.log('event receive', { e, })
+      if (e.type === 'onChange' && e.name === 'advice') {
+
+        const values = e.values;
+        const value = e.value;
+        const key = e.name
+
+        if (!isNil(value.appointmentCycle)) {
+          e.setValue?.('advice', { appointmentDate: getFutureDate(value.appointmentCycle) })
+        }
+
+      }
+
+    })
+    return rm
+  }, [])
+
+  function initData() {
+
+    SMchc_Doctor.getFirstVisitDiagnosisOutpatient(preg_id).then(v => {
+      setVisitData(v)
+      form.setFieldsValue(v)
+    })
+  }
+
+
+  function handleSubmitBefore() {
+    if (diagnosis_before_submit) {
+      return diagnosis_before_submit(handleSubmit, visitData, form)
+    }
+    const values = form.getFieldsValue()
+    handleSubmit(values)
+  }
+  async function handleSubmit(values) {
+    const re = await SMchc_Doctor.updateFirstVisitDiagnosisOutpatient({
+      currentGestationalWeek: get(headerInfo, 'curgesweek')
+        ? get(headerInfo, 'curgesweek')
+        : get(headerInfo, 'gesweek'),
+      diagnoses: diagnosesList,
+      serialNo,
+      ...values
+    })
+    HighRiskTableEntry.highRiskTablePopup(re, headerInfo);
+
   };
 
-  async function handleSubmit() {
 
-    const { validCode, res } = await formHandler.submit();
-    console.log('visit', visitData.serialNo, serialNo)
+  function closeModal(type: 'isShowModifyRecord' | 'isShowManageModal', items?: any, key?: any) {
 
-    if (validCode) {
-      const resdata = getFormData(res);
-      const putData = {
-        ...resdata,
-        id: get(visitData, `id`),
-        currentGestationalWeek: get(headerInfo, 'curgesweek')
-          ? get(headerInfo, 'curgesweek')
-          : get(headerInfo, 'gesweek'),
-        diagnoses: diagnosesList,
-        serialNo,
-      };
-      const re = await requestMethods[updateTabMethods['tab-7']](putData);
-      handleSave && handleSave(re);
-      message.success('信息保存成功');
-      HighRiskTableEntry.highRiskTablePopup(re);
-    } else {
-      message.destroy();
-      message.error('请完善表单项！');
-    }
-  };
-
-
-  function closeModal(type: 'isShowMenzhen' | 'isShowModifyRecord' | 'isShowDiagReminder' | 'isShowManageModal', items?: any, key?: any) {
-
-    if (size(items) > 0) setItemValue(items, key);
-    if (type === 'isShowDiagReminder') {
-      set_isShowDiagReminder(false)
-    } else if (type === 'isShowManageModal') {
+    if (type === 'isShowManageModal') {
       set_isShowManageModal(false)
-
-    } else if (type === 'isShowMenzhen') {
-      set_isShowMenzhen(false)
 
     } else if (type === 'isShowModifyRecord') {
       set_isShowModifyRecord(false)
@@ -156,7 +137,7 @@ function Index(props: IProps) {
       if (id) {
         _handlePrint(type, id);
       } else {
-        message.warn('请先保存');
+        message.warning('请先保存');
       }
     } else {
       _handlePrint(type, undefined);
@@ -200,7 +181,7 @@ function Index(props: IProps) {
 
     return (
       <Modal
-        visible={isShowModifyRecord}
+        open={isShowModifyRecord}
         title="历史首检记录"
         footer={null}
         width="80%"
@@ -216,87 +197,76 @@ function Index(props: IProps) {
 
   return (
     <Row gutter={16} className="zhen-duan label-width5">
-      <Col span="10">
+      <Col span="8">
         <Diagnoses
-          changeDiagnosesTemplate={changeDiagnosesTemplate}
-          changePreeclampsia={changePreeclampsia}
-          changePreventPreeclampsia={changePreventPreeclampsia}
-          changeScreening={changeScreening}
-          changeSyphilis={changeSyphilis}
           saveHeaderInfo={saveHeaderInfo}
           setDiagnosesList={setDiagnosesList}
-          setDiagnosesWord={setDiagnosesWord}
-          diagnosesWord={diagnosesWord}
-          getHighriskDiagnosis={getHighriskDiagnosis}
           headerInfo={headerInfo}
           diagnosesList={diagnosesList}
-          isShowDiagnosesTemplate={false}
-          noshowlist={false}
-          isShowDiagnosesTemplatets={false}
-          visitData={visitData!}
           isAllPregnancies={false}
 
-          getDiagnosesList={() => { }}
 
-          disabled={!canSave}
           serialNo={serialNo}
 
           page={''}
         />
       </Col>
-      <Col span="14">
+      <Col span="16">
         <div className="form-wrapper">
-          <MyForm
-            disabled_all={!canSave}
-            config={zdFormConfig}
-            value={visitData}
-            getFormHandler={f => {
-              set_formHandler(f)
-              getFormHandler(f)
-            }}
-            submitChange={false}
-          />
-          <Button hidden={mchcEnv.is('广三')} className="his-btn" type="dashed" icon={<TableOutlined />} onClick={handleRecordBtn}>
+
+          <Wrap>
+            <FormSectionForm
+              disableAll={disabled_save}
+
+              onValuesChange={(changedValues) => {
+
+              }}
+              onFinish={(v) => {
+                const values = form.getFieldsValue()
+                handleSubmit(values)
+              }}
+              formDescriptions={__DEV__ ? () => import('./config') : config?.tableColumns}
+
+              form={form}
+            />
+          </Wrap>
+
+
+          <HighRiskTableEntry headerInfo={headerInfo} data={visitData} />
+          <OkButton hidden className="his-btn" type="dashed" icon={<MyIcon value='TableOutlined' />} onClick={handleRecordBtn}>
             首检信息历史修改记录
-          </Button>
-          <Button
+          </OkButton>
+          <OkButton
             hidden={mchcEnv.is('广三')}
             className="his-btn"
             type="dashed"
-            icon={<TableOutlined />}
+            icon={<MyIcon value='TableOutlined' />}
             onClick={() => set_isShowManageModal(true)}
           >
             产检计划
-          </Button>
-          <div style={{ marginTop: '10px' }}>
-            <HighRiskTableEntry headerInfo={headerInfo} data={visitData} />
-          </div>
-        </div>
-        {!noShowBtn && (
-          <Space className="prenatal-visit-main_initial-btns">
-            <Button size="large" onClick={handlePrint.bind(this, 'prenatalVisit')} icon={<PrinterOutlined />}>
-              打印档案
-            </Button>
-            <Button size="large" onClick={handlePrint.bind(this, 'prenatalVisit1')} icon={<PrinterOutlined />}>
-              打印病历
-            </Button>
-            <Button size="large" type="primary" disabled={!canSave} onClick={handleSubmit} icon={<SaveOutlined />}>
-              保存{mchcEnv.is('华医') ? '并关闭' : ''}
-            </Button>
-          </Space>
-        )}
-      </Col>
-      {isShowMenzhen && <DiabetesAppointment isShowMenzhen={isShowMenzhen} closeModal={closeModal} />}
-      {false && isShowDiagReminder && (
-        <DiagReminder isShowDiagReminder={isShowDiagReminder} data={[]} cancelModal={() => closeModal} />
-      )}
-      {
-        <PreventPreeclampsia closeModal={closeModal}
+          </OkButton>
 
-          changePreventPreeclampsia={changePreventPreeclampsia}
-          isShowPreventPreeclampsia={isShowPreventPreeclampsia}
-        />
-      }
+          {/* <OkButton icon={<MyIcon value='SyncOutlined' />} size="large" onClick={initData} style={{ marginLeft: 12 }}>
+            刷新
+          </OkButton> */}
+        </div>
+        <Space className="prenatal-visit-main_initial-btns">
+          {
+            diagnosis_addon_btns?.(visitData)
+          }
+          <OkButton size="large" onClick={() => handlePrint('prenatalVisit')} icon={<MyIcon value='PrinterOutlined' />}>
+            打印档案
+          </OkButton>
+          <OkButton size="large" onClick={() => handlePrint('prenatalVisit1')} icon={<MyIcon value='PrinterOutlined' />}>
+            打印病历
+          </OkButton>
+
+          <OkButton size="large" type="primary" disabled={disabled_save} onClick={handleSubmitBefore} icon={<MyIcon value='SaveOutlined' />}>
+            保存{mchcEnv.is('华医') ? '并关闭' : ''}
+          </OkButton>
+        </Space>
+      </Col>
+
       {isShowManageModal && (
         <ManagementPlan isShowManageModal={isShowManageModal} closeModal={closeModal} headerInfo={headerInfo} />
       )}
@@ -305,5 +275,5 @@ function Index(props: IProps) {
   );
 }
 
-Object.assign(Index, { Title, Config, ClassName })
+Object.assign(Index, { Title, Config: null, ClassName })
 export default Index

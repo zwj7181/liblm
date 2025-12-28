@@ -18,7 +18,8 @@ import {
 } from 'lodash';
 import React, { Component } from 'react';
 import BaseTable from './BaseTable';
-import moment, { isMoment } from 'moment';
+import dayjs from 'dayjs';
+import { isMoment } from '@lm_fe/utils';
 export const tableColumnsSpecialInputType = ['select_tag_with_options', 'tree_select_v2', 'tree_select'];
 export default ({ tableColumns, changeImmediate = true, Table = BaseTable }) => {
   class EditInTable extends Component {
@@ -68,7 +69,7 @@ export default ({ tableColumns, changeImmediate = true, Table = BaseTable }) => 
           map(data, (value, key) => {
             const inputType = get(allColumnsMapping, `${key}.inputType`);
             if (inputType === 'single_date_picker') {
-              set(defaultInputData, key, moment().format( 'YYYY-MM-DD HH:mm'));
+              set(defaultInputData, key, dayjs().format( 'YYYY-MM-DD HH:mm'));
             }
           });
         });
@@ -76,7 +77,7 @@ export default ({ tableColumns, changeImmediate = true, Table = BaseTable }) => 
         map(allColumnsMapping, (data, index) => {
           const inputType = get(data, `inputType`);
           if (inputType === 'single_date_picker') {
-            set(defaultInputData, index, moment().format( 'YYYY-MM-DD HH:mm'));
+            set(defaultInputData, index, dayjs().format( 'YYYY-MM-DD HH:mm'));
           }
         });
       }
@@ -131,7 +132,7 @@ export default ({ tableColumns, changeImmediate = true, Table = BaseTable }) => 
           const inputType = get(allColumnsMapping, `${key}.inputType`);
           let tempValue = value;
           if (inputType === 'single_date_picker') {
-            tempValue = moment(tempValue);
+            tempValue = dayjs(tempValue);
           }
           if (key !== 'key') {
             if (Object.prototype.toString.call(value) === '[object Object]') {

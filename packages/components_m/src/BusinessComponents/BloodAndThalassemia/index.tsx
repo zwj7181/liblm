@@ -1,105 +1,51 @@
-import React, { useEffect, useState } from 'react';
-import { Table } from 'antd';
-import { get, map, cloneDeep, set } from 'lodash';
+import { LazyAntd } from '@lm_fe/components';
+import { cloneDeep, get, map, set } from 'lodash';
+import React, { useEffect, useRef, useState } from 'react';
 import BaseFormComponent from '../../BaseFormComponent';
-import deletionsOptions, { getNewDatasource } from './constant';
 import styles from './index.less';
-const cols = [
-  {
-    dataIndex: 'gender',
-    title: '',
-    align: 'center',
-    editable: false,
-    width: 80,
-  },
-  {
-    dataIndex: 'hB',
-    title: 'Hb(g/L)',
-    align: 'center',
-    editable: true,
-    width: 80,
-  },
-  {
-    dataIndex: 'mCV',
-    title: 'MCV(fl)',
-    align: 'center',
-    editable: true,
-    width: 80,
-  },
-  {
-    dataIndex: 'mCH',
-    title: 'MCH(pg)',
-    align: 'center',
-    editable: true,
-    width: 80,
-  },
-  {
-    dataIndex: 'hbA2',
-    title: 'HbA2(%)',
-    editable: true,
-    align: 'center',
-    width: 80,
-  },
-  {
-    dataIndex: 'bg',
-    title: 'ABO血型',
-    align: 'center',
-    inputType: 'normal_select',
-    inputProps: {
-      type: 'aboMapping',
-    },
-    editable: true,
-    width: 100,
-  },
-  {
-    dataIndex: 'rh',
-    title: 'RH血型',
-    align: 'center',
-    inputType: 'normal_select',
-    inputProps: {
-      type: 'rhMapping',
-    },
-    editable: true,
-    width: 100,
-  },
-  {
-    dataIndex: 'deletions',
-    title: '地贫基因型',
-    align: 'center',
-    editable: true,
-    inputType: 'select_tag_with_options',
-    inputProps: {
-      options: deletionsOptions,
-      mode: 'multiple',
-    },
-    width: 500,
-  },
-  {
-    dataIndex: 'otherNote',
-    title: '其它异常',
-    align: 'center',
-    editable: true,
-    width: 300,
-  },
-];
+
 const pdBloodGroups = ['bg', 'rh'];
 const pdThalassemiaExams = ['hB', 'mCV', 'mCH', 'hbA2', 'deletions', 'otherNote'];
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
 export default (props: any) => {
   const { onChange } = props;
-  const [columns, setColumns] = useState(cols);
+  const [columns, setColumns] = useState<any[]>([]);
   const [editingRow, setEditingRow] = useState();
   const [editingValue, setEditingValue] = useState();
   const [editingCol, setEditingCol] = useState();
-  const [datasource, setDatasource] = useState([]);
+  const [datasource, setDatasource] = useState<any[]>([]);
 
+  const cols = useRef<any[]>([]);
+  const getNewDatasource = useRef<((arr: any[]) => any[]) | null>(null);
   useEffect(() => {
-    const newDatasource = getNewDatasource(props?.value);
-    setDatasource(newDatasource);
-    setColumns(updateColumns());
+
+    if (getNewDatasource.current) {
+
+      updateDatasource(props?.value)
+      setColumns(updateColumns(cols.current));
+
+    } else {
+      import('./constant').then((meta) => {
+        getNewDatasource.current = meta.getNewDatasource;
+        cols.current = meta.cols;
+
+        updateDatasource(props?.value)
+        setColumns(updateColumns(cols.current));
+
+      })
+    }
+
   }, [props.value, editingRow, editingCol, editingValue]);
 
-  const updateColumns = () => {
-    return map(columns, (column, index) => {
+  function updateDatasource(_value: any) {
+    const newDatasource = getNewDatasource.current?.(_value) || [];
+    setDatasource(newDatasource);
+  }
+
+
+  const updateColumns = (_columns: any[]) => {
+    return map(_columns, (column, index) => {
       const { editable, inputType, dataIndex, inputProps } = column;
       if (!editable) {
         return column;

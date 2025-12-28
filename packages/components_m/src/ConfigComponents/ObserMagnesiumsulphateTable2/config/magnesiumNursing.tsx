@@ -2,7 +2,7 @@
  * 产科注射硫酸镁观察表
  */
 import { MODAL_TEMPLATE_TYPES } from '@lm_fe/env';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { APP_CONFIG } from '../../../utils/constants';
 export const tableColumns: any = [
   {
@@ -19,7 +19,7 @@ export const tableColumns: any = [
     },
 
     render: (value, data) => {
-      return value ? moment(value).format('YYYY-MM-DD HH:mm') : '';
+      return value ? dayjs(value).format('YYYY-MM-DD HH:mm') : '';
     },
   },
 
@@ -37,7 +37,7 @@ export const tableColumns: any = [
     align: 'center',
     editable: true,
     inputType: 'MyAutoComplete',
-    inputProps: { optionKey: '膝反射s' },
+    inputProps: { uniqueKey: '膝反射s' },
     width: APP_CONFIG.CELL_WIDTH_SMALL,
   },
   {

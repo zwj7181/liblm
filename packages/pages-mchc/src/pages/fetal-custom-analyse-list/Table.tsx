@@ -1,12 +1,13 @@
-import React, { forwardRef, memo, useEffect, useState } from 'react';
-import { Table, Form, InputNumber, Input, Checkbox, Select, Button, Modal, Divider } from 'antd';
-import { FormInstance } from 'antd/lib/form';
-import { AnalyseType, tableData } from './tableData';
-import { SimpleForm } from '@lm_fe/components';
-import strategies from './strategies';
-import useSign from './useSign'
-import { IPv } from './types';
+import { LazyAntd, SimpleForm } from '@lm_fe/components';
 import { event, asRequest as request } from '@lm_fe/utils';
+import { Button, Checkbox, Form, Input, InputNumber, Modal } from 'antd';
+import React, { useEffect, useState } from 'react';
+import strategies from './strategies';
+import { AnalyseType, tableData } from './tableData';
+import { IPv } from './types';
+import useSign from './useSign';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
 interface IProps {
     name: string
     hidden?: boolean

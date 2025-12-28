@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
+import { DatePicker_L, TimePicker_L } from '@lm_fe/components';
+import dayjs from 'dayjs';
 import React from 'react';
-import moment from 'moment';
-import { DatePicker, TimePicker } from 'antd';
 interface MyDatePickerProp {
   onChange: Function;
   dispatch?: Function;
@@ -29,11 +29,11 @@ export default function MyDateTime(props: MyDatePickerProp) {
   };
 
   const renderDatePicker = () => {
-    if (!value || moment(value, format).isValid()) {
-      const val: any = value ? moment(value, format) : '';
+    if (!value || dayjs(value, format).isValid()) {
+      const val: any = value ? dayjs(value, format) : '';
       if (hiddenSecond) {
         return (
-          <DatePicker
+          <DatePicker_L
             showTime
             key={value}
             defaultValue={val}
@@ -45,7 +45,7 @@ export default function MyDateTime(props: MyDatePickerProp) {
       }
       if (type === dateTypeString) {
         return (
-          <DatePicker
+          <DatePicker_L
             style={{ width: '100%', ...style }}
             size={size}
             value={val}
@@ -58,7 +58,7 @@ export default function MyDateTime(props: MyDatePickerProp) {
       }
       if (type === timeTypeString) {
         return (
-          <TimePicker
+          <TimePicker_L
             style={{ width: '100%', ...style }}
             size={size}
             defaultValue={val}

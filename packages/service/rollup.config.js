@@ -22,12 +22,24 @@ export default {
       jsx: 'preserve',
       declaration: true,
       sourceMap: true,
-      
+
     }),
     babel({
       presets: ['@babel/preset-react'],
-      babelHelpers: 'bundled',
-      extensions: ['.js', '.jsx', '.es6', '.es', '.mjs', '.ts', '.tsx']
+      babelHelpers: 'runtime',
+      extensions: ['.js', '.jsx', '.es6', '.es', '.mjs', '.ts', '.tsx'],
+      plugins: [
+        '@babel/plugin-transform-runtime',
+
+        // [
+        //   "import",
+        //   {
+        //     "libraryName": "antd",
+        //     "libraryDirectory": "es",
+        //     "style": true
+        //   }
+        // ]
+      ],
     })
   ],
   output: {
@@ -36,13 +48,13 @@ export default {
     plugins: [
       getBabelOutputPlugin({
         presets: ['@babel/preset-env'],
-        plugins:[
+        plugins: [
           '@babel/plugin-transform-runtime'
         ]
       })
     ]
   },
-  external: ['react', 'axios', 'store', 'moment', 'axios', '@lm_fe/utils','@lm_fe/env','lodash'] // 增加了这一行。
+  external: ['react', 'axios', 'store', 'moment', 'dayjs', 'axios', '@lm_fe/utils', '@lm_fe/env', 'lodash', /antd/, /lodash/] // 增加了这一行。
 }
 
 

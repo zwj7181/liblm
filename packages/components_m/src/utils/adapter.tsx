@@ -3,14 +3,14 @@
  * @Descriptions: 表单配置、数据处理
  */
 import { map, get, reduce, concat, keyBy, set, isObject, isEmpty, isNil } from 'lodash';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { formatDate, safe_json_parse } from '@lm_fe/utils';
-import { IMchc_FormDescriptions, IMchc_FormDescriptions_Field } from '@lm_fe/service';
+import { IMchc_FormDescriptions, IMchc_FormDescriptions_Field, IMchc_FormDescriptions_Field_Nullable, IMchc_FormDescriptions_Field_Nullable_Arr } from '@lm_fe/service';
 export const formDescriptionsFromApi = (data: IMchc_FormDescriptions<true>[]) => {
   return map(data, (item) => {
     return {
       ...item,
-      fields: map(get(item, 'fields') ?? get(item, 'children') , (field) => {
+      fields: map(get(item, 'fields') ?? get(item, 'children'), (field) => {
         const key = get(field, 'key') as string;
         let name = key;
         let label = get(field, 'label');
@@ -65,15 +65,15 @@ export const formDescriptionsFromApi = (data: IMchc_FormDescriptions<true>[]) =>
  * @param formDescriptions api原始表单信息
  * @returns object[]
  */
-export const formDescriptionsWithoutSectionApi = (formDescriptions: IMchc_FormDescriptions[]) => {
+export function formDescriptionsWithoutSectionApi<RAW = false>(formDescriptions: IMchc_FormDescriptions_Field_Nullable_Arr<RAW>) {
   return keyBy(
     reduce(
       formDescriptions,
       (sum, formDescription) => {
-        const arr = get(formDescription, 'fields') ?? get(formDescription, 'children')
+        const arr = get(formDescription, 'fields') ?? get(formDescription, 'children') ?? []
         return concat(sum, arr);
       },
-      [] as IMchc_FormDescriptions_Field[],
+      [] as IMchc_FormDescriptions_Field_Nullable_Arr<RAW>,
     ),
     'key',
   );
@@ -96,7 +96,7 @@ export const transferDataToFormByRules = (data: any, nativeFormDescription: IMch
         set(result, `${key}.1`, get(data, `${key}m`));
         break;
       case 'moment':
-        set(result, key, moment(get(data, path)));
+        set(result, key, dayjs(get(data, path)));
         break;
       case 'default':
       default:
@@ -134,7 +134,7 @@ export const fromApi = (data: any, nativeFormDescriptions: { [x: string]: IMchc_
         });
         break;
       case 'moment':
-        set(result, key, get(data, path) ? moment(get(data, path)) : undefined);
+        set(result, key, get(data, path) ? dayjs(get(data, path)) : undefined);
         break;
       case 'default':
       default:

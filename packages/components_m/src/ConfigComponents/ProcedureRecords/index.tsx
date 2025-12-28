@@ -1,7 +1,8 @@
 import { safe_json_parse } from '@lm_fe/utils';
 import { Col, Input, Row } from 'antd';
 import { get, map } from 'lodash';
-import moment, { Moment } from 'moment';
+import dayjs, { Dayjs } from 'dayjs'
+
 import { Component } from 'react';
 import { TimePickerAutoaccept } from '../../BusinessComponents/TimePickerAutoaccept';
 import { GeneralComponents_EditInTable_Inner } from '../../GeneralComponents/EditInTable';
@@ -16,8 +17,8 @@ export default class ProcedureRecords extends Component {
     this.state = {
       data: value,
       time: {
-        startTime: get(value, '0.startTime') ? moment(get(value, '0.startTime')) : undefined,
-        endTime: get(value, '0.endTime') ? moment(get(value, '0.endTime')) : undefined,
+        startTime: get(value, '0.startTime') ? dayjs(get(value, '0.startTime')) : undefined,
+        endTime: get(value, '0.endTime') ? dayjs(get(value, '0.endTime')) : undefined,
         duration: get(value, '0.duration') ? get(value, '0.duration') : 0,
       },
     };

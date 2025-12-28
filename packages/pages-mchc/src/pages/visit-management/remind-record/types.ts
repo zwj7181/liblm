@@ -1,0 +1,1 @@
+export type RemindType = 1 | 2 | 3

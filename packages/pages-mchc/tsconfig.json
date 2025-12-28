@@ -7,7 +7,7 @@
     "module": "esnext",
     "target": "es5",
     "allowJs": true,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": false,
@@ -15,7 +15,6 @@
     "baseUrl": ".",
     "declarationMap": false,
     "strictNullChecks": true,
-    "keyofStringsOnly": true,
     "experimentalDecorators": true,
 
   },

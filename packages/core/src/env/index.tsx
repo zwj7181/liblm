@@ -1,16 +1,29 @@
-import { mchcBoot, mchcLogger, mchcStore, MchcTypes } from "@lm_fe/env";
+import { legacyLogicalPropertiesTransformer, StyleProvider } from '@ant-design/cssinjs';
+import {
+    // configCustomIcon,
+    MyLazyComponent,
+    MountMchcModal as OldMountMchcModal
+} from '@lm_fe/components_m';
+import { mchcBoot, mchcDriver, mchcMacro, MchcRouterContainer, mchcRouterContainer__, MchcTypes } from "@lm_fe/env";
+import { MountMchcModal } from '@lm_fe/pages';
+import { fubaoRoutes } from '@lm_fe/pages-fubao';
+import { mchcRoutes } from '@lm_fe/pages-mchc';
 import { IMchc_User, SMchc_Common, SMchc_User } from "@lm_fe/service";
-import { appEnv, EventEmitter, makeEventStore } from "@lm_fe/utils";
-import React, { FunctionComponentElement } from 'react'
-import { configCustomIcon } from '@lm_fe/components_m'
-import ReactDOM from 'react-dom'
-import { MountMchcModal } from "@lm_fe/components_m";
-import { MchcRouterContainer } from '@lm_fe/env'
-import { mchcRoutes } from '@lm_fe/pages-mchc'
-import { fubaoRoutes } from '@lm_fe/pages-fubao'
-import { keys } from "lodash";
-import { runTask } from "./tasks";
+import { AnyObject, appEnv, makeEventStore } from "@lm_fe/utils";
+import React, { FC, ReactNode } from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+
+import { THEME } from '@lm_fe/provoke';
+import { ConfigProvider } from 'antd';
+import zhCN from 'antd/lib/locale/zh_CN';
 import { Store } from 'redux';
+import { ReloadButton } from './ReloadButton';
+import { use_task } from "./tasks";
+
+import './init';
+import { MessageHolder } from './message';
+import { theme_config } from './theme_config';
 
 export interface IGlobalStoreData {
     loggedIn: boolean
@@ -28,38 +41,50 @@ export async function logout() {
 }
 export async function boot(config: {
     store?: Store
-    app?: FunctionComponentElement<any> | FunctionComponentElement<any>[],
-    App?: React.ComponentType<{ routerContainer?: MchcRouterContainer }>,
-    scriptUrl?: any,
+    app?: ReactNode,
+    App?: FC<{ routerContainer?: MchcRouterContainer }>,
     name?: MchcTypes,
     taskDisabled?: boolean,
-    routesData?: { [x: string]: any }
+    routesData?: AnyObject
 }) {
-    const { scriptUrl, name, app, App = () => null, routesData = {}, taskDisabled, store } = config
-    mchcLogger.log('mchcLogger', config)
-    configCustomIcon(scriptUrl)
-    await mchcBoot(name)
-    if (!taskDisabled)
-        runTask()
-    const mixinRoutes = { ...mchcRoutes, ...fubaoRoutes }
-    const oldKeys = keys(routesData)
-    const mixinKeys = keys(mixinRoutes)
-    const sameKeys = oldKeys.filter(_ => mixinKeys.includes(_))
-    sameKeys.forEach(_ => {
-        routesData[`${_}_old`] = routesData[_]
-    })
-    const _routerContainer = new MchcRouterContainer({ ...routesData, ...mixinRoutes })
-    const _app = app ?? <App routerContainer={_routerContainer} />
-    if (store) {
-        mchcStore.store = store
-    }
-    ReactDOM.render(
-        <>
-            {_app}
-            <MountMchcModal />
-        </>,
-        document.getElementById('root')
-    );
+
+    const { name, app, App, routesData = {}, taskDisabled, store } = config
+    await mchcBoot({ name, store })
+    mchcDriver.connect()
+
+    mchcRouterContainer__.init(routesData, mchcRoutes, fubaoRoutes)
+
+    const r_node = App ? <App routerContainer={mchcRouterContainer__} /> : null
+    const _app = app ?? r_node
+
+    ReactDOM
+        .createRoot(document.getElementById('root')!)
+        .render(<BrowserRouter basename={mchcMacro.PUBLIC_PATH}><Shell node={_app} taskDisabled={taskDisabled} /></BrowserRouter>);
+
+
+}
+
+function Shell(props: { node: ReactNode, taskDisabled?: boolean }) {
+    const { node, taskDisabled } = props
+    const { sys_theme } = use_task(taskDisabled)
+
+
+    return <StyleProvider
+        hashPriority="high"
+        transformers={[legacyLogicalPropertiesTransformer]}
+    >
+        <ConfigProvider locale={zhCN} theme={theme_config(sys_theme)}>
+            <ReloadButton />
+
+            {node}
+
+            <MyLazyComponent fallback=''>
+                <MountMchcModal />
+                <OldMountMchcModal />
+                <MessageHolder />
+            </MyLazyComponent>
+        </ConfigProvider>
+    </StyleProvider>
 
 
 }

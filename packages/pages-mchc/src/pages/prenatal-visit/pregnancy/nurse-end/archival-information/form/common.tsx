@@ -4,9 +4,6 @@ export const __obdriver_read: IMchc_FormDescriptions_Field = {
     "key": "__obdriver_read",
     "inputType": 'IdNOButton',
     label: '外设读取',
-    "inputProps": {
-
-    },
     layout: '1/3',
 }
 
@@ -20,4 +17,9 @@ export const month1_12 = Array(24).fill(0).map((_, idx) => {
 
 
 
-
+export const marry_deps = {
+    "baseInfo.maritalStatus": [1, 4, 6]
+}
+export const unmarry_deps = {
+    "baseInfo.maritalStatus": [2, 3, 5]
+}

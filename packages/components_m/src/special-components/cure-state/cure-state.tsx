@@ -1,9 +1,10 @@
-import { Checkbox, DatePicker } from 'antd';
-import { cloneDeep, filter, get, includes, indexOf, isEmpty, set } from 'lodash';
-import moment from 'moment';
-import { useEffect, useState } from 'react';
-import styles from './index.less';
+import { DatePicker_L } from '@lm_fe/components';
 import { safe_json_parse } from '@lm_fe/utils';
+import { Checkbox } from 'antd';
+import { cloneDeep, filter, get, includes, indexOf, isEmpty, set } from 'lodash';
+import dayjs from 'dayjs';
+import React, { useEffect, useState } from 'react';
+import styles from './index.less';
 interface IProps {
   [key: string]: any;
 }
@@ -64,7 +65,7 @@ export default function CureState({ value, onChange, config, ...props }: IProps)
 
   function tranformData(index: number) {
     const value = get(data, `needle[${index}].time`);
-    return value ? moment(value, 'YYYY-MM-DD') : null;
+    return value ? dayjs(value, 'YYYY-MM-DD') : null;
   }
   function isShow() {
     const checkedValues: any = get(data, 'cureState');
@@ -91,7 +92,7 @@ export default function CureState({ value, onChange, config, ...props }: IProps)
               </div>
               <div className={styles["content-col"]}>
                 <span className={styles["content-col-span-title2"]}>注释时间：</span>
-                <DatePicker onChange={onChangeDatePick(0)} value={tranformData(0)} />
+                <DatePicker_L onChange={onChangeDatePick(0)} value={tranformData(0)} />
               </div>
             </div>
             <div className={styles["content-row"]}>
@@ -105,7 +106,7 @@ export default function CureState({ value, onChange, config, ...props }: IProps)
               </div>
               <div className={styles["content-col"]}>
                 <span className={styles["content-col-span-title2"]}>注释时间：</span>
-                <DatePicker onChange={onChangeDatePick(1)} value={tranformData(1)} />
+                <DatePicker_L onChange={onChangeDatePick(1)} value={tranformData(1)} />
               </div>
             </div>
             <div className={styles["content-row"]}>
@@ -119,7 +120,7 @@ export default function CureState({ value, onChange, config, ...props }: IProps)
               </div>
               <div className={styles["content-col"]}>
                 <span className={styles["content-col-span-title2"]}>注释时间：</span>
-                <DatePicker onChange={onChangeDatePick(2)} value={tranformData(2)} />
+                <DatePicker_L onChange={onChangeDatePick(2)} value={tranformData(2)} />
               </div>
             </div>
           </div>

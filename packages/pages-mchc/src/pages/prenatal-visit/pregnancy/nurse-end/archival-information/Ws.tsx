@@ -1,11 +1,12 @@
-import { mchcModal, useObisDoctorWs } from "@lm_fe/components_m";
+import { useObisDoctorWs } from "@lm_fe/components_m";
 import { mchcEvent, mchcLogger, mchcUtils } from "@lm_fe/env";
 import { useEffect, useRef } from "react";
 import ReconnectingWebSocket from "reconnecting-websocket";
-const getDoctorEndId = mchcUtils.getDoctorEndId
+const single_id = mchcUtils.single_id
 import React from "react";
+import { mchcModal__ } from "@lm_fe/pages";
 export function Ws() {
-    const pid = getDoctorEndId()
+    const pid = single_id()
     // const [receiveData, setReceiveData] = useState<any[]>([])
     const dataCache = useRef<any[]>([])
     const modalId = useRef(1)
@@ -33,12 +34,12 @@ export function Ws() {
 
     function openModal() {
 
-        mchcModal.openOne(modalId.current, '预警提醒_高危快讯', {
+        mchcModal__.openOne(modalId.current, '预警提醒_高危快讯', {
             modal_data: {
                 makeSure(data: any) { ins.current?.send(JSON.stringify(data)) },
                 websocketDataSum: dataCache.current,
                 websocketData: dataCache.current,
-                id: getDoctorEndId(),
+                id: single_id(),
             },
 
         })

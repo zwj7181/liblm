@@ -1,427 +1,244 @@
-import { FormConfig } from '@lm_fe/components_m';
-import { otherOptions as Options } from '@lm_fe/env';
+import { ICommonOption, mchcEnv, rt_ctx } from '@lm_fe/env';
+import { not_yes_input, pressure_fd } from '@lm_fe/pages';
+import { defineFormConfig } from '@lm_fe/service';
+const ctx = rt_ctx
+function get_无option(suffix?: string) {
+  const options: ICommonOption[] = [
+    { value: 1, label: '无' },
+    { value: 2, label: '有', warning: true, inputType: 'Input', suffix },
+  ]
+  return options
+}
+function get_无option2(suffix?: string) {
+  const options: ICommonOption[] = [
+    { value: 1, label: '无' },
+    { value: 2, label: '有', warning: true, suffix },
+  ]
+  return options
+}
+function get_正常option(suffix?: string) {
+  const options: ICommonOption[] = [
+    { value: 1, label: '正常' },
+    { value: 2, label: '其他', warning: true, inputType: 'Input', suffix },
+  ]
+  return options
+}
+function get_正常option2(suffix?: string) {
+  const options: ICommonOption[] = [
+    { value: 1, label: '正常' },
+    { value: 2, label: '其他', warning: true, suffix },
+  ]
+  return options
+}
+function get_触及option(suffix?: string) {
+  const options: ICommonOption[] = [
+    { value: 1, label: '未触及' },
+    { value: 2, label: '触及', warning: true, inputType: 'Input', suffix },
+  ]
+  return options
+}
+function get_触及option2(suffix?: string) {
+  const options: ICommonOption[] = [
+    { value: 1, label: '未触及' },
+    { value: 2, label: '触及', warning: true, suffix },
+  ]
+  return options
+}
+export default defineFormConfig(
+  [
+    { name: 'id', form_hidden: true },
 
-const config: Array<FormConfig> = [
-  { name: '', key: 'basic-medical', label: '基本体检', header_label: true, just_header: true, input_type: '' },
-  {
-    name: 'bloodPressure',
-    key: '.physicalExam.systolic+diastolic',
-    input_type: 'bloodPressureInput',
-    label: '血压-首测',
-    unit: 'mmHg',
-    span: 6,
-    rules: [{ required: true }],
-  },
-  {
-    name: 'bloodPressure2',
-    key: '.physicalExam.systolic2+diastolic2',
-    input_type: 'bloodPressureInput',
-    label: '血压-二测',
-    unit: 'mmHg',
-    span: 6,
-  },
-  {
-    name: 'bloodPressure3',
-    key: '.physicalExam.systolic3+diastolic3',
-    input_type: 'bloodPressureInput',
-    label: '血压-三测',
-    unit: 'mmHg',
-    span: 6,
-  },
-  {
-    name: 'pulse',
-    key: '.physicalExam.pulse',
-    label: '脉搏',
-    input_type: 'input',
-    unit: '次/分',
-    span: 6,
-    rules: [
-      {
-        required: true,
-      },
-      {
-        type: 'rang',
-        min: 60,
-        max: 100,
-      },
-    ],
-    input_props: { type: 'number' },
-  },
-  {
-    name: 'personalProfile.preheight',
-    key: '.personalProfile.preheight',
-    label: '身高',
-    input_type: 'input',
-    unit: 'cm',
-    span: 6,
-    rules: [{ required: true }],
-    input_props: { type: 'number' },
-  },
-  {
-    name: 'personalProfile.preweight',
-    key: '.personalProfile.preweight',
-    label: '孕前体重',
-    input_type: 'input',
-    unit: 'kg',
-    span: 6,
-    rules: [{ required: true }],
-    input_props: { type: 'number' },
-  },
+    {
+      "label": "基本体检",
+      children: [
+        // {
+        //   "key": "physicalBaseExam.MyPressure1__",
+        //   "label": "血压-首测",
+        //   "inputType": "MyPressure",
+        //   "inputProps": { 'unit': 'mmHg', marshal: 2 },
+        //   layout: '1/3',
 
-  {
-    name: 'weight',
-    key: '.physicalExam.weight',
-    label: '现体重',
-    input_type: 'input',
-    unit: 'kg',
-    span: 6,
-    rules: [{ required: true }],
-    input_props: { type: 'number' },
-  },
-  {
-    name: 'personalProfile.bmi',
-    key: '.personalProfile.bmi',
-    label: '孕前BMI',
-    input_type: 'input',
-    span: 6,
-    rules: [
-      { required: true },
-      {
-        type: 'rang',
-        min: 18.5,
-        max: 24.9,
-      },
-    ],
-    input_props: { type: 'number' },
-  },
+        // },
 
-  { name: '', key: 'physical-examination', label: '内科检查', header_label: true, just_header: true, input_type: '' },
-  {
-    name: 'heartrate',
-    key: '.generalExam.heartrate',
-    label: '心率',
-    input_type: 'input',
-    unit: '次/分',
-    span: 6,
-    rules: [
-      {
-        required: true,
-      },
-      {
-        type: 'rang',
-        min: 60,
-        max: 100,
-      },
-    ],
-    input_props: { type: 'number' },
-  },
-  {
-    name: 'skin',
-    key: '.generalExam.skin(Note)',
-    label: '皮肤黏膜',
-    input_type: 'checkbox',
-    span: 8,
-    rules: [{ required: true }],
-    offset: 2,
-    input_props: {
-      type: 'custom',
-      renderData: [
-        {
-          key: 'skin',
-          label: '',
-          options: Options.zqOptions,
-          extraEditors: [
-            {
-              key: 2,
-              editors: [{ name: '', key: '', label: '', input_type: 'input' }],
-            },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    name: 'thyroid',
-    key: '.generalExam.thyroid(Note)',
-    label: '甲状腺',
-    input_type: 'checkbox',
-    span: 8,
-    rules: [{ required: true }],
-    input_props: {
-      type: 'custom',
-      renderData: [
-        {
-          key: 'thyroid',
-          label: '',
-          options: Options.zqOptions,
-          extraEditors: [
-            {
-              key: 2,
-              editors: [{ name: '', key: '', label: '', input_type: 'input' }],
-            },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    name: 'nipple',
-    key: '.generalExam.nipple(Note)',
-    label: '乳房乳腺',
-    input_type: 'checkbox',
-    span: 8,
-    rules: [{ required: true }],
-    input_props: {
-      type: 'custom',
-      renderData: [
-        {
-          key: 'nipple',
-          label: '',
-          options: Options.zqOptions,
-          extraEditors: [
-            {
-              key: 2,
-              editors: [{ name: '', key: '', label: '', input_type: 'input' }],
-            },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    name: 'respiratory',
-    key: '.generalExam.respiratory(Note)',
-    label: '呼吸音',
-    input_type: 'checkbox',
-    span: 8,
-    rules: [{ required: true }],
-    input_props: {
-      type: 'custom',
-      renderData: [
-        {
-          key: 'respiratory',
-          label: '',
-          options: Options.zqOptions,
-          extraEditors: [
-            {
-              key: 2,
-              editors: [{ name: '', key: '', label: '', input_type: 'input' }],
-            },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    name: 'rales',
-    key: '.generalExam.rales(Note)',
-    label: '啰音',
-    input_type: 'checkbox',
-    span: 8,
-    rules: [{ required: true }],
-    input_props: {
-      type: 'custom',
-      renderData: [
-        {
-          key: 'rales',
-          label: '',
-          options: Options.nhiOptions,
-          extraEditors: [
-            {
-              key: 2,
-              editors: [{ name: '', key: '', label: '', input_type: 'input' }],
-            },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    name: 'heartrhythm',
-    key: '.generalExam.heartrhythm(Note)',
-    label: '心律',
-    input_type: 'checkbox',
-    span: 8,
-    rules: [{ required: true }],
-    input_props: {
-      type: 'custom',
-      renderData: [
-        {
-          key: 'heartrhythm',
-          label: '',
-          options: Options.rhythmOptions,
-          extraEditors: [
-            {
-              key: 2,
-              editors: [{ name: '', key: '', label: '', input_type: 'input' }],
-            },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    name: 'murmurs',
-    key: '.generalExam.murmurs(Note)',
-    label: '杂音',
-    input_type: 'checkbox',
-    span: 8,
-    rules: [{ required: true }],
-    input_props: {
-      type: 'custom',
-      renderData: [
-        {
-          key: 'murmurs',
-          label: '',
-          options: Options.nhiOptions,
-          extraEditors: [
-            {
-              key: 2,
-              editors: [{ name: '', key: '', label: '', input_type: 'input' }],
-            },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    name: 'liver',
-    key: '.generalExam.liver(Note)',
-    label: '肝脏',
-    input_type: 'checkbox',
-    span: 8,
-    rules: [{ required: true }],
-    input_props: {
-      type: 'custom',
-      renderData: [
-        {
-          key: 'liver',
-          label: '',
-          options: Options.liverOptions,
-          extraEditors: [
-            {
-              key: 2,
-              editors: [{ name: '', key: '', label: '', input_type: 'input' }],
-            },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    name: 'spleen',
-    key: '.generalExam.spleen(Note)',
-    label: '脾脏',
-    input_type: 'checkbox',
-    span: 8,
-    rules: [{ required: true }],
-    input_props: {
-      type: 'custom',
-      renderData: [
-        {
-          key: 'spleen',
-          label: '',
-          options: Options.liverOptions,
-          extraEditors: [
-            {
-              key: 2,
-              editors: [{ name: '', key: '', label: '', input_type: 'input' }],
-            },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    name: 'spine',
-    key: '.generalExam.spine(Note)',
-    label: '脊柱',
-    input_type: 'checkbox',
-    span: 8,
-    rules: [{ required: true }],
-    input_props: {
-      type: 'custom',
-      renderData: [
-        {
-          key: 'spine',
-          label: '',
-          options: Options.zqOptions,
-          extraEditors: [
-            {
-              key: 2,
-              editors: [{ name: '', key: '', label: '', input_type: 'input' }],
-            },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    name: 'physiologicalreflection',
-    key: '.generalExam.physiologicalreflection(Note)',
-    label: '生理反射',
-    input_type: 'checkbox',
-    span: 8,
-    rules: [{ required: true }],
-    input_props: {
-      type: 'custom',
-      renderData: [
-        {
-          key: 'physiologicalreflection',
-          label: '',
-          options: Options.zqOptions,
-          extraEditors: [
-            {
-              key: 2,
-              editors: [{ name: '', key: '', label: '', input_type: 'input' }],
-            },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    name: 'pathologicalreflection',
-    key: '.generalExam.pathologicalreflection(Note)',
-    label: '病理反射',
-    input_type: 'checkbox',
-    span: 8,
-    rules: [{ required: true }],
-    input_props: {
-      type: 'custom',
-      renderData: [
-        {
-          key: 'pathologicalreflection',
-          label: '',
-          options: Options.nhiOptions,
-          extraEditors: [
-            {
-              key: 2,
-              editors: [{ name: '', key: '', label: '', input_type: 'input' }],
-            },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    name: 'edema',
-    key: '.generalExam.edema(Note)',
-    label: '下肢水肿',
-    input_type: 'checkbox',
-    span: 12,
-    rules: [{ required: true }],
-    input_props: {
-      type: 'custom',
-      renderData: [
-        {
-          key: 'edema',
-          label: '',
-          options: Options.edemaOptions,
-        },
-      ],
-    },
-  },
-];
+        // {
+        //   "key": "physicalBaseExam.MyPressure2__",
+        //   "label": "血压-二测",
+        //   "inputType": "MyPressure",
+        //   "inputProps": { 'unit': 'mmHg', marshal: 2 },
+        //   layout: '1/3',
 
-export default config;
+        // }, {
+        //   "key": "physicalBaseExam.MyPressure3__",
+        //   "label": "血压-三测",
+        //   "inputType": "MyPressure",
+        //   "inputProps": { 'unit': 'mmHg', marshal: 2 },
+        //   layout: '1/3',
+
+        // },
+
+        pressure_fd(
+          { label: '血压首测', isNewRow: true, layout: '1/3', },
+          { name: 'physicalBaseExam.systolic', },
+          { name: 'physicalBaseExam.diastolic', }
+        ),
+        pressure_fd(
+          { label: '血压二测', layout: '1/3', },
+          { name: 'physicalBaseExam.systolic2', },
+          { name: 'physicalBaseExam.diastolic2', }
+        ),
+        pressure_fd(
+          { label: '血压三测', layout: '1/3', },
+          { name: 'physicalBaseExam.systolic3', },
+          { name: 'physicalBaseExam.diastolic3', }
+        ),
+
+
+        {
+          "key": "physicalBaseExam.pulse",
+          "label": "脉搏",
+          "inputType": "InputNumber",
+          required: true,
+          "inputProps": { 'unit': '次/分' },
+          layout: '1/3',
+
+        },
+        {
+          "key": "physicalBaseExam.preheight",
+          "label": "身高",
+          "inputType": "InputNumber",
+          required: true,
+          "inputProps": { 'unit': 'cm' },
+          processLocal: function (v, form) {
+            if (form) {
+              const values = form.getFieldsValue();
+              const weight = ctx.utils.get<number>(values, 'physicalBaseExam.weight');
+              const preweight = ctx.utils.get<number>(values, 'physicalBaseExam.preweight');
+
+              form.setFieldsValue({
+                physicalBaseExam: {
+                  bmi: ctx.utils.calc_bmi(weight, v),
+                  preBmi: ctx.utils.calc_bmi(preweight, v),
+
+                }
+              })
+            }
+          },
+          layout: '1/3',
+
+        }, {
+          "key": "physicalBaseExam.weight",
+          "label": "现体重",
+          "inputType": "InputNumber",
+          "inputProps": { 'unit': 'kg' },
+          layout: '1/3',
+          processLocal: function (v, form) {
+            if (form) {
+              const values = form.getFieldsValue();
+              const height = ctx.utils.get<number>(values, 'physicalBaseExam.preheight');
+
+              form.setFieldsValue({
+                physicalBaseExam: {
+                  bmi: ctx.utils.calc_bmi(v, height),
+                }
+              })
+            }
+          },
+        },
+
+        {
+          "key": "physicalBaseExam.bmi",
+          "label": "BMI",
+          "inputType": "input",
+          "inputProps": { 'unit': 'kg/㎡', 'disabled': true },
+          layout: '1/3',
+        },
+
+        {
+          "key": "physicalBaseExam.preweight",
+          "label": "孕前体重",
+          "inputType": "InputNumber",
+          required: true,
+          "inputProps": { 'unit': 'kg' },
+          layout: '1/3',
+          processLocal: function (v, form) {
+            if (form) {
+              const values = form.getFieldsValue();
+              const height = ctx.utils.get<number>(values, 'physicalBaseExam.preheight');
+
+              form.setFieldsValue({
+                physicalBaseExam: {
+                  preBmi: ctx.utils.calc_bmi(v, height),
+                }
+              })
+            }
+          },
+
+        },
+        {
+          "key": "physicalBaseExam.preBmi",
+          "label": "孕前BMI",
+          "inputType": "input",
+          "inputProps": { 'unit': 'kg/㎡', 'disabled': true },
+          layout: '1/3',
+        },
+      ]
+    },
+    {
+      "label": "内科检查",
+      children: [
+        {
+          "key": "physicalgeneralExam.heartrate",
+          "label": "心率",
+          "inputType": "InputNumber",
+          "inputProps": { 'unit': '次/分' },
+          layout: '1/3'
+        },
+        not_yes_input('physicalgeneralExam.skin', '皮肤黏膜', { inputProps: { options: get_正常option2() } }, {}, 2),
+        not_yes_input('physicalgeneralExam.thyroid', '甲状腺', { inputProps: { options: get_正常option2() } }, {}, 2),
+        not_yes_input('physicalgeneralExam.breast', '乳房乳腺', { inputProps: { options: get_正常option2() } }, {}, 2),
+        not_yes_input('physicalgeneralExam.respiratory', '呼吸音', { inputProps: { options: get_正常option2() } }, {}, 2),
+        not_yes_input('physicalgeneralExam.rales', '呼吸音', { inputProps: { options: get_无option2() } }, {}, 2),
+        not_yes_input('physicalgeneralExam.heartrhythm', '心律', {
+          inputProps: {
+            options: [
+              { value: 1, label: '齐' },
+              { value: 2, label: '不齐', warning: true, },
+            ]
+          }
+        }, {}, 2),
+
+
+        not_yes_input('physicalgeneralExam.murmurs', '杂音', { inputProps: { options: get_无option2() } }, {}, 2),
+        not_yes_input('physicalgeneralExam.liver', '肝脏', { inputProps: { options: get_触及option2() } }, {}, 2),
+        not_yes_input('physicalgeneralExam.spleen', '脾脏', { inputProps: { options: get_触及option2() } }, {}, 2),
+
+        not_yes_input('physicalgeneralExam.spine', '脊柱', { inputProps: { options: get_正常option2() } }, {}, 2),
+        not_yes_input('physicalgeneralExam.physiologicalreflection', '生理反射', { inputProps: { options: get_正常option2() } }, {}, 2),
+        not_yes_input('physicalgeneralExam.pathologicalreflection', '病理反射', { inputProps: { options: get_正常option2() } }, {}, 2),
+
+
+        {
+          key: "physicalgeneralExam.edema",
+          "label": "下肢水肿",
+          "inputType": "MC",
+          inputProps: {
+            options: mchcEnv.get_other_options('edemaOptions'),
+            marshal: 0
+          },
+          layout: '1/3',
+
+        },
+        {
+          inputType: 'check_invert_button',
+          layout: '1/3',
+
+        },
+        {
+          "key": "physicalgeneralExam.otherNote",
+          "label": "其他",
+          "inputType": "input",
+          layout: '2/3',
+        }
+      ]
+    },]
+);

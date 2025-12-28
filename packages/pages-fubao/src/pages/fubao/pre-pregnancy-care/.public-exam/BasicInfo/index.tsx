@@ -1,67 +1,82 @@
-import React from 'react';
-import { message } from 'antd';
-import { get } from 'lodash';
-import { BaseEditPanel } from '@lm_fe/components_m';
-import { formDescriptionsWithoutSectionApi } from '@lm_fe/components_m';
-import { valueToApi, valueToForm } from '../config/adapter';
-import Form from './components/Form';
-import { SMchc_FormDescriptions } from '@lm_fe/service';
+import { BaseEditPanelFormFC } from '@lm_fe/components_m';
 import { getSearchParamsValue, fubaoRequest as request } from '@lm_fe/utils';
-export default class BasicInfo extends BaseEditPanel<any> {
-  static defaultProps = {
-    baseUrl: '/api/progestation/check/saveProgestationCheckArchivesBasicInformation', request,
-    moduleName: 'wife-pre-pregnancy-care-basic-info',
-    title: '基本信息',
-    Form,
-  };
+import { get, set } from 'lodash';
 
-  async componentDidMount() {
-    this.handleInit();
-  }
+import { mchcUtils } from '@lm_fe/env';
+import { BF_Wrap2 } from '@lm_fe/pages';
+import { TIdTypeCompatible } from '@lm_fe/service';
+import { Form } from 'antd';
+import React, { useEffect, useState } from 'react';
+interface IProps {
+  type: 'husband' | 'wife'
+  id?: TIdTypeCompatible
+  filesData?: any
+}
+export default function PhysicalExamination(props: IProps) {
+  const { type, filesData } = props
 
-  handleInit = async () => {
-    const { routerQuery, moduleName, type } = this.props as any;
-    const id = get(this.props, 'id') || getSearchParamsValue('id')
+  const conf_fn = () => import('../../../premarital-care/.public-exam/BasicInfo/form_config')
+
+
+  const [form] = Form.useForm()
+  const [data, setdata] = useState<any>({})
+
+  const { Wrap, config } = BF_Wrap2({
+    default_conf: {
+      title: `孕前检查-基本信息`,
+      tableColumns: conf_fn
+    }
+  })
+  useEffect(() => {
+
+    handleInit();
+
+    return () => {
+
+    }
+  }, [])
+
+
+  async function handleInit() {
+    const id = get(props, 'id') || getSearchParamsValue('id');
     let res: any;
     let data: any;
-    // 获取配置文件
-    const formDescriptions = await SMchc_FormDescriptions.getModuleParseCache(moduleName);
-    this.setState({ spinning: false });
 
-    const formDescriptionsWithoutSection = formDescriptionsWithoutSectionApi(formDescriptions);
     if (type === 'wife') {
       res = id
-        ? await request.get(
-          `/api/progestation/check/getByProgestationCheckArchivesId?progestationCheckArchivesId.equals=${id}&fileType.equals=2&childrenSign.equals=1`,
-        )
+        ? (
+          await request.get(
+            `/api/progestation/check/getByProgestationCheckArchivesId?progestationCheckArchivesId.equals=${id}&fileType.equals=2&childrenSign.equals=1`,
+          )
+        ).data
         : {};
     } else {
       res = id
-        ? await request.get(
-          `/api/progestation/check/getByProgestationCheckArchivesId?progestationCheckArchivesId.equals=${id}&fileType.equals=1&childrenSign.equals=1`,
-        )
+        ? (
+          await request.get(
+            `/api/progestation/check/getByProgestationCheckArchivesId?progestationCheckArchivesId.equals=${id}&fileType.equals=1&childrenSign.equals=1`,
+          )
+        ).data
         : {};
     }
     if (res) {
       data = get(res, 'data.0');
       data = { ...data, ...get(data, 'progestationCheckArchivesBasicInformationVM') };
+      data = mchcUtils.autoNoteToCommonOption(data)
+      set(data, 'systolic_', [data.systolic, data.diastolic])
     }
 
-    data = id ? valueToForm(data, formDescriptionsWithoutSection) : {};
+    data = id ? data : {};
 
-    const formKey = get(data, 'id') || Math.random();
 
-    this.setState({ formDescriptions, formDescriptionsWithoutSection, data, formKey });
+    setdata(data)
+    form.setFieldsValue(data)
   };
 
-  handleSubmit = async (values: any) => {
-    const { formDescriptionsWithoutSection, data, newData } = this.state as any;
-    const { baseUrl, filesData, type } = this.props as any;
+  async function handleSubmit(values: any) {
     let { progestationCheckArchivesBasicInformationVM } = data;
-    if (newData) {
-      progestationCheckArchivesBasicInformationVM = get(newData, 'progestationCheckArchivesBasicInformationVM');
-    }
-    let params = valueToApi(values, formDescriptionsWithoutSection);
+    const baseUrl = '/api/progestation/check/saveProgestationCheckArchivesBasicInformation'
+    let params = values;
     let progestationCheckArchivesDetailId = get(filesData, 'womanProgestationCheckArchivesDetailVM.id');
     if (type === 'husband') {
       progestationCheckArchivesDetailId = get(filesData, 'manProgestationCheckArchivesDetailVM.id');
@@ -72,14 +87,26 @@ export default class BasicInfo extends BaseEditPanel<any> {
       ...params,
       progestationCheckArchivesDetailId,
     };
-
-    const res = (await request.post(baseUrl, params)).data
+    params = mchcUtils.autoCommonOptionToNote(params)
+    set(params, 'systolic', params.systolic_?.[0])
+    set(params, 'diastolic', params.systolic_?.[1])
+    const _re = (await request.post(baseUrl, params)).data
+    const res = _re.data
     if (get(res, 'code') === 1) {
-      
+
       let newData = get(res, 'data.0');
-      this.setState({ newData });
+      setdata(newData)
     } else {
-      
+
     }
   };
+  return <Wrap>
+    <BaseEditPanelFormFC
+      form={form}
+      onFinish={async v => {
+        handleSubmit(v)
+      }}
+      formDescriptions={__DEV__ ? conf_fn : config?.tableColumns}
+    />
+  </Wrap>
 }

@@ -7,7 +7,7 @@ export * from './types'
 
 
 
-class TemplateTreeService extends ModelService<IMchc_TemplateTree_Item>{
+class TemplateTreeService extends ModelService<IMchc_TemplateTree_Item> {
     name = '/template-trees'
     /** 获取诊断模糊搜索数据 */
     async getDiagnosesTemplate(value: string, page = 0) {
@@ -54,13 +54,13 @@ class TemplateTreeService extends ModelService<IMchc_TemplateTree_Item>{
     }
 
     /** 保存已勾选的模板数据 */
-    saveAlertAssessment(data: any) { request.post(`/api/saveAlertAssessment`, data) }
+    saveAlertAssessment(data: any) { return request.post(`/api/saveAlertAssessment`, data,) }
 
     /** 获取高危色卡颜色 */
-    getHighriskColor(module: string) { request.get(`/api/dictionaries?module.equals=${module}`) }
+    getHighriskColor(module: string) { return request.get(`/api/dictionaries?module.equals=${module}`) }
 
     /** 设置漏诊提示、高危因素标记不再提醒 */
-    saveCaseIgnore(data: any) { request.post(`/api/saveCaseIgnore`, data) }
+    saveCaseIgnore(data: any) { return request.post(`/api/saveCaseIgnore`, data) }
 
     /** 获取检验报告结果 */
     async getLabExamImportTree(pregnancyId: TIdTypeCompatible) {

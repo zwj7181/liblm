@@ -11,13 +11,13 @@ export interface IMemoriseItem {
 
 export type MyAutoCompleteProps = Omit<AutoCompleteProps, 'options' | 'onChange'> & {
     onChange?(str?: string): void
-    optionKey?: string,
+    uniqueKey?: string,
     memorieskey?: string,
     memoriesname?: string,
     memorable?: boolean,
     name?: string,
     formName?: string,
     searchKey?: string,
-    width: any,
+    width?: any,
     options?: string | (string | ICommonOption)[]
 }

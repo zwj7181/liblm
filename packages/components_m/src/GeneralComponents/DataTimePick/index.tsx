@@ -1,7 +1,8 @@
-import React from 'react';
-import moment from 'moment';
-import { DatePicker, TimePicker, Space } from 'antd';
+import { DatePicker_L, RangePicker_L } from '@lm_fe/components';
+import { Space } from 'antd';
 import { get, trim } from 'lodash';
+import dayjs from 'dayjs';
+import React from 'react';
 interface CusType {
   date: string;
   time: string; // '8:00 - 12:00'
@@ -21,29 +22,29 @@ export default function CusDataTimePicker({
   const transValueData = (date: CusType) => {
     const dateString = get(date, 'date');
     if (!dateString) return null;
-    return moment(dateString, 'YYYY-MM-DD');
+    return dayjs(dateString, 'YYYY-MM-DD');
   };
   const transValueTime = (date: CusType) => {
     const timeString = get(date, 'time', '');
-    
+
     if (!timeString) return null;
     let time: any = get(date, 'time', '') || '';
     let arr = time.split('-');
-    return [moment(trim(get(arr, '0')), 'HH:mm'), moment(trim(get(arr, '1')), 'HH:mm')];
+    return [dayjs(trim(get(arr, '0')), 'HH:mm'), dayjs(trim(get(arr, '1')), 'HH:mm')];
   };
 
   const handleChangeDate = (date: any, dateString: string) => {
     onChange({ date: dateString, time: get(value, `time`) || null });
   };
   const handleChangeTime = (dates: any, dateStrings: [string, string]) => {
-    let time:any;
-    if(dateStrings[0]=='' && dateStrings[1]==''){
-      time=null
-    }else{
-      time=`${dateStrings[0]==''?null:dateStrings[0]} - ${dateStrings[1]==''?null:dateStrings[1]}`
+    let time: any;
+    if (dateStrings[0] == '' && dateStrings[1] == '') {
+      time = null
+    } else {
+      time = `${dateStrings[0] == '' ? null : dateStrings[0]} - ${dateStrings[1] == '' ? null : dateStrings[1]}`
     }
-    
-    onChange({ date: get(value, `date`) || null, time: time});
+
+    onChange({ date: get(value, `date`) || null, time: time });
   };
 
   function disabledDate(currentDate: any) {
@@ -51,7 +52,7 @@ export default function CusDataTimePicker({
     const disabledRules = get(dataProps, 'disabledRules');
     if (disabledRules) {
       if (disabledRules == 'default') {
-        return currentDate.isBefore(moment().format('YYYY-MM-DD'));
+        return currentDate.isBefore(dayjs().format('YYYY-MM-DD'));
       }
     }
   }
@@ -61,7 +62,7 @@ export default function CusDataTimePicker({
     const disabledHoursRules = get(dataProps, 'disabledHoursRules');
     if (disabledHoursRules) {
       const valueDate = get(value, 'date');
-      const isBefore = moment(valueDate).isSameOrBefore(moment().format('YYYY-MM-DD'));
+      const isBefore = dayjs(valueDate).isSameOrBefore(dayjs().format('YYYY-MM-DD'));
       if (isBefore && disabledHoursRules == 'default') {
         const hours = new Date().getHours();
         let diableHours = [];
@@ -78,7 +79,7 @@ export default function CusDataTimePicker({
     const disabledMinutesRules = get(dataProps, 'disabledMinutesRules');
     if (disabledMinutesRules) {
       const valueDate = get(value, 'date');
-      const isBefore = moment(valueDate).isSameOrBefore(moment().format('YYYY-MM-DD'));
+      const isBefore = dayjs(valueDate).isSameOrBefore(dayjs().format('YYYY-MM-DD'));
       if (isBefore && disabledMinutesRules == 'default') {
         const currentHours = new Date().getHours();
         if (currentHours == selectedHour) {
@@ -95,13 +96,15 @@ export default function CusDataTimePicker({
 
   return (
     <Space>
-      <DatePicker
+      <DatePicker_L
         value={transValueData(value)}
         onChange={handleChangeDate}
         disabledDate={disabledDate}
         {...get(rest, `date`, {})}
       />
-      <TimePicker.RangePicker
+      <RangePicker_L
+        showTime
+        format="HH-mm"
         value={transValueTime(value)}
         onChange={handleChangeTime}
         disabledHours={disabledHours}

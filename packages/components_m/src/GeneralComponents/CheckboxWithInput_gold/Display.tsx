@@ -7,12 +7,12 @@ import { ICommonOption } from '@lm_fe/env';
 export * from './types';
 interface IData { value: TIdTypeCompatible, label?: string, text?: string }
 const MyCheckbox_DisplayFC: TCommonComponentDisplay<ICheckboxWithInputProps, string | number | ICommonOption[]> = props => {
-    const { value, marshal, type = 'single', options, optionKey } = props
+    const { value, marshal, type = 'single', options, uniqueKey } = props
 
 
 
     const _options = parse_MC_option(props)
-    const _marshal = getMarshal(marshal, value)
+    const _marshal = getMarshal(props, value)
 
     const _value = parseValue(value, _marshal, type)
 

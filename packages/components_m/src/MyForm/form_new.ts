@@ -1,6 +1,21 @@
+import { mchcLogger } from '@lm_fe/env';
+import { isFunction } from '@lm_fe/utils';
 import { message } from 'antd';
 import { get, map, set } from 'lodash';
 
+interface IFormHandler {
+  [x: string]: {
+    actions: {
+
+      getValidate?: () => any,
+      getValue?: () => any,
+      reset?: () => any,
+      setValidate?: (rules: any) => any,
+      setValue?: (value: any) => any,
+      valid?: () => any,
+    }
+  } | (() => any) | ((a: any) => any) | ((a: any, b: any) => any)
+}
 
 
 export function createFormHandler(config, { submitChange }) {
@@ -10,8 +25,10 @@ export function createFormHandler(config, { submitChange }) {
   let fieldsValueChange = () => { };
 
   if (!Array.isArray(config)) {
+    message.warning(`expect array but ${typeof config}`)
+    console.log(`expect array but `, config)
     config = []
-    message.warn(`expect array but ${typeof config}`)
+
     // throw new Error(`expect array but ${typeof config}`);
   }
   /**
@@ -49,18 +66,18 @@ export function createFormHandler(config, { submitChange }) {
   };
 
   const submit = function () {
-    console.log('ssbb', formHandler)
+    const keys = Object.keys(formHandler)
+    mchcLogger.log('formHandler submit', { formHandler, keys })
     let validCode = true;
-    Object.keys(formHandler).forEach((key) => {
-      if (formHandler[key].actions) {
-        if (typeof formHandler[key].actions.getValue === 'function') {
-          formData = Object.assign(formData, { [key]: formHandler[key].actions.getValue() });
-        }
-        if (typeof formHandler[key].actions.valid === 'function') {
-          const result = formHandler[key].actions.valid();
-          if (!result && validCode) {
-            validCode = false;
-          }
+    keys.forEach((key) => {
+      const actions = formHandler[key]?.actions
+      if (isFunction(actions?.getValue)) {
+        formData = Object.assign(formData, { [key]: actions?.getValue?.() });
+      }
+      if (isFunction(actions?.valid)) {
+        const result = actions?.valid?.();
+        if (!result && validCode) {
+          validCode = false;
         }
       }
     });
@@ -162,21 +179,25 @@ export function createFormHandler(config, { submitChange }) {
     fieldsValueChange = callback;
   };
 
-  const formHandler = { ...initField(config) };
-  formHandler.submit = submit;
-  formHandler.valid = valid;
-  formHandler.reset = reset;
-  formHandler.subscribe = subscribe;
-  formHandler.dispatch = dispatch;
-  formHandler.cleanSubscriptions = cleanSubscriptions;
-  formHandler.formState = formState;
-  formHandler.formData = formData;
-  formHandler.listenFormData = listenFormData;
-  formHandler.uuid = Math.random();
-  formHandler.fieldChange = false; // 判断表单是否有修改
-  formHandler.setMyRef = setMyRef;
-  formHandler.getMyRef = getMyRef;
-  formHandler.getAllRef = getAllRef;
-  formHandler.ref = newRef;
+  const formHandler = {
+    submit: submit,
+    valid: valid,
+    reset: reset,
+    subscribe: subscribe,
+    dispatch: dispatch,
+    cleanSubscriptions: cleanSubscriptions,
+    formState: formState,
+    formData: formData,
+    listenFormData: listenFormData,
+    fieldChange: false,
+    setMyRef: setMyRef,
+    getMyRef: getMyRef,
+    getAllRef: getAllRef,
+    ref: newRef,
+    uuid: Math.random(),
+    ...initField(config)
+
+  };
+
   return formHandler;
 }

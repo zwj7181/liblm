@@ -1,11 +1,7 @@
-import { mchcEnv } from "@lm_fe/env";
 import { IMchc_FormDescriptions_Field } from "@lm_fe/service";
-import { formatDate } from "@lm_fe/utils";
 
 export function 诊断及指导_config(): IMchc_FormDescriptions_Field[] {
-    if (mchcEnv.in(["建瓯"])) {
-        return 诊断及指导_config_建瓯()
-    }
+
     return [
         {
             "id": 786,
@@ -75,86 +71,16 @@ export function 诊断及指导_config(): IMchc_FormDescriptions_Field[] {
                 }, {
                     "id": 18121,
                     "key": "breastCancerDiagnosisAndGuidance.checkDoctor",
-                    "label": "检查医生",
-                    "inputType": "input",
-                    "rules": [{ "required": true, "message": "检查医生是必填项" }],
+                    "inputType": "MA",
+                    inputProps: { memorieskey: '妇保-检查医生' },
+
+                    "required": true,
                     "span": 8,
                     "offset": 0,
                     "formItemLayout": { "labelCol": { "span": 8 }, "wrapperCol": { "span": 12 } },
                 }]
         },
 
-    ]
-
-}
-export function 诊断及指导_config_建瓯(): IMchc_FormDescriptions_Field[] {
-    return [
-        {
-            "name": "最后诊断",
-            "children": [
-                {
-                    label: '最后诊断',
-                    key: 'breastCancerDiagnosisAndGuidance.finalDiagnosisNote',
-                    inputType: 'MC',
-                    required: true,
-                    inputProps: {
-                        type: 'multiple',
-                        options: '未见异常,良性疾病,不典型增生,小叶原位癌,导管原位癌,浸润癌<浸润性导管癌、浸润性小叶癌>c,其他恶性肿瘤i,部位<左、右>c',
-                        sp: [{ label: '未见异常', exclusive: true }]
-                    }
-                },
-                {
-                    label: 'TNM分期',
-                    children: [
-                        {
-                            label: '临床分期(cTNM)',
-                            key: 'breastCancerDiagnosisAndGuidance.cTNM',
-                            inputType: 'MC',
-                            inputProps: {
-                                options: '获得<0期、Ⅰ期、ⅡA期、ⅡB期、Ⅲ期以上|0>s,未获得',
-
-                            }
-                        },
-                        {
-                            label: '病理分期(pTNM)',
-                            key: 'breastCancerDiagnosisAndGuidance.pTNM',
-                            inputType: 'MC',
-                            inputProps: {
-                                options: '获得<0期、Ⅰ期、ⅡA期、ⅡB期、Ⅲ期以上|0>s,未获得',
-                            }
-                        },
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "随访治疗情况",
-            "children": [
-                {
-                    inputType: 'MC',
-                    label: '随访情况',
-                    key: 'breastCancerDiagnosisAndGuidance.followUpStatus',
-                    required: true,
-                    inputProps: {
-                        marshal: 0,
-                        options: '已随访,失访'
-                    },
-                    layout: '1/2',
-                },
-                {
-                    inputType: 'MC',
-                    label: '乳腺癌患者接受治疗情况',
-                    required: true,
-                    key: 'breastCancerDiagnosisAndGuidance.treatmentStatus',
-                    inputProps: {
-                        marshal: 0,
-                        options: '是,否'
-                    },
-                    layout: '1/2',
-
-                },
-            ]
-        },
     ]
 
 }

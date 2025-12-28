@@ -1,9 +1,9 @@
 import { BaseWsService } from "@lm_fe/utils";
 import { message } from "antd";
-import { isObject, isString } from "lodash";
+import { get, isObject, isString } from "lodash";
+import { mchcEnv } from "../env";
 import { TDirver_Event, check_is_readcard, parse_readcard_data } from "./types/mchc_driver";
-import { lm_files_info } from '@lm_fe/static';
-
+export * from './types/mchc_driver'
 
 
 
@@ -11,7 +11,7 @@ import { lm_files_info } from '@lm_fe/static';
 
 class MchcDriver extends BaseWsService<TDirver_Event> {
     download() {
-        window.location.href = `/lm_files/${lm_files_info.files['LMCSSetup.msi']}`;
+        window.location.href = mchcEnv.gs(_ => _.lm_files["LMCSSetup.msi"]);
     }
     protected _messageHandler(e: WebSocketEventMap['message']) {
         const rawData = e.data
@@ -23,46 +23,46 @@ class MchcDriver extends BaseWsService<TDirver_Event> {
         } catch (e) {
             this._logger.error({ e, type: 'JSON.parse' })
             if (isString(rawData)) {
-                message.warn(rawData)
+                message.warning(rawData)
             }
         }
 
-        this.emit('message', e)
         this.checkType(data)
     }
-    send(data: any) {
+    private send_id = ''
+    send(data: { data?: any, name?: string, token?: string, command?: string, send_id?: string }) {
+        if (data.send_id) {
+            this.send_id = data.send_id
+        }
         if (!this.isOpen) {
-            message.warn('外接设备初始化失败，请联系管理员')
+            message.warning('外接设备初始化失败，请联系管理员')
             return
         }
-
         this._send(data)
-
     }
-    private checkType(data: any) {
-        if (!data || !isObject(data)) return
 
+    private checkType(data: any) {
+        let send_id = this.send_id
+        this.send_id = ''
+        if (!data || !isObject(data)) return
+        let msg = get(data, 'msg')
+        if (msg) {
+            message.warning(msg)
+        }
 
         const is_read_IdNO = check_is_readcard(data)
         if (is_read_IdNO) {
-
-
             const __personal = parse_readcard_data(data)
-            if (__personal) {
-                message.success(`读取到${__personal.name}的信息 !`)
-
-                this.emit('data', {
-                    type: 'ReadCard',
-                    data: __personal
-                })
-
-            } else {
+            if (!__personal) {
                 message.error('读取到错误的身份证号码 !');
+                return
             }
-
-
-
+            message.success(`读取到${__personal.name}的信息 !`)
+            this.emit('data', { type: 'ReadCard', data: __personal, send_id })
+            return
         }
+        // fallback
+        this.emit('data', { type: 'Raw', data })
     }
 
 }

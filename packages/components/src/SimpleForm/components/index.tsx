@@ -7,7 +7,6 @@ import {
     Radio,
     Rate,
     Row,
-    Select,
     Slider,
     Switch,
     TimePicker,
@@ -21,10 +20,14 @@ import SwitchSelect from './extra/SwitchSelect'
 import { RangePickerProps } from 'antd/lib/date-picker'
 import { ComponentClass } from 'react'
 import TabForm from './TabForm'
+import { Select_L } from '@noah-libjs/components'
+
+
+
 const { RangePicker } = DatePicker
 export interface IC {
     Input: typeof Input
-    Select: typeof Select
+    Select: typeof Select_L
     Radio: typeof Radio
     InputNumber: typeof InputNumber
     Checkbox: typeof Checkbox
@@ -48,7 +51,7 @@ export interface IC {
 }
 export const ComponentMapping: IC = {
     Input,
-    Select,
+    Select: Select_L,
     Radio,
     InputNumber,
     Checkbox,

@@ -6,7 +6,7 @@ export const getInformedConsents = async (pregnancyId) => {
 };
 
 export const getDocumentTemplates = async () => {
-  const result = await request.get(`/api/document-templates?moduleType.equals=3&page=0&size=9999`);
+  const result = await request.get<any[]>(`/api/document-templates?moduleType.equals=3&page=0&size=9999`);
   return result.data
 };
 

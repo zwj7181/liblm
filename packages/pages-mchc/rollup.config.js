@@ -2,6 +2,7 @@ import image from '@rollup/plugin-image'
 import jsx from 'acorn-jsx'
 import cssUrl from 'postcss-url'
 import postcss from 'rollup-plugin-postcss'
+import path from 'path'
 import { createSharedConfig } from '../../rollup.config'
 
 export default (commandLineArgs) => {

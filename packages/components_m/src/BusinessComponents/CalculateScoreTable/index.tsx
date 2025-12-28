@@ -18,9 +18,9 @@ import {
 } from 'lodash';
 import React, { Component } from 'react';
 import BaseTable from './BaseTable';
-import moment, { isMoment } from 'moment';
+import dayjs from 'dayjs';
 import { getDictionariesEnumerations } from '../../utils/dictionary';
-import { formatDate, safe_json_parse } from '@lm_fe/utils';
+import { formatDate, isMoment, safe_json_parse } from '@lm_fe/utils';
 export const tableColumnsSpecialInputType = ['select_tag_with_options', 'tree_select_v2', 'tree_select'];
 class EditInTable extends Component {
   addedNum = 0;
@@ -116,7 +116,7 @@ class EditInTable extends Component {
         const inputType = get(allColumnsMapping, `${key}.inputType`);
         let tempValue = value;
         if (inputType === 'single_date_picker') {
-          tempValue = moment(tempValue);
+          tempValue = dayjs(tempValue);
         }
         if (key !== 'key') {
           if (Object.prototype.toString.call(value) === '[object Object]') {

@@ -1,3 +1,4 @@
+import { AnyObject } from "@lm_fe/utils";
 import { IBaseType } from "./common"
 import ReconnectingWebSocket from "reconnecting-websocket";
 
@@ -41,7 +42,7 @@ interface I_onChange extends IBaseType<'obis-doctor'> {
 
 interface I_onSearch extends IBaseType<'obis-globalRisk'> {
     event: 'open' | 'message' | 'error' | 'close'
-    data?: { [x: string]: any }
+    data?: AnyObject
 
 }
 

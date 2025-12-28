@@ -3,8 +3,10 @@ import { IMyForm_Event } from "./types/my_form";
 import { IOutpatient_Event } from "./types/outpatient";
 import { IService_info } from "./types/service_info";
 import { IWs_Event } from "./types/ws";
+import { IBaseList_Event } from "./types/components/BaseList";
+import { ModalFuncProps } from "antd";
+import { ArgsProps } from "antd/es/notification";
 
-export * from './MchcDriver';
 
 export const mchcEvent = new EventEmitter<{
     print_modal: [{
@@ -16,10 +18,13 @@ export const mchcEvent = new EventEmitter<{
         isNewEdition?: boolean;
     }]
     my_form: IMyForm_Event
-
+    BaseList_hook: IBaseList_Event
     service_info: IService_info
     custom_msg: [{ readonly type: any, data?: any }]
     outpatient: IOutpatient_Event
     ws_event: IWs_Event
+    toast: [{ msg: string, type: 'info' | 'success' | 'error' | 'warning', duration?: number, cb?: () => void }]
+    confirm: [{ type: 'info' | 'warning' | 'error' | 'success', } & ModalFuncProps]
+    notify: [{ type: 'info' | 'warning' | 'error' | 'success', } & ArgsProps]
 }>();
 

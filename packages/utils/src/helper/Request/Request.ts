@@ -2,20 +2,15 @@
 import axios, { Axios, AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 
 //@ts-ignore
-import { message } from 'antd';
 import utils from 'axios/lib/utils';
 import { AppEnv, appEnv } from '../AppEnv';
-import { EventEmitter } from '../Event';
-import { getHappyConfig } from '../happyParse';
-import { MyLog } from '../log';
+import { get_global_happy_arg } from '../happyParse';
 import { codeMessage } from './constant';
 import { IRequest_AxiosRequestConfig, IRequest_ResponseError, IRequest_SpawnConfig, TRequest_PreReq, TRequest_SimpleReq } from './types';
-import { ARG_URS1_KEY, ARG_URS2_KEY } from 'src/constant';
-import { getSearchParamsValue } from '../small-fn';
+import { AnyObject, EventEmitter, MyLog } from '@noah-libjs/utils';
 export * from './types';
 
-
-export class Request extends EventEmitter<{ beforeRequest: any, afterResponse: any, responseErr: any }> {
+export class Request extends EventEmitter<{ beforeRequest: any, afterResponse: any, responseErr: any, message: [boolean, string, any] }> {
     ins!: AxiosInstance
     constructor(config: IRequest_SpawnConfig = {}) {
         super()
@@ -37,7 +32,7 @@ export class Request extends EventEmitter<{ beforeRequest: any, afterResponse: a
         return Request.CONFIG.successCode.includes(code)
     }
     static genErrMsg(res?: AxiosResponse<any>, error?: AxiosError) {
-        const status = res?.status || -1
+        const status = (res?.status || -1) as 200
         const rawMessage = error?.message === 'Network Error' ? '网络连接异常   ' : ''
         const msg: string = Request.getMsg(res) ?? codeMessage[status] ?? rawMessage ?? '未知错误'
         return msg
@@ -72,16 +67,17 @@ export class Request extends EventEmitter<{ beforeRequest: any, afterResponse: a
         return headerMessage
     }
 
-    static displayMsg(res: AxiosResponse<{ data?: any, code?: number, msg?: string }>) {
+    displayMsg(res?: AxiosResponse<{ data?: any, code?: number, msg?: string }>) {
         const isSuccessful = Request.checkRTCode(res)
         const msg = Request.getMsg(res)
 
         if (!msg) return
-        if (isSuccessful) {
-            message.success(msg)
-        } else {
-            message.warn(msg)
-        }
+        this.emit('message', isSuccessful, msg, res)
+        // if (isSuccessful) {
+        //     message.success(msg)
+        // } else {
+        //     message.warning(msg)
+        // }
     }
 
     spawn(spawnConfig: IRequest_SpawnConfig = {},) {
@@ -99,17 +95,23 @@ export class Request extends EventEmitter<{ beforeRequest: any, afterResponse: a
             config.logger && Request.logger.error(e)
             return onRejected(e)
         }
-        ins.interceptors.request.use((config) => {
+        ins.interceptors.request.use((config: IRequest_AxiosRequestConfig) => {
             this.emit('beforeRequest', config)
-            const happyConfig = getHappyConfig(location.pathname)
-            const usr1 = getSearchParamsValue(ARG_URS1_KEY) || happyConfig?.usr1 || undefined
-            const usr2 = getSearchParamsValue(ARG_URS2_KEY) || happyConfig?.usr2 || undefined
             // TODO: remove
             config.headers!.Authorization = config.headers!.Authorization || appEnv.token || '';
             const params = (config.params = config.params ?? {})
-            params.pathname = location.pathname
-            params.usr1 = usr1
-            params.usr2 = usr2
+            // params.pathname = location.pathname
+            if (!config.ignore_usr) {
+                params.usr1 = get_global_happy_arg('usr1')
+                params.usr2 = get_global_happy_arg('usr2')
+
+            }
+            if (!config.ignore_env && window.mchcEnv) {
+                const env_key = window.mchcEnv.env_key
+                params.lmenv = env_key
+                config.headers!.Lmenv = env_key
+            }
+
             return onRequest(config);
         })
 
@@ -118,7 +120,7 @@ export class Request extends EventEmitter<{ beforeRequest: any, afterResponse: a
                 const { config: axiosConfig, headers } = response
                 const config = axiosConfig as IRequest_AxiosRequestConfig
                 const { url, data, params, method, logger, unboxing } = config
-                Request.displayMsg(response)
+                this.displayMsg(response)
                 if (Request.checkRTCode(response)) {
 
                     logger && Request.logger.log({ url, data, params, method, }, response.data)
@@ -138,7 +140,10 @@ export class Request extends EventEmitter<{ beforeRequest: any, afterResponse: a
                 return _onErr(e);
             },
             (error: AxiosError) => {
+
                 Request.logger.error('请求出错：', { error })
+                this.displayMsg(error.response)
+
                 const response = error?.response
                 const e = Request.createErr(response, error)
                 return _onErr(e)
@@ -160,8 +165,4 @@ function doUnboxing(res: any) {
     }
     return res
 }
-
-
-
-
 

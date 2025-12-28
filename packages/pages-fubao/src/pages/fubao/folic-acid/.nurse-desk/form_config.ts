@@ -24,7 +24,7 @@ export const form_config: IMchc_FormDescriptions_Field_Nullable[] = [{
     //   "span": 16,
     //   "offset": 0,
     //   "formItemLayout": { "labelCol": { "span": 3 }, "wrapperCol": { "span": 20 } },
-    //   "isActive": 1,
+    // 
     // },
     {
       "id": 18464,
@@ -50,13 +50,13 @@ export const form_config: IMchc_FormDescriptions_Field_Nullable[] = [{
       "key": "filingDate",
       "label": "建档日期",
       "inputType": "single_date_picker",
-      "tranferRules": { "type": "moment" },
+      "tranferRules": { "type": "dayjs()" },
       "rules": [{ "required": true, "message": "建档日期是必填项" }],
 
       "span": 8,
       "offset": 0,
       "formItemLayout": { "labelCol": { "span": 6 }, "wrapperCol": { "span": 16 } },
-      "isActive": 1,
+    
     }, {
       "id": 18459,
       "key": "name",
@@ -67,7 +67,7 @@ export const form_config: IMchc_FormDescriptions_Field_Nullable[] = [{
       "span": 8,
       "offset": 0,
       "formItemLayout": { "labelCol": { "span": 6 }, "wrapperCol": { "span": 16 } },
-      "isActive": 1,
+    
     }, {
       "id": 18460,
       "key": "telephone",
@@ -79,7 +79,7 @@ export const form_config: IMchc_FormDescriptions_Field_Nullable[] = [{
       "span": 8,
       "offset": 0,
       "formItemLayout": { "labelCol": { "span": 6 }, "wrapperCol": { "span": 16 } },
-      "isActive": 1,
+    
     }, {
       "id": 18461,
       "key": "idType",
@@ -91,7 +91,7 @@ export const form_config: IMchc_FormDescriptions_Field_Nullable[] = [{
       "offset": 0,
       "isNewRow": 1,
       "formItemLayout": { "labelCol": { "span": 6 }, "wrapperCol": { "span": 16 } },
-      "isActive": 1,
+    
     }, {
       "id": 18462,
       "key": "idNO",
@@ -103,7 +103,7 @@ export const form_config: IMchc_FormDescriptions_Field_Nullable[] = [{
       "span": 8,
       "offset": 0,
       "formItemLayout": { "labelCol": { "span": 6 }, "wrapperCol": { "span": 16 } },
-      "isActive": 1,
+    
     }, {
       "id": 18463,
       "key": "age",
@@ -114,7 +114,7 @@ export const form_config: IMchc_FormDescriptions_Field_Nullable[] = [{
       "span": 8,
       "offset": 0,
       "formItemLayout": { "labelCol": { "span": 6 }, "wrapperCol": { "span": 16 } },
-      "isActive": 1,
+    
     }]
 },
 {
@@ -133,7 +133,7 @@ export const form_config: IMchc_FormDescriptions_Field_Nullable[] = [{
     //   "span": 24,
     //   "offset": 0,
     //   "formItemLayout": { "labelCol": { "span": 0 }, "wrapperCol": { "span": 24 } },
-    //   "isActive": 1,
+    // 
     // },
     {
       "id": 18466,
@@ -233,7 +233,7 @@ export const form_config: IMchc_FormDescriptions_Field_Nullable[] = [{
       "span": 24,
       "offset": 0,
       "formItemLayout": { "labelCol": { "span": 0 }, "wrapperCol": { "span": 24 } },
-      "isActive": 1,
+    
     }
   ]
 }

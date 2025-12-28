@@ -1,5 +1,5 @@
 import React from 'react';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { message, Button } from 'antd';
 import { SearchOutlined, RedoOutlined } from '@ant-design/icons';
 import { queryFormDescriptions } from '../config/form';

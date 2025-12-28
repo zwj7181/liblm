@@ -4,50 +4,39 @@ import { event } from '@lm_fe/utils'
 import { isArray, isObject, set } from 'lodash';
 import { mchcLogger } from '@lm_fe/env';
 import { IMchc_FormDescriptions_Field_Nullable } from '@lm_fe/service';
-import { get_check_invert_values } from '../CheckboxWithInput_gold/utils';
-const CheckAndCancelButton: FC<any> = function CheckAndCancelButton({
-  name,
-  type = 'primary',
-  check_invert_values,
-  form,
-  size = 'middle',
-  value = true,
-  onChange,
-  onClick,
-  siblings,
-  input_props
-}: { [x: string]: any, form?: FormInstance, check_invert_values?: { [x: string]: [any, any] }, siblings?: IMchc_FormDescriptions_Field_Nullable[] }) {
+import { get_check_invert_values } from '@lm_fe/components';
+const CheckAndCancelButton: FC<any> = function CheckAndCancelButton(props: { [x: string]: any, form?: FormInstance, check_invert_values?: { [x: string]: [any, any] }, config?: IMchc_FormDescriptions_Field_Nullable }) {
+  const {
+    name,
+    type = 'primary',
+    check_invert_values,
+    form,
+    size = 'middle',
+    value = true,
+    onChange,
+    onClick,
+    config,
+    ...input_props
+  } = props
   const [isCheck, setIsCheck] = useState(value);
-  // const [type, setType] = useState('primary');  //更改type,样式未生效
-  const [backgroundColor, setBackgroundColor] = useState('#0E318D');
-  const [color, setColor] = useState('#fff');
 
   const handleClick = () => {
     setIsCheck(!isCheck);
     onChange?.(isCheck)
-    // setType('default');   //更改type,样式未生效
 
-    if (isCheck) {
-      setBackgroundColor('#fff');
-      setColor('#0E318D');
-    }
-    if (!isCheck) {
-      setBackgroundColor('#0E318D');
-      setColor('#fff');
-    }
 
     onClick?.(name, isCheck);
     event.emit(CheckAndCancelButton.displayName!, `${name}`, isCheck)
     // mchcLogger.log('CheckAndCancelButton 111', { check_invert_values, form, isCheck })
     if (!form) {
-      message.warn('请设置 form !')
+      message.warning('请设置 form !')
       return
     }
+    const s = config?.siblings
+    if (!s) return
     const checkValues = isObject(check_invert_values)
       ? check_invert_values
-      : isArray(siblings)
-        ? get_check_invert_values(siblings)
-        : null
+      : get_check_invert_values(s)
     if (checkValues) {
       const keys = Object.keys(checkValues)
       const old = form.getFieldsValue()
@@ -64,7 +53,7 @@ const CheckAndCancelButton: FC<any> = function CheckAndCancelButton({
   };
 
   return (
-    <Button type={type} size={size} onClick={handleClick} {...input_props} style={{ backgroundColor, color }}>
+    <Button type={isCheck ? 'primary' : undefined} size={size} onClick={handleClick} {...input_props} >
       {isCheck ? '一键勾选' : '一键取消'}
     </Button>
   );

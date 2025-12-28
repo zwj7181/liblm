@@ -1,10 +1,21 @@
-import { getSearchParamsValue, safe_json_parse, safe_json_parse_arr } from "@lm_fe/utils";
-import { ICommonOption } from "../select_options";
-import { ACTION_TYPE } from "src/state/actionType";
+import { get, getSearchParamsValue, safe_json_parse_arr } from "@lm_fe/utils";
 import { cloneDeep, isNil } from "lodash";
+import { ACTION_TYPE } from "src/state/actionType";
+import { ICommonOption } from "../select_options";
+export interface ISingleData { id: any, patient: any, result: any, isSingle: boolean, }
 
-export function getDoctorEndId() {
-    return getSearchParamsValue('id') ?? (window as any)._single_props?.id
+export function single_id(props?: any) {
+    return Number(props?.id ?? getSearchParamsValue('id') ?? fuck_cache<ISingleData>('single')?.id)
+}
+
+export function fuck_cache<T>(key: string, data?: T): T | undefined {
+    let cache_key = `__${key}__`
+    if (data) {
+        Object.assign(window, { [cache_key]: data })
+        return data
+    } else {
+        return get(window, cache_key) as unknown as T
+    }
 }
 export function getActionType(key: keyof typeof ACTION_TYPE) {
     return ACTION_TYPE[key]
@@ -31,14 +42,13 @@ export function commonOptionToNote<D extends { [x in N | O]: any }, T extends Ex
     const noteKey = `${key}Note` as N
     const __Key = `${key}__` as O
     const __raw_value = data[__Key]
-    console.log('jjx', key, __raw_value)
     if (__raw_value === null) {
         _data[key] = null!
         _data[noteKey] = null!
         return _data
 
     }
-    const arr: ICommonOption[] = safe_json_parse(__raw_value)
+    const arr: ICommonOption[] = safe_json_parse_arr(__raw_value)
 
     if (Array.isArray(arr)) {
         const option = arr[0]

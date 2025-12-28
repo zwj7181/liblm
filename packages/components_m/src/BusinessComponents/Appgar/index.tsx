@@ -1,11 +1,9 @@
-import InputWithLabel from '../../GeneralComponents/InputWithLabel';
-import { Checkbox, Col, InputNumber, Row } from 'antd';
-import { map } from 'lodash';
-import React, { Component, Fragment, useState } from 'react';
-import { get, isEqual, set } from 'lodash';
-import styles from './index.module.less';
-import { breathMapping, heartRateMapping, muscleMapping, reflexMapping, skinMapping } from './config';
 import { mchcEnv } from '@lm_fe/env';
+import { Checkbox, Col, InputNumber, Row } from 'antd';
+import { get, map } from 'lodash';
+import React, { Fragment } from 'react';
+import { breathMapping, heartRateMapping, muscleMapping, reflexMapping, skinMapping } from './config';
+import styles from './index.module.less';
 const SPAN = 2
 const configDefault = [
   { key: 'Skincolor', label: '肤色', options: skinMapping }, // SkincolorScore

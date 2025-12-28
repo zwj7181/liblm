@@ -13,10 +13,7 @@ export function processTwoCancer_remote(data: IFubao_BreastCancerScreening) {
 
     // 月经史
 
-    let womenHealthcareMenstrualHistory = (['menopause', 'dysmenorrhea'] as const)
-        .reduce((obj, k) => {
-            return mchcUtils.noteToCommonOption(obj, k)
-        }, data.womenHealthcareMenstrualHistory)
+
 
     data.womenHealthcareMenstrualHistory = mchcUtils.autoNoteToCommonOption(data.womenHealthcareMenstrualHistory)
 
@@ -48,9 +45,7 @@ export function processTwoCancer_local(_data: IFubao_BreastCancerScreening) {
 
     // 月经史
 
-    let womenHealthcareMenstrualHistory = (['menopause', 'dysmenorrhea'] as const).reduce((obj, k) => {
-        return mchcUtils.commonOptionToNote(obj, k)
-    }, data.womenHealthcareMenstrualHistory)
+
 
     data.womenHealthcareMenstrualHistory = mchcUtils.autoCommonOptionToNote(data.womenHealthcareMenstrualHistory)
 

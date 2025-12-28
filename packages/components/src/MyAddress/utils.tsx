@@ -1,5 +1,5 @@
 import { IMchc_AddressItemType } from "@lm_fe/service";
-import { cloneDeep, isEmpty, isEqual } from "lodash";
+import { cloneDeep, isEmpty, isEqual, isString } from "lodash";
 
 
 export function checkFetchAddrOptionsNeed(value: string | undefined, oldArr: string[], options: IMchc_AddressItemType[]): 'noNeed' | 'init' | 'detail' {
@@ -15,7 +15,7 @@ export function checkFetchAddrOptionsNeed(value: string | undefined, oldArr: str
 }
 
 export function parseValue(value?: string): { arr: string[], str: string } {
-    if (!value)
+    if (!value || !isString(value))
         return { arr: [], str: '' }
 
     // “&”分割选择地址和详细地址

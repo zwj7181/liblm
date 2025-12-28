@@ -1,11 +1,7 @@
-import { get_check_invert_values } from "@lm_fe/components_m";
-import { mchcEnv } from "@lm_fe/env";
 import { IMchc_FormDescriptions_Field } from "@lm_fe/service";
 
 export function 乳房触检_config() {
-    if (mchcEnv.in(["建瓯"])) {
-        return 乳房触检_config_建瓯()
-    }
+ 
     const cache: IMchc_FormDescriptions_Field[] = [
         {
             "id": 784,
@@ -78,104 +74,3 @@ export function 乳房触检_config() {
 }
 
 
-function 乳房触检_config_建瓯() {
-    const cache: IMchc_FormDescriptions_Field[] = [
-        {
-            "id": 784,
-            "name": "乳房触检",
-            "children": [
-                {
-                    label: '左乳',
-                    children: [
-                        {
-                            "key": "breastCancerBreastPalpation.leftBreastSymptomsNote",
-                            "label": "症状",
-                            required: true,
-                            "inputType": "MC",
-                            inputProps: {
-                                inputWidth: 120,
-
-                                options: '无,有',
-                                sp: [{ label: '有', "inputType": "MC", parentheses: true, props: { type: 'multiple', options: '乳腺疼痛<周期性、非周期性>a,乳头溢液<血性、浆液性、其它>a' } }]
-                            },
-                            layout: '1/1',
-
-                        },
-                        {
-                            "key": "breastCancerBreastPalpation.leftBreastSignsNote",
-                            "label": "体征",
-                            required: true,
-                            "inputType": "MC",
-                            inputProps: {
-                                type: 'multiple',
-                                options: '未见异常,乳房肿块或团块i,不对称性增厚或结节,皮肤改变i,腋淋巴结肿大,其他i',
-                                sp: [{ label: '未见异常', exclusive: true }, { label: '乳房肿块或团块', parentheses: true, prefix: '最大径', suffix: 'CM' }]
-                            },
-                            layout: '1/1',
-                        },
-
-                    ]
-                },
-                {
-                    label: '右乳',
-                    children: [
-                        {
-                            "key": "breastCancerBreastPalpation.rightBreastSymptomsNote",
-                            "label": "症状",
-                            required: true,
-                            "inputType": "MC",
-                            inputProps: {
-                                inputWidth: 120,
-
-                                options: '无,有',
-                                sp: [{ label: '有', "inputType": "MC", parentheses: true, props: { type: 'multiple', options: '乳腺疼痛<周期性、非周期性>a,乳头溢液<血性、浆液性、其它>a' } }]
-                            },
-                            layout: '1/1',
-                        },
-                        {
-                            "key": "breastCancerBreastPalpation.rightBreastSignsNote",
-                            required: true,
-                            "label": "体征",
-                            "inputType": "MC",
-                            inputProps: {
-                                type: 'multiple',
-                                options: '未见异常,乳房肿块或团块i,不对称性增厚或结节,皮肤改变i,腋淋巴结肿大,其他i',
-                                sp: [{ label: '未见异常', exclusive: true }, { label: '乳房肿块或团块', parentheses: true, prefix: '最大径', suffix: 'CM' }]
-                            },
-                            layout: '1/1',
-                        },
-
-
-                    ]
-                },
-
-                {
-                    "key": "breastCancerBreastPalpation.other",
-                    "label": "临床检查结果",
-                    required: true,
-                    "inputType": "MC",
-                    inputProps: { options: '未见异常(阴性),阳性i' },
-                    layout: '1/1',
-                },
-                {
-                    "key": "breastCancerBreastPalpation.furtherExaminationNote",
-                    "label": "进一步检查",
-                    required: true,
-                    "inputType": "MC",
-                    inputProps: { options: '否,是<乳腺彩超检查、乳腺x线检查、乳腺彩超和乳腺x线联合筛查、组织病理检查、其他i|1|multiple>c' },
-                    layout: '1/1',
-                },
-                {
-                    "label": "一键勾选",
-                    inputType: 'check_invert_button',
-                    inputPropsFn() {
-                        return {
-                            check_invert_values: get_check_invert_values(cache)
-                        }
-                    }
-                }
-            ]
-        },
-    ]
-    return cache
-}

@@ -8,6 +8,7 @@ import { DeleteOutlined, EyeOutlined, EditOutlined } from '@ant-design/icons';
 import { get } from 'lodash';
 import { BaseListOld } from '@lm_fe/components_m';
 import { request } from '@lm_fe/utils';
+import { mchcEnv } from '@lm_fe/env';
 
 class List extends BaseListOld {
   staticDefaultQuery = {
@@ -133,9 +134,9 @@ class List extends BaseListOld {
   handleDelete = (rowData: any) => async () => {
     const res = (await request.delete(`/api/deleteFolateManagementFile/${get(rowData, 'id')}`)).data;
     if (get(res, 'code') === 1) {
-      message.success(get(res, 'data'));
+      mchcEnv.success(get(res, 'data'));
     } else {
-      message.warning(get(res, 'data'));
+      mchcEnv.warning(get(res, 'data'));
     }
     this.handleSearch();
   };

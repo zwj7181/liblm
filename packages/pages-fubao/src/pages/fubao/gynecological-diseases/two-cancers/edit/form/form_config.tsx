@@ -27,7 +27,7 @@ export function form_config(): IMchc_FormDescriptions_Field[] {
             },
             {
                 "key": "outpatientNo",
-                "label": "就诊卡号",
+                "label": "门诊号",
                 "inputType": "input",
                 layout: '1/3',
             },
@@ -60,7 +60,7 @@ export function form_config(): IMchc_FormDescriptions_Field[] {
                 "label": "民族",
                 "inputType": "MS",
                 "required": true,
-                inputProps: { optionKey: '民族s', marshal: 0 },
+                inputProps: { uniqueKey: '民族s', marshal: 0 },
                 layout: '1/3',
             },
             {
@@ -76,7 +76,7 @@ export function form_config(): IMchc_FormDescriptions_Field[] {
                 "label": "婚姻状态",
                 "inputType": "MS",
                 "rules": [{ "required": true, "message": "婚姻状态是必填项" }],
-                inputProps: { optionKey: '婚姻', marshal: 0 },
+                inputProps: { uniqueKey: '婚姻', marshal: 0 },
                 layout: '1/3',
             },
 
@@ -84,7 +84,7 @@ export function form_config(): IMchc_FormDescriptions_Field[] {
                 "key": "education",
                 "label": "文化程度",
                 "inputType": "MS",
-                inputProps: { optionKey: '文化程度s', marshal: 0 },
+                inputProps: { uniqueKey: '文化程度s', marshal: 0 },
                 layout: '1/3',
             },
 
@@ -92,7 +92,7 @@ export function form_config(): IMchc_FormDescriptions_Field[] {
                 "key": "profession",
                 "label": "职业",
                 "inputType": "MS",
-                inputProps: { optionKey: '职业s', marshal: 0 },
+                inputProps: { uniqueKey: '职业s', marshal: 0 },
                 layout: '1/3',
             },
 
@@ -195,18 +195,18 @@ function form_config_建瓯(): IMchc_FormDescriptions_Field[] {
                 "label": "民族",
                 "inputType": "MS",
                 "required": true,
-                inputProps: { optionKey: '民族s', marshal: 0 },
+                inputProps: { uniqueKey: '民族s', marshal: 0 },
                 layout: '1/3',
             },
             {
                 "key": "outpatientNo",
-                "label": "就诊卡号",
+                "label": "门诊号",
                 "inputType": "input",
                 "required": true,
                 layout: '1/3',
             },
             {
-                "key": "上报年份",
+                "key": "reportYear",
                 "label": "上报年份",
                 "inputType": 'DatePicker',
                 "required": true,

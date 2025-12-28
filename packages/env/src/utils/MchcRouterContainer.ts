@@ -1,15 +1,50 @@
-import { ARG_URS1_KEY, ARG_URS2_KEY, getHappyConfig, getSearchParamsAll } from "@lm_fe/utils"
+import { AnyObject, getHappyConfig } from "@lm_fe/utils"
+import { keys } from "lodash"
 
 
 
+type TData = AnyObject
 
 
 
 class MchcRouterContainer {
-    constructor(data: any) {
-        this.routesData = data
+
+    init(base: TData, ...addon: TData[]) {
+        this.mix(base, addon)
     }
-    routesData: { [x: string]: any } = {}
+    base: TData = {}
+    addon: TData = {}
+    routesData: TData = {}
+
+    mix(base: TData, addon: TData[]) {
+        this.base = base
+
+        const mixinRoutes = addon.reduce((sum, a) => Object.assign({}, sum, a), {})
+
+        this.addon = mixinRoutes
+
+        const oldKeys = keys(base)
+        const mixinKeys = keys(mixinRoutes)
+        const sameKeys = oldKeys.filter(_ => mixinKeys.includes(_))
+
+        sameKeys.forEach(_ => {
+            mixinRoutes[`${_}_old`] = base[_]
+        })
+
+
+
+        this.routesData = { ...base, ...mixinRoutes }
+
+    }
+    get_real_path(pathname: string) {
+        const _url = new URL(pathname, new URL(location.href))
+        const _pathname = _url.pathname
+        const happyPath = getHappyConfig(_pathname)
+
+
+
+        return happyPath?.path ?? pathname
+    }
     getTargetComponent(pathname: string) {
         const _url = new URL(pathname, new URL(location.href))
         const _pathname = _url.pathname
@@ -23,24 +58,25 @@ class MchcRouterContainer {
 
         return C
     }
+    get_addon_component(pathname: string) {
+        const _url = new URL(pathname, new URL(location.href))
+        const _pathname = _url.pathname
+        const happyPath = getHappyConfig(_pathname)
+        if (happyPath) {
+            const C = this.addon[happyPath.path]
+            return C
+
+        }
+        const C = this.addon[_pathname]
+
+        return C
+    }
 }
 
 
-// function getMenuKeyByPathname(pathname: string, search = '') {
-//     if (!pathname) return null
-//     if (pathname.includes('?')) return pathname
-//     const _search = search.startsWith('?') ? search : `?${search}`;
-//     const url = new URL(pathname + _search, new URL(location.origin))
-//     const params = getSearchParamsAll(url)
-//     const usr1 = params[ARG_URS1_KEY]
-//     const usr2 = params[ARG_URS2_KEY]
-//     if (!usr1 && !usr2) return pathname
-//     const usr1Search = usr1 ? `usr1=${usr1}` : ''
-//     const usr2Search = usr2 ? `usr2=${usr2}` : ''
-//     return `${url.pathname}?${usr1Search}${(usr1Search && usr2Search) ? '&' : ''}${usr2Search}`
-// }
 
 
+export const mchcRouterContainer__ = new MchcRouterContainer()
 
 
 export { MchcRouterContainer }

@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
-import { FormInstance, Select } from 'antd';
-import { get, isObject, map, set } from 'lodash';
-import { getAllResources } from '../../utils/defaultMethod';
+import { Select_L } from '@lm_fe/components';
 import { SMchc_Common } from '@lm_fe/service';
+import { expect_array, get, isObject, set } from '@lm_fe/utils';
+import { FormInstance, } from 'antd';
+import React, { Component } from 'react';
+import { getAllResources } from '../../utils/defaultMethod';
+
 export class MyReferralOrganizationSelect extends Component<{ value?: any, onChange?(id: any): void, form?: FormInstance, directionKey?: string }> {
     state = {
         data: undefined,
@@ -38,30 +40,29 @@ export class MyReferralOrganizationSelect extends Component<{ value?: any, onCha
             const selectGrade = organization[0]?.grade;
             const currentGrade = currentOrganization?.grade;
             const direction = currentGrade === selectGrade ? 1 : currentGrade > selectGrade ? 2 : 3;
-            const values = form.getFieldsValue()
-            set(values, directionKey, direction)
-            form.setFieldsValue(values);
+
+            form.setFieldsValue(set({}, directionKey, direction));
         }
     };
 
     render() {
         const { data, options } = this.state;
         return (
-            <Select
+            <Select_L
                 onFocus={this.handleGetOptions}
                 onChange={this.handleChange}
                 value={get(data, 'id')}
                 showSearch
                 allowClear
             >
-                {map(options, (option, index) => {
+                {expect_array(options).map((option, index) => {
                     return (
-                        <Select.Option key={get(option, 'id') || index} value={get(option, 'id')}>
+                        <Select_L.Option key={get(option, 'id') || index} value={get(option, 'id')}>
                             {get(option, 'name') || '--'}
-                        </Select.Option>
+                        </Select_L.Option>
                     );
                 })}
-            </Select>
+            </Select_L>
         );
     }
 }

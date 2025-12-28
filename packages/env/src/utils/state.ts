@@ -1,9 +1,8 @@
+import { AnyObject, get } from "@lm_fe/utils";
 import { Dispatch } from "redux";
-import { mchcEnv } from "src/env"
 import { mchcStore } from "src/state";
-
 interface ICache {
-  _globalState?: { [x: string]: any }
+  _globalState?: AnyObject
   _globalHistory?: {
     push(k: any, state?: any): void;
     replace(k: any, state?: any): void
@@ -44,8 +43,9 @@ export function setGlobalDispatch(getter: () => any) {
 
 export function getGlobalHistory() {
 
-  const state: ICache['_globalHistory'] = mchcEnv.getGlobalCache('_globalHistory')
-  return state ?? {
+  const getter = get(window, '_globalHistory') as unknown as () => ICache['_globalHistory']
+
+  return getter?.() ?? {
     push: () => { console.error('push', '失败') },
     replace: () => { console.error('replace', '失败') },
   }
@@ -53,7 +53,7 @@ export function getGlobalHistory() {
 
 
 export function setGlobalHistory(getter: () => any) {
-  mchcEnv.defineGlobalCacheProperty('_globalHistory', { get: getter })
+  Object.assign(window, { '_globalHistory': getter })
 };
 
 

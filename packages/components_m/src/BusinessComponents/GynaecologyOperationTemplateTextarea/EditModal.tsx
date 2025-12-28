@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
-import { Modal, Form, Input, Select } from 'antd';
+import { Modal, Form, Input, } from 'antd';
 import TemplateSelect from './components/TemplateSelect';
 import { get, map } from 'lodash';
 import { MODAL_NAVS } from './utils';
+import { validate_form, LazyAntd } from '@lm_fe/components';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
 export default function EditModal(props) {
   const { onCancel, onSubmit, visible, templateType, userid, data, depid } = props;
   const [form] = Form.useForm();
@@ -17,14 +19,15 @@ export default function EditModal(props) {
   }, []);
 
   const handleSubmit = async () => {
-    await form.validateFields();
-    const formData = form && form.getFieldsValue();
+    const formData = await validate_form(form)
+
+    if (!formData) return
     onSubmit && onSubmit(formData);
   };
 
   return (
     <Modal
-      visible={visible}
+      open={visible}
       className="textarea-with-template__modal-edit"
       onCancel={onCancel}
       onOk={handleSubmit}

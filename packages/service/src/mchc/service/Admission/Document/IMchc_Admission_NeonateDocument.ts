@@ -1,4 +1,6 @@
+
 export interface IMchc_Admission_NeonateDocument {
+    __apgar: any,
     "id": 3387,
     "gravidity": null,
     "parity": null,

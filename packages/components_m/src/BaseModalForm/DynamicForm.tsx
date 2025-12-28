@@ -1,34 +1,12 @@
-import { ProfileOutlined } from '@ant-design/icons';
+import { MyIcon } from '@lm_fe/components';
 import { SLocal_State } from '@lm_fe/service';
 import { Form } from 'antd';
 import { FormInstance } from 'antd/lib/form/Form';
 import { get } from 'lodash';
 import React from 'react';
 import styles from './index.module.less';
-export const horizontalFormItemLayout = {
-  labelCol: {
-    span: 12,
-  },
-  wrapperCol: {
-    span: 12,
-  },
-};
-export const verticalFormItemLayout = {
-  labelCol: {
-    span: 12,
-  },
-  wrapperCol: {
-    span: 12,
-  },
-};
-export const nonLabelLayout = {
-  labelCol: {
-    span: 0,
-  },
-  wrapperCol: {
-    span: 24,
-  },
-};
+
+
 export default class DynamicForm<IProps = {}, IState = {}> extends React.PureComponent<IProps, IState> {
   formRef = React.createRef<FormInstance>();
 
@@ -135,7 +113,7 @@ export default class DynamicForm<IProps = {}, IState = {}> extends React.PureCom
             label ? (
               <span>
                 {get(inputProps, 'report') ? (
-                  <ProfileOutlined
+                  <MyIcon value='ProfileOutlined'
                     style={get(extraEvents, 'reportStyleInit')()}
                     onClick={() => get(extraEvents, 'handleClickReport')(name)}
                   />

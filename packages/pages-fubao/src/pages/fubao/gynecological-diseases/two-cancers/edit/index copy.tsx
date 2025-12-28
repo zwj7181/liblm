@@ -1,12 +1,13 @@
 import {
   BaseEditPanel, fromApi as defaultFromApi,
-  toApi as defaultToApi, formDescriptionsWithoutSectionApi
+  toApi as defaultToApi, formDescriptionsWithoutSectionApi,
+  resolveFubaoPath
 } from '@lm_fe/components_m';
-import { SMchc_FormDescriptions } from '@lm_fe/service';
+import { SLocal_History, SMchc_FormDescriptions } from '@lm_fe/service';
 import { getSearchParamsValue, fubaoRequest as request } from '@lm_fe/utils';
 import { message } from 'antd';
 import { get, set } from 'lodash';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import Form from './components/Form';
 import { fubaoHistoryPush } from '@lm_fe/components_m';
 import { valueToApi, valueToForm } from './config/adapter';
@@ -42,7 +43,7 @@ class TwoCancers extends BaseEditPanel {
     const formKey = get(data, 'id') || Math.random();
 
     if (!get(data, 'testingFacility')) set(data, 'testingFacility', get(system, 'config.hospitalName'));
-    if (!get(data, 'registerDate')) set(data, 'registerDate', moment(new Date()));
+    if (!get(data, 'registerDate')) set(data, 'registerDate', dayjs(new Date()));
     if (!get(data, 'registerPerson')) set(data, 'registerPerson', get(user, 'basicInfo.firstName'));
     this.setState({ formDescriptions, formDescriptionsWithoutSection, data, formKey });
   };
@@ -65,21 +66,24 @@ class TwoCancers extends BaseEditPanel {
     //判断是否继续新建还是关闭
     if (get(params, 'build')) {
       const res = (await request.post(baseUrl, params)).data
-      
+
     } else {
       if (get(values, 'id')) {
         // 修改档案
         const res = (await request.put('/api/two/cancer/screening/updateTwoCancerScreeningFile', params, { showMsg: true })).data;
 
         //删除keepAliveProvider缓存
-        await updateTabs(get(tabs, `tabsMapping./gynecological-diseases/two-cancers`));
-        routerPath && (await deleteTab(routerPath));
-        fubaoHistoryPush('/gynecological-diseases/two-cancers', this.props as any);
-        const { path, search } = get(tabs, `tabsMapping.${routerPath}`);
-        keepAliveProviderRef?.current.removeCache(`${path}.name.${search}`);
+        // await updateTabs(get(tabs, `tabsMapping./gynecological-diseases/two-cancers`));
+        // routerPath && (await deleteTab(routerPath));
+        // fubaoHistoryPush('/gynecological-diseases/two-cancers', this.props as any);
+        // const { path, search } = get(tabs, `tabsMapping.${routerPath}`);
+        // keepAliveProviderRef?.current.removeCache(`${path}.name.${search}`);
 
         // routerPath && deleteTab(routerPath);
         // fubaoHistoryPush('/gynecological-diseases/two-cancers');
+
+        SLocal_History.closeAndPush(resolveFubaoPath(`/gynecological-diseases/two-cancers`))
+
       } else {
         //新增档案
         console.log('params 新增档案')
@@ -90,14 +94,17 @@ class TwoCancers extends BaseEditPanel {
 
 
         //删除keepAliveProvider缓存
-        await updateTabs(get(tabs, `tabsMapping./gynecological-diseases/two-cancers`));
-        routerPath && (await deleteTab(routerPath));
-        fubaoHistoryPush('/gynecological-diseases/two-cancers', this.props as any);
-        const { path, search } = get(tabs, `tabsMapping.${routerPath}`);
-        keepAliveProviderRef?.current.removeCache(`${path}.name.${search}`);
+        // await updateTabs(get(tabs, `tabsMapping./gynecological-diseases/two-cancers`));
+        // routerPath && (await deleteTab(routerPath));
+        // fubaoHistoryPush('/gynecological-diseases/two-cancers', this.props as any);
+        // const { path, search } = get(tabs, `tabsMapping.${routerPath}`);
+        // keepAliveProviderRef?.current.removeCache(`${path}.name.${search}`);
 
         // routerPath && deleteTab(routerPath);
         // fubaoHistoryPush('/gynecological-diseases/two-cancers');
+
+        SLocal_History.closeAndPush(resolveFubaoPath(`/gynecological-diseases/two-cancers`))
+
       }
     }
   };

@@ -1,6 +1,5 @@
-import { DatePicker as AntDatePicker, Radio } from 'antd';
 import { get } from 'lodash';
-import React, { useCallback } from 'react';
+import React from 'react';
 import { componentMap } from './index';
 export default function BaseFormComponentDisplayFC(props: any) {
   const type: 'Input' = get(props, 'inputType')

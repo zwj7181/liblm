@@ -1,5 +1,5 @@
 import { get, pick } from 'lodash';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { formatDate } from '@lm_fe/utils';
 import { expandObjectOrEmptyObj } from '@lm_fe/components_m';
 
@@ -70,6 +70,6 @@ export const fromApi = (data: any) => {
     ultrasonicExamination: get(data, 'pdUltrasounds.0.note'),
     inspection: get(data, 'pdDownsScreens.0.note'),
     fetusesNote: get(data, 'pdFetuses.0.note'),
-    visitDate: get(data, 'visitDate') ? moment(get(data, 'visitDate')) : undefined,
+    visitDate: get(data, 'visitDate') ? dayjs(get(data, 'visitDate')) : undefined,
   };
 };

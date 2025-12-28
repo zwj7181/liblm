@@ -1,15 +1,14 @@
-import { AutoCompleteProps, InputNumberProps, InputProps } from 'antd';
+import { ICommonOption } from '@lm_fe/env';
+import { InputNumberProps } from 'antd';
 import { CheckboxGroupProps } from 'antd/lib/checkbox';
-import { ICheckboxWithInputProps } from '../../GeneralComponents/CheckboxWithInput_gold';
 import { ICusDatePickerProps } from '../../GeneralComponents/DatePicker';
 import { IInputWithLabelProps } from '../../GeneralComponents/InputWithLabel';
 import { IMultipleInputWithLabelProps } from '../../GeneralComponents/MultipleInputWithLabel';
-import { IMyInputProps } from '../MyInput';
 import { MyAutoCompleteProps } from '../MyAutoComplete';
-import { ICommonOption } from '@lm_fe/env';
 
-import { IMySelectProps } from '../MySelect'
+import { IMyCheckboxProps, IMyInputProps } from '@lm_fe/components';
 import { FocusEventHandler } from 'react';
+import { IMySelectProps } from '../MySelect';
 
 
 
@@ -26,20 +25,22 @@ export type TOption =
     { inputType: 'DatePicker', props?: ICusDatePickerProps } |
     { inputType: 'MyInput', props?: IMyInputProps } |
     { inputType: 'Input', props?: IMyInputProps } |
+    { inputType: 'input', props?: IMyInputProps } |
     { inputType: 'CheckboxGroup', props?: CheckboxGroupProps } |
     { inputType: 'InputNumber', props?: InputNumberProps } |
+    { inputType: 'input_number', props?: InputNumberProps } |
     { inputType: 'MyInputNumber', props?: InputNumberProps } |
-    { inputType: 'CheckboxWithInput', props?: ICheckboxWithInputProps } |
-    { inputType: 'MyCheckbox', props?: ICheckboxWithInputProps } |
-    { inputType: 'MC', props?: ICheckboxWithInputProps } |
-    { inputType: 'Checkbox', props?: ICheckboxWithInputProps }
+    { inputType: 'CheckboxWithInput', props?: IMyCheckboxProps } |
+    { inputType: 'MyCheckbox', props?: IMyCheckboxProps } |
+    { inputType: 'MC', props?: IMyCheckboxProps } |
+    { inputType: 'Checkbox', props?: IMyCheckboxProps }
 
 export interface IArrayInputProps {
     autoFocus?: boolean
     disabled?: boolean
     inputWidth?: number,
     value?: string
-    optionKey?: string
+    uniqueKey?: string
     onChange?(v: string | any[]): void
     separator?: string
     marshal?: number

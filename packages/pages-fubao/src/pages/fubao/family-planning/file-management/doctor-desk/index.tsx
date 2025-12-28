@@ -2,16 +2,15 @@ import React, { useEffect, useState } from 'react';
 import BasicInfo from '../../file-management/nurse-desk';
 import FirstVisit from './components/FirstVisitv2';
 import SurgicalRecord from './components/SurgicalRecordv2';
-import SurveyReport from './components/SurveyReport';
 // import FollowUp from './components/FollowUp';
 // import InformedConsent from '../../../premarital-care/.public-exam/InformedConsent';
 import { HistoryOutlined } from '@ant-design/icons';
 import { PanelWithChildFC } from '@lm_fe/components_m';
+import { DoctorEnd_ImageReport, DoctorEnd_SurveyReport } from '@lm_fe/pages-mchc';
 import { SLocal_State } from '@lm_fe/service';
 import { getSearchParamsValue, fubaoRequest as request } from '@lm_fe/utils';
 import { get } from 'lodash';
 import AppointModal from './AppointModal';
-import ImageReport from './components/ImageReport';
 import styles from './index.module.less';
 export default function FamilyPlanning_FileManagement_DoctorDesk_FC(props: any) {
 
@@ -45,7 +44,7 @@ export default function FamilyPlanning_FileManagement_DoctorDesk_FC(props: any) 
     return () => {
 
     }
-  }, [])
+  }, [id])
   async function handleClickTab(key: any) {
     const login = SLocal_State.userData?.login
     if (key === 'cqzd') {
@@ -74,8 +73,10 @@ export default function FamilyPlanning_FileManagement_DoctorDesk_FC(props: any) 
       tabItems={[
         { key: 'zkbl', title: '专科病历', node: <FirstVisit id={id} basicInfo={basicInfo} data={data} /> },
         { key: 'ssbl', title: '手术病历', node: <SurgicalRecord id={id} basicInfo={basicInfo} basicData={data} surgicalRecordId={surgicalRecordId} /> },
-        { key: 'jyjc', title: '检验检查', node: <SurveyReport headerInfoOfInpatientData={data} /> },
-        { key: 'yxbg', title: '影像报告', node: <ImageReport headerInfoOfInpatientData={data} /> },
+        // { key: 'jyjc', title: '检验检查', node: <SurveyReport headerInfoOfInpatientData={data} /> },
+        // { key: 'yxbg', title: '影像报告', node: <ImageReport headerInfoOfInpatientData={data} /> },
+        { key: 'jyjc', title: '检验检查', node: <DoctorEnd_SurveyReport headerInfo={data} /> },
+        { key: 'yxbg', title: '影像报告', node: <DoctorEnd_ImageReport headerInfo={data} /> },
         // { key: 'wsgl', title: '文书管理', node: <InformedConsent id={id} /> },
         // { key: 'xjsf', title: '宣教随访', node: <FollowUp /> },
         { key: 'jbxx', title: '基本信息', node: <BasicInfo id={id} basicInfo={basicInfo} data={data} /> },

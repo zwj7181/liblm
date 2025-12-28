@@ -56,7 +56,7 @@ export default function WorkFlow(props: IProps) {
                     colorList.map((_, i) => <span style={{ color: '#000', background: _.backgroundColor, display: 'inline-block', padding: '4px 6px', marginRight: 4 }}>{_.operationName || '无'}</span>)
                 }
             </div> */}
-      <div style={{ overflowY: 'scroll' }}>
+      <div style={{ overflowY: 'auto' }}>
         {leftList.length > 0 ? (
           <>
             <ul style={{ padding: '0 12px' }}>
@@ -80,9 +80,9 @@ export default function WorkFlow(props: IProps) {
         ) : (
           <div style={{ fontSize: 12, color: '#8D8DAC', textAlign: 'center' }}>
             <div style={{ margin: '16px 21px' }}>
-              {
-                "<img src={notThing} />"
-              }
+              
+                <img src={"/lm_imgs/gy-not-thing.png"} />
+              
             </div>
             <div>暂无用户需要预约</div>
           </div>

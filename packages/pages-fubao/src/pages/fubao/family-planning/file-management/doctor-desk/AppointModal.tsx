@@ -2,7 +2,6 @@ import {
   Alert,
   Button,
   Col,
-  DatePicker,
   Empty,
   Form,
   Input,
@@ -10,7 +9,7 @@ import {
   Popconfirm,
   Radio,
   Row,
-  Select,
+
   Tabs,
   message,
 } from 'antd';
@@ -19,13 +18,16 @@ import React from 'react';
 import { fubaoRequest as request } from '@lm_fe/utils';
 import { FormInstance } from 'antd/lib/form/Form';
 import { filter, get, isEmpty, map } from 'lodash';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { NurseTypesMapping } from "../../file-management/doctor-desk/components/SurgicalRecordv2/config";
 import { modalFormDescriptions as formDescriptions, modifyValueToForm, valueToApi, valueToForm } from './adapter';
-import { DynamicForm } from '@lm_fe/components_m';
+import { DatePicker_L, DynamicForm, LazyAntd } from '@lm_fe/components_m';
 import { formatDate } from '@lm_fe/utils';
 import { getReservationPanelByDate } from '../../surgery-scheduling/apis/api';
 import './appointModel.less';
+import { mchcEnv } from '@lm_fe/env';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
 const { TabPane } = Tabs;
 export default class Index extends DynamicForm<any> {
   formRef = React.createRef<FormInstance>();
@@ -143,29 +145,29 @@ export default class Index extends DynamicForm<any> {
   disabledDate = (current: any) => {
     const { reservationPanel, operationName } = this.state;
     let operationKey = this.getOperationKey(operationName);
-    const target = reservationPanel.find((_) => moment(get(_, 'schedulingDate')).isSame(current, 'day'));
+    const target = reservationPanel.find((_) => dayjs(get(_, 'schedulingDate')).isSame(current, 'day'));
 
-    return current < moment().startOf('day') || this.getAttendanceOfThisDay(target, operationKey) === '休息'; //判断几天内可预约
+    return current < dayjs().startOf('day') || this.getAttendanceOfThisDay(target, operationKey) === '休息'; //判断几天内可预约
   };
 
   //自定义日期渲染
   dateRender = (currentDate: any, today: any) => {
     const { reservationPanel, operationName } = this.state;
     let operationKey = this.getOperationKey(operationName);
-    const target = reservationPanel.find((_) => moment(get(_, 'schedulingDate')).isSame(currentDate, 'day'));
+    const target = reservationPanel.find((_) => dayjs(get(_, 'schedulingDate')).isSame(currentDate, 'day'));
     const isOpen = this.getAttendanceOfThisDay(target, operationKey);
 
     return (
       <div
         className={`ant-picker-cell-inner ${get(target, 'attendanceSet') && isOpen === '休息' && get(target, `${operationKey}`) === 3
-            ? 'single-datePicker-irreducible'
-            : (get(target, 'attendanceSet') && isOpen === '休息' && get(target, `${operationKey}`) === 0) ||
-              (get(target, 'attendanceSet') && isOpen === '休息' && get(target, `${operationKey}`) === 2) ||
-              get(target, 'attendanceSet') === 0
-              ? 'single-datePicker-stop'
-              : isOpen === 1
-                ? 'single-datePicker-reducible'
-                : ''
+          ? 'single-datePicker-irreducible'
+          : (get(target, 'attendanceSet') && isOpen === '休息' && get(target, `${operationKey}`) === 0) ||
+            (get(target, 'attendanceSet') && isOpen === '休息' && get(target, `${operationKey}`) === 2) ||
+            get(target, 'attendanceSet') === 0
+            ? 'single-datePicker-stop'
+            : isOpen === 1
+              ? 'single-datePicker-reducible'
+              : ''
           }`}
       >
         {currentDate.date()}
@@ -189,16 +191,16 @@ export default class Index extends DynamicForm<any> {
       const res = (await request.post('/api/family/planning/updateAppointmentSurgery', submitData)).data;
       if (get(res, 'code') === 1) {
         if (get(selectData, 'appointmentMorningOrAfternoon')) {
-          message.success('已修改成功，信息将同步推送给患者。');
+          mchcEnv.success('已修改成功，信息将同步推送给患者。');
         } else {
-          message.success('已预约成功，信息将同步推送给患者。');
+          mchcEnv.success('已预约成功，信息将同步推送给患者。');
         }
         onCancel && onCancel();
       } else {
-        
+
       }
     } catch (errorInfo) {
-      message.error(get(errorInfo, 'errorFields.0.errors.0'));
+      mchcEnv.error(get(errorInfo, 'errorFields.0.errors.0'));
     }
   };
 
@@ -215,8 +217,8 @@ export default class Index extends DynamicForm<any> {
 
   // 获取排版列表
   getReservationPanel = async () => {
-    const startDate = moment(new Date());
-    const endDate = moment(new Date()).add(1, 'months');
+    const startDate = dayjs(new Date());
+    const endDate = dayjs(new Date()).add(1, 'months');
     const res: any = await getReservationPanelByDate(startDate, endDate);
     this.setState({ reservationPanel: res.data });
   };
@@ -245,7 +247,7 @@ export default class Index extends DynamicForm<any> {
 
       if (get(response, 'code') === 1) {
         if (get(response, 'data')) {
-          let momentSchedulingDate = moment(get(response, 'data.schedulingDate'));
+          let momentSchedulingDate = dayjs(get(response, 'data.schedulingDate'));
           this.form?.setFieldsValue({ appointmentDate: momentSchedulingDate });
           this.getAccordingtoDateOfData(get(response, 'data.schedulingDate'));
 
@@ -366,10 +368,10 @@ export default class Index extends DynamicForm<any> {
 
     this.form = this.formRef.current;
     const appointmentDate = this.form?.getFieldValue('appointmentDate');
-    const today = moment();
+    const today = dayjs();
     const hour = today.hour(); // 当天时刻
-    const isBefore = moment(formatDate(appointmentDate)).diff(
-      moment(formatDate(today)),
+    const isBefore = dayjs(formatDate(appointmentDate)).diff(
+      dayjs(formatDate(today)),
       'days',
     );
     let morningOverTime = false;
@@ -492,7 +494,7 @@ export default class Index extends DynamicForm<any> {
         centered
         wrapClassName="modal-phone apponit-modal"
         title={'手术预约'}
-        visible={visible}
+        open={visible}
         onCancel={onCancel}
         onOk={this.handleSubmit}
         width={580}
@@ -548,7 +550,7 @@ export default class Index extends DynamicForm<any> {
                       label="预约日期"
                       rules={[{ required: true, message: '预约日期是必填项' }]}
                     >
-                      <DatePicker dateRender={this.dateRender} disabledDate={this.disabledDate} />
+                      <DatePicker_L dateRender={this.dateRender} disabledDate={this.disabledDate} />
                     </Form.Item>
                     <Row>
                       <Col span={6}></Col>

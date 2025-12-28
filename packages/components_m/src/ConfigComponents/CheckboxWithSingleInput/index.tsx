@@ -44,6 +44,7 @@ export default (props: any) => {
     const keyNote = get(callbackData, `withInputValues.${key}.value.0`);
     onChange &&
       onChange({
+        with_fucking_note: true,
         key,
         keyNote,
       });

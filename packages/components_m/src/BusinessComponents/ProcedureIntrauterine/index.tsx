@@ -1,15 +1,19 @@
+// 宫内输血手术过程记录
+import { DatePicker_L, LazyAntd } from '@lm_fe/components';
+import { formatDate, formatDateTime } from '@lm_fe/utils';
+import { Button, Col, Form, Input, Row } from 'antd';
+import { cloneDeep, filter, get, indexOf, isArray, isEmpty, isEqual, isNil, isNumber, join, map, set } from 'lodash';
+import dayjs from 'dayjs';
 import React, { Component } from 'react';
-import { Table, Button, Input, Form, Row, Col, DatePicker, Select } from 'antd';
-import { TimePickerAutoaccept } from '../../BusinessComponents/TimePickerAutoaccept';
-import { get, map, set, filter, indexOf, cloneDeep, isEqual, isArray, join, isEmpty, isNumber, isNil } from 'lodash';
 import BaseFormComponent from '../../BaseFormComponent';
-import moment from 'moment';
-import { bloodFlowsColumns, hemogramExamColumns, tableColumns } from './config/table';
-import { APP_CONFIG } from '../../utils/constants';
-import './index.less';
+import { TimePickerAutoaccept } from '../../BusinessComponents/TimePickerAutoaccept';
 import { HOURS, MINUTES } from '../../ConfigComponents/ProcedureRecords';
 import { getDictionariesEnumerations } from '../../utils';
-import { formatDate, formatDateTime } from '@lm_fe/utils';
+import { APP_CONFIG } from '../../utils/constants';
+import { bloodFlowsColumns, hemogramExamColumns, tableColumns } from './config/table';
+import './index.less';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
 const layout = {
   labelCol: {
     span: 12,
@@ -119,7 +123,7 @@ class IntrauterineBloodTransfusion extends Component {
           let renderValue = value;
           let tableValue = value;
           if (['single_date_picker'].indexOf(inputType) > -1) {
-            renderValue = value ? moment(value, 'YYYY-MM-DD') : moment();
+            renderValue = value ? dayjs(value, 'YYYY-MM-DD') : dayjs();
           }
           if (inputType === 'dictionary_select_in_table') {
             const options = getDictionariesEnumerations(get(inputProps, 'uniqueKey'));
@@ -244,12 +248,12 @@ class IntrauterineBloodTransfusion extends Component {
     const pdPreBloodFlow = {
       key: Math.random(),
       name: '术前血流',
-      checkDate: moment().format('YYYY-MM-DD'),
+      checkDate: dayjs().format('YYYY-MM-DD'),
     };
     const pdPostBloodFlow = {
       key: Math.random(),
       name: '术后血流',
-      checkDate: moment().format('YYYY-MM-DD'),
+      checkDate: dayjs().format('YYYY-MM-DD'),
     };
     const pdPreHemogram = {
       key: Math.random(),
@@ -362,7 +366,7 @@ class IntrauterineBloodTransfusion extends Component {
                 <TimePickerAutoaccept
                   format="HH:mm"
                   disabledHours={() => {
-                    const endTime = get(dataSource, '0.endTime') ? moment(get(dataSource, '0.endTime'), 'HH:mm') : null;
+                    const endTime = get(dataSource, '0.endTime') ? dayjs(get(dataSource, '0.endTime'), 'HH:mm') : null;
                     if (endTime) {
                       const h = endTime.hour();
                       return HOURS.slice(h + 1, HOURS.length);
@@ -370,7 +374,7 @@ class IntrauterineBloodTransfusion extends Component {
                     return [];
                   }}
                   disabledMinutes={(selectedHour) => {
-                    const endTime = get(dataSource, '0.endTime') ? moment(get(dataSource, '0.endTime'), 'HH:mm') : null;
+                    const endTime = get(dataSource, '0.endTime') ? dayjs(get(dataSource, '0.endTime'), 'HH:mm') : null;
                     if (endTime) {
                       if (selectedHour < endTime.hour()) return [];
                       const m = endTime.minute();
@@ -378,12 +382,12 @@ class IntrauterineBloodTransfusion extends Component {
                     }
                     return [];
                   }}
-                  value={get(dataSource, '0.startTime') ? moment(get(dataSource, '0.startTime'), 'HH:mm') : null}
+                  value={get(dataSource, '0.startTime') ? dayjs(get(dataSource, '0.startTime'), 'HH:mm') : null}
                   onChange={(value) => {
                     const duration = get(dataSource, '0.endTime')
-                      ? moment(get(dataSource, '0.endTime'), 'HH:mm').diff(moment(value, 'HH:mm'), 'minutes')
+                      ? dayjs(get(dataSource, '0.endTime'), 'HH:mm').diff(dayjs(value, 'HH:mm'), 'minutes')
                       : 0;
-                    const startTime = value ? moment(value).format('HH:mm').toString() : null;
+                    const startTime = value ? dayjs(value).format('HH:mm').toString() : null;
                     this.handleOutBaseData(['startTime', 'duration'], [startTime, duration]);
                   }}
                 />
@@ -395,7 +399,7 @@ class IntrauterineBloodTransfusion extends Component {
                   format="HH:mm"
                   disabledHours={() => {
                     const startTime = get(dataSource, '0.startTime')
-                      ? moment(get(dataSource, '0.startTime'), 'HH:mm')
+                      ? dayjs(get(dataSource, '0.startTime'), 'HH:mm')
                       : null;
                     if (startTime) {
                       const h = startTime.hour();
@@ -405,7 +409,7 @@ class IntrauterineBloodTransfusion extends Component {
                   }}
                   disabledMinutes={(selectedHour) => {
                     const startTime = get(dataSource, '0.startTime')
-                      ? moment(get(dataSource, '0.startTime'), 'HH:mm')
+                      ? dayjs(get(dataSource, '0.startTime'), 'HH:mm')
                       : null;
                     if (startTime) {
                       if (selectedHour > startTime.hour()) return [];
@@ -414,12 +418,12 @@ class IntrauterineBloodTransfusion extends Component {
                     }
                     return [];
                   }}
-                  value={get(dataSource, '0.endTime') ? moment(get(dataSource, '0.endTime'), 'HH:mm') : null}
+                  value={get(dataSource, '0.endTime') ? dayjs(get(dataSource, '0.endTime'), 'HH:mm') : null}
                   onChange={(value) => {
                     const duration = get(dataSource, '0.startTime')
-                      ? moment(value, 'HH:mm').diff(moment(get(dataSource, '0.startTime'), 'HH:mm'), 'minutes')
+                      ? dayjs(value, 'HH:mm').diff(dayjs(get(dataSource, '0.startTime'), 'HH:mm'), 'minutes')
                       : 0;
-                    const endTime = value ? moment(value).format('HH:mm').toString() : null;
+                    const endTime = value ? dayjs(value).format('HH:mm').toString() : null;
                     this.handleOutBaseData(['endTime', 'duration'], [endTime, duration]);
                   }}
                 />
@@ -434,9 +438,9 @@ class IntrauterineBloodTransfusion extends Component {
           <Row>
             <Col span={8}>
               <Form.Item label="采血日期" {...layout}>
-                <DatePicker
+                <DatePicker_L
                   value={
-                    get(dataSource, '0.sampleSite') ? moment(get(dataSource, '0.sampleSite'), 'YYYY-MM-DD') : undefined
+                    get(dataSource, '0.sampleSite') ? dayjs(get(dataSource, '0.sampleSite'), 'YYYY-MM-DD') : undefined
                   }
                   onChange={(value) => {
                     this.handleOutBaseData(['sampleSite'], [formatDateTime(value)]);

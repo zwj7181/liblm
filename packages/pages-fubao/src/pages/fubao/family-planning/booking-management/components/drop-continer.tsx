@@ -1,13 +1,12 @@
+import { get } from 'lodash';
+import { Dayjs } from 'dayjs';
 import React, { FC } from 'react';
 import { DropTargetMonitor, useDrop } from 'react-dnd';
-import { DD } from '../DD';
-import { IBooking, ItemTypes, TabType, TMorningOrAfternoon } from '../type';
-import { Overlay, OverlayType } from './Overlay';
-import moment, { Moment } from 'moment';
-import { CoffeeOutlined } from '@ant-design/icons';
-import { get } from 'lodash';
 import { IModel_EarlyPregnancyCheckSurgeryType, IModel_FamilyPlaningSchedulingDetails } from '../../../.stupid_model';
+import { DD } from '../DD';
+import { ItemTypes, TabType, TMorningOrAfternoon } from '../type';
 import { checkDisabledHalfDay, handleIsBefore } from '../util';
+import { Overlay, OverlayType } from './Overlay';
 interface IProps {
   dd: DD;
   mode: TabType;

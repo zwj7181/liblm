@@ -1,10 +1,12 @@
-import React, { Component } from 'react';
-import { Table, Collapse } from 'antd';
-import { size, get, map, includes } from 'lodash';
 import { CalendarOutlined } from '@ant-design/icons';
-import './index.less';
+import { getLabExamGroup, getOutReportFileBase64, LazyAntd, saveFirstReader } from '@lm_fe/components_m';
 import { formatDate, getSearchParamsValue } from '@lm_fe/utils';
-import { getLabExamGroup, getOutReportFileBase64, saveFirstReader } from '@lm_fe/components_m';
+import { Collapse } from 'antd';
+import { get, includes, map, size } from 'lodash';
+import React, { Component } from 'react';
+import './index.less';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
 const tableColumns = [
   { title: '检验项目', dataIndex: 'itemName', key: 'itemName' },
   { title: '结果', dataIndex: 'result', key: 'result' },

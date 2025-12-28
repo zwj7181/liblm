@@ -1,5 +1,8 @@
 import React from 'react';
-import { Tree } from 'antd';
+import { LazyAntd } from '@lm_fe/components';
+
+const { Tree } = LazyAntd
+
 
 // const treeData = [
 //   {

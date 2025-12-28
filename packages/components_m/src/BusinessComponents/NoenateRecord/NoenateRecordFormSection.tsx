@@ -1,11 +1,12 @@
-import React, { Fragment } from 'react';
-import { Input, InputNumber, Tabs, Form, Radio, Row, Col, DatePicker } from 'antd';
-import { map, get, keyBy, isNil, indexOf, isUndefined, concat, isEmpty } from 'lodash';
-import SelectWithOptions from '../../selects/SelectWithOptions';
-import MultipleInputWithLabel from '../../ConfigComponents/MultipleInputWithLabel';
-import NormalSelectWithInput from '../../ConfigComponents/NormalSelectWithInput';
-import NormalCheckboxWithInput from '../../ConfigComponents/NormalCheckboxWithInput';
+import { DatePicker_L } from '@lm_fe/components';
+import { Col, Input, InputNumber, Radio, Row } from 'antd';
+import { get, isEmpty, isNil, map } from 'lodash';
+import React from 'react';
 import InputWithLabel from '../../ConfigComponents/InputWithLabel';
+import MultipleInputWithLabel from '../../ConfigComponents/MultipleInputWithLabel';
+import NormalCheckboxWithInput from '../../ConfigComponents/NormalCheckboxWithInput';
+import NormalSelectWithInput from '../../ConfigComponents/NormalSelectWithInput';
+import SelectWithOptions from '../../selects/SelectWithOptions';
 interface IProps {
   formDescriptions: any;
   renderEditItem: any;
@@ -80,7 +81,7 @@ export default class FoetalAppendageFormSection extends React.Component<IProps> 
       case 'single_date_picker':
         return renderEditItem(
           formDescriptionKey,
-          <DatePicker
+          <DatePicker_L
 
             value={get(data, formDescriptionKey)}
             {...get(formDescription, 'inputProps')}

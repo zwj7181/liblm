@@ -1,7 +1,6 @@
-import { DatePicker } from 'antd';
+import { DatePicker_L, MyIcon } from '@lm_fe/components';
+import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
-import { CaretLeftFilled, CaretRightFilled } from '../CustomIcon';
-import moment from 'moment';
 import './index.less';
 export default function DatePickerWithSwitch(props: any) {
   const { value, onChange, ...rest } = props;
@@ -12,12 +11,12 @@ export default function DatePickerWithSwitch(props: any) {
   }, [value]);
 
   const handlePrevClick = () => {
-    const newDate = moment(data).subtract(1, 'day');
+    const newDate = dayjs(data).subtract(1, 'day');
     onChange && onChange(newDate);
   };
 
   const handleNextClick = () => {
-    const newDate = moment(data).add(1, 'day');
+    const newDate = dayjs(data).add(1, 'day');
     onChange && onChange(newDate);
   };
 
@@ -27,9 +26,9 @@ export default function DatePickerWithSwitch(props: any) {
 
   return (
     <div className="date-picker-with-switch">
-      <CaretLeftFilled onClick={handlePrevClick} className="date-picker-with-switch_icon" />
-      <DatePicker {...rest} onChange={handleDatePick} value={data} />
-      <CaretRightFilled onClick={handleNextClick} className="date-picker-with-switch_icon" />
+      <MyIcon value='CaretLeftOutlined' onClick={handlePrevClick} className="date-picker-with-switch_icon" />
+      <DatePicker_L {...rest} onChange={handleDatePick} value={data} />
+      <MyIcon value='CaretRightOutlined' onClick={handleNextClick} className="date-picker-with-switch_icon" />
     </div>
   );
 }

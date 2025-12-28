@@ -241,12 +241,12 @@ export default class Nursing extends Component<any, any> {
     const { visible } = this.state;
     return (
       <Row style={{ height: '100%' }}>
-        <Col style={{ height: '100%', width: 290, overflow: 'scroll', backgroundColor: '#fff' }}>
+        <Col style={{ height: '100%', width: 290, overflow: 'auto', backgroundColor: '#fff' }}>
           {this.renderSider()}
         </Col>
-        <Col style={{ height: '100%', width: 'calc(100% - 290px)', overflow: 'scroll' }}>{this.renderContent()}</Col>
+        <Col style={{ height: '100%', width: 'calc(100% - 290px)', overflow: 'auto' }}>{this.renderContent()}</Col>
         <Modal
-          visible={visible}
+          open={visible}
           onCancel={() => {
             this.setState({ visible: false });
           }}

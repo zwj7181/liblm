@@ -1,5 +1,5 @@
 import { map, get, set, isObject } from 'lodash';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { formatTimeToUTC } from '@/utils/format';
 export const formDescriptionsFromApi = (data: any) => {
   return map(data, (item) => {
@@ -47,7 +47,7 @@ export const fromApi = (data: any, nativeFormDescriptions: any) => {
         });
         break;
       case 'moment':
-        set(result, key, moment(get(data, path)));
+        set(result, key, dayjs(get(data, path)));
         break;
       case 'default':
       default:

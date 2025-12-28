@@ -1,11 +1,15 @@
-import * as React from 'react';
-import config from './config';
-export default class Index extends React.Component {
-  static Title = '检验检查';
-  // static Config = config;
-  static ClassName = 'jian-yan-jian-cha label-width6';
+import { mchcUtils } from '@lm_fe/env';
+import { DoctorEnd_检验检查_History } from '@lm_fe/pages';
+import  React from 'react';
+import { IInitial_Tab_props } from '../../types';
 
-  render() {
-    return null;
-  }
+export default function JianYanJianCha(props: IInitial_Tab_props) {
+  const { form, active,disabled_save } = props
+  const id = mchcUtils.single_id()
+  return active ? <DoctorEnd_检验检查_History disabled={disabled_save} form={form} pregnancyId={id} /> : null
 }
+Object.assign(JianYanJianCha, {
+  Title: '检验检查',
+  ClassName: 'yi-ban-bing-shi label-width6',
+  tmp: true
+})

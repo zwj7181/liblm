@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Select, Input, InputNumber, Row, Col } from 'antd';
+import { Input, InputNumber, Row, Col } from 'antd';
 import { map, get, set, isEmpty } from 'lodash';
+import { LazyAntd } from '@lm_fe/components';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
 export interface IOption {
   label: string;
   value: string;

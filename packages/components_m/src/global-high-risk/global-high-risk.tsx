@@ -2,19 +2,23 @@ import { initRiskWs } from '@/actions/prenatal-visit';
 import { CustomIcon } from '@/components/GeneralComponents/CustomIcon';
 import { formatTimeToStandard } from '@/utils/format';
 import storage from '@/utils/storage';
-import { Drawer, Popconfirm, Popover, Table } from 'antd';
+import { LazyAntd } from '@lm_fe/components';
+import { Drawer, Popconfirm, Popover } from 'antd';
 import classnames from 'classnames';
 import { cloneDeep, get, map, pick, remove } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import ReconnectingWebSocket from 'reconnecting-websocket';
+import { EventEmitter_Old } from '../utils';
 import { APP_CONFIG } from '../utils/constants';
 import { tableColumns } from './config';
 import './index.less';
 import MovePoint from './move-point';
+
 import { getGlobalJHighRiskAlert, updateGlobaJHighRiskAlert } from './request';
-import { EventEmitter_Old } from '../utils';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
 const { PUBLIC_PATH, API_PREFIX, ENVIRONMENT_MODE, HOST_URL, ...rest } = process.env;
 interface Iprops {
   [key: string]: any;

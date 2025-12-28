@@ -1,7 +1,10 @@
-import { Button, Input, Select, Table } from 'antd';
-import moment from 'moment';
+import { LazyAntd } from '@lm_fe/components';
+import { Button, Input } from 'antd';
+import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { IModel_EarlyPregnancyCheckSurgeryType } from '../../../../../.stupid_model';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
 type IArrData = IModel_EarlyPregnancyCheckSurgeryType['informedConsents'];
 type IItem = Partial<IArrData[number]>;
 interface IProps {
@@ -47,7 +50,7 @@ export const InformedConsentTable = ({ data, onChange, disabled }: IProps) => {
               //     url="document-templates?moduleType.equals=1&page=0&size=9999"
               //     labelKey="title"
               //     valueKey="title"
-              //     dropdownMatchSelectWidth={350}
+              //     popupMatchSelectWidth={350}
               //     // value={b.id}
               //     onChange={title => b.consentName = title}
               // />
@@ -67,7 +70,7 @@ export const InformedConsentTable = ({ data, onChange, disabled }: IProps) => {
                   options={['待归档', '已归档'].map((_, i) => ({ label: _, value: i }))}
                   onChange={(i) => {
                     setData(b, 'state', i as number);
-                    b.archiveTime = i ? moment().format('YYYY-MM-DD HH-mm:ss') : '';
+                    b.archiveTime = i ? dayjs().format('YYYY-MM-DD HH-mm:ss') : '';
                   }}
                 />
               );

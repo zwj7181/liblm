@@ -26,7 +26,7 @@ x86/
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
 bld/
-[Bb]in/
+# [Bb]in/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
@@ -356,16 +356,18 @@ MigrationBackup/
 .dockerignore
 .DS_Store
 .eslintignore
-*.toml
+# *.toml
 docker
 .editorconfig
 Dockerfile*
 .prettierignore
 LICENSE
 .eslintcache
-*.lock
+# *.lock
 yarn-error.log
 .history
 CNAME
 /build
 /public
+serve_pack
+target

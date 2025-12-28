@@ -1,6 +1,7 @@
 import React from 'react';
-import { Select } from 'antd';
 import { map, keyBy } from 'lodash';
+import { LazyAntd } from '@lm_fe/components';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
 export const typeMapping = [
   {
     value: 'menu',

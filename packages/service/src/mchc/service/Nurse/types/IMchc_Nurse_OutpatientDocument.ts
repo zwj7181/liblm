@@ -101,7 +101,7 @@ interface IMchc_Nurse_OutpatientDocument_highRiskInfo {
     "highriskNote": "产道异常:生殖道畸形",
     "infectionNote": "乙肝大三阳."
 }
-interface IMchc_Nurse_OutpatientDocument_physicalExam {
+export interface IMchc_Nurse_OutpatientDocument_physicalExam {
     MyPressure1__: number[],
     MyPressure2__: number[],
     MyPressure3__: number[],

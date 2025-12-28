@@ -1,5 +1,6 @@
-import { mchcModal } from "@lm_fe/components_m";
+import { resolveFubaoPath } from "@lm_fe/components_m";
 import { mchcEnv } from "@lm_fe/env";
+import { mchcModal__ } from "@lm_fe/pages";
 import { SLocal_History } from "@lm_fe/service";
 import { FormInstance } from "antd";
 import { get, keys, values } from "lodash";
@@ -38,7 +39,7 @@ function getKeyAndValue(changedValues: any) {
     return { __key, __value }
 }
 export function archivalInformation_onPrint(id: any) {
-    mchcModal.open('print_modal', {
+    mchcModal__.open('print_modal', {
         modal_data: {
             requestData: {
                 url: '/api/pdf-preview',
@@ -53,5 +54,8 @@ export function archivalInformation_onPrint(id: any) {
 }
 export function archivalInformation_onClose() {
 
-    SLocal_History.closeAndReplace('/fubao/gynecological-diseases/two-cancers')
+    // SLocal_History.closeAndReplace(resolveFubaoPath('/fubao/gynecological-diseases/two-cancers'))
+
+    SLocal_History.closeAndPush(resolveFubaoPath(`/gynecological-diseases/two-cancers`))
+
 }

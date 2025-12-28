@@ -3,11 +3,12 @@ import { isNil, isArray, get } from 'lodash';
 import Table from './components/Table';
 import Query from './components/Query';
 import { tableColumns } from './config/table';
-import { BaseListOld as BaseList, fubaoHistoryPush } from '@lm_fe/components_m';
+import { BaseListOld as BaseList, fubaoHistoryPush, resolveFubaoPath } from '@lm_fe/components_m';
 import { Button, message } from 'antd';
 import { EyeOutlined } from '@ant-design/icons';
 
 import { fubaoRequest as request } from '@lm_fe/utils';
+import { SLocal_History } from '@lm_fe/service';
 
 
 class List extends BaseList {
@@ -98,15 +99,17 @@ class List extends BaseList {
     // );
 
     //删除keepAliveProvider缓存
-    updateTabs && (await updateTabs(get(tabs, `tabsMapping./family-planning/file-management/doctor-desk2`)));
-    routerPath && (await deleteTab(routerPath));
-    fubaoHistoryPush(
-      `/family-planning/file-management/doctor-desk2?id=${familyPlanningId}&surgicalRecordId=${id}&activeKey=SurgicalRecord`,
-      this.props as any);
-    if (routerPath) {
-      const { path, search } = get(tabs, `tabsMapping.${routerPath}`);
-      keepAliveProviderRef?.current.removeCache(`${path}.name.${search}`);
-    }
+    // updateTabs && (await updateTabs(get(tabs, `tabsMapping./family-planning/file-management/doctor-desk2`)));
+    // routerPath && (await deleteTab(routerPath));
+    // fubaoHistoryPush(
+    //   `/family-planning/file-management/doctor-desk2?id=${familyPlanningId}&surgicalRecordId=${id}&activeKey=SurgicalRecord`,
+    //   this.props as any);
+    // if (routerPath) {
+    //   const { path, search } = get(tabs, `tabsMapping.${routerPath}`);
+    //   keepAliveProviderRef?.current.removeCache(`${path}.name.${search}`);
+    // }
+    SLocal_History.closeAndPush(resolveFubaoPath(`/family-planning/file-management/doctor-desk2?id=${familyPlanningId}&surgicalRecordId=${id}&activeKey=SurgicalRecord`))
+
   };
 }
 

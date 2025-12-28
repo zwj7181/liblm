@@ -2,7 +2,7 @@
  * 产后护理记录
  */
 import { MODAL_TEMPLATE_TYPES } from '@lm_fe/env';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { MyPressure } from '../../../FU_components/PressureInput';
 import { APP_CONFIG } from '../../../utils/constants';
 export const tableColumns: any = [
@@ -23,7 +23,7 @@ export const tableColumns: any = [
       type: 'dataTime',
     },
     render: (value, data) => {
-      return value ? moment(value).format('YYYY-MM-DD HH:mm') : '';
+      return value ? dayjs(value).format('YYYY-MM-DD HH:mm') : '';
     },
   },
   {
@@ -86,7 +86,7 @@ export const tableColumns: any = [
 
     inputType: 'MyAutoComplete',
     inputProps: {
-      optionKey: '意识s',
+      uniqueKey: '意识s',
     },
   },
   {
@@ -105,7 +105,7 @@ export const tableColumns: any = [
     //     editable: true,
     //     align: 'center',
     //     inputType: 'MyAutoComplete',
-    //     inputProps: { optionKey: '入量s' },
+    //     inputProps: { uniqueKey: '入量s' },
     //     width: APP_CONFIG.CELL_WIDTH_TINY,
     //   },
     //   {
@@ -134,7 +134,7 @@ export const tableColumns: any = [
     //     editable: true,
     //     align: 'center',
     //     inputType: 'MyAutoComplete',
-    //     inputProps: { optionKey: '出量s' },
+    //     inputProps: { uniqueKey: '出量s' },
     //     width: APP_CONFIG.CELL_WIDTH_TINY,
     //   },
     //   {
@@ -167,7 +167,7 @@ export const tableColumns: any = [
     width: APP_CONFIG.CELL_WIDTH_TINY,
     inputType: 'MyAutoComplete',
     inputProps: {
-      optionKey: '乳房情况s',
+      uniqueKey: '乳房情况s',
     },
   },
   {
@@ -178,7 +178,7 @@ export const tableColumns: any = [
     width: APP_CONFIG.CELL_WIDTH_TINY,
     inputType: 'MyAutoComplete',
     inputProps: {
-      optionKey: '泌乳情况s',
+      uniqueKey: '泌乳情况s',
     },
   },
   {
@@ -193,7 +193,7 @@ export const tableColumns: any = [
         width: APP_CONFIG.CELL_WIDTH_TINY,
         inputType: 'MyAutoComplete',
         inputProps: {
-          optionKey: '腹部伤口s',
+          uniqueKey: '腹部伤口s',
         },
       },
       {
@@ -204,7 +204,7 @@ export const tableColumns: any = [
         width: APP_CONFIG.CELL_WIDTH_TINY,
         inputType: 'MyAutoComplete',
         inputProps: {
-          optionKey: '会阴伤口s',
+          uniqueKey: '会阴伤口s',
         },
       },
     ],
@@ -230,7 +230,7 @@ export const tableColumns: any = [
     align: 'center',
     inputType: 'MyAutoComplete',
     inputProps: {
-      optionKey: '宫底高度s',
+      uniqueKey: '宫底高度s',
     },
     width: APP_CONFIG.CELL_WIDTH_TINY,
   },

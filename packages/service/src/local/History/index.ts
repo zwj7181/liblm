@@ -23,6 +23,26 @@ export const SLocal_History = {
         }
 
     },
+    safe_history_push(path: any, props?: any) {
+        let history = props?.history
+
+        if (history?.push) {
+
+            return history.push(path);
+        }
+
+        return this.historyPush(path)
+    },
+    safe_history_replace(path: any, props?: any) {
+        let history = props?.history
+
+        if (history?.replace) {
+
+            return history.replace(path);
+        }
+
+        return this.historyReplace(path)
+    },
     historyPush(path: any, state?: any) {
         if (!path) return
         const history = mchcUtils.getGlobalHistory()
@@ -31,9 +51,9 @@ export const SLocal_History = {
         if (isSp) {
             window.open(_url)
         } else {
-            history.push(_url, state)
+            window.mchc_modal?.destroyAll?.()
+            return history.push(_url, state)
         }
-
     },
     historyReplace(path: any, state?: any) {
         const isSp = mchcEnv.isSp

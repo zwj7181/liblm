@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Select, Row, Col } from 'antd';
+import {  Row, Col } from 'antd';
 import { get, set, cloneDeep, isEmpty } from 'lodash';
 import { request } from '@lm_fe/utils';
+import { LazyAntd } from '@lm_fe/components';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
+
 export default function DataSelectWithOptionsOrInput(props: any) {
   const { onChange, value } = props;
   const [options, setOptions] = useState<any[]>([]);

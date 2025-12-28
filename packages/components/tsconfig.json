@@ -3,7 +3,10 @@
     "outDir": "dist",
     "module": "esnext",
     "target": "esnext",
-    "lib": ["esnext", "dom"],
+    "lib": [
+      "esnext",
+      "dom"
+    ],
     "sourceMap": false,
     "baseUrl": ".",
     "jsx": "react",
@@ -17,10 +20,10 @@
     "skipLibCheck": true,
     "experimentalDecorators": true,
     "strict": true,
-
+    "declaration": true,
   },
   "include": [
-    "mock/**/*",
+    "keep-alive/**/*",
     "src/**/*",
     "playwright.config.ts",
     "tests/**/*",
@@ -34,5 +37,13 @@
     "jest.config.js",
     "mock/*"
   ],
-  "exclude": ["node_modules", "build", "dist", "scripts", "src/.umi/*", "webpack", "jest"]
+  "exclude": [
+    "node_modules",
+    "build",
+    "dist",
+    "scripts",
+    "src/.umi/*",
+    "webpack",
+    "jest"
+  ]
 }

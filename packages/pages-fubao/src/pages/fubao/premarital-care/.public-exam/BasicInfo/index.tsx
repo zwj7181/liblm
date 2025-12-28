@@ -1,65 +1,70 @@
-import React from 'react';
-import { message } from 'antd';
-import { get } from 'lodash';
-import Form from './components/Form';
-import { valueToApi, valueToForm } from '../config/adapter';
-import { BaseEditPanel, formDescriptionsFromApi, formDescriptionsWithoutSectionApi } from '@lm_fe/components_m';
-import { SMchc_FormDescriptions } from '@lm_fe/service';
+import { BaseEditPanelFormFC } from '@lm_fe/components_m';
+import { mchcUtils } from '@lm_fe/env';
+import { BF_Wrap2 } from '@lm_fe/pages';
 import { getSearchParamsValue, fubaoRequest as request } from '@lm_fe/utils';
-export default class BasicInfo extends BaseEditPanel {
-  static defaultProps = {
-    baseUrl: '/api/premarital/check/savePremaritalCheckArchivesBasicInformation', request,
-    moduleName: 'wife-premarital-care-basic-info',
-    title: '基本信息',
-    Form,
-  };
+import { Form } from 'antd';
+import { get } from 'lodash';
+import React, { useEffect, useState } from 'react';
+interface IProps {
+  type: 'husband' | 'wife'
+}
+export default function MedicalHistory(props: IProps) {
+  const { type } = props
+  const conf_fn = () => import('./form_config')
+  const [data, setdata] = useState<any>({})
+  const [form] = Form.useForm()
+  const { Wrap, config } = BF_Wrap2({
+    default_conf: {
+      title: `婚前检查-基本信息`,
+      tableColumns: conf_fn
+    }
+  })
+  useEffect(() => {
 
-  async componentDidMount() {
-    this.handleInit();
-  }
+    handleInit();
 
-  handleInit = async () => {
-    const { routerQuery, moduleName, type } = this.props as any;
-    const id = get(this.props, 'id') || getSearchParamsValue('id');
+    return () => {
+
+    }
+  }, [])
+
+  async function handleInit() {
+    const id = get(props, 'id') || getSearchParamsValue('id');
     let res: any;
     let data: any;
-    // 获取配置文件
-    const formDescriptions = await SMchc_FormDescriptions.getModuleParseCache(moduleName);
-    this.setState({ spinning: false });
-    const formDescriptionsWithoutSection = formDescriptionsWithoutSectionApi(formDescriptions);
     if (type === 'wife') {
       res = id
-        ? (await request.get(
-          `/api/premarital/check/getByPremaritalCheckArchivesId?premaritalCheckArchivesId.equals=${id}&fileType.equals=2&childrenSign.equals=1`,
-        )).data
+        ? (
+          await request.get(
+            `/api/premarital/check/getByPremaritalCheckArchivesId?premaritalCheckArchivesId.equals=${id}&fileType.equals=2&childrenSign.equals=1`,
+          )
+        ).data
         : {};
     } else {
       res = id
-        ? (await request.get(
-          `/api/premarital/check/getByPremaritalCheckArchivesId?premaritalCheckArchivesId.equals=${id}&fileType.equals=1&childrenSign.equals=1`,
-        )).data
+        ? (
+          await request.get(
+            `/api/premarital/check/getByPremaritalCheckArchivesId?premaritalCheckArchivesId.equals=${id}&fileType.equals=1&childrenSign.equals=1`,
+          )
+        ).data
         : {};
     }
     if (res) {
       data = get(res, 'data.0');
       data = { ...data, ...get(data, 'premaritalCheckArchivesBasicInformationVM') };
+      data = mchcUtils.autoNoteToCommonOption(data)
     }
 
-    data = id ? valueToForm(data, formDescriptionsWithoutSection) : {};
 
-    const formKey = get(data, 'id') || Math.random();
-
-    this.setState({ formDescriptions, formDescriptionsWithoutSection, data, formKey });
+    form.setFieldsValue(data)
+    setdata(data)
   };
 
-  handleSubmit = async (values: any) => {
-    const { formDescriptionsWithoutSection, data, newData } = this.state as any;
-    const { baseUrl, filesData, type } = this.props as any;
+  async function handleSubmit(values: any) {
+    const { baseUrl, filesData, type } = props as any;
     let { premaritalCheckArchivesBasicInformationVM } = data;
-    if (newData) {
-      premaritalCheckArchivesBasicInformationVM = get(newData, 'premaritalCheckArchivesBasicInformationVM');
-    }
-    let params = valueToApi(values, formDescriptionsWithoutSection);
+
+    let params = values;
     let premaritalCheckArchivesDetailId = get(filesData, 'womanPremaritalCheckArchivesDetailVM.id');
     if (type === 'husband') {
       premaritalCheckArchivesDetailId = get(filesData, 'manPremaritalCheckArchivesDetailVM.id');
@@ -70,15 +75,17 @@ export default class BasicInfo extends BaseEditPanel {
       ...params,
       premaritalCheckArchivesDetailId,
     };
+    params = mchcUtils.autoCommonOptionToNote(params)
+    const _res = await request.post('/api/premarital/check/savePremaritalCheckArchivesBasicInformation', params)
 
-    const _res = await request.post(baseUrl, params)
-    const res = _res.data
-    if (get(res, 'code') === 1) {
-      
-      let newData = get(res, 'data.0');
-      this.setState({ newData });
-    } else {
-      
-    }
   };
+  return <Wrap>
+    <BaseEditPanelFormFC
+      form={form}
+      onFinish={async v => {
+        handleSubmit(v)
+      }}
+      formDescriptions={__DEV__ ? conf_fn : config?.tableColumns}
+    />
+  </Wrap>
 }

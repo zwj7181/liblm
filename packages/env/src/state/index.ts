@@ -1,15 +1,15 @@
 // import { Dispatch } from 'redux';
 import { Store } from 'redux';
 
+import { MyLog } from '@lm_fe/utils';
 import { filter, get } from 'lodash';
-import { mchcConstant } from 'src/constant';
-import { getSameOptions } from 'src/select_options';
-import { initDictionary } from './actions/dictionaries';
-import { getPregnancyData } from './actions/prenatal-visit';
-import { getSystemConfig, updateSystemConfig } from './actions/system';
+import { mchcConstant } from '../constant';
+import { mchcLogger } from '../logger';
+import { getSameOptions } from '../select_options/funcs';
+import { _getSystemConfig, _updateSystemConfig } from './actions/system';
 import { deleteAllTabs, deleteTab } from './actions/tabs';
 import { IState, ISystemConfig } from './types';
-import { MyLog } from '@lm_fe/utils';
+export { ACTION_TYPE } from './actionType'
 export * from './types';
 class MchcStore {
     logger = new MyLog('MchcStore')
@@ -24,12 +24,8 @@ class MchcStore {
     __getState!: () => IState
     __getDispatch!: () => Store['dispatch']
     get state() {
-        if (this.__getState) return this.__getState()
-        if (!this._store) {
-            this.logger.warn('为设置 store')
-            return {} as IState
-        }
-        return this._store.getState() as IState
+
+        return window.peek_provoke?.() as IState
     }
     get dispatch() {
         if (this.__getDispatch) return this.__getDispatch()
@@ -41,24 +37,25 @@ class MchcStore {
         return this._store.dispatch
 
     }
-    initDictionary() {
-        return initDictionary()(this.dispatch)
-    }
+
     deleteAllTabs() {
         return deleteAllTabs()(this.dispatch)
     }
     deleteCurrentTab() {
-        const key = this.state.tabs.activeKey
+        const key = this.state.activeKey
         return deleteTab(key)(this.dispatch)
     }
     getSystemConfig() {
-        return getSystemConfig()(this.dispatch)
+        return _getSystemConfig()(this.dispatch)
     }
     updateSystemConfig(data: any) {
-        return updateSystemConfig(data)(this.dispatch)
+        return _updateSystemConfig(data)(this.dispatch)
     }
-    getPregnancyData(data: any) {
-        return getPregnancyData(data)(this.dispatch)
+
+    get highrisk_version_options() {
+        const dictionaries = this.state.dictionaries
+        const versionOptions = get(dictionaries, ['Highrisk.highriskVersion', 'enumerations'],) ?? [];
+        return versionOptions.map(_ => ({ ..._, label: `${_.label}(${_.value})` }))
     }
     get highriskContagionConfig() {
         const dictionaries = this.state.dictionaries
@@ -81,13 +78,16 @@ class MchcStore {
         const highriskVersion = get(system, 'config.highriskVersion') as 22
         const initDictionaries = get(dictionaries, 'initDictionaries');
         const gradeDic = filter(initDictionaries, (item) => item.key === 'highriskGrade' && item.type === highriskVersion)[0]
+        const enumerations = get(gradeDic, 'enumerations')
+        if (!enumerations) {
+            mchcLogger.warn('gradeDic 为空', { initDictionaries, highriskVersion })
+            return []
+        }
+        const colors = mchcConstant.levelOptionsobj[highriskVersion] ?? []
 
-        const colors = mchcConstant.levelOptionsobj[highriskVersion]
-
-        const a = get(gradeDic, 'enumerations')
-        const enums = a.map(_ => {
-            const colorConfig = colors.find(c => c.value === _.label)
-            return { ..._, colorText: colorConfig?.label! }
+        const enums = enumerations.map(_ => {
+            const colorConfig = colors.find(c => c.level_text === _.label)
+            return { ..._, colorText: colorConfig?.color_text! }
         })
         return enums
 
@@ -99,8 +99,7 @@ class MchcConfig {
         return this.getAll()?.[key]
     }
     getAll() {
-        const state = mchcStore.state
-        const config = state?.system?.config
+        const config = window.peek_provoke?.('config')
         return config
     }
 

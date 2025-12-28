@@ -1,6 +1,6 @@
-import { MchcTypes, MchcType_default } from "@lm_fe/env"
+import { MCHC_TYPE_MAP, MchcTypes } from "@lm_fe/env"
 
-export type IMchc_Admission<T extends MchcTypes = MchcType_default> = {
+export type IMchc_Admission<T extends MchcTypes = MCHC_TYPE_MAP['越秀妇幼']> = {
     "createdBy": "kevin",
     "createdDate": "2022-11-11 15:06:05",
     "lastModifiedBy": "kevin",

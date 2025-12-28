@@ -1,10 +1,12 @@
-import React, { Component } from 'react';
-import { Table, Button, Space } from 'antd';
-import { get, set, isArray, cloneDeep, split, find, map, debounce } from 'lodash';
-import { PlusCircleOutlined, DeleteOutlined } from '@ant-design/icons';
-import EditableCell from '../../MyTable/TableEditableCell';
+import { LazyAntd, MyIcon } from '@lm_fe/components';
+import { Button, Space } from 'antd';
 import classNames from 'classnames';
+import { cloneDeep, debounce, find, get, isArray, map, set, split } from 'lodash';
+import React, { Component } from 'react';
+import EditableCell from '../../MyTable/TableEditableCell';
 import './index.less';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
 interface PrenatalReturnTableProps {
   onChange: Function;
   dispatch?: Function;
@@ -200,10 +202,10 @@ export default class PrenatalReturnTable extends Component<PrenatalReturnTablePr
         {editable && !hiddenBtn && (
           <Space className="btns-wrapper">
             <Button type="primary" onClick={this.handleAdd}>
-              <PlusCircleOutlined />新 增
+              <MyIcon value='PlusCircleOutlined' />新 增
             </Button>
             <Button onClick={this.handleDelete}>
-              <DeleteOutlined />删 除
+              <MyIcon value='DeleteOutlined' />删 除
             </Button>
           </Space>
         )}

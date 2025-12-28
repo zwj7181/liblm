@@ -1,4 +1,4 @@
-import { Button, Col, DatePicker, Form, Input, Modal, Popconfirm, Row, Table, Tabs, message } from 'antd';
+import { Button, Col, Form, Input, Modal, Popconfirm, Row, Tabs, message } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 import { get, isEmpty, map } from 'lodash';
 import React, { Component } from 'react';
@@ -9,8 +9,10 @@ import { historyTableColumns } from '../config/table';
 // import ywc from '../../../images/ywc.svg';
 // import wd from '../../../images/wd.svg';
 // import sf from '../../../images/sf.svg';
+import { DatePicker_L, LazyAntd } from '@lm_fe/components';
 import { SLocal_State } from '@lm_fe/service';
 import { fubaoRequest as request } from '@lm_fe/utils';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
 
 const noticeTypeOptions = [
   { label: '电话', value: '电话' },
@@ -250,7 +252,7 @@ class ModalForm extends Component {
 
     const _res = await request.put('/api/family/planning/updateEarlyPregnancyCheckPacTrackingFollowUpRecord', params);
     const res = _res.data
-    
+
     onCancel && onCancel();
     onSearch && onSearch();
     reload && reload();
@@ -395,7 +397,7 @@ class ModalForm extends Component {
                   wrapperCol={{ span: 12 }}
                   rules={[{ required: true, message: '请输入随访日期！' }]}
                 >
-                  <DatePicker />
+                  <DatePicker_L />
                 </Form.Item>
               </Col>
               <Col span={8}>
@@ -570,7 +572,7 @@ class ModalForm extends Component {
                   wrapperCol={{ span: 12 }}
                   rules={[{ required: true, message: '请输入随访日期！' }]}
                 >
-                  <DatePicker />
+                  <DatePicker_L />
                 </Form.Item>
               </Col>
               <Col span={8}>
@@ -719,7 +721,7 @@ class ModalForm extends Component {
                   wrapperCol={{ span: 12 }}
                   rules={[{ required: true, message: '请输入随访日期！' }]}
                 >
-                  <DatePicker />
+                  <DatePicker_L />
                 </Form.Item>
               </Col>
               <Col span={8}>
@@ -868,7 +870,7 @@ class ModalForm extends Component {
                   wrapperCol={{ span: 12 }}
                   rules={[{ required: true, message: '请输入随访日期！' }]}
                 >
-                  <DatePicker />
+                  <DatePicker_L />
                 </Form.Item>
               </Col>
               <Col span={8}>
@@ -1019,7 +1021,7 @@ class ModalForm extends Component {
                   wrapperCol={{ span: 12 }}
                   rules={[{ required: true, message: '请输入随访日期！' }]}
                 >
-                  <DatePicker />
+                  <DatePicker_L />
                 </Form.Item>
               </Col>
               <Col span={8}>
@@ -1087,7 +1089,7 @@ class ModalForm extends Component {
           this.handleSubmit(0);
         }}
         wrapClassName="tracing-modal"
-        visible={visible}
+        open={visible}
         onCancel={onCancel}
         footer={[
           <Popconfirm

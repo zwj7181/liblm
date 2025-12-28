@@ -1,25 +1,17 @@
-import { APP_CONFIG, IdNOButton, MyBaseListProps, OkButton, mchcModal } from "@lm_fe/components_m";
-import { downloadFile, formatDate, request } from "@lm_fe/utils";
-import { Button, Divider, Form, Popconfirm, Space, Tooltip } from "antd";
+import { useMyEffectSafe } from '@lm_fe/components';
+import { mchcDriver, mchcEvent } from "@lm_fe/env";
+import { IdNOButton, mchcModal__, MyBaseListProps, QuickDocButton, safe_navigate } from '@lm_fe/pages';
+import { IMchc_Pregnancy } from "@lm_fe/service";
+import { downloadFile, request } from "@lm_fe/utils";
+import { Button, Form, Popconfirm, Space } from "antd";
 import { get } from "lodash";
 import React, { useEffect } from "react";
-import { DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
-import { tableColumns } from "./table";
-import { queryFormDescriptions } from "./form";
-import { mchcDriver, mchcEvent } from "@lm_fe/env";
-import { IMchc_Pregnancy } from "@lm_fe/service";
 import PrenatalModal from "../components/prenatal-modal/prenatal-modal";
-import { useKeepAliveEffect } from "react-keep-alive-pro";
-import { useMyEffect } from '@lm_fe/components'
-export const baseTableConfig: MyBaseListProps = {
-    baseTitle: '孕册',
-    name: '/pregnancies',
-    tableColumns,
-    searchConfig: queryFormDescriptions(),
-    keepAlive: true
-}
+
+
 export function useTableConfig(props: any) {
-    const { history } = props;
+    const { is_modal } = props;
+
     const [form] = Form.useForm()
     useEffect(() => {
         return mchcEvent.on_rm('my_form', e => {
@@ -37,7 +29,7 @@ export function useTableConfig(props: any) {
 
     }, [])
 
-    useMyEffect(() => {
+    useMyEffectSafe(props)(() => {
         return mchcDriver.on_rm('data', e => {
 
             if (e.type === 'ReadCard') {
@@ -51,25 +43,36 @@ export function useTableConfig(props: any) {
     function handleCheck(rowData: any) {
         const { id } = rowData;
         // @ts-ignore
-        history.push(`/prenatal-visit/pregnancy/check?id=${id}`);
+        // history.push(`/prenatal-visit/pregnancy/check?id=${id}`);
+
+        safe_navigate(`/prenatal-visit/pregnancy/check?id=${id}`, props, { id })
     }
     function handleView(rowData: any) {
         const { id } = rowData;
         // @ts-ignore
-        history.push(`/prenatal-visit/pregnancy/doctor-end?id=${id}`);
+        // history.push(`/prenatal-visit/pregnancy/doctor-end?id=${id}`);
+        safe_navigate(`/prenatal-visit/pregnancy/doctor-end?id=${id}`, props, { id });
     };
     function handleEdit(rowData: any) {
         const { id } = rowData;
         // @ts-ignore
-        history.push(`/prenatal-visit/pregnancy/nurse-end?id=${id}`);
+        // history.push(`/prenatal-visit/pregnancy/nurse-end?id=${id}`);
+        safe_navigate(`/prenatal-visit/pregnancy/nurse-end?id=${id}`, props, { id });
+
     };
     function handlePrenatal(rowData: any) {
-        mchcModal.open('test', {
+        mchcModal__.open('test', {
+            title: null,
+            closeIcon: null,
+            styles: {
+                header: { width: 0, height: 0 },
+
+            },
             modal_data: {
                 content: <PrenatalModal
                     selectedRowData={rowData}
                     {...props}
-                    onClose={() => mchcModal.pop()}
+                    onClose={() => mchcModal__.pop()}
                     id={get(rowData, `id`)}
                 />
             }
@@ -91,161 +94,105 @@ export function useTableConfig(props: any) {
         const { id, recordstate } = record;
         // @ts-ignore
         if (recordstate === '1' || recordstate === '6') {
-            history.push(`/prenatal-visit/pregnancy/nurse-end?id=${id}`);
+            // history.push(`/prenatal-visit/pregnancy/nurse-end?id=${id}`);
+            safe_navigate(`/prenatal-visit/pregnancy/nurse-end?id=${id}`, props, { id });
+
         }
         if (recordstate === '0') {
-            history.push(`/prenatal-visit/pregnancy/check?id=${id}`);
+            // history.push(`/prenatal-visit/pregnancy/check?id=${id}`);
+            safe_navigate(`/prenatal-visit/pregnancy/check?id=${id}`, props, { id });
         }
     };
 
     function onAdd() {
         // @ts-ignore
-        history.push('/prenatal-visit/pregnancy/add');
+        // history.push('/prenatal-visit/pregnancy/add');
+        safe_navigate('/prenatal-visit/pregnancy/add', props);
     };
     const config: MyBaseListProps = {
-        ...baseTableConfig,
+        effect_ctx: props,
+        name: '/pregnancies',
+        baseTitle: '孕册',
+
         searchForm: form,
         handleDoubleClickRow,
         RenderSearchBtns({ handleSearch, getSearchParams }) {
             return <>
-                {/* <OkButton text='导出' primary onClick={() => handleExport(getSearchParams())} /> */}
-                {/* <OkButton disabled text='读取身份证' /> */}
+
+                {/* <OkButton disabled btn_text='读取身份证' /> */}
 
             </>
         },
         RenderBtns: (({ }) => {
-            return <IdNOButton />
+            return <Space>
+                <IdNOButton />
+                <QuickDocButton page_type='非单页' />
+            </Space>
         }),
-        onExport({ getSearchParams }) {
-            handleExport(getSearchParams())
-        },
+        // onExport({ getSearchParams }) {
+        //     handleExport(getSearchParams())
+        // },
         onAdd,
-        genColumns({ handleDelete, tableColumns }) {
+        RenderAction: ({ rowData, handleDelete }) => {
+            return (
+                <Space>
+                    {!!rowData.recordstate && rowData.recordstate !== '0' ? (
+                        <Button
+                            type="link"
+                            size="small"
+                            onClick={() => handlePrenatal(rowData)}
+                        >
+                            产检本
+                        </Button>
+                    ) : (
 
-            return [
-                ...tableColumns,
-                {
-                    title: '档案状态',
-                    dataIndex: 'recordstate',
-                    width: 76,
-                    sortType: 'number',
-                    // fixed: 'right',
-                    align: 'center',
-                    render: (recordstate: any, rowData: any) => {
-                        if (recordstate === '1') {
-                            return (
-                                <Button
-                                    size="small"
-                                    onClick={() => handleEdit(rowData)}
-                                    className={`egister_ egister_2`}
-                                >
-                                    已审核
-                                </Button>
-                            );
-                        }
-                        if (recordstate === '6') {
-                            return (
-                                <Button
-                                    //  disabled
-                                    className={`egister_ egister_`}
-                                    style={{ color: '#cdcdcd' }}
-                                    size="small"
-                                    onClick={() => handleEdit(rowData)}
-                                >
-                                    已结案
-                                </Button>
-                            );
-                        }
-                        //待审核 recordstate===0
-                        return (
-                            <Button
-                                size="small"
-                                className={`egister_ egister_1`}
-                                onClick={() => handleCheck(rowData)}
-                            >
-                                待审核
+                        <Button title='审核通过后可查看' type="link" size="small" disabled={true}>
+                            产检本
+                        </Button>
+                    )}
+
+                    {!!rowData.recordstate && rowData.recordstate !== '0' ? (
+                        <Button
+                            type="link"
+                            size="small"
+                            // icon={<EyeOutlined className="global-table-action-icon" />}
+                            onClick={() => handleView(rowData)}
+                        >
+                            查看
+                        </Button>
+                    ) : (
+                        <Popconfirm
+                            placement="topRight"
+                            // getPopupContainer={(triggerNode) => triggerNode?.parentNode?.parentNode?.parentNode}
+                            title={`建档信息尚未审核，是否继续接诊?`}
+                            onConfirm={() => handleView(rowData)}
+                            okText="确定"
+                            cancelText="取消"
+                        >
+                            <Button type="link" size="small" /* icon={<EyeOutlined className="global-table-action-icon" />} */>
+                                查看
                             </Button>
-                        );
-                    },
-                },
+                        </Popconfirm>
+                    )}
 
-                {
-                    title: '操作',
-                    fixed: 'right',
-                    // width: 168,
-                    width: 120,
-                    align: 'center',
-                    render: (value: any, rowData: any, index: number) => {
-                        return (
-                            <Space>
-                                {!!rowData.recordstate && rowData.recordstate !== '0' ? (
-                                    <Button
-                                        type="link"
-                                        size="small"
-                                        onClick={() => handlePrenatal(rowData)}
-                                    >
-                                        产检本
-                                    </Button>
-                                ) : (
-                                    <Tooltip
-                                        title={
-                                            <div style={{ color: '#000' }}>
-                                                <ExclamationCircleOutlined style={{ color: `rgb(250,173,20)`, marginRight: '10px' }} />
-                                                <span>审核通过后可查看</span>
-                                            </div>
-                                        }
-                                        color={'#fff'}
-                                    >
-                                        <Button type="link" size="small" disabled={true}>
-                                            产检本
-                                        </Button>
-                                    </Tooltip>
-                                )}
-
-                                {!!rowData.recordstate && rowData.recordstate !== '0' ? (
-                                    <Button
-                                        type="link"
-                                        size="small"
-                                        // icon={<EyeOutlined className="global-table-action-icon" />}
-                                        onClick={() => handleView(rowData)}
-                                    >
-                                        查看
-                                    </Button>
-                                ) : (
-                                    <Popconfirm
-                                        placement="topRight"
-                                        // getPopupContainer={(triggerNode) => triggerNode?.parentNode?.parentNode?.parentNode}
-                                        title={`建档信息尚未审核，是否继续接诊?`}
-                                        onConfirm={() => handleView(rowData)}
-                                        okText="确定"
-                                        cancelText="取消"
-                                    >
-                                        <Button type="link" size="small" /* icon={<EyeOutlined className="global-table-action-icon" />} */>
-                                            查看
-                                        </Button>
-                                    </Popconfirm>
-                                )}
-
-                                <Popconfirm
-                                    placement="topRight"
-                                    // getPopupContainer={(triggerNode) => triggerNode?.parentNode?.parentNode?.parentNode}
-                                    title={`确定要删除吗?`}
-                                    onConfirm={() => handleDelete(rowData)}
-                                    okText="确定"
-                                    cancelText="取消"
-                                >
-                                    <Button type="link" size="small"
-                                    // icon={<DeleteOutlined className="global-table-action-icon" />}
-                                    >
-                                        删除
-                                    </Button>
-                                </Popconfirm>
-                            </Space>
-                        );
-                    },
-                },
-            ]
+                    <Popconfirm
+                        placement="topRight"
+                        // getPopupContainer={(triggerNode) => triggerNode?.parentNode?.parentNode?.parentNode}
+                        title={`确定要删除吗?`}
+                        onConfirm={() => handleDelete(rowData)}
+                        okText="确定"
+                        cancelText="取消"
+                    >
+                        <Button type="link" size="small"
+                        // icon={<DeleteOutlined className="global-table-action-icon" />}
+                        >
+                            删除
+                        </Button>
+                    </Popconfirm>
+                </Space>
+            );
         },
+
     }
     return [
         config

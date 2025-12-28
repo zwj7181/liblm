@@ -1,7 +1,6 @@
+import { DatePicker_L } from '@lm_fe/components';
+import { Button, Col, Form, Input, Modal, Row, Tabs } from 'antd';
 import React, { Component } from 'react';
-import { Form, Input, message, Modal, DatePicker, Button, Row, Col, Tabs } from 'antd';
-import { get } from 'lodash';
-import { FormInstance } from 'antd/lib/form';
 import SingleCheckBox from '../../SingleCheckBox';
 
 const noticeTypeOptions = [
@@ -124,7 +123,7 @@ export class ModalForm extends Component {
               </Col>
               <Col span={8}>
                 <Form.Item label="随访日期" name="date" labelCol={{ span: 12 }} wrapperCol={{ span: 12 }}>
-                  <DatePicker />
+                  <DatePicker_L />
                 </Form.Item>
               </Col>
               <Col span={8}>
@@ -147,7 +146,7 @@ export class ModalForm extends Component {
         width={1200}
         onOk={this.handleSubmit}
         wrapClassName="tracing-modal"
-        visible={visible}
+        open={visible}
         onCancel={onCancel}
         footer={[
           <Button key="cancel" onClick={onCancel}>

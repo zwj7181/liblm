@@ -1,13 +1,13 @@
-import {
-  PrinterOutlined, RedoOutlined, SaveOutlined, SolutionOutlined
-} from '@ant-design/icons';
-import { mchcEvent, mchcLogger } from '@lm_fe/env';
-import { Button, Form, FormInstance, Space, message } from 'antd';
+import { mchcEvent } from '@lm_fe/env';
+import { Button, Form, FormInstance, message, Space } from 'antd';
 import classnames from 'classnames';
 import { debounce, get, isFunction, map } from 'lodash';
 import { useEffect, useState } from 'react';
 // import FormSection from '../BaseModalForm/FormSection';
+import { MyIcon, validate_form } from '@lm_fe/components';
+import { use_provoke } from '@lm_fe/provoke';
 import { IMchc_FormDescriptions, IMchc_FormDescriptions_MIX } from '@lm_fe/service';
+import { AnyObject } from '@lm_fe/utils';
 import React from 'react';
 import { MyFormSection } from 'src/FU_components/FormSection';
 import styles from './less/base-edit-panel-form.module.less';
@@ -26,9 +26,11 @@ interface IProps {
   data?: any;
   formDescriptions_old?: IMchc_FormDescriptions[];
   formDescriptions?: IMchc_FormDescriptions_MIX;
+  initialValues?: AnyObject;
   onFinish?: (data: any) => Promise<void>;
   loading?: boolean;
   form?: FormInstance
+  targetLabelCol?: number
   getEvents?(): any
   onPrint?(): void
   onSync?(): void
@@ -36,15 +38,15 @@ interface IProps {
   onValuesChange?(changedValues: any, allValues: any): void;
   requiredKeys?: { [x: string]: boolean }
   renderBtns?(form: FormInstance): React.JSX.Element
+  renderExtraBtns?(form: FormInstance): React.JSX.Element
 }
 export default function BaseEditPanelFormFC<T = any>(props: IProps) {
-
-  const { onFinish, onValuesChange, data, formDescriptions, formDescriptions_old, onPrint, onSync, onImport, getEvents } = props;
+  const bg_color = use_provoke(s => s.sys_theme.bg_color)
+  const { onFinish, onValuesChange, data, formDescriptions, formDescriptions_old, onPrint, onSync, onImport, getEvents, targetLabelCol } = props;
 
   const [_form] = Form.useForm()
   const [loading, setLoading] = useState(false)
   const form = props.form ?? _form
-
 
   useEffect(() => {
 
@@ -61,24 +63,13 @@ export default function BaseEditPanelFormFC<T = any>(props: IProps) {
 
   const handleFinish = async () => {
     setLoading(true)
+    const values = await validate_form(form)
+    if (values) {
+      await onFinish?.(values);
+      message.success('操作成功！')
+    }
+    setLoading(false)
 
-    form
-      .validateFields()
-      .then(async () => {
-        const params = {
-          ...form.getFieldsValue(),
-        };
-        await onFinish?.(params);
-        message.success('操作成功！')
-        setLoading(false)
-
-      })
-      .catch((error) => {
-        message.warn('请完善表单项!')
-        mchcLogger.warn(error)
-        setLoading(false)
-
-      })
   };
 
 
@@ -124,13 +115,13 @@ export default function BaseEditPanelFormFC<T = any>(props: IProps) {
         </div>
       );
     }) : null
-    const node = formDescriptions ? <FormSection requiredKeys={props.requiredKeys} formDescriptions={formDescriptions} data={data} form={form} /> : null
+    const node = formDescriptions ? <FormSection targetLabelCol={targetLabelCol} initialValues={props.initialValues} requiredKeys={props.requiredKeys} formDescriptions={formDescriptions} data={data} form={form} /> : null
     return oldNode ?? node
   };
 
   const renderResetBtn = () => {
     return (
-      <Button size="large" htmlType="reset" icon={<RedoOutlined />} onClick={handleReset}>
+      <Button size="large" htmlType="reset" icon={<MyIcon value='RedoOutlined' />} onClick={handleReset}>
         重置
       </Button>
     );
@@ -141,7 +132,7 @@ export default function BaseEditPanelFormFC<T = any>(props: IProps) {
       <Button
         size="large"
         type="primary"
-        icon={<SaveOutlined />}
+        icon={<MyIcon value='SaveOutlined' />}
         loading={loading}
         onClick={debounce(handleFinish)}
       >
@@ -157,7 +148,7 @@ export default function BaseEditPanelFormFC<T = any>(props: IProps) {
         hidden={!onPrint}
         type="primary"
         size="large"
-        icon={<PrinterOutlined />}
+        icon={<MyIcon value='PrinterOutlined' />}
         onClick={onPrint}
       >
         打印
@@ -171,14 +162,14 @@ export default function BaseEditPanelFormFC<T = any>(props: IProps) {
     }
     return (
       <>
-
+        {props.renderExtraBtns && props.renderExtraBtns(form)}
         {renderResetBtn()}
         {
           onSync ? <Button
             hidden={!onSync}
             type="primary"
             size="large"
-            icon={<PrinterOutlined />}
+            icon={<MyIcon value='PrinterOutlined' />}
             onClick={onSync}
           >
             同步
@@ -192,7 +183,6 @@ export default function BaseEditPanelFormFC<T = any>(props: IProps) {
     );
   };
 
-  const renderBtnTip = () => { };
 
   const renderFreeButton = () => {
     return <div style={{ position: 'absolute', top: 0, left: 0, zIndex: 99, width: '100%' }}></div>;
@@ -202,12 +192,12 @@ export default function BaseEditPanelFormFC<T = any>(props: IProps) {
 
   // 导入按钮
   const renderImportBtn = () => {
+    if (!onImport) return null
     return (
       <Button
-        hidden={!onImport}
         type="primary"
         htmlType="button"
-        icon={<SolutionOutlined />}
+        icon={<MyIcon value='SolutionOutlined' />}
         onClick={onImport}
       >
         导入信息
@@ -225,6 +215,7 @@ export default function BaseEditPanelFormFC<T = any>(props: IProps) {
     <Form
       autoComplete="off"
       form={form}
+      initialValues={{}}
       onBlur={handleItemBlur}
       onValuesChange={(changedValues, values) => {
         onValuesChange?.(changedValues, values)
@@ -240,7 +231,7 @@ export default function BaseEditPanelFormFC<T = any>(props: IProps) {
       }}
       onFieldsChange={handleFieldsChange}
       {...formItemLayout}
-      style={{ paddingBottom: 64, height: '100%', overflowY: 'scroll', overflowX: 'hidden' }}
+      style={{ padding: 6, paddingBottom: 64, height: '100%', overflowY: 'auto', overflowX: 'hidden', background: bg_color }}
     >
       {renderImportBtn()}
       {renderEditContent()}

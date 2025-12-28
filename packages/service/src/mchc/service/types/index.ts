@@ -89,3 +89,26 @@ export interface IMchc_OutpatientDocumentStatus {
         "organizationName": "广东省口腔医院"
     }
 }
+export interface IMchc_LabExamReport_Detail {
+    id: number
+    "examNo": null,
+    "requestDoctor": null,
+    "patientName": "8520",
+    "patientGender": null,
+    "patientAge": null,
+    "samplePart": null,
+    "reportDate": "2024-08-16T08:00:00+08:00",
+    "requestDate": null,
+    "firstReadDoctor": null,
+    imgBase64: string[],
+    examItems: {
+        "itemNO": "436",
+        "itemName": "尿妊娠试验",
+        "result": "阴性(无反应性)",
+        "unit": null,
+        "limit": "阴性(-)",
+        "state": "0" | "1" | "2",
+        stateStr: "正常" | "异常" | "偏低" | "偏高";
+
+    }[]
+}

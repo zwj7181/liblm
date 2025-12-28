@@ -4,7 +4,7 @@ import dynamicImportVars from '@rollup/plugin-dynamic-import-vars';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
 import path from 'path';
-import { terser } from "rollup-plugin-terser";
+// import { terser } from "@rollup/plugin-terser";
 import json from '@rollup/plugin-json';
 
 /**
@@ -18,16 +18,24 @@ const sharedOptions = {
         commonjs(), // convert CommonJS modules to ES6
         typescript({
             tsconfig: './tsconfig.json',
-            jsx: 'preserve',
+            jsx: 'react',
             declaration: true,
+            "noEmitOnError": false,
             outputToFilesystem: false,
-            keyofStringsOnly: true
         }),
 
         babel({
             presets: ['@babel/preset-react'],
-            plugins:[
-                '@babel/plugin-transform-runtime'
+            plugins: [
+                '@babel/plugin-transform-runtime',
+                // [
+                //     "import",
+                //     {
+                //         "libraryName": "antd",
+                //         "libraryDirectory": "es",
+                //         "style": true
+                //     }
+                // ]
             ],
             babelHelpers: 'runtime',
             extensions: ['.js', '.jsx', '.es6', '.es', '.mjs', '.ts', '.tsx']
@@ -38,7 +46,7 @@ const sharedOptions = {
         json()
     ],
 
-    
+
     output: {
         dir: path.resolve(__dirname, 'dist'),
 
@@ -49,33 +57,34 @@ const sharedOptions = {
         plugins: [
             getBabelOutputPlugin({
                 presets: ['@babel/preset-env'],
-                plugins:[
-                  '@babel/plugin-transform-runtime'
+                plugins: [
+                    '@babel/plugin-transform-runtime'
                 ]
-              })
+            })
         ]
     },
     external: [
-        'react', 'react-dom', 'axios', 'antd', 'store', 'lodash', 'moment', '@ant-design/icons',
+        'react', 'react-dom', 'axios', 'store', 'lodash', 'moment', '@ant-design/icons',
+        '@lm_fe/static', 'dayjs',
         ...Object.keys(require('./package.json').dependencies || {}),
         ...Object.keys(require('./package.json').peerDependencies || {}),
+        /react/, /antd/, /lodash/, /rc-/, /@ant-design/, /@noah-libjs/,
     ]
 }
 
 export function createSharedConfig(isDev = false) {
-    if (!isDev) {
-        sharedOptions.plugins.push(
-            terser({
-                // compress: {
-                //     drop_console: true,
-                //     drop_debugger: true,
-                // }
-                format: {
-                    comments: false,
-                }
-            })
-
-        )
+    if (!isDev && false) {
+        // sharedOptions.plugins.push(
+        //     terser({
+        //         compress: {
+        //             drop_console: true,
+        //             drop_debugger: true,
+        //         },
+        //         format: {
+        //             comments: false,
+        //         }
+        //     })
+        // )
     }
     return isDev ? sharedOptions : sharedOptions
 }
@@ -84,3 +93,10 @@ export function createSharedConfig(isDev = false) {
 
 
 
+export function exclude(arr, excluded_value) {
+    if (!Array.isArray(arr)) return []
+    if (Array.isArray(excluded_value)) {
+        return arr.filter(_ => !excluded_value.includes(_))
+    }
+    return arr.filter(_ => _ !== excluded_value)
+}

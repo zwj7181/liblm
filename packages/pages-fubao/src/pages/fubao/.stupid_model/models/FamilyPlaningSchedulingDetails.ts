@@ -1,5 +1,5 @@
 import { ModelService } from '../ModelService';
-import { Moment } from 'moment';
+import { Dayjs } from 'dayjs';
 
 export interface IModel_FamilyPlaningSchedulingDetails {
   afternoonReservationNum: number;
@@ -28,7 +28,7 @@ export interface IModel_FamilyPlaningSchedulingDetails {
   putInIntrauterineDeviceNum: 30;
   putInIntrauterineDeviceReservationNum: 0;
   putInIntrauterineDeviceResidueNum: 30;
-  schedulingDate: Moment;
+  schedulingDate: Dayjs;
   takeOutIntrauterineDevice: 0;
   takeOutIntrauterineDeviceNum: 0;
   takeOutIntrauterineDeviceReservationNum: 0;
@@ -53,7 +53,7 @@ export interface IModel_FamilyPlaningSchedulingDetails {
   vulvarCystStomaResidueNum: 0;
 }
 class MY_ModelService extends ModelService<IModel_FamilyPlaningSchedulingDetails> {
-  getOpenSurgicalBySchedulingDate(schedulingDate?: Moment | null) {
+  getOpenSurgicalBySchedulingDate(schedulingDate?: Dayjs | null) {
     return this._request<string[]>({
       url: '/api/family/planning/getOpenSurgicalBySchedulingDate',
       method: 'GET',
@@ -62,7 +62,7 @@ class MY_ModelService extends ModelService<IModel_FamilyPlaningSchedulingDetails
       }),
     }).then((res) => res.data);
   }
-  getBetweenList(start: Moment, end?: Moment) {
+  getBetweenList(start: Dayjs, end?: Dayjs) {
     end = end || start;
     return this.getList({
       params: {

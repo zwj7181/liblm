@@ -1,5 +1,6 @@
 import React, { Component, ReactNode } from 'react';
-import { Select } from 'antd';
+import { LazyAntd } from '@lm_fe/components';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
 // import MyComponent from '../index';
 interface MultipleSelectProps {
   options: Array<{

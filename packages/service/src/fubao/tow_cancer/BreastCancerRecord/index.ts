@@ -17,7 +17,7 @@ class BreastCancerRecord_Service extends ModelService<IFubao_BreastCancerScreeni
 }
 
 export const SFubao_BreastCancerRecord = new BreastCancerRecord_Service({
-    apiPrefix: '/fb/api',
+    // apiPrefix: '/fb/api',
     prePath: '/two/cancer/screening',
     n: 'BreastCancerRecord',
 })

@@ -11,16 +11,17 @@ import Calendar from './components/Calendar/index';
 import SettingModal from './components/SettingModal';
 import GlobalSettingModal from './components/GlobalSettingModal';
 import { getReservationPanelByDate } from './apis/api';
-import moment from 'moment';
-moment.locale('zh-cn');
+import dayjs from 'dayjs';
+import { mchcLogger } from '@lm_fe/env';
+dayjs().locale('zh-cn');
 class WorkfaceManagement extends React.Component {
   state = {
     isModalVisible: false,
     isGlobalSettingModalVisible: false,
-    settingDate: moment(),
+    settingDate: dayjs(),
 
-    curMonth: moment(), //当前月
-    activeDay: moment(), //选中日期
+    curMonth: dayjs(), //当前月
+    activeDay: dayjs(), //选中日期
     reservationPanel: [],
   };
 
@@ -34,14 +35,16 @@ class WorkfaceManagement extends React.Component {
   // 获取排版列表
   getReservationPanel = async () => {
     const { curMonth } = this.state;
-    const startDay = moment(curMonth).date(1); // 当前月的1号
+    const startDay = dayjs(curMonth).date(1); // 当前月的1号
     const startDayCount = startDay.day(); //1号是星期几
     const startDate = startDay.subtract(startDayCount, 'days');
 
-    const endDay = moment(curMonth).date(1).add(1, 'months');
+    const endDay = dayjs(curMonth).date(1).add(1, 'months');
     const endDayCount = 6 - endDay.day(); //6-星期几，就可知道要最后一周星期六 是下个月几号
     const endDate = endDay.add(endDayCount, 'days');
     const res: any = await getReservationPanelByDate(startDate, endDate);
+    mchcLogger.log('xxg res', res)
+
     this.setState({ reservationPanel: res.data });
   };
   onChangeDate = (date: any, dateString: string) => {

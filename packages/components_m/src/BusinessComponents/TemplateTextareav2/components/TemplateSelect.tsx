@@ -1,9 +1,14 @@
+import React, { useEffect, useState } from 'react';
 import { SMchc_TemplateTrees } from '@lm_fe/service';
-import { TreeSelect } from 'antd';
+
 import { DataNode } from 'antd/lib/tree';
-import { useEffect, useState } from 'react';
 import { rootTemplate, transferTemplates } from '../methods';
 import { needUserIDTypes } from '../common';
+
+import { LazyAntd } from '@lm_fe/components';
+
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
 export default function TemplateSelect(props: any) {
   const { onChange, templateType, userid, depid = 1 } = props;
   const [value, setValue] = useState(props.value || 0);

@@ -1,6 +1,6 @@
-import { MchcTypes, MchcType_default, } from "@lm_fe/env"
+import { MCHC_TYPE_MAP, MchcTypes } from "@lm_fe/env"
 
-export interface IMchc_Doctor_RiskRecordsOfOutpatient<T extends MchcTypes = MchcType_default> {
+export interface IMchc_Doctor_RiskRecordsOfOutpatient<T extends MchcTypes = MCHC_TYPE_MAP['mchc']> {
     "id": number,
     "outEmrId": null,
     "eventDate": string,

@@ -3,10 +3,13 @@
  * @Date: 2021-03-10 17:58:04
  * @Descriptions: 地贫筛查
  */
-import React from 'react';
-import { Form, Table, Checkbox, Radio, Space, Button } from 'antd';
+import { LazyAntd } from '@lm_fe/components';
+import { CascaderAddress } from '@lm_fe/components_m';
+import { Button, Form, Checkbox, Radio, Space } from 'antd';
 import './index.less';
-import { CascaderAddress } from '@lm_fe/components_m'
+import React from 'react';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
 const Item = Form.Item;
 export default function Thalassemia() {
   const columns = [

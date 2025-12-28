@@ -1,4 +1,4 @@
-import { lazy } from 'react';
-export * from './types';
-const MyBaseList = lazy(() => import('./_MyBaseList'))
-export { MyBaseList }
+// export * from './types';
+import { componentMap as MyBaseListComponents } from '../../BaseFormComponent';
+export { MyBaseListComponents }
+

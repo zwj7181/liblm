@@ -1,7 +1,8 @@
-import { Checkbox, Collapse, DatePicker, Tabs } from 'antd';
+import { DatePicker_L } from '@lm_fe/components';
+import { Checkbox } from 'antd';
 import { get } from 'lodash';
-import moment from 'moment';
-import { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
+import React, { useEffect, useState } from 'react';
 import styles from './index.less';
 // value:{key:any,keyNote:any}
 interface IProps {
@@ -22,10 +23,10 @@ export default function DataPickWithCheck({ config,value, onChange, ...props }: 
   }
   return (
     <div className={styles["data-pick-with-check"]}>
-      <DatePicker
+      <DatePicker_L
         onChange={onDatePickerChange}
         className={styles["data-pick"]}
-        value={get(tranformValue, 'key') ? moment(get(tranformValue, 'key')) : null}
+        value={get(tranformValue, 'key') ? dayjs(get(tranformValue, 'key')) : null}
         disabled={get(config,'inputProps.disabled')}
       />
       <Checkbox onChange={onCheckboxChange} checked={get(tranformValue, 'keyNote')} className={'checkbox'} disabled={get(config,'inputProps.disabled')}>

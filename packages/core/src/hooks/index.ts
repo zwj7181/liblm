@@ -1,6 +1,6 @@
-import { TEventStore } from "@lm_fe/utils"
+import { AnyObject, TEventStore } from "@lm_fe/utils"
 import { useEffect, useRef, useState } from "react"
-export function useEventStore<T>(store: TEventStore<T>,) {
+export function useEventStore<T extends AnyObject>(store: TEventStore<T>,) {
     const [_data, set_data] = useState({ ...store.bus.data })
     const ref = useRef(new Set<string>('*'))
     const flag = useRef(false)

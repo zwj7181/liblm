@@ -1,5 +1,6 @@
 import { IMchc_Doctor_Diagnoses } from "./common";
 import { IMchc_Doctor_FirstVisitPastmhOutpatient } from "./IMchc_Doctor_FirstVisitPastmhOutpatient";
+import { IMchc_Doctor_FirstVisitPresentmhOutpatient } from "./IMchc_Doctor_FirstVisitPresentmhOutpatient";
 import { IMchc_Doctor_Pregnancymh } from "./IMchc_Doctor_Pregnancymh";
 
 
@@ -7,22 +8,7 @@ export interface IMchc_Doctor_FirstVisitInfoOfOutpatient {
 
 
     id: number
-    presentmh: {
-        "id": 1373,
-        "lmp": "2022-08-04",
-        "edd": "2023-05-11",
-        "sureEdd": "2023-05-11",
-        "sureEddModify": null,
-        "conceiveMode": 1,
-        "conceiveModeNote": null,
-        "chiefcomplaint": null,
-        "presentmhNote": null,
-        "yolksac": null,
-        "sac": null,
-        "ntExams": null,
-        "nfExams": null,
-        "mlUltrasounds": null
-    },
+    presentmh: IMchc_Doctor_FirstVisitPresentmhOutpatient,
     pastmh: IMchc_Doctor_FirstVisitPastmhOutpatient,
     othermh: {
         "id": 1373,
@@ -65,17 +51,24 @@ export interface IMchc_Doctor_FirstVisitInfoOfOutpatient {
     physicalExam: {
         "id": null,
         "physicalBaseExam": {
-            "systolic": null,
-            "diastolic": null,
-            "systolic2": null,
-            "diastolic2": null,
-            "systolic3": null,
-            "diastolic3": null,
+            MyPressure1__: number[],
+            MyPressure2__: number[],
+            MyPressure3__: number[],
+
+            "systolic": number,
+            "diastolic": number,
+            "systolic2": number,
+            "diastolic2": number,
+            "systolic3": number,
+            "diastolic3": number,
             "pulse": 45,
-            "weight": null,
-            "preheight": 160.0,
-            "preweight": 80.0,
-            "bmi": 31.25
+            "weight": number,
+            "preheight": number
+            "preweight": number
+            "bmi": number // 这里倒过来
+            preBmi: number // 这里倒过来
+
+
         },
         "physicalgeneralExam": {
             "skin": null,

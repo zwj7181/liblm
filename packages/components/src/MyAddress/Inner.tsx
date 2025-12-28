@@ -1,8 +1,9 @@
-import { mchcEvent } from '@lm_fe/env';
+import { mchcEnv } from '@lm_fe/env';
 import { IMchc_AddressItemType, SMchc_Address } from '@lm_fe/service';
-import { sleep } from '@lm_fe/utils';
-import { Button, Cascader, Input, Tooltip } from 'antd';
-import { cloneDeep, get, isEmpty, isEqual } from 'lodash';
+import { copyText } from '@lm_fe/utils';
+import { MyIcon } from '@noah-libjs/components';
+import { Button, Cascader, Input, Space, Tooltip } from 'antd';
+import { get, isEmpty } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import { IMyAddressProps } from './type';
 import { checkFetchAddrOptionsNeed, parseValue } from './utils';
@@ -12,7 +13,7 @@ import { checkFetchAddrOptionsNeed, parseValue } from './utils';
 
 
 
-export default function MyAddressNew(props: IMyAddressProps) {
+export default function MyAddressNew_Inner(props: IMyAddressProps) {
   const {
     id, value, form, disabled, onChange,
 
@@ -30,6 +31,18 @@ export default function MyAddressNew(props: IMyAddressProps) {
   const [cascaderOptions, setCascaderOptions] = useState<IMchc_AddressItemType[]>([])
   const [cascaderValue, setCascaderValue] = useState<string[]>([]);
   const [loading, setLoading] = useState(false)
+  const task_queue = useRef<(() => Promise<void>)[]>([])
+
+  // turn the concurrent reqs into linear ones
+  async function consume() {
+    const task = task_queue.current[0]
+    if (task) {
+      await task()
+      task_queue.current.shift()
+      consume()
+    }
+  }
+
 
   function __setCascaderValue(arr: string[]) {
     setCascaderValue(arr)
@@ -81,23 +94,38 @@ export default function MyAddressNew(props: IMyAddressProps) {
       return
     }
 
-    setLoading(true)
     const p = flag === 'init'
       // ? SMchc_Address.getAddressListFirst()
       ? SMchc_Address.getAddressFirst()
       : SMchc_Address.getAddressByDetail(value)
 
-    p
-      .then(res => {
+    const task = async () => {
+      setLoading(true)
+
+      try {
+        const res = await p;
         const list = Array.isArray(res) ? res : []
         // 级联 options 和 value 不对应时候，必须同时更新，否则会报错
+
+
         __setCascaderOptions(list)
         __setCascaderValue(arr);
+      } catch (e) {
 
-      })
-      .finally(() => setLoading(false))
+      }
+      setLoading(false)
 
+    }
+    if (task_queue.current.length) {
+      task_queue.current.push(task)
+    } else {
+      task_queue.current.push(task)
+      consume()
+    }
 
+    return () => {
+
+    }
   }, [value]);
 
   const handlePcasvChange = (val?: (string | number)[]) => {
@@ -126,69 +154,87 @@ export default function MyAddressNew(props: IMyAddressProps) {
 
     };
   };
+  function copy() {
+    copyText(txt ?? '')
+    mchcEnv.success('复制成功')
+  }
+  if (loading) {
+    return <span>数据加载中....</span>
+  }
 
-
-  return (
-    loading ? <span>数据加载中....</span>
-      : <Tooltip id={id} placement="topLeft" title={value?.replace?.(/,|&/g, '')}>
-        <Input.Group compact style={{ display: 'flex' }}>
-          <Input.Group style={{ flex: 1 }}>
-            <Cascader
-              changeOnSelect
-              allowClear
-              size={size}
-              bordered={bordered}
-              disabled={disabled}
-              options={cascaderOptions}
-              onChange={handlePcasvChange}
-              loadData={(arr) => {
-                if (arr) {
-                  const item = arr[arr.length - 1] as unknown as IMchc_AddressItemType
-                  if (item && isEmpty(item.children)) {
-                    item.loading = true
-                    SMchc_Address.getAddressList(item)
-                      .then(async r => {
-                        // await sleep(.2)
-                        item.loading = false
-                        item.children = r
-                        __setCascaderOptions([...cascaderOptions])
-                      })
-                  }
-                }
-
-              }}
-              // showSearch={{ filter }}
-              placeholder="请选择地区"
-              value={cascaderValue}
-              style={{ width: '50%' }}
-              getPopupContainer={getPopupContainer}
-            />
-            <Input
-              size={size}
-              disabled={disabled}
-              bordered={bordered}
-              placeholder="请输入详细地址，如门牌号、小区、楼栋号、单元室"
-              onChange={handleDetails}
-              allowClear
-              value={detail}
-              style={{ width: '50%' }}
-            />
-          </Input.Group>
-
-          {
-            addressBtns.map(({ label, name, props = {} }) => {
-              return <Button
-                ghost
-                type="primary"
-                {...props}
-                onClick={handleSameAdress(name)}
-              >
-                {label ?? 'label'}
-              </Button>
-            })
+  const txt = value?.replace?.(/,|&/g, '')
+  const node = <Space.Compact style={{ display: 'flex' }}>
+    {/* <Space.Compact style={{ flex: 1 }}> */}
+    <Cascader
+      changeOnSelect
+      allowClear
+      size={size}
+      bordered={bordered}
+      disabled={disabled}
+      options={cascaderOptions}
+      onChange={handlePcasvChange}
+      loadData={(arr) => {
+        if (arr) {
+          const item = arr[arr.length - 1] as unknown as IMchc_AddressItemType
+          if (item && isEmpty(item.children)) {
+            item.loading = true
+            SMchc_Address.getAddressList(item)
+              .then(async r => {
+                // await sleep(.2 * 1000)
+                item.loading = false
+                item.children = r
+                __setCascaderOptions([...cascaderOptions])
+              })
           }
+        }
 
-        </Input.Group>
-      </Tooltip>
+      }}
+      // showSearch={{ filter }}
+      placeholder="请选择地区"
+      value={cascaderValue}
+      style={{ width: '50%' }}
+      getPopupContainer={getPopupContainer}
+    />
+    <Input
+      // title={txt}
+      size={size}
+      disabled={disabled}
+      bordered={bordered}
+      placeholder="请输入详细地址，如门牌号、小区、楼栋号、单元室"
+      onChange={handleDetails}
+      allowClear
+      value={detail}
+      style={{ width: '50%' }}
+    />
+    {/* </Space.Compact> */}
+
+    {
+      addressBtns.map(({ label, name, props = {} }) => {
+        return <Button
+          key={name}
+          ghost
+          type="primary"
+          {...props}
+          onClick={handleSameAdress(name)}
+        >
+          {label ?? 'label'}
+        </Button>
+      })
+    }
+
+  </Space.Compact>
+  return (
+    <Tooltip
+      id={id}
+      placement="topLeft"
+      title={
+        <div>
+          <span>{txt} </span>
+          <Button size='small' onClick={copy} type='primary' icon={<MyIcon value='CopyOutlined' />} />
+        </ div>
+      }
+    >
+      {node}
+    </Tooltip>
   );
 }

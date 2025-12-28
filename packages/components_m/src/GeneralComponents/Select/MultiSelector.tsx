@@ -1,6 +1,7 @@
 import React from 'react';
-import { Select } from 'antd';
 import { get } from 'lodash';
+import { LazyAntd } from '@lm_fe/components';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
 export default function MultiSelector({ value, onChange, fetchOptions, ...rest }) {
   // 默认value 类型未数组表现['option1', 'option2']
   // 可选string类型，表现形式 "option1,option2"

@@ -1,40 +1,57 @@
-import { get } from 'lodash';
-import ModalForm from './components/ModalForm';
-import Table from './components/Table';
-import Query from './components/Query';
-import { tableColumns } from './config/table';
-import { BaseListOld } from '@lm_fe/components_m';
+import { BF_Wrap2, MyBaseList } from '@lm_fe/pages';
+import { formatDate } from '@lm_fe/utils';
+import { Form } from 'antd';
+import React from 'react';
+import { getPregnancyByOutpatientNO } from './methods';
+export default function Physical_sign_list(props: any) {
 
-export default class List extends BaseListOld {
-  staticDefaultQuery = {
-    page: 0,
-    size: 20,
-    sort: 'id,desc',
-  };
-
-  static defaultProps = {
-    baseUrl: '/api/measures',
-    baseTitle: '体征管理',
-    needPagination: true,
-    needEditInTable: false,
-    showQuery: true,
-    showAdd: true,
-    showAction: true,
-    tableColumns,
-    rowKey: 'id',
-    Table,
-    Query,
-    ModalForm,
-    otherTableProps: {
-      scroll: { x: 1278 },
+  // const [search_form] = Form.useForm()
+  const { config, Wrap } = BF_Wrap2({
+    default_conf: {
+      tableColumns: () => import('./bf_default'),
+      title: '体征检查-列表',
+      name: '/api/measures',
+      searchConfig: [
+        { inputType: 'input', name: 'outpatientNO', label: '就诊卡号' },
+        { inputType: 'rangeDate', name: 'createDate', label: '体检日期' }
+      ]
     },
-  };
+  })
 
-  handleDoubleClickRow = (record: any) => () => {
-    this.setState({
-      visible: true,
-      editable: true,
-      id: get(record, 'id'),
-    });
-  };
+  return <Wrap>
+    <MyBaseList
+      // tableColumns={config?.tableColumns}
+      // searchConfig={config?.searchConfig}
+      // name={config?.name}
+      bf_conf={config}
+      // {...config}
+      // searchForm={search_form}
+      handleBeforePopup={function (values) {
+        if (!values.createDate) {
+          values.createDate = formatDate()
+        }
+        return values
+      }}
+      modalFormConfig={{
+        modal_data: {
+          // form: modal_form,
+          async onValuesChange(changedValues, values, form) {
+            if (changedValues.outpatientNO) {
+              const outpatientNO = changedValues.outpatientNO;
+              const pregnancy = await getPregnancyByOutpatientNO(outpatientNO);
+              const tempData = {
+                name: '',
+                gestationalWeek: '',
+              };
+              if (pregnancy.length > 0) {
+                tempData.name = pregnancy[0].name
+                tempData.gestationalWeek = pregnancy[0].currentGestationalWeek
+              }
+              form.setFieldsValue({ ...tempData })
+            }
+          },
+        }
+      }}
+    />
+  </Wrap>
 }

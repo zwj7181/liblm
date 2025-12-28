@@ -36,7 +36,7 @@ function ModalIframeView({ file, width = '856px', children = '预览按钮', cla
         destroyOnClose={true}
         title="打印预览"
         width={width}
-        visible={visible}
+        open={visible}
         footer={null}
         onOk={handleOk}
         onCancel={handleCancel}

@@ -1,9 +1,9 @@
 import { SLocal_State } from '@lm_fe/service';
 import { get, isEmpty } from 'lodash';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import React, { Component } from 'react';
-import FormSection from 'src/BaseModalForm/FormSection';
 import { getFormConfigByPeriodState, getFormConfigFilter } from './form_config';
+import { MyFormSection } from 'src/FU_components/FormSection';
 
 class RecordSate extends Component {
   state = {
@@ -17,7 +17,7 @@ class RecordSate extends Component {
       form.setFieldsValue({
         referralOutReason: get(value, 'reason'),
         referralOutReferralDate: get(value, 'referralDate')
-          ? moment(get(value, 'referralDate'))
+          ? dayjs(get(value, 'referralDate'))
           : get(value, 'referralDate'),
         referralOutReferralOrganization: get(value, 'referralOrganization'),
         referralOutReferralDept: get(value, 'referralDept'),
@@ -52,9 +52,9 @@ class RecordSate extends Component {
     return (
       <>
 
-        <FormSection form={this.props.form} formDescriptions={getFormConfigFilter()} />
+        <MyFormSection form={this.props.form} formDescriptions={getFormConfigFilter()} />
 
-        <FormSection form={this.props.form} formDescriptions={getFormConfigByPeriodState(get(formData, 'periodState')!)} />
+        <MyFormSection form={this.props.form} formDescriptions={getFormConfigByPeriodState(get(formData, 'periodState')!)} />
       </>
     );
   }

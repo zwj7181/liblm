@@ -1,8 +1,13 @@
 import { api } from '@/pages/prenatal-visit/pregnancy/doctor-end/api';
-import { Button, Modal, Tabs, Tree } from 'antd';
+import { Button, Modal, Tabs } from 'antd';
 import { forEach, get, isEmpty } from 'lodash';
 import { Component } from 'react';
 import './index.less';
+
+import { LazyAntd } from '@lm_fe/components';
+
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
 export default class Index extends Component {
   state = {
     activeTabKey: '1',

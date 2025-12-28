@@ -1,10 +1,6 @@
 import { request } from "@lm_fe/utils";
 
-/**获取复诊记录数据 */
-async function getRvisitInfoOfOutpatient(id: string) {
-  const res = await request.get('/api/doctor/getRvisitInfoOfOutpatient?id=' + id);
-  return res.data
-}
+
 
 /** 更新复诊记录数据 */
 async function updateRvisitInfoOfOutpatient(data: any) {
@@ -29,7 +25,7 @@ async function newAddDiagnosis(data: any) {
   return (await request.post(`/api/doctor/newOrSaveDiagnosisOfOutpatient`, data)).data;
 }
 export const requestMethods_further = {
-  getRvisitInfoOfOutpatient,
+
   updateRvisitInfoOfOutpatient,
   deleteDiagnosis,
   sortDiagnoses,

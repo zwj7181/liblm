@@ -1,7 +1,7 @@
-import { PlusCircleOutlined } from '@ant-design/icons';
+import { MyIcon } from '@lm_fe/components';
 import { Col, Row } from 'antd';
 import { filter, get, isEmpty, map } from 'lodash';
-import { Component } from 'react';
+import React, { Component } from 'react';
 import BaseFormComponent from '../../BaseFormComponent';
 interface IProps {
   label: string;
@@ -200,7 +200,8 @@ export default class LaborProcess extends Component {
                   },
                 })}
               </Col>
-              <PlusCircleOutlined
+              <MyIcon
+                value='PlusCircleOutlined'
                 style={{ display: 'block', marginLeft: 16, cursor: 'pointer' }}
                 onClick={this.handleAdd}
               />

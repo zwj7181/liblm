@@ -1,5 +1,5 @@
 import { map, get, keys, filter, isNil, set, indexOf, split, isObject, isUndefined } from 'lodash';
-import moment from 'moment';
+import dayjs from 'dayjs';
 export const formDescriptionsFromApi = (data: any) => {
   return map(data, item => {
     return {
@@ -47,7 +47,7 @@ export const fromApi = (data: any, nativeFormDescriptions: any) => {
         });
         break;
       case 'moment':
-        set(result, key, moment(get(data, path)).utc().format());
+        set(result, key, dayjs(get(data, path)).utc().format());
         break;
       case 'default':
       default:
@@ -103,7 +103,7 @@ export const toApi = (data: any, nativeFormDescriptions: any) => {
         });
         break;
       case 'moment':
-        set(result, path, moment(item));
+        set(result, path, dayjs(item));
         break;
       case 'fetusAppendages':
         break;

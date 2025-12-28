@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import { MyIcon } from '@lm_fe/components';
 import './index.less';
-import { InfoCircleOutlined } from '@ant-design/icons';
 interface Iprops {
   [key: string]: any;
 }
@@ -10,7 +9,7 @@ export default function ChartEfficiency({ ...props }: Iprops) {
     <div className="chart-efficienc-container">
       <div className="title-content">
         <div className="title">接诊效率</div>
-        <InfoCircleOutlined title="接诊效率指在产科专科病历人均平均接诊时间" />
+        <MyIcon value='InfoCircleOutlined' title="接诊效率指在产科专科病历人均平均接诊时间" />
       </div>
       <div className="count-content border">
         <div className="count">12/1</div>

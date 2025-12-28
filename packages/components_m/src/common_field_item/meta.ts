@@ -1,7 +1,7 @@
 import { getPresetOptions } from '@lm_fe/env'
 import { IMchc_FormDescriptions_Field } from '@lm_fe/service'
 import { formatDateTime } from '@lm_fe/utils'
-import { IMyBaseList_ColumnType } from '../FU_components'
+import { IMyBaseList_ColumnType } from 'src/FU_components/MyBaseList/types'
 export type TCommonFieldLabel = keyof typeof mapLabelToFieldName
 
 function getTtype(params: IMchc_FormDescriptions_Field) {
@@ -11,7 +11,7 @@ function getTtype(params: IMchc_FormDescriptions_Field) {
 const mapLabelToFieldName = {
     姓名: getTtype({ name: 'name', inputType: 'MyInput', inputProps: {} }),
     年龄: getTtype({ name: 'age', inputType: 'InputNumber', inputProps: {} }),
-    性别: getTtype({ name: 'gender', inputType: 'MyCheckbox', inputProps: { marshal: 0, optionKey: '性别3' } }),
+    性别: getTtype({ name: 'gender', inputType: 'MyCheckbox', inputProps: { marshal: 0, uniqueKey: '性别3' } }),
     联系电话: getTtype({ name: 'telephone', inputType: 'MyInput', inputProps: {} }),
     出生日期: getTtype({ name: 'dob', inputType: 'DatePicker', inputProps: {} }),
     证件类型: getTtype({ name: 'idType', inputType: 'MyInput', inputProps: {} }),

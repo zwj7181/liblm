@@ -1,5 +1,4 @@
 
-import { AxiosRequestConfig } from 'axios'
 import { TIdTypeCompatible } from 'src/types'
 import { ModelService } from '../../../ModelService'
 import { IMchc_ThalassemiaFollowUp } from './types'

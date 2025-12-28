@@ -1,14 +1,12 @@
-import { mchcEnv, mchcEvent } from '@lm_fe/env';
-import { SLocal_State } from '@lm_fe/service';
+import { mchcEvent, mchcLogger } from '@lm_fe/env';
 import classnames from 'classnames';
 import { get, has, indexOf, isArray, isEmpty, isNil, isObject, isString } from 'lodash';
-import { Component } from 'react';
+import React, { Component } from 'react';
+import { CustomIcon, } from '../GeneralComponents/CustomIcon';
 import MyComponent from './components';
 import './formItem.less';
 import { FormItemProp, FormItemState } from './interface';
 import { validFun } from './utils/valid';
-import React from 'react';
-import { CustomIcon, } from '../GeneralComponents/CustomIcon';
 
 function isRequired(rules: any[] = []) {
   for (let index = 0; index < rules.length; index++) {
@@ -84,6 +82,7 @@ export default class FormItem extends Component<FormItemProp, FormItemState> {
 
   handleChange = (value: any, error: any = '') => {
     const { name, dispatch, hidden, formHandler } = this.props;
+    mchcLogger.log('onChange', name, value)
     if (hidden) return;
     const { rules } = this.state;
     this.setState({ value });

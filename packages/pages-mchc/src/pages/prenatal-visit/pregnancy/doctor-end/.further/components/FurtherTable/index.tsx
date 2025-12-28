@@ -1,38 +1,38 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Modal, Button, Spin, Table } from 'antd';
-import ReactToPrint from 'react-to-print';
-import { get, set, isEmpty, cloneDeep, size, forEach, filter, find } from 'lodash';
-import { config, get_table_columns, printConfig } from './config';
-import PrintTable from './print-table';
-import styles from './index.module.less';
+import { MyIcon, MyLazyComponent, Table_L } from '@lm_fe/components';
+import { OkButton } from '@lm_fe/components_m';
+import { mchcUtils } from '@lm_fe/env';
+import { BF_Wrap2, mchcModal__ } from '@lm_fe/pages';
+import { use_provoke } from '@lm_fe/provoke';
 import { IMchc_Doctor_Diagnoses, IMchc_Doctor_OutpatientHeaderInfo, IMchc_Doctor_RvisitInfoOfOutpatient, IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit } from '@lm_fe/service';
-import { mchcEnv, mchcLogger, otherOptions } from '@lm_fe/env';
-import { LoadingPlaceholder, MyForm } from '@lm_fe/components_m';
-import { EMPTY_PLACEHOLDER } from '@lm_fe/utils';
+import { expect_array, identity } from '@lm_fe/utils';
+import { Space } from 'antd';
+import React, { useEffect, useRef, useState } from 'react';
 import { filter_diagnoses } from '../../../.utils';
+import styles from './index.module.less';
 interface IProps {
     visitsData?: IMchc_Doctor_RvisitInfoOfOutpatient,
     headerInfo: IMchc_Doctor_OutpatientHeaderInfo,
     setDiagnosesList?(list: IMchc_Doctor_Diagnoses[]): void
     setFormData(v: Partial<IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit>): void
-
+    toggle_fuck(): void
+    fuck: boolean
     formData?: Partial<IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit>,
-
+    furtherRefresh(): void
 }
 
 export default function FurtherTable(props: IProps) {
+    const sys_theme = use_provoke(s => s.sys_theme)
+    const { setFormData, setDiagnosesList, visitsData, furtherRefresh, formData, toggle_fuck, fuck } = props;
 
-    const { setFormData, setDiagnosesList, visitsData, headerInfo, formData, } = props;
+    const preg_id = mchcUtils.single_id(visitsData);
 
 
 
-
-    const [isShowPrintTable, set_isShowPrintTable] = useState(false)
     const [selectKeys, set_selectKeys] = useState<any[]>([])
     const [selectRows, set_selectRows] = useState<any[]>([])
 
     const printTableRef = useRef<HTMLDivElement>(null)
-
+    const { config, Wrap } = BF_Wrap2({ default_conf: { title: '复诊-产检记录表格', tableColumns: () => import('./config') } })
 
     useEffect(() => {
 
@@ -46,121 +46,110 @@ export default function FurtherTable(props: IProps) {
 
 
 
-    function handleCancel() {
 
-        set_isShowPrintTable(false)
+
+    async function handlePrint() {
+
+        mchcModal__.open('print_modal', {
+            modal_data: {
+                requestData: {
+                    url: '/api/pdf-preview',
+                    id: preg_id,
+                    resource: 'prenatalRVisit'
+                }
+            }
+        })
     };
 
-    async function handlePrint(bool: boolean) {
 
-        set_isShowPrintTable(false)
-    };
 
-    function buttons() {
-        return [
-            <ReactToPrint
-                trigger={() => (
-                    <div>
-                        <Button type="primary" onClick={() => handlePrint(true)}>
-                            续打
-                        </Button>
-                        <Button type="primary" onClick={() => handlePrint(false)}>
-                            打印
-                        </Button>
-                    </div>
-                )}
-                /*为了获取更新数据后的页面*/
-                onBeforeGetContent={async () => {
-                    setTimeout(() => { }, 100);
+
+
+
+
+    const renderTable = (isAll = false) => {
+        return <Wrap>
+            <Table_L
+                bordered
+                title={
+                    isAll ? undefined : () => (
+                        <div className={styles['btn-wrap']}>
+                            <Space>
+                                <OkButton onClick={toggle_fuck} shape='circle' type='text' icon={fuck ? <MyIcon value='RightOutlined' /> : <MyIcon value='LeftOutlined' />} />
+                                <span>共 {filtered_rvisits.length} 条记录</span>
+                            </Space>
+                            <Space>
+                                <OkButton type="text" size="small" onClick={furtherRefresh} >
+                                    刷新
+                                </OkButton>
+                                <OkButton type="text" size="small" onClick={handlePrint} >
+                                    打印
+                                </OkButton>
+                                <OkButton type='text' size="small" onClick={() => mchcModal__.open('modal_page', { modal_data: { content: renderTable(true) } })}>
+                                    更多...
+                                </OkButton>
+                            </Space>
+                        </div>
+                    )
+                }
+                scroll={isAll ? undefined : { y: 160 }}
+                pagination={false}
+                size={isAll ? 'large' : 'small'}
+                // rowSelection={{
+                //     selectedRowKeys: selectKeys,
+                //     onChange(keys, rows) {
+                //         mchcLogger.log({ keys, rows })
+                //         set_selectKeys(keys)
+                //         set_selectRows(rows)
+                //     }
+                // }}
+
+                onRow={(record) => {
+                    const is_target = record.id === formData?.id
+                    const background = is_target ? sys_theme.colors?.light[3] : undefined
+                    const cursor = is_target ? undefined : 'pointer'
+                    const color = is_target ? '#fff' : undefined
+                    return {
+                        style: { background, cursor, color },
+                        onClick(event) {
+                            set_selectKeys([record.id])
+                            set_selectRows([record])
+
+                        },
+                        onDoubleClick() {
+                            setFormData(record);
+                            mchcModal__.pop()
+                            const __diagnoses = filter_diagnoses(visitsData?.diagnoses)
+
+
+                            setDiagnosesList?.(__diagnoses);
+                        },
+
+                    };
                 }}
-                content={() => printTableRef.current}
-            />,
-        ];
+                // rowClassName={r => {
+                //     return r.id === formData?.id ? styles['selected-row'] : ''
+                // }}
+                rowHoverable={false}
+                rowKey={'id'}
+                dataSource={isAll ? filtered_rvisits : filtered_rvisits.slice(0, 5)}
+                columns={[
+                    ...expect_array<any>(config?.tableColumns),
+
+                ].filter(identity)}
+            />
+        </Wrap>
+
     }
-
-    function handleMoreBtn() {
-
-        set_isShowPrintTable(true)
-    };
-
-    function printTable() {
-
-        return (
-            <Modal
-                centered
-                title="产检记录"
-                className={styles['FurtherTable']}
-                visible={isShowPrintTable}
-                width="90%"
-                onCancel={handleCancel}
-                footer={buttons()}
-            >
-                <div ref={printTableRef}>
-                    {
-                        renderTable(true)
-                    }
-                </div>
-
-            </Modal>
-        );
-    }
-
-
-
-    const renderTable = (isAll = false) => <Table bordered pagination={false} size='small'
-        // rowSelection={{
-        //     selectedRowKeys: selectKeys,
-        //     onChange(keys, rows) {
-        //         mchcLogger.log({ keys, rows })
-        //         set_selectKeys(keys)
-        //         set_selectRows(rows)
-        //     }
-        // }}
-
-        onRow={(record) => {
-
-            return {
-                onClick(event) {
-                    set_selectKeys([record.id])
-                    set_selectRows([record])
-
-                },
-                onDoubleClick() {
-                    setFormData(record);
-                    set_isShowPrintTable(false)
-                    const __diagnoses = filter_diagnoses(visitsData?.diagnoses)
-
-
-                    setDiagnosesList?.(__diagnoses);
-                },
-
-            };
-        }}
-        rowClassName={r => {
-            return r.id === formData?.id ? styles['selected-row'] : ''
-        }}
-        rowKey={'id'}
-        dataSource={isAll ? filtered_rvisits : filtered_rvisits.slice(0, 5)}
-        columns={get_table_columns()}
-    />
     return (
-        <div className={styles['FurtherTable']}>
-            {(visitsData) ? (
-                <>
+        <div style={{ marginBottom: 8 }} className={styles['FurtherTable']}>
+            <MyLazyComponent size='middle'>
 
-                    {renderTable()}
+                {renderTable()}
 
-                    <div className={styles['btn-wrap']}>
-                        <span>共 {filtered_rvisits.length} 条记录</span>
-                        <Button type='text' size="small" onClick={handleMoreBtn}>
-                            更多...
-                        </Button>
-                    </div>
-                    {printTable()}
-                </>
-            ) : (
-                <LoadingPlaceholder height={80} />
-            )}
+
+            </MyLazyComponent>
+
         </div>
     );
 }

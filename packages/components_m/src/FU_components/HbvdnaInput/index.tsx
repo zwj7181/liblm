@@ -1,7 +1,9 @@
-import { Input, Select } from 'antd';
+import { Input } from 'antd';
 import { useEffect, useState } from 'react';
 import './index.less';
 import { IMchc_FormDescriptions_Field } from '@lm_fe/service';
+import { Select_L } from '@lm_fe/components';
+import React from 'react';
 interface Iprops extends IMchc_FormDescriptions_Field {
   onChange?: Function;
   value?: string; // 'a,b,c'
@@ -42,7 +44,7 @@ export function HbvdnaInput(props: Iprops) {
 
   }
   return <span style={{ display: 'inline-block' }}>
-    <Select style={{ width: 96 }} disabled={disabled} onChange={handle_unit} options={Object.keys(UnitType).map(_ => ({ value: UnitType[_], label: `${_}/ml` }))} value={unitType} />
+    <Select_L style={{ width: 96 }} disabled={disabled} onChange={handle_unit} options={Object.keys(UnitType).map(_ => ({ value: UnitType[_], label: `${_}/ml` }))} value={unitType} />
     <Input disabled={disabled} style={{ width: isKaobei ? 50 : 90, marginLeft: 6 }} value={_value} onChange={e => handle_value(e.target.value)} />
     {isKaobei ? <> * 10 ^ <Input placeholder='次方' disabled={disabled} value={exponent} onChange={e => handle_exponent(e.target.value)} style={{ width: 46 }} /> </> : null}
   </span>

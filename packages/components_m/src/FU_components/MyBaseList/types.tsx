@@ -1,10 +1,10 @@
-import { IMchc_FormDescriptions_Field, IMchc_FormDescriptions_Field_Nullable, ModelService, TIdTypeCompatible } from '@lm_fe/service';
+import { IMchc_FormDescriptions_Field, IMchc_FormDescriptions_Field_Nullable, ModelService, T_GET_FUCK_PAGE, TIdTypeCompatible } from '@lm_fe/service';
 import { ModalProps } from 'antd/lib/modal';
 import { ColumnGroupType, ColumnType, TableProps } from 'antd/lib/table';
 import { FC, ReactNode } from 'react';
 import { IModalFormProps } from '../../modals/entries/modal_form';
 import { ILmFormItemConfigMixin } from '../SimpleForm/types/lmTypes';
-import { PartialSome } from '@lm_fe/utils';
+import { AnyObject, PartialSome } from '@lm_fe/utils';
 import { FormInstance } from 'antd';
 export interface IGlobalEnumItem<T = string> {
   label: T
@@ -21,22 +21,38 @@ export type IMyBaseList_ColumnType<T = any> = Omit<ColumnGroupType<T>, 'children
   // inputProps?: InputProps
   rules?: any[],
   sortType?: string
-  children?: IMchc_FormDescriptions_Field_Nullable[]
+  children?: (IMyBaseList_ColumnType | null)[]
 } & Omit<IMchc_FormDescriptions_Field, 'children'>
-
-export interface ModalFromProps extends ModalProps { editable: boolean, id?: TIdTypeCompatible, extraModalData?: { [x: string]: any }, onCancel: () => void, onSearch: () => void }
+type TMyBaseList_ColumnArr_nullable<T> = (IMyBaseList_ColumnType<T> | null)[]
+export interface ModalFromProps extends ModalProps { editable: boolean, id?: TIdTypeCompatible, extraModalData?: AnyObject, onCancel: () => void, onSearch: () => void }
 export interface IMyBaseList_ActionCtx<T> {
   handleSearch(): void,
   getSearchParams(isFuck?: boolean): any,
   getCheckRows(): T[]
 }
+interface RenderColProps<T = any> {
+  createOrUpdate: (v: T) => Promise<void>,
+  handleEdit: (v: T) => void,
+  handleView: (v: T) => void,
+  handleDelete: (v: T) => void,
+  handleSearch: () => void,
+  setExtraModalData: (v: any) => void,
+  setVisible: (v: boolean) => void,
+  setEditable: (v: boolean) => void,
+  setId: (v?: number) => void,
+}
+
+type RenderColFn<T> = FC<RenderColProps<T> & { rowData: T, }>
 export interface MyBaseListProps<T extends { id?: any } = any> extends TableProps<T> {
-  keepAlive?: boolean
+
+  dbg_dataSource?: any[];
+
+  effect_ctx?: any
   // 接口 URL
   // 左上角标题
   baseTitle?: string;
   // 列表配置
-  tableColumns?: IMyBaseList_ColumnType<T>[];
+  tableColumns?: TMyBaseList_ColumnArr_nullable<T> | (() => Promise<TMyBaseList_ColumnArr_nullable<T> | { default: { __lazy_config: TMyBaseList_ColumnArr_nullable<T> } }>);
   // 继承自 BaseTable 的组件, 默认 BaseTable
   // Table?: typeof MyBaseTable;
   // 唯一 key，通常取 id
@@ -51,7 +67,7 @@ export interface MyBaseListProps<T extends { id?: any } = any> extends TableProp
   showAdd?: boolean;
   showExport?: boolean;
   showPrint?: boolean;
-  isJSONConfig?: boolean;
+  action_col?: (config: RenderColProps<T>) => IMyBaseList_ColumnType<T>;
   // add文本
   addText?: string;
   editText?: string;
@@ -61,7 +77,7 @@ export interface MyBaseListProps<T extends { id?: any } = any> extends TableProp
   // 展示搜索功能，如果为 true，则必须传 Query 组件
 
   beforeSearch?(v: Partial<T>): Partial<T>
-  beforeSubmit?(v: Partial<T>): Partial<T>
+  beforeSubmit?(v: any): Promise<Partial<T> | null>
 
   // 其它表格属性
   otherTableProps?: TableProps<T>;
@@ -73,37 +89,32 @@ export interface MyBaseListProps<T extends { id?: any } = any> extends TableProp
   name?: string
   apiPrefix?: string
   fuckPage?: boolean
+  get_fuck_page?: T_GET_FUCK_PAGE,
+
+  ignore_usr?: boolean
+  ignore_env?: boolean
   searchParams?: any
   useListSourceCount?: boolean
   requestBeforeEdit?: boolean
 
   handleClickRow?(record: T, event: any): void
   handleDoubleClickRow?(record: T, event: any): void
+  create_or_update?(v: Partial<T>): Promise<void>,
 
   genColumns?: (funcs: {
     tableColumns: IMyBaseList_ColumnType<T>[];
     actionCol: IMyBaseList_ColumnType<T>;
     editKey: any
-    handleItemSave: (v: T) => () => Promise<void>,
-    handleItemCancel: (v: T) => () => void,
+    handleItemSave: (v: T) => Promise<void>,
+    handleItemCancel: (v: T) => void,
     handleEdit: (v: T) => void,
     handleDelete: (v: T) => void,
     handleSearch: () => void
     getSearchParams(isFuck?: boolean): any
 
   }) => IMyBaseList_ColumnType<T>[]
-  ActionAddonBefore?: FC<{
-    rowData: T,
-    createOrUpdate: (v: T) => Promise<void>,
-    handleEdit: (v: T) => void,
-    handleView: (v: T) => void,
-    handleDelete: (v: T) => void,
-    handleSearch: () => void,
-    setExtraModalData: (v: any) => void,
-    setVisible: (v: boolean) => void,
-    setEditable: (v: boolean) => void,
-    setId: (v?: number) => void,
-  }>
+  ActionAddonBefore?: RenderColFn<T>
+  RenderAction?: RenderColFn<T>
   actionAddonAfter?: ReactNode
   RenderBtns?: FC<IMyBaseList_ActionCtx<T>>
   RenderSearchBtns?: FC<IMyBaseList_ActionCtx<T>>
@@ -116,7 +127,7 @@ export interface MyBaseListProps<T extends { id?: any } = any> extends TableProp
   onAdd?: () => void
   onExport?: (ctx: IMyBaseList_ActionCtx<T>) => void
   onPrint?: (ctx: IMyBaseList_ActionCtx<T>) => void
-  onModalOpen?: (v: { rowData?: T, handleSearch(): void }) => void
+  onModalOpen?: (v: { rowData?: T, handleSearch(): void, create_or_update(submitData: Partial<T>): Promise<void>, table_columns: IMyBaseList_ColumnType<T>[] }) => void
   customModelService?: ModelService<T>
   modalFormConfig?: PartialSome<IModalFormProps, 'modal_data'>
   handleBeforePopup?: (rowData: T) => T

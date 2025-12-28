@@ -1,9 +1,12 @@
 // import aImg from '@/assets/imgs/images/a.jpg';
 // import bImg from '@/assets/imgs/images/b.png';
-import { Button, Col, Input, Modal, Row, Table } from 'antd';
+import { LazyAntd } from '@lm_fe/components';
+import { Button, Col, Input, Modal, Row } from 'antd';
 import { get } from 'lodash';
 import React, { Component } from 'react';
 import './index.less';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
 export default class Index extends Component {
   state = {
     isShowModal: false,

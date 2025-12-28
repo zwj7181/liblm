@@ -1,6 +1,6 @@
 import React from 'react';
 import { get } from 'lodash';
-import { message } from 'antd';
+import { FormInstance, message } from 'antd';
 import {
   formDescriptionsWithoutSectionApi,
   fromApi as defaultFromApi,
@@ -36,11 +36,11 @@ export default class BaseEditPanel<T extends BaseEditPanelIProps = BaseEditPanel
     formKey: undefined,
     spinning: true,
   };
-  _request!: Request
+  _request = request
   async componentDidMount() {
 
     const { moduleName, baseUrl, fromApi = defaultFromApi } = this.props;
-    this._request = this.props.request ?? request
+    this._request = this.props.request || this._request
     // 订阅从 panel 获取的数据
     observePatientData.subscribe((data: any) => {
       const { data: prevData } = this.state;
@@ -63,7 +63,7 @@ export default class BaseEditPanel<T extends BaseEditPanelIProps = BaseEditPanel
     const formDescriptionsWithoutSection = formDescriptionsWithoutSectionApi(formDescriptions);
     this.setState({ formDescriptions, formDescriptionsWithoutSection, spinning: false });
     // 请求表单值
-    const values = id ? await this._request.get(`${baseUrl}/${id}`) : {};
+    const values = id ? (await this._request.get(`${baseUrl}/${id}`)).data : {};
     const data = id ? fromApi(values, formDescriptionsWithoutSection) : {};
     const formKey = get(data, 'id') || Math.random(); // 当前dataSource id
     this.setState({ data, formKey });
@@ -86,10 +86,10 @@ export default class BaseEditPanel<T extends BaseEditPanelIProps = BaseEditPanel
     );
     let newData = null;
     if (get(values, 'id')) {
-      newData = await this._request.put(baseUrl, params);
+      newData = (await this._request.put(baseUrl, params)).data;
       message.success(`修改${title}成功`);
     } else {
-      newData = await this._request.post(baseUrl, params);
+      newData = (await this._request.post(baseUrl, params)).data;
       message.success(`新增${title}成功`);
     }
     this.setState({ data: newData });
@@ -106,10 +106,10 @@ export default class BaseEditPanel<T extends BaseEditPanelIProps = BaseEditPanel
     );
     let newData = null;
     if (get(values, 'id')) {
-      newData = await this._request.put(baseUrl, params);
+      newData = (await (this._request.put(baseUrl, params))).data;
       message.success(`修改${title}成功`);
     } else {
-      newData = await this._request.post(baseUrl, params);
+      newData = (await this._request.post(baseUrl, params)).data;
       message.success(`新增${title}成功`);
     }
     this.setState({ data: newData });
@@ -119,7 +119,7 @@ export default class BaseEditPanel<T extends BaseEditPanelIProps = BaseEditPanel
   extraEvents = {
     /** 额外的事件 */
   };
-  formRef = null
+  formRef: { form?: FormInstance } | null = null
   deliverFormToFather(el: any) { }
   render() {
     const { Form, printTemplate = '', printResource = '', history, targetLabelCol, ...rest } = this.props;

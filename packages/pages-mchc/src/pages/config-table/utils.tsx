@@ -1,7 +1,7 @@
-import { MyBaseListProps } from "@lm_fe/components_m";
-import { getSymbolFromDynamicScript, mchcEvent, mchcLogger } from "@lm_fe/env";
-import { ModelService, TIdType } from "@lm_fe/service";
-import { getHappyArg, request, safeGetFromFuncOrData } from "@lm_fe/utils";
+import { safe_get_symbol, mchcEvent, mchcLogger } from "@lm_fe/env";
+import { config_table_fd, mchcModal__, MyBaseListProps } from "@lm_fe/pages";
+import { IMchc_TableConfig, ModelService, SMchc_TableConfig, TIdType } from "@lm_fe/service";
+import { get_global_happy_arg, getHappyConfig, request, safeGetFromFuncOrData } from "@lm_fe/utils";
 import { useEffect, useRef, useState } from "react";
 export type TConfig = Partial<MyBaseListProps> & { watchScript?: string, needSync?: boolean, needPrint?: boolean }
 export interface ICommonProps {
@@ -11,56 +11,70 @@ export interface ICommonProps {
 }
 export function getConfigOne(props: ICommonProps) {
 
-    const id = getHappyArg() ?? props.configId
+    const id = get_global_happy_arg('usr1') ?? props.configId
 
-    return request.get<TConfig>(`/api/tableConfig/${id}`, { showMsg: false }).then(r => {
-        const config = r.data
-        config.genColumns = getSymbolFromDynamicScript(config.genColumns, props)
-
-        config.handleBeforePopup = getSymbolFromDynamicScript(config.handleBeforePopup, props)
-        config.beforeSubmit = getSymbolFromDynamicScript(config.beforeSubmit, props)
-
-        const tableColumns = getSymbolFromDynamicScript(config.tableColumns, props)
-        config.tableColumns = safeGetFromFuncOrData(tableColumns)
-
-        const initialSearchValue = getSymbolFromDynamicScript(config.initialSearchValue, props)
-        config.initialSearchValue = safeGetFromFuncOrData(initialSearchValue)
-
-        const searchParams = getSymbolFromDynamicScript(config.searchParams, props)
-        config.searchParams = safeGetFromFuncOrData(searchParams)
-
-        const searchConfig = getSymbolFromDynamicScript(config.searchConfig, props)
-        config.searchConfig = safeGetFromFuncOrData(searchConfig)
+    return request.get<IMchc_TableConfig>(`/api/tableConfig/${id}`, { showMsg: false }).then(r => {
 
 
-
-
-        mchcLogger.log('table config', config)
-
-        return config
+        return r.data
     })
 }
 export function useConfigHook(props?: any) {
-    const model = useRef<ModelService>()
-    const [config, setconfig] = useState<Partial<TConfig>>()
+    const model = useRef<ModelService | null>()
+    const [config, setconfig] = useState<Partial<IMchc_TableConfig>>()
+    const config_raw = useRef<Partial<IMchc_TableConfig>>()
     const _requesting = useRef(false)
+    const [loading, setLoading] = useState(false)
     useEffect(() => {
-        if (!_requesting.current) {
-            _requesting.current = true
-            getConfigOne(props)
-                .then(c => {
-                    setconfig(c)
-                })
-                .finally(() => _requesting.current = false)
-        }
+        _fetch_conf()
     }, [props])
 
+    function _fetch_conf() {
+        if (!_requesting.current) {
+            _requesting.current = true
+            setLoading(true)
+            getConfigOne(props)
+                .then(c => {
+                    config_raw.current = c
+                    const config = SMchc_TableConfig.process_remote(c, props)
+
+                    setconfig(config)
+                })
+                .finally(() => {
+                    _requesting.current = false
+                    setLoading(false)
+                })
+        }
+    }
+    function edit_config(edit_config = config_raw.current) {
+        mchcModal__.open('modal_form', {
+            width: '90vw',
+            maskClosable: false,
+            bodyStyle: { height: '80vh' },
+            modal_data: {
+
+                async getInitialData() {
+                    return edit_config
+                },
+                async onSubmit(v) {
+                    if (v.id) {
+                        await SMchc_TableConfig.put(v, { ignore_usr: true })
+                    } else {
+                        await SMchc_TableConfig.post(v, { ignore_usr: true })
+                    }
+                    await _fetch_conf()
+                    return 1
+                },
+                formDescriptions: config_table_fd
+            }
+        })
+    }
 
 
     useEffect(() => {
         const watchScript = config?.watchScript
         // const _message = message
-        const rm = mchcEvent.on_rm('my_form', getSymbolFromDynamicScript(watchScript!, props) ?? function (event) {
+        const rm = mchcEvent.on_rm('my_form', safe_get_symbol(watchScript!, props) ?? function (event) {
 
 
         })
@@ -69,10 +83,10 @@ export function useConfigHook(props?: any) {
         model.current = model.current || getM(config)
         return rm
     }, [config])
-    return [config, model] as const
+    return [config, model, edit_config, loading] as const
 }
-export function getM(config?: TConfig) {
-    if (!config?.name) return
+export function getM(config?: Partial<IMchc_TableConfig>) {
+    if (!config?.name) return null
     return new ModelService({ n: config.name, needTransferParams: false, apiPrefix: config.apiPrefix })
 }
 export function getConfigFullUrl(config?: TConfig) {

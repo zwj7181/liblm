@@ -1,13 +1,12 @@
-import { mchcStore } from '@lm_fe/env';
-import React, { useEffect, useState } from 'react';
+import { use_provoke } from '@lm_fe/provoke';
+import React, { useEffect } from 'react';
 function HighriskGradeDisplay(props: { data?: string, type: 'contagion' | 'highriskGrade' }) {
-  const [contagionColor, setContagionColor] = useState('')
 
+  const { 可选传染病, 可选高危等级, } = use_provoke('可选传染病', '可选高危等级',)
 
   const { data, type = 'highriskGrade', } = props;
-
+  if (!data || data === '无') return <span>{data}</span>
   useEffect(() => {
-    setContagionColor(mchcStore.highriskContagionConfig.color)
 
     return () => {
 
@@ -15,14 +14,12 @@ function HighriskGradeDisplay(props: { data?: string, type: 'contagion' | 'highr
   }, [])
 
   function getGradeColor(grade: any) {
-    const config = mchcStore.highriskGradeConfig
-    return config.find(_ => _.label === grade);
+    return 可选高危等级?.find(_ => _.levelText === grade);
   };
 
 
 
-
-  let bgcColor = type === 'contagion' ? contagionColor : getGradeColor(data)?.note;
+  let bgcColor = type === 'contagion' ? 可选传染病?.color : getGradeColor(data)?.color;
 
 
 
@@ -30,4 +27,4 @@ function HighriskGradeDisplay(props: { data?: string, type: 'contagion' | 'highr
     {type === 'highriskGrade' ? getGradeColor(data)?.colorText : data}
   </p>;
 }
-export default HighriskGradeDisplay
+export { HighriskGradeDisplay }

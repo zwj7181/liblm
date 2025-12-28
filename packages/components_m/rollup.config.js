@@ -17,7 +17,7 @@ export default (commandLineArgs) => {
                 use: [['less', { javascriptEnabled: true }]],
                 // extract: true,
                 // modules: true,
-                autoModules:true,
+                autoModules: true,
                 plugins: [
                     cssUrl({
                         url: 'inline',
@@ -36,7 +36,7 @@ export default (commandLineArgs) => {
                 if (!ChunkInfo.facadeModuleId) return 'a_chunks/[name].js'
                 const id = ChunkInfo.facadeModuleId.replace(/\..*$/, '').split('/').slice(-4, -1).join('.')
 
-                return `a_chunks/${id ? `id/${id}.[name]` : 'bad/[name]'}.js`
+                return `a_chunks/${id ? id : 'bad/[name]'}.js`
             },
         },
     }

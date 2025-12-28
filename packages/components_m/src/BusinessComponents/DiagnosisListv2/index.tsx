@@ -1,11 +1,11 @@
+import { MyIcon } from '@lm_fe/components';
+import { Button, Col, Input, message, Popconfirm, Row } from 'antd';
+import dayjs from 'dayjs';
+import { cloneDeep, get, set } from 'lodash';
 import React from 'react';
-import { message, Row, Col, Button, Popconfirm, Input } from 'antd';
-import { get, cloneDeep, set } from 'lodash';
 import { CustomIcon, } from '../../GeneralComponents/CustomIcon';
-import { PlusCircleOutlined } from '@ant-design/icons'
-import moment from 'moment';
-import Template from './template';
 import styles from './index.module.less';
+import Template from './template';
 class Index extends React.Component {
   state = {
     isShowDiagnosesTemplate: false,
@@ -45,7 +45,7 @@ class Index extends React.Component {
     const diag = get(diagnosisObj, 'diagnosis');
     if (list.filter((item: any) => item.diagnosis === diag).length === 0) {
       const newList = cloneDeep(list);
-      set(diagnosisObj, 'createDate', moment().format('YYYY-MM-DD'));
+      set(diagnosisObj, 'createDate', dayjs().format('YYYY-MM-DD'));
       set(diagnosisObj, 'diagnosisCode', get(diagnosisObj, 'code'));
       // 诊断互斥项
       const specialList = ['妊娠', '早孕', '中孕', '晚孕'];
@@ -68,7 +68,7 @@ class Index extends React.Component {
 
       onChange({ ...value, list: newList });
     } else {
-      message.warn('添加诊断重复！');
+      message.warning('添加诊断重复！');
     }
   };
 
@@ -83,7 +83,7 @@ class Index extends React.Component {
     return (
       <div className={styles["diagWrapper"]}>
         {!isAllPregnancies && (
-          <Button className={styles["diag-btn"]} icon={<PlusCircleOutlined />} onClick={this.handleBtnClick}>
+          <Button className={styles["diag-btn"]} icon={<MyIcon value='PlusCircleOutlined' />} onClick={this.handleBtnClick}>
             添加诊断
           </Button>
         )}

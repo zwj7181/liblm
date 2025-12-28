@@ -1,128 +1,110 @@
-import React from 'react';
-import Form from './components/Form';
-//import { toApi, fromApi, valueToApi, valueToForm } from './config/adapter';
-import { valueToApi, valueToForm } from './config/adapter';
-import { formDescriptionsWithoutSectionApi, BaseEditPanel } from '@lm_fe/components_m'
-import { get, isEqual, set, isEmpty } from 'lodash';
-import { fubaoRequest as request } from '@lm_fe/utils';
+import { BaseEditPanelFormFC } from '@lm_fe/components_m';
+import { BF_Wrap2, mchcModal__ } from '@lm_fe/pages';
+import { SFubao_CervicalCancerScreening } from '@lm_fe/service';
+import { request } from '@lm_fe/utils';
+import { Button, Form } from 'antd';
+import dayjs from 'dayjs';
+import { get, set } from 'lodash';
+import React, { useEffect, useState } from 'react';
+import { form_config } from './form_config';
+import { mchcEnv, mchcLogger } from '@lm_fe/env';
+export default function Form_宫颈癌筛查(props: { activeItem: any, id: any, onRefresh?: (a: any, b: any, c?: any) => void }) {
+  const { onRefresh, id, activeItem } = props
 
-import { message } from 'antd';
-import moment from 'moment';
-import { SFubao_CervicalCancerScreening, SMchc_FormDescriptions } from '@lm_fe/service'
-import { form_config } from './form/form_config';
-import { mchcLogger } from '@lm_fe/env';
+  const [data, setdata] = useState<any>({})
 
-export default class AdmissionPanel extends BaseEditPanel {
-  static defaultProps = {
-    baseUrl: '/api/two/cancer/screening/addCervicalCancerRecord', request,
-    moduleName: 'cervical-carcinoma-screening',
-    title: '筛查',
-    Form,
-  };
-  state = {
-    data: {},
-    formDescriptionsWithoutSection: {},
-    formDescriptions: [],
-    formKey: undefined,
-    spinning: true,
-    activeItem: {} as any,
-  };
-  static getDerivedStateFromProps(nextProps: any, prevState: any) {
-    const { activeItem } = nextProps;
-    if (!isEqual(activeItem, prevState.activeItem)) {
-      return {
-        activeItem,
-      };
-    }
-    return null;
-  }
-  componentDidUpdate(prevProps: any, prevState: any) {
-    //console.log(prevState, this.state, 'state');
-    if (
-      get(prevProps, 'activeItem') !== get(this.props, 'activeItem')
-    ) {
-      this.handleInit();
-    }
-  }
-  async componentDidMount() {
-    const { moduleName } = this.props as any;
-    const formDescriptions = form_config()
-    const formDescriptionsWithoutSection = formDescriptionsWithoutSectionApi(formDescriptions);
-    const formKey = Math.random();
-    this.setState({ spinning: false });
-    this.setState({ formDescriptions, formDescriptionsWithoutSection, formKey });
-    this.handleInit();
-  }
-  handleInit = async () => {
-    const { activeItem, formDescriptionsWithoutSection } = this.state;
-    const { basicInfo, basicData, siderPanels, system } = this.props as any;
+  const { config, Wrap } = BF_Wrap2({ default_conf: { title: '两癌筛查-宫颈癌筛查', tableColumns: form_config } })
+
+  const [form] = Form.useForm()
+
+  const active_id = get(activeItem, 'id');
+  const active_screen_id = get(activeItem, 'cervicalCancerScreeningId');
+
+
+
+  useEffect(() => {
+    handleInit();
+    return () => { }
+  }, [activeItem])
+
+
+  async function handleInit() {
+    const { basicInfo, basicData, siderPanels, system } = props as any;
+    form.resetFields()
     let values = {};
-    if (get(activeItem, 'cervicalCancerScreeningId') && get(activeItem, 'cervicalCancerScreeningId') != -1) {
+    if (active_screen_id && active_screen_id != -1) {
       values = (
-        // await request.get(
-        //   `/api/two/cancer/screening/getCervicalCancerScreening?id.equals=${get(
-        //     activeItem,
-        //     'cervicalCancerScreeningId',
-        //   )}&deleteFlag.equals=0`,
-        // )
-        await SFubao_CervicalCancerScreening.getOne(activeItem?.cervicalCancerScreeningId)
+
+        await SFubao_CervicalCancerScreening.getOne(active_screen_id)
       );
     } else {
       set(values, 'womenHealthcareMenstrualHistory', { ...get(basicData, 'womenHealthcareMenstrualHistory') }); //同步档案月经史信息
     }
-    let data = values ? valueToForm(values, formDescriptionsWithoutSection) : {};
-    mchcLogger.log('ff values', { values, data })
-    const formKey = get(data, 'id') || Math.random();
-    //既往接受宫颈癌筛查 取上一次数据
-    // if (!get(data, 'cervicalCancerMedicalHistory.previousCervicalScreening')) {
-    //   if (siderPanels.length > 1) {
-    //     const cervicalCancerMedicalHistory = siderPanels[siderPanels.length - 2];
-    //     const cervicalCancerScreeningCheckDate = get(cervicalCancerMedicalHistory, 'cervicalCancerScreeningCheckDate');
-    //     const cervicalCancerScreeningScreeningSuggest = get(
-    //       cervicalCancerMedicalHistory,
-    //       'cervicalCancerScreeningScreeningSuggest',
-    //     );
-    //     set(data, 'cervicalCancerMedicalHistory.previousCervicalScreening', {
-    //       key: 2,
-    //       keyNote: `${cervicalCancerScreeningScreeningSuggest}(${cervicalCancerScreeningCheckDate})`,
-    //     });
-    //   }
-    // }
-    if (!get(data, 'cervicalCancerDiagnosisAndGuidance.checkUnit'))
-      set(data, 'cervicalCancerDiagnosisAndGuidance.checkUnit', get(system, 'config.hospitalName'));
-    if (!get(data, 'cervicalCancerDiagnosisAndGuidance.checkDate'))
-      set(data, 'cervicalCancerDiagnosisAndGuidance.checkDate', moment(new Date()));
-    if (!get(data, 'cervicalCancerDiagnosisAndGuidance.checkDoctorName'))
-      set(data, 'cervicalCancerDiagnosisAndGuidance.checkDoctorName', get(basicInfo, 'firstName'));
-    console.log('zzw', data, values, this.props)
-    this.setState({ data, formKey });
+
+    if (!get(values, 'cervicalCancerDiagnosisAndGuidance.checkUnit'))
+      set(values, 'cervicalCancerDiagnosisAndGuidance.checkUnit', get(system, 'config.hospitalName'));
+    if (!get(values, 'cervicalCancerDiagnosisAndGuidance.checkDate'))
+      set(values, 'cervicalCancerDiagnosisAndGuidance.checkDate', dayjs(new Date()));
+    if (!get(values, 'cervicalCancerDiagnosisAndGuidance.checkDoctorName'))
+      set(values, 'cervicalCancerDiagnosisAndGuidance.checkDoctorName', get(basicInfo, 'firstName'));
+
+    setdata(values)
+    form.setFieldsValue(values)
   };
-  handleSubmit = async (values: any) => {
-    const { onRefresh, id, baseUrl } = this.props as any;
-    const { formDescriptionsWithoutSection, data, activeItem } = this.state as any;
-    let params: any = valueToApi(values, formDescriptionsWithoutSection);
-    if (get(values, 'id')) {
+
+  async function handleSubmit(values: any) {
+    mchcLogger.log('handleSubmit', { values, data })
+
+    if (get(data, 'id')) {
       // 修改
-      params = {
+      let params = {
         ...data,
-        ...params,
+        ...values,
         screeningType: '宫颈癌筛查',
       };
       const res = await SFubao_CervicalCancerScreening.postOrPut(params,);
+      console.log('values', { values, data, params })
 
       onRefresh && onRefresh('Screening', activeItem);
     } else {
       //新增
-      params = {
+      let params = {
         cervicalCancerScreening: {
-          ...params,
+          ...values,
           screeningType: '宫颈癌筛查',
         },
         twoCancerScreeningId: Number(id),
       };
-      const res = (await SFubao_CervicalCancerScreening.postOrPut(params,))
+      const res = (await SFubao_CervicalCancerScreening.postOrPut(params as any))
+
 
       onRefresh && onRefresh('Screening', activeItem, true);
     }
+    mchcEnv.success('操作成功')
   };
+  return <Wrap>
+    <BaseEditPanelFormFC
+      // renderBtns={config?.}
+      renderExtraBtns={form => {
+        return <Button size='large' onClick={() => {
+          request.post('/api/dataReport/reportCervicalCancerRecord', { ids: [active_id], },);
+
+        }}>上报</Button>
+      }}
+      onPrint={() => {
+        mchcModal__.open('print_modal', {
+          modal_data: {
+            requestData: {
+              url: '/api/two/cancer/screening/printCervicalCancerScreening',
+              id: data?.id
+            }
+          }
+        })
+      }}
+      form={form} formDescriptions={config?.tableColumns}
+      onFinish={async (v) => {
+        return handleSubmit(v)
+      }}
+    />
+  </Wrap>
 }

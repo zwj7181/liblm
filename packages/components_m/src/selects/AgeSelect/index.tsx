@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
-import { Select, Input, InputNumber } from 'antd';
+import { Input, InputNumber } from 'antd';
 import { get, map } from 'lodash';
+
+import { LazyAntd } from '@lm_fe/components';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
 const wordList = ['岁', '月', '天'];
 export default class AgeSelect extends Component<any> {
   handleInputChange = (data: any, type: string) => {

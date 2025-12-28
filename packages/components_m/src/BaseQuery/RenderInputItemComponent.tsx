@@ -1,12 +1,14 @@
 import React from 'react';
-import moment from 'moment';
-import { Input, InputNumber, DatePicker, Checkbox, AutoComplete, TreeSelect, Form } from 'antd';
+import dayjs from 'dayjs';
+import { Input, InputNumber, Checkbox, AutoComplete, Form } from 'antd';
 import { AsyncSingleSelector, AsyncMultiSelector, AsyncInputSelector } from '../GeneralComponents/Select';
 import CascaderAddress from '../selects/CascaderAddress';
 import RangeInputNumber from '../GeneralComponents/RangeInputNumber';
 import DataSelect from '../DataSelect';
 import PatientAutoComplete from '../selects/PatientAutoComplete'
-const RangePicker = DatePicker.RangePicker;
+import { DatePicker_L, LazyAntd, RangePicker_L } from '@lm_fe/components';
+import { getMomentRange } from '@lm_fe/utils';
+const TreeSelect = LazyAntd.TreeSelect
 const tplMap = {
   PatientAutoComplete: (props) => {
     return <PatientAutoComplete allowClear style={{ width: 138 }} {...props} />;
@@ -37,7 +39,7 @@ const tplMap = {
       <TreeSelect
         allowClear
         // treeDefaultExpandAll
-        dropdownMatchSelectWidth={false}
+        popupMatchSelectWidth={false}
         style={{ minWidth: 135 }}
         treeData={options}
         {...rest}
@@ -48,22 +50,16 @@ const tplMap = {
     return <Checkbox {...props} />;
   },
   date: (props) => {
-    return <DatePicker allowClear {...props} />;
+    return <DatePicker_L allowClear {...props} />;
   },
   address: (props) => {
     return <CascaderAddress id={props.name} {...props} />;
   },
   rangeDate: ({ placeholder, ...rest }) => {
     return (
-      <RangePicker
-        ranges={{
-          昨天: [moment().add(-1, 'day'), moment().add(-1, 'day')],
-          今天: [moment(), moment()],
-          明天: [moment().add(1, 'day'), moment().add(1, 'day')],
-          这个星期: [moment().subtract(7, 'day'), moment()],
-          这个月: [moment().startOf('month'), moment().endOf('month')],
-          下个星期: [moment().add(1, 'day'), moment().add(7, 'day')],
-        }}
+      <RangePicker_L
+        // ranges={getMomentRange(dayjs()) as any}
+
         format="YYYY-MM-DD"
         style={{ width: 216 }}
         {...rest}
@@ -72,16 +68,11 @@ const tplMap = {
   },
   rangeDateTime: ({ placeholder, ...rest }) => {
     return (
-      <RangePicker
-        ranges={{
-          今天: [moment().startOf('day'), moment().endOf('day')],
-          明天: [moment().add(1, 'day').startOf('day'), moment().add(1, 'day').endOf('day')],
-          这个星期: [moment().subtract(7, 'day').startOf('day'), moment().endOf('day')],
-          这个月: [moment().startOf('month'), moment().endOf('month')],
-          下个星期: [moment().add(1, 'day').startOf('day'), moment().add(7, 'day').endOf('day')],
-        }}
+      <RangePicker_L
+        // ranges={getMomentRange(dayjs()) as any}
+
         showTime={{
-          defaultValue: [moment('00:00', 'HH:mm'), moment('23:59', 'HH:mm')],
+          defaultValue: [dayjs('00:00', 'HH:mm'), dayjs('23:59', 'HH:mm')],
         }}
         format="YYYY-MM-DD HH:mm"
         style={{ width: 282 }}
@@ -121,85 +112,3 @@ export default function RenderInputComponent({ inputType = 'input', name, label 
   );
 }
 
-// export default function RenderInputComponent({ inputType, name, label = '', rules = [], ...rest }: any) {
-//   const renderInput = (type: string, props: object) => {
-//     let placeholder = `请输入${label}`;
-//     switch (inputType) {
-//       case 'number':
-//         return <InputNumber placeholder={placeholder} {...props} />;
-//         break;
-//       case 'rangeInputNumber':
-//         return <RangeInputNumber placeholder={placeholder} {...props} />;
-//         break;
-//       case 'select':
-//         placeholder = `请选择${label}`;
-//         return <AsyncSingleSelector style={{ minWidth: 98 }} placeholder={placeholder} {...props} />;
-//         break;
-//       case 'multiselect':
-//         placeholder = `请选择${label}`;
-//         return <AsyncMultiSelector style={{ minWidth: 135 }} placeholder={placeholder} {...props} />;
-//         break;
-//       case 'autoComplete':
-//         placeholder = `请选择${label}`;
-//         return <AutoComplete style={{ minWidth: 135 }} placeholder={placeholder} {...props} />;
-//         break;
-//       case 'treeSelect':
-//         placeholder = `请选择${label}`;
-//         return (
-//           <TreeSelect
-//             allowClear
-//             // treeDefaultExpandAll
-//             dropdownMatchSelectWidth={false}
-//             style={{ minWidth: 135 }}
-//             treeData={rest.options}
-//             placeholder={placeholder}
-//             {...props}
-//           />
-//         );
-//         break;
-//       case 'checkbox':
-//         return <Checkbox {...props} />;
-//         break;
-//       case 'date':
-//         return <DatePicker placeholder={placeholder} {...props} />;
-//         break;
-//       case 'address':
-//         return <CascaderAddress id={name} {...props} />;
-//         break;
-//       case 'rangeDate':
-//         return (
-//           <RangePicker
-//             ranges={{
-//               今天: [moment(), moment()],
-//               明天: [moment().add(1, 'day'), moment().add(1, 'day')],
-//               这个星期: [moment().subtract(7, 'day'), moment()],
-//               这个月: [moment().startOf('month'), moment().endOf('month')],
-//               下个星期: [moment().add(1, 'day'), moment().add(7, 'day')],
-//             }}
-//             format="YYYY-MM-DD"
-//             style={{ width: 228 }}
-//             {...props}
-//           />
-//         );
-//         break;
-//       case 'symbol':
-//         return <span style={{ display: 'inline-block', lineHeight: '32px', padding: '0 5px' }}>{label}</span>;
-//         break;
-//       default:
-//         return <Input id={name} placeholder={placeholder} style={{ width: 128 }} {...props} />;
-//         break;
-//     }
-//   };
-
-//   return (
-//     <Form.Item
-//       name={name}
-//       label={label}
-//       rules={rules}
-//       noStyle={inputType === 'symbol'}
-//       valuePropName={inputType === 'checkbox' ? 'checked' : 'value'}
-//     >
-//       {renderInput(inputType, rest)}
-//     </Form.Item>
-//   );
-// }

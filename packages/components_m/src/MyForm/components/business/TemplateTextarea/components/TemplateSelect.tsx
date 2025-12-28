@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { TreeSelect } from 'antd';
 import { getTemplates, transferTemplates, rootTemplate } from '../methods';
+import { LazyAntd } from '@lm_fe/components';
+
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
 export default function TemplateSelect(props) {
   const { onChange, templateType, userid } = props;
   const [value, setValue] = useState(props.value || 0);

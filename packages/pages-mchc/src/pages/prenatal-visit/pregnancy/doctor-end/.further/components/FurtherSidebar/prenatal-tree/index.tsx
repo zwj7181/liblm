@@ -20,7 +20,7 @@ export default function PrenatalTree({ id, treeData, ...props }: Iprops) {
   }, []);
 
   return (
-    <Timeline className="time-line-container">
+    <Timeline style={{ padding: 12 }}>
       {map(treeData, (item, index) => {
         return (
           <Timeline.Item dot={<Dot type={get(item, `type`)} dateGap={get(item, `dateGap`)}></Dot>}>

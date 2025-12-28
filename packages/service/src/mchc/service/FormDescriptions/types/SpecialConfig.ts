@@ -1,3 +1,4 @@
+import { AnyObject } from "@lm_fe/utils"
 import { IMchc_FormDescriptions_InputType } from "./InputType"
 
 interface ISpecialConfig_Single {
@@ -21,7 +22,7 @@ interface ISpecialConfig_TableColumns {
         editable: boolean
         align: "center"
         inputType: IMchc_FormDescriptions_InputType
-        inputProps: { [x: string]: any }
+        inputProps: AnyObject
         title: string
     }[]
 }

@@ -1,9 +1,11 @@
 import React from 'react';
 import classnames from 'classnames';
-import { Tabs, Radio, Checkbox, Row, Col, InputNumber, Select } from 'antd';
+import { Tabs, Radio, Checkbox, Row, Col, InputNumber } from 'antd';
 import getI18n from './i18n';
 import { cronValidate } from '../utils';
 import './index.less';
+import { LazyAntd } from '@lm_fe/components';
+const { Tree, TreeSelect, Select, Table, Dropdown } = LazyAntd
 
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;

@@ -1,17 +1,16 @@
+import { MyCheckbox, pack_components } from '@lm_fe/components';
 import { AutoComplete, Checkbox, InputNumber } from 'antd';
-import MyCheckbox from '../../GeneralComponents/CheckboxWithInput_gold';
 import CusDatePicker from '../../GeneralComponents/DatePicker';
-import InputWithLabel from '../../GeneralComponents/InputWithLabel';
+import GeneralComponents_InputWithLabel from '../../GeneralComponents/InputWithLabel';
 import MultipleInputWithLabel from '../../GeneralComponents/MultipleInputWithLabel';
-import { MyInput } from '../MyInput';
 import { TOption } from './types';
 export const componentMap: { [x in TOption['inputType']]: any } = {
     AutoComplete,
-    InputWithLabel,
+    InputWithLabel: GeneralComponents_InputWithLabel,
     MultipleInputWithLabel,
     CusDatePicker,
     DatePicker: CusDatePicker,
-    MyInput,
+    ...pack_components,
     CheckboxGroup: Checkbox.Group,
     InputNumber,
     CheckboxWithInput: MyCheckbox

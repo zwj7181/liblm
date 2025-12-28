@@ -1,37 +1,31 @@
-import {
-  ColumnHeightOutlined,
-  // CustomIcon,
-  FilterOutlined,
-  PlusOutlined,
-  RedoOutlined,
-  SearchOutlined,
-  SettingOutlined,
-} from '@ant-design/icons';
+import { ContainerDimensions, LazyAntd, MyIcon } from '@lm_fe/components';
 import {
   Button,
   Checkbox,
   Divider,
   // Pagination,
-  Dropdown,
   Input,
   InputNumber,
   Menu,
   Popover,
   Space,
-  Table,
+
   Tooltip,
 } from 'antd';
 import { TableProps } from 'antd/lib/table';
 import { FilterDropdownProps } from 'antd/lib/table/interface';
 import classnames from 'classnames';
+import dayjs from 'dayjs';
 import { compact, get, indexOf, isEqual, map, set } from 'lodash';
-import moment from 'moment';
 import React, { Component } from 'react';
-import ContainerDimensions from 'react-container-dimensions';
+
+import { peek_provoke } from '@lm_fe/provoke';
+import { Browser } from '@lm_fe/utils';
+import { SizeType } from 'antd/lib/config-provider/SizeContext';
 import store from 'store';
 import styles from './index.module.less';
 import { ResizableTitle } from './Resizeable';
-import { Browser } from '@lm_fe/utils';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
 
 // 不限定默认格子宽度
 const TABLE_CELL_WIDTH = 200;
@@ -56,13 +50,13 @@ interface IState {
   searchedColumn?: string;
   columns: [];
   checkedColumns: [];
-  size: 'small' | 'middle' | 'default';
+  size: SizeType;
   queryVisible?: boolean;
   queryHeight?: number;
   [key: string]: any;
 }
 export default class BaseTableOld extends Component<IProps, IState> {
-  tableId = moment().format('X');
+  tableId = dayjs().format('X');
   queryRef: any;
   searchInput: any;
   extraRef: any;
@@ -111,8 +105,8 @@ export default class BaseTableOld extends Component<IProps, IState> {
       case 'number':
         return Number(get(rowDataPrev, dataIndex)) - Number(get(rowDataNext, dataIndex));
       case 'date':
-        return moment(get(rowDataPrev, dataIndex)).valueOf() - moment(get(rowDataNext, dataIndex)).valueOf();
-      // return moment(get(rowDataPrev, dataIndex)).diff(moment(get(rowDataNext, dataIndex)));
+        return dayjs(get(rowDataPrev, dataIndex)).valueOf() - dayjs(get(rowDataNext, dataIndex)).valueOf();
+      // return dayjs(get(rowDataPrev, dataIndex)).diff(dayjs(get(rowDataNext, dataIndex)));
       case 'string':
       default:
         return String(get(rowDataPrev, dataIndex)).localeCompare(String(get(rowDataPrev, dataIndex)));
@@ -171,7 +165,7 @@ export default class BaseTableOld extends Component<IProps, IState> {
           <Button
             type="primary"
             onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
-            icon={<SearchOutlined />}
+            icon={<MyIcon value='SearchOutlined' />}
             style={{ width: 90 }}
           >
             查询
@@ -217,7 +211,7 @@ export default class BaseTableOld extends Component<IProps, IState> {
           cellHeaderAction,
           'filterIcon',
           <div className={styles["filter-block"]}>
-            <FilterOutlined />
+            <MyIcon value='ColumnHeightOutlined' />
           </div>,
         );
       }
@@ -235,7 +229,7 @@ export default class BaseTableOld extends Component<IProps, IState> {
     const { onAdd, addText, disabled } = this.props;
     if (onAdd) {
       return (
-        <Button disabled={disabled} icon={<PlusOutlined />} type="primary" onClick={onAdd}>
+        <Button disabled={disabled} icon={<MyIcon value='PlusOutlined' />} type="primary" onClick={onAdd}>
           {addText || '新增'}
         </Button>
       );
@@ -332,7 +326,7 @@ export default class BaseTableOld extends Component<IProps, IState> {
         )} */}
         <Divider type="vertical" />
         <Tooltip title="刷新">
-          <RedoOutlined
+          <MyIcon value='RedoOutlined'
             className={styles["global-base-table_title-operations-right-config__icon"]}
             onClick={() => {
               this.props.onSearch && this.props.onSearch();
@@ -356,7 +350,7 @@ export default class BaseTableOld extends Component<IProps, IState> {
           }
         >
           <Tooltip title="间距">
-            <ColumnHeightOutlined className={styles["global-base-table_title-operations-right-config__icon"]} />
+            <MyIcon value='ColumnHeightOutlined' className={styles["global-base-table_title-operations-right-config__icon"]} />
           </Tooltip>
         </Dropdown>
         {/* <Dropdown
@@ -377,7 +371,7 @@ export default class BaseTableOld extends Component<IProps, IState> {
           trigger="click"
         >
           <Tooltip title="列展示">
-            <SettingOutlined className={styles["global-base-table_title-operations-right-config__icon"]} />
+            <MyIcon value='SearchOutlined' className={styles["global-base-table_title-operations-right-config__icon"]} />
           </Tooltip>
         </Popover>
         {this.renderOtherTableConfig()}
@@ -401,15 +395,15 @@ export default class BaseTableOld extends Component<IProps, IState> {
               <Button
                 className={styles["global-base-table_title-operations-left_filter"]}
                 type="link"
-                icon={<FilterOutlined />}
+                icon={<MyIcon value='FilterOutlined' />}
                 onClick={this.handleQueryClick}
               >
                 <div style={{ display: 'inline-flex', marginLeft: '5px' }}>
                   筛选
                   {/* {queryVisible ? (
-                    <CustomIcon type="icon-down" style={{ fontSize: '20px' }} />
+                    <CustomIcon type="icon-down"  />
                   ) : (
-                    <CustomIcon type="icon-dropdown" style={{ fontSize: '20px' }} />
+                    <CustomIcon type="icon-dropdown"  />
                   )} */}
                 </div>
               </Button>
@@ -476,7 +470,7 @@ export default class BaseTableOld extends Component<IProps, IState> {
     // 如果一个页面多次引用此组件，则添加唯一标记id
     const selector = `#t_${this.tableId} thead.ant-table-thead`;
     return (
-      <div className={classnames('global-base-table', className)} id={`t_${this.tableId}`}>
+      <div className={classnames('global-base-table', 'BaseTableOld', className)} style={{ background: peek_provoke().sys_theme.bg_color }} id={`t_${this.tableId}`}>
         {showTitle && this.renderTitle()}
         <div
           id="table-scrollContainer"
@@ -538,7 +532,6 @@ export default class BaseTableOld extends Component<IProps, IState> {
           </ContainerDimensions>
         </div>
 
-        {/* <div className={styles["global-base-table_footer"]}>{pagination && <Pagination size="small" {...pagination} />}</div> */}
         <div
           ref={(ref) => {
             this.extraRef = ref;

@@ -1,16 +1,16 @@
-import React, { forwardRef, memo, useEffect, useState, useSyncExternalStore } from 'react';
-import { Table, Form, InputNumber, Input, Checkbox, Select, Button, Modal, Divider, message, Space } from 'antd';
-import { FormInstance } from 'antd/lib/form';
-import { AnalyseType, tableData } from './tableData';
 import { SimpleForm } from '@lm_fe/components';
-import strategies from './strategies/strategies';
-import useSign from './useSign'
-import { emptyValue } from './strategies/utils';
-import { IZsy_CtgRecord, SZsy_CtgRecord } from '@lm_fe/service';
 import { mchcEvent, mchcLogger } from '@lm_fe/env';
-import { mchcModal } from '@lm_fe/components_m';
-import { HistoryTable } from '../fetal-custom-analyse-list/HistoryTable';
+import { IZsy_CtgRecord, SZsy_CtgRecord } from '@lm_fe/service';
+import { Button, Checkbox, Form, Input, InputNumber, message, Modal, Space } from 'antd';
+import React, { useEffect, useState } from 'react';
+import strategies from './strategies/strategies';
+import { emptyValue } from './strategies/utils';
+import { AnalyseType, tableData } from './tableData';
+import useSign from './useSign';
+
+import { mchcModal__ } from '@lm_fe/pages';
 import { request } from '@lm_fe/utils';
+import { HistoryTable } from '../fetal-custom-analyse-list/HistoryTable';
 interface IProps {
     name: string
     hidden?: boolean
@@ -340,7 +340,7 @@ const T = function (props: IProps) {
                                                     <Button type="primary" style={{ padding: '0 24px', }}
                                                         disabled={pv?.state !== 1}
                                                         onClick={e => {
-                                                            // message.warn('未实现')
+                                                            // message.warning('未实现')
                                                             request.post(`/Obcloud/api/ctg/sign/archive?recordId=${pv?.id}`)
                                                                 .then(({ data }) => {
                                                                 })
@@ -355,7 +355,7 @@ const T = function (props: IProps) {
                                                                 SZsy_CtgRecord.getReport(pv.id)
                                                                     .then((data) => {
                                                                         mchcLogger.log('data', data)
-                                                                        mchcModal.open('print_modal', {
+                                                                        mchcModal__.open('print_modal', {
                                                                             modal_data: { printData: data }
                                                                         })
                                                                     })
@@ -376,7 +376,7 @@ const T = function (props: IProps) {
                                                                 SZsy_CtgRecord.getRecordHistory(pv.id)
                                                                     .then((data) => {
 
-                                                                        mchcModal.open('test', {
+                                                                        mchcModal__.open('test', {
                                                                             title: '历史判图',
                                                                             width: '80vw',
                                                                             modal_data: {

@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
-import { Dropdown, Input, Radio } from 'antd';
+import { Input, Radio } from 'antd';
 import Cron from '../Cron';
+import { LazyAntd } from '@lm_fe/components';
+const { Tree, TreeSelect, Select, Table, Dropdown } = LazyAntd
 
 class InputCron extends PureComponent {
   state = {

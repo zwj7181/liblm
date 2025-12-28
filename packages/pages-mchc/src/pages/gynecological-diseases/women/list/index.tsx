@@ -1,86 +1,61 @@
-import { BaseListOld as BaseList } from '@lm_fe/components_m';
-import { Button, Divider, Popconfirm } from 'antd';
-import { get } from 'lodash';
-import React from 'react';
-import Query from './components/Query';
-import Table from './components/Table';
-import { tableColumns } from './config/table';
+import { MyIcon } from '@lm_fe/components';
+import { BF_Wrap2, IdNOButton, mchcModal__, MyBaseList, useReadIdNO } from '@lm_fe/pages';
 import { SLocal_History } from '@lm_fe/service';
-export default class List extends BaseList {
-  static defaultProps = {
-    baseUrl: '/api/gynecological-patients',
-    //request,
-    baseTitle: '妇女档案',
-    needPagination: true,
-    showQuery: true,
-    showAdd: true,
-    tableColumns,
-    rowKey: 'id',
-    Table,
-    Query,
-  };
+import { Button, Form, Space } from 'antd';
+import React, { useEffect } from 'react';
+import Gaopaiyi_List from 'src/pages/prenatal-visit/report/list';
+import { bf_default } from './bf_default';
 
-  columns = [
-    ...(this.props.tableColumns as Array<any>),
-    {
-      title: '操作',
-      showSorter: false,
-      showFilter: false,
-      fixed: 'right',
-      align: 'center',
-      width: 136,
-      render: (value: any, rowData: any, index: number) => {
-        return (
-          <>
-            <Button
-              type="link"
-              size="small"
-              // icon={<EyeOutlined className="global-table-action-icon" />}
-              onClick={this.handleView(rowData)}
-            >
-              查看
-            </Button>
-            <Divider type="vertical" />
-            <Button
-              type="link"
-              size="small"
-              // icon={<EditOutlined className="global-table-action-icon" />}
-              onClick={this.handleEdit(rowData)}
-            >
-              编辑
-            </Button>
-            <Divider type="vertical" />
-            <Popconfirm
-              title={`确定要删除这个${get(this.props, 'baseTitle')}吗?`}
-              onConfirm={this.handleDelete(rowData)}
-              okText="确定"
-              cancelText="取消"
-            >
-              <Button type="link" size="small" /* icon={<DeleteOutlined className="global-table-action-icon" />} */>
-                删除
-              </Button>
-            </Popconfirm>
-          </>
-        );
-      },
-    },
-  ];
+export default function Gynecological_diseases_women(props: any) {
 
-  handleAdd = () => {
-    const { history } = this.props;
-    
-    SLocal_History.historyPush('/gynecological-diseases/women/add', );
-  };
+  const [search_form] = Form.useForm()
+  const { id_NO_msg } = useReadIdNO()
+  useEffect(() => {
+    if (id_NO_msg?.send_id === 'list')
+      search_form.setFieldsValue(id_NO_msg.data)
+  }, [id_NO_msg])
+  const { config, Wrap } = BF_Wrap2({ default_conf: { ...bf_default, title: '妇女档案-列表' }, })
 
-  handleView = (rowData: any) => () => {
-    const { id } = rowData;
-    const { history } = this.props;
-    SLocal_History.historyPush(`/gynecological-diseases/women/women-exam-records?id=${id}`, );
-  };
+  return <Wrap>
+    <MyBaseList
+      tableColumns={config?.tableColumns}
+      searchConfig={config?.searchConfig}
+      name={config?.name ?? '/api/gynecological-patients'}
+      // {...config}
+      searchForm={search_form}
 
-  handleEdit = (rowData: any) => () => {
-    const { id } = rowData;
-    const { history } = this.props;
-    SLocal_History.historyPush(`/gynecological-diseases/women/edit?id=${id}`, );
-  };
+      ActionAddonBefore={({ rowData }) => {
+        return <Space>
+
+          <Button
+            size="small"
+            // icon={<EyeOutlined className="global-table-action-icon" />}
+            onClick={() => {
+              mchcModal__.open('modal_page', {
+                title: '高拍仪查看',
+                modal_data: {
+                  content: <Gaopaiyi_List type={6} search={{ patientNo: rowData.outpatientNO }} />
+                }
+              })
+            }}
+          >
+            同意书
+          </Button>
+
+          <Button
+            size="small"
+            icon={<MyIcon value='EyeOutlined' />}
+            onClick={() => {
+              SLocal_History.safe_history_push(`/gynecological-diseases/women/women-exam-records?id=${rowData.id}`, props);
+
+            }}
+          >
+          </Button>
+        </Space>
+      }}
+      RenderBtns={(ctx) => {
+        return <IdNOButton send_id='list' />
+      }}
+    />
+  </Wrap>
 }

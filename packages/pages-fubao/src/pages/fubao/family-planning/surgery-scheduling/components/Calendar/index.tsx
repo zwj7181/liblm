@@ -1,5 +1,5 @@
 import React from 'react';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import './index.less';
 import { LeftOutlined, RightOutlined, SettingOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { Button, Tooltip } from 'antd';
@@ -8,8 +8,8 @@ import { NurseTypesMapping } from "../../../file-management/doctor-desk/componen
 const week = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
 export default class Calendar extends React.Component<any, any> {
   state = {
-    curMonth: this.props.defaultVlue ? moment(this.props.defaultVlue) : moment(), //当前月
-    activeDay: this.props.defaultVlue ? moment(this.props.defaultVlue) : moment(), //选中日期
+    curMonth: this.props.defaultVlue ? dayjs(this.props.defaultVlue) : dayjs(), //当前月
+    activeDay: this.props.defaultVlue ? dayjs(this.props.defaultVlue) : dayjs(), //选中日期
     dateObj: {}, // 通过date作为key 存储日期的schedulingDetailsVMList
     reservationStatusObj: {},
     attendanceSetObj: {},
@@ -87,15 +87,15 @@ export default class Calendar extends React.Component<any, any> {
   lastMonth() {
     const { dateObj, attendanceSetObj } = this.state;
     const { curMonth } = this.props;
-    const date = moment(curMonth).date(1); // 当前月的1号
+    const date = dayjs(curMonth).date(1); // 当前月的1号
     const count = date.day(); //1号是星期几
     date.subtract(count, 'day'); //比如本月1号是星期3，那么上个月的数据就应该显示3个
     let ui = [];
     for (let i = 0; i < count; i++) {
-      const todayMoment = moment(date);
-      const isBefore = todayMoment.isBefore(moment(), 'day'); //判断是否今天前的日子
+      const todayMoment = dayjs(date);
+      const isBefore = todayMoment.isBefore(dayjs(), 'day'); //判断是否今天前的日子
       const isSame = this.state.activeDay && todayMoment.isSame(this.state.activeDay, 'day'); //判断哪一天是选中日期
-      let formatDate = moment(date).format('YYYY-MM-DD');
+      let formatDate = dayjs(date).format('YYYY-MM-DD');
       let dateDetail = dateObj[formatDate] || {};
 
       let attendanceSet = attendanceSetObj[formatDate];
@@ -166,21 +166,21 @@ export default class Calendar extends React.Component<any, any> {
   /**
    * 下月数据
    * 思路:首先获取本月1号的日期信息，然后通过add方法加1个月，就得到了下月1号的信息，从而得到下月1号是星期几，如果下月数据是星期2，那么下月数据就应该渲染7-2个
-   * moment.js 中day()方法，如果是星期日，返回值为0
+   * dayjs().js 中day()方法，如果是星期日，返回值为0
    */
   nextMonth() {
     const { dateObj, attendanceSetObj } = this.state;
     const { curMonth } = this.props;
     //选中的时间改为1号,并且加上1个月
-    const date = moment(curMonth).date(1).add(1, 'months');
+    const date = dayjs(curMonth).date(1).add(1, 'months');
     const count = 7 - date.day(); //7-星期几，就可知道要渲染几个下月数据
     if (count === 7) {
       return null;
     }
     let ui = [];
     for (let i = 0; i < count; i++) {
-      const todayMoment = moment(date);
-      let formatDate = moment(date).format('YYYY-MM-DD');
+      const todayMoment = dayjs(date);
+      let formatDate = dayjs(date).format('YYYY-MM-DD');
       let dateDetail = dateObj[formatDate] || [];
       let attendanceSet = attendanceSetObj[formatDate];
 
@@ -265,15 +265,15 @@ export default class Calendar extends React.Component<any, any> {
   thisMonth() {
     const { dateObj, attendanceSetObj } = this.state;
     const { curMonth } = this.props;
-    const date = moment(curMonth).date(1); //获取本月1号数据
+    const date = dayjs(curMonth).date(1); //获取本月1号数据
     const count = date.daysInMonth(); //当前选中月份的总条数
     const hour = this.state.activeDay.hour(); // 当天时刻
 
     //最后一个工作日,本月1号,+1月-1天=本月最后一天
     let ui = [];
     for (let i = 0; i < count; i++) {
-      const todayMoment = moment(date);
-      const isBefore = todayMoment.isBefore(moment(), 'day'); //判断是否今天前的日子
+      const todayMoment = dayjs(date);
+      const isBefore = todayMoment.isBefore(dayjs(), 'day'); //判断是否今天前的日子
       const isSame = this.state.activeDay && todayMoment.isSame(this.state.activeDay, 'day'); //判断哪一天是选中日期
       let formatDate = todayMoment.format('YYYY-MM-DD');
 
@@ -420,7 +420,7 @@ export default class Calendar extends React.Component<any, any> {
           <Button
             className="back-to-now"
             onClick={() => {
-              let val = moment();
+              let val = dayjs();
               this.props.changeCurMonth(val);
             }}
           >

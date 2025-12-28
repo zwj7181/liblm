@@ -1,9 +1,13 @@
-import React, { Component } from 'react';
-import { Table, Button } from 'antd';
+import { LazyAntd } from '@lm_fe/components';
+import { Button } from 'antd';
 import { get, set } from 'lodash';
-import EditableCell from './TableEditableCell';
-import { isArr } from '../../utils/func';
+import React, { Component } from 'react';
 import './index.less';
+import EditableCell from './TableEditableCell';
+
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
+
 interface MyTableProps {
   onChange: Function;
   dispatch?: Function;

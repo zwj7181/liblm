@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { Table } from 'antd';
-import { get, map, cloneDeep, set, isEmpty } from 'lodash';
-import BaseFormComponent from '../../../../BaseFormComponent';
-import moment from 'moment';
-import './index.less';
+import { LazyAntd } from '@lm_fe/components';
 import { formatDate } from '@lm_fe/utils';
+import { cloneDeep, get, isEmpty, map, set } from 'lodash';
+import dayjs from 'dayjs';
+import React, { useEffect, useState } from 'react';
+import BaseFormComponent from '../../../../BaseFormComponent';
+import './index.less';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
 const cols = [
   {
     dataIndex: 'name',
@@ -161,7 +163,7 @@ export default (props: any) => {
         render: (value, rowData, rowIndex) => {
           let renderValue = value;
           if (['single_date_picker'].indexOf(inputType) > -1) {
-            renderValue = value ? moment(value, 'YYYY-MM-DD') : moment();
+            renderValue = value ? dayjs(value, 'YYYY-MM-DD') : dayjs();
           }
           return editable ? (
             <BaseFormComponent

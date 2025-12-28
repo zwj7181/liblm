@@ -95,7 +95,7 @@ export const defaultToolbars = [
         items: [
           {
             name: 'justifyleft',
-            title: '向左对齐',
+            title: '向左对齐22',
           },
           {
             name: 'justifycenter',

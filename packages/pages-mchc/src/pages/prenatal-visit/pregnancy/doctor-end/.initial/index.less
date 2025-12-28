@@ -1,15 +1,14 @@
-
 .prenatal-visit-main_initial {
   height: 100%;
   overflow: auto;
-  padding: 6px;
-  background-color: #fff;
+  // padding: 6px;
+  // background-color: #fff;
 
   .border {
     position: relative;
     margin: 16px 0;
     padding: 16px 8px 4px;
-    border: 1px solid #d7dce7;
+    // border: 1px solid #d7dce7;
     border-radius: 2px;
 
     .border-form_section_title {
@@ -29,17 +28,45 @@
     height: 100%;
   }
 
-  .prenatal-visit-main_initial-tabs .ant-tabs-content-holder {
-    // height: calc(100% - 34px);
-    padding-bottom: 128px;
-    max-height: 670px;
-    overflow-y: auto;
-    border: 1px solid #212c3d;
-    border-top: none;
+  .prenatal-visit-main_initial-tabs {
+    &>.ant-tabs-content-holder {
+      // height: calc(100% - 34px);
+      padding-bottom: 128px;
+      max-height: 670px;
+      overflow-y: auto;
+      border: 1px solid #212c3d;
+      border-top: none;
 
-    .ant-tabs-content {
-      min-width: 1200px;
-      padding: 12px 0;
+      .ant-tabs-content {
+        min-width: 1200px;
+        padding: 12px 0;
+      }
+    }
+
+    &>.ant-tabs-nav {
+      margin-bottom: 0;
+      // background-color: #f0f2f5 !important;
+
+      .ant-tabs-nav-wrap {
+        border-bottom: 1px solid #212c3d;
+      }
+
+      .ant-tabs-tab {
+        height: 34px !important;
+        margin-right: 0px !important;
+        margin-left: 0 !important;
+        padding: 6px 16px !important;
+        // background-color: #fff !important;
+        // border-left-color: #fafafa !important;
+
+        &.ant-tabs-tab-active {
+          color: #212c3d;
+          border-color: #212c3d !important;
+          border-bottom: none !important;
+          border-radius: 2px 2px 0 0 !important;
+          transform: translateY(1px) !important;
+        }
+      }
     }
   }
 
@@ -48,36 +75,15 @@
     overflow: visible;
   }
 
-  &-tabs {
+  .prenatal-visit-main_initial-tabs {
     .ant-tabs-bar {
       margin-bottom: 0;
     }
 
-    .ant-tabs-nav-wrap {
-      border-bottom: 1px solid #212c3d;
-    }
 
-    .ant-tabs-nav {
-      margin-bottom: 0;
-      // background-color: #f0f2f5 !important;
-    }
 
-    .ant-tabs-tab {
-      height: 34px !important;
-      margin-right: 0px !important;
-      margin-left: 0 !important;
-      padding: 6px 16px !important;
-      background-color: #fff !important;
-      border-left-color: #fafafa !important;
 
-      &.ant-tabs-tab-active {
-        color: #212c3d;
-        border-color: #212c3d  !important;
-        border-bottom: none !important;
-        border-radius: 2px 2px 0 0 !important;
-        transform: translateY(1px) !important;
-      }
-    }
+
   }
 
   &-btns {

@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { Form, Input, message, Modal, DatePicker, Button, Row, Col, Popconfirm } from 'antd';
-import { get, map, set, cloneDeep } from 'lodash';
-import SingleCheckBox from '../components/SingleCheckBox';
-import { FormInstance } from 'antd/lib/form';
-import moment from 'moment';
+import { DatePicker_L, fubaoHistoryPush } from '@lm_fe/components_m';
 import { formatDate, fubaoRequest as request } from '@lm_fe/utils';
-import { fubaoHistoryPush } from '@lm_fe/components_m';
+import { Button, Col, Form, Input, Modal, Popconfirm, Row } from 'antd';
+import { FormInstance } from 'antd/lib/form';
+import { cloneDeep, get, map, set } from 'lodash';
+import dayjs from 'dayjs';
+import React, { Component } from 'react';
+import SingleCheckBox from '../components/SingleCheckBox';
 const noticeTypeOptions = [
   { label: '电话', value: '电话' },
   { label: '短信', value: '短信' },
@@ -45,7 +45,7 @@ export class ModalForm extends Component {
     } else {
       map(newCurrentRecord, (data, index) => {
         if (index === 'notificationDate' || index === 'pathologicalExaminationDate') {
-          set(newCurrentRecord, index, data ? moment(data) : null);
+          set(newCurrentRecord, index, data ? dayjs(data) : null);
         }
         if (index === 'notificationWay' || index === 'treatment') {
           this.setState({
@@ -132,7 +132,7 @@ export class ModalForm extends Component {
         onOk={() => {
           this.handleSubmit(0);
         }}
-        visible={visible}
+        open={visible}
         onCancel={onCancel}
         footer={[
           <Popconfirm
@@ -208,7 +208,7 @@ export class ModalForm extends Component {
               <Row>
                 <Col span={12}>
                   <Form.Item label="随访日期" name="notificationDate" labelCol={{ span: 8 }} wrapperCol={{ span: 12 }}>
-                    <DatePicker />
+                    <DatePicker_L />
                   </Form.Item>
                 </Col>
                 <Col span={12}>
@@ -218,7 +218,7 @@ export class ModalForm extends Component {
                     labelCol={{ span: 8 }}
                     wrapperCol={{ span: 12 }}
                   >
-                    <DatePicker />
+                    <DatePicker_L />
                   </Form.Item>
                 </Col>
               </Row>

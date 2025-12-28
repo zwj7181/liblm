@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { get } from 'lodash';
-import InputWithLabel from '../../GeneralComponents/InputWithLabel';
+import GeneralComponents_InputWithLabel from '../../GeneralComponents/InputWithLabel';
 import { safe_json_parse } from '@lm_fe/utils';
 interface IProps {
   labelBefore?: string;
@@ -31,5 +31,5 @@ export default (props: IProps) => {
     onChange && onChange(value);
   };
 
-  return <InputWithLabel onChange={handleChange} value={data} {...specialConfig} />;
+  return <GeneralComponents_InputWithLabel onChange={handleChange} value={data} {...specialConfig} />;
 };

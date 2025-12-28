@@ -3,34 +3,28 @@ import { request, safe_json_parse } from '@lm_fe/utils';
 import { get } from 'lodash';
 export default {
   /** 获取表单配置 */
-  getSurveyFormConfig: async (isProduction: boolean) => {
+  getSurveyFormConfig: async () => {
     const formSurvey =
       get(
-        isProduction
-          ? get(safe_json_parse(sessionStorage.getItem('formDescriptionsJson')), 'prenatal-examination-survey')
-          : (await request.get(`/api/form-descriptions?moduleName=prenatal-examination-survey`)).data,
+        (await request.get(`/api/form-descriptions?moduleName=prenatal-examination-survey`)).data,
         0,
       ) || {};
     return formSurvey;
   },
 
-  getFurtherFormConfig: async (isProduction: boolean) => {
+  getFurtherFormConfig: async () => {
     const formFurther =
       get(
-        isProduction
-          ? get(safe_json_parse(sessionStorage.getItem('formDescriptionsJson')), 'prenatal-examination-further')
-          : (await request.get(`/api/form-descriptions?moduleName=prenatal-examination-further`)).data,
+        (await request.get(`/api/form-descriptions?moduleName=prenatal-examination-further`)).data,
         0,
       ) || {};
     return formFurther;
   },
 
-  getUltrasoundFormConfig: async (isProduction: boolean) => {
+  getUltrasoundFormConfig: async () => {
     const formUltrasound =
       get(
-        isProduction
-          ? get(safe_json_parse(sessionStorage.getItem('formDescriptionsJson')), 'prenatal-examination-further-ultrasound')
-          : await request.get(`/api/form-descriptions?moduleName=prenatal-examination-further-ultrasound`),
+        (await request.get(`/api/form-descriptions?moduleName=prenatal-examination-further-ultrasound`)).data,
         0,
       ) || {};
     return formUltrasound;

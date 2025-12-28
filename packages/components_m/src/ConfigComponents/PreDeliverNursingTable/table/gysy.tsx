@@ -110,7 +110,7 @@ export function getTableColumn_gysy(fetal: number) {
       width: APP_CONFIG.CELL_WIDTH_TINY,
       inputType: 'MyAutoComplete',
       inputProps: {
-        optionKey: '意识s',
+        uniqueKey: '意识s',
       },
     },
     // {
@@ -258,7 +258,7 @@ export function getTableColumn_gysy(fetal: number) {
       //     align: 'center',
       //     width: APP_CONFIG.CELL_WIDTH_TINY,
       //     inputType: 'MyAutoComplete',
-      //     inputProps: { optionKey: '入量s' },
+      //     inputProps: { uniqueKey: '入量s' },
       //   },
       //   {
       //     title: 'ml(入量)',
@@ -286,7 +286,7 @@ export function getTableColumn_gysy(fetal: number) {
       //   {
       //     title: '内容(出量)',
       //     inputType: 'MyAutoComplete',
-      //     inputProps: { optionKey: '出量s' },
+      //     inputProps: { uniqueKey: '出量s' },
       //     dataIndex: 'outputType',
       //     editable: true,
       //     align: 'center',

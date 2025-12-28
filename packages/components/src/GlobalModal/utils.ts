@@ -3,7 +3,7 @@ import { isNil } from "lodash";
 
 export interface IGlobalModalProps<T> extends Omit<ModalProps, 'onOk' | 'onClose'> {
     modal_data: T,
-
+    props?: any,
     /**
      *  避免使用 onOk, 请使用 onClose 替代。当前栈弹出时, 内部会调用 onClose, onOk 或者 onCancel。
      * 
@@ -90,7 +90,12 @@ export class GlobalModal<T extends { [x: string]: (...args: any) => any, }> {
     }
     pop(status?: boolean, e?: React.MouseEvent<HTMLElement>) {
         const last = this.stack.pop()
-        const config = last?.data
+        this.clear_one(last, status, e)
+
+        this.setStack([...this.stack])
+    }
+    private clear_one(item?: StackItem, status?: boolean, e?: React.MouseEvent<HTMLElement>) {
+        const config = item?.data
 
         if (config) {
             if (status) {
@@ -100,13 +105,10 @@ export class GlobalModal<T extends { [x: string]: (...args: any) => any, }> {
             }
             config.onClose?.(status)
         }
-        // last?.data?.onClose?.call(null, status)
 
-
-        this.setStack([...this.stack])
     }
     destroyAll() {
-
+        this.stack.forEach(_ => this.clear_one(_, false, undefined))
         this.setStack([])
     }
     confirmOnce({ storeKey, cb, ...others }: ModalFuncProps & { storeKey: string, cb(): void }) {

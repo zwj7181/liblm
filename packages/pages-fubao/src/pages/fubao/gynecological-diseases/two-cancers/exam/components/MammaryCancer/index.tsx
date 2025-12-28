@@ -78,7 +78,7 @@ export default function MammaryCancer(props: any) {
           }
         });
       } else {
-   
+
 
         set_siderPanels(breastCancerRecord)
         set_activeItem(activeItem && !isAdd ? activeItem : breastCancerRecord[breastCancerRecord.length - 1])
@@ -98,27 +98,27 @@ export default function MammaryCancer(props: any) {
         const id = get(item, 'breastCancerScreeningId');
         const res = (await request.delete(`/api/two/cancer/screening/deleteBreastCancerScreening/${id}`)).data;
         if (get(res, 'code') === 1) {
-          
+
         } else {
-          
+
         }
         await handleInit();
       } else if (code === 'Mammography') {
         const id = get(item, 'breastCancerXRayId');
         const res = (await request.delete(`/api/two/cancer/screening/deleteBreastCancerXRay/${id}`)).data;
         if (get(res, 'code') === 1) {
-          
+
         } else {
-          
+
         }
         await handleInit();
       } else {
         const id = get(item, 'breastCancerBiopsyId');
         const res = (await request.delete(`/api/two/cancer/screening/deleteBreastCancerBiopsy/${id}`)).data;
         if (get(res, 'code') === 1) {
-          
+
         } else {
-          
+
         }
         await handleInit();
       }
@@ -133,17 +133,18 @@ export default function MammaryCancer(props: any) {
 
       if (clickTempKey === 'Screening') {
         if (get(listData, 'breastCancerScreeningId') === -1) {
-          message.warn('请先保存上一次筛查！');
+          message.warning('请先保存上一次筛查！');
           return;
         }
-        newSiderPanels.push({
+        let newImte = {
           breastCancerScreeningId: -1,
-        });
+        }
+        newSiderPanels.push(newImte);
 
         set_siderPanels(newSiderPanels)
         set_activeTemplate(get(nurseType, 'key'))
         set_visible(false)
-        set_activeItem(newSiderPanels)
+        set_activeItem(newImte)
         set_activeType(clickTempKey)
 
       } else if (clickTempKey === 'Mammography') {
@@ -347,12 +348,12 @@ export default function MammaryCancer(props: any) {
 
   return (
     <Row style={{ height: '100%' }}>
-      <Col style={{ height: '100%', width: 290, overflow: 'scroll', backgroundColor: '#fff' }}>
+      <Col style={{ height: '100%', width: 290, overflow: 'auto', backgroundColor: '#fff' }}>
         {renderSider()}
       </Col>
-      <Col style={{ height: '100%', width: 'calc(100% - 290px)', overflow: 'scroll' }}>{renderContent()}</Col>
+      <Col style={{ height: '100%', width: 'calc(100% - 290px)', overflow: 'auto' }}>{renderContent()}</Col>
       <Modal
-        visible={visible}
+        open={visible}
         onCancel={() => {
           set_visible(false)
         }}

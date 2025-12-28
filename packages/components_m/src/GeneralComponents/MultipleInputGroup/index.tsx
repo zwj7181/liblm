@@ -1,8 +1,10 @@
 import React from 'react';
 import { get } from 'lodash';
-import { Input, InputNumber, Form, Select, AutoComplete } from 'antd';
+import { Input, InputNumber, Form, AutoComplete } from 'antd';
 import DatePicker from '../../GeneralComponents/DatePicker';
 import styles from './index.less';
+import { LazyAntd } from '@lm_fe/components';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
 const INPUTTYPE = {
   input: Input,
   input_number: InputNumber,

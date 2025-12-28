@@ -34,7 +34,7 @@ export const tableColumns_default = [
     width: APP_CONFIG.CELL_WIDTH_MIDDLE,
     inputType: 'MyAutoComplete',
     inputProps: {
-      optionKey: '哭声s',
+      uniqueKey: '哭声s',
     },
   },
   {
@@ -59,7 +59,7 @@ export const tableColumns_default = [
     width: APP_CONFIG.CELL_WIDTH_MIDDLE,
     inputType: 'MyAutoComplete',
     inputProps: {
-      optionKey: '反应s',
+      uniqueKey: '反应s',
     },
   },
   {
@@ -76,7 +76,7 @@ export const tableColumns_default = [
     align: 'center',
     inputType: 'MyAutoComplete',
     inputProps: {
-      optionKey: '脐带s',
+      uniqueKey: '脐带s',
     },
     width: APP_CONFIG.CELL_WIDTH_MIDDLE,
   },
@@ -88,7 +88,7 @@ export const tableColumns_default = [
     width: APP_CONFIG.CELL_WIDTH_MIDDLE,
     inputType: 'MyAutoComplete',
     inputProps: {
-      optionKey: '小便s',
+      uniqueKey: '小便s',
     },
   },
   {

@@ -1,10 +1,8 @@
-import { ICommonOption, getPresetOptions, getSimpleOptions, mchcLogger, mchcUtils } from '@lm_fe/env';
-import { IMchc_FormDescriptions_Field_Nullable, TIdTypeCompatible } from '@lm_fe/service';
+import { ICommonOption, getDualModeOptions, getPresetOptions, mchcUtils } from '@lm_fe/env';
 import { safe_json_parse_arr } from '@lm_fe/utils';
-import { isNil, isObject } from 'lodash';
+import { isNil, isString } from 'lodash';
+
 import { ICheckboxWithInputOption, ICheckboxWithInputProps } from './types';
-import { isObj } from 'src/MyForm/utils/func';
-import { get_form_item_name_raw } from 'src/utils';
 export function parseValue(value?: string | number | ICommonOption[], marshal?: number, type?: 'single' | 'multiple'): ICommonOption[] {
   if (isNil(value))
     return []
@@ -18,10 +16,15 @@ export function parseValue(value?: string | number | ICommonOption[], marshal?: 
   } else {
     if (type === 'multiple') {
       return isString
-        ? (value?.split?.(',')?.filter?.(_ => !isNil(_))?.map?.(value => {
-          // const nValue = isNaN(Number(value)) ? value : Number(value)
-          return ({ value: value })
-        }) ?? [])
+        ? (
+          value?.split?.(',')
+            ?.filter?.(_ => !isNil(_))
+            ?.map?.(value => {
+              // const nValue = isNaN(Number(value)) ? value : Number(value)
+              return ({ value: value })
+            })
+          ?? []
+        )
         : []
     } else {
 
@@ -34,17 +37,28 @@ export function parseValue(value?: string | number | ICommonOption[], marshal?: 
 }
 
 
+function parse_MC_string_options(props: ICheckboxWithInputProps) {
+  if (!props) return []
+  const _options = props.options
+  if (!isString(_options)) return _options
+  const sp = props.sp ?? []
+
+  const input_type = props.config?.inputType ?? 'MC'
+  const multiple = props.type === 'multiple'
+  const marshal = getMarshal(props, props.value)
+
+  const options = getDualModeOptions(_options, { sp, useString: multiple && !marshal, start: props.startIndex })
+
+  return input_type === 'MA' ? options[1] : options[0]
+
+}
 export function parse_MC_option(props: ICheckboxWithInputProps) {
   if (!props) return []
-  const multiple = props.type === 'multiple'
   const marshal = props.marshal ?? 1
-  const _options = props.options
-  const optionKey: any = props.optionKey
   const uniqueKey: any = props.uniqueKey
-  const preOptions = optionKey ? getPresetOptions(optionKey, marshal === 0) : null
+  const preOptions = uniqueKey ? getPresetOptions(uniqueKey, marshal === 0) : null
   const dicOptions = uniqueKey ? mchcUtils.getDictionariesEnumerations(uniqueKey) : null
-  const sp = props.sp ?? []
-  const options = preOptions ?? dicOptions ?? (typeof _options === 'string' ? getSimpleOptions(_options, { sp, useString: multiple && !marshal, start: props.startIndex }) : _options) ?? []
+  const options = preOptions ?? dicOptions ?? parse_MC_string_options(props) ?? []
   return options as ICheckboxWithInputOption[]
 }
 export function displayValue(_options: ICheckboxWithInputOption[], value: ICommonOption[]) {
@@ -52,14 +66,16 @@ export function displayValue(_options: ICheckboxWithInputOption[], value: ICommo
   return _value.map(_ => _.label).join(',')
 
 }
-export function getMarshal(_marshal = 1, value: any) {
+export function getMarshal(props: ICheckboxWithInputProps, value: any) {
+  const _marshal = props.marshal ?? 1
   if (typeof _marshal === 'number')
     return _marshal
   const marshal = typeof value !== 'number' && (_marshal ?? true)
   return Number(marshal)
 }
 export function parse_MC_value(props: ICheckboxWithInputProps, changedValue: ICommonOption[]) {
-  const marshal = getMarshal(props.marshal, changedValue)
+  if (props.config?.inputType === 'MA') return changedValue?.[0]?.value;
+  const marshal = getMarshal(props, changedValue)
   const type = props.type
   if (!changedValue.length)
     return null
@@ -73,24 +89,3 @@ export function parse_MC_value(props: ICheckboxWithInputProps, changedValue: ICo
 }
 
 
-export function get_check_invert_values(configs: IMchc_FormDescriptions_Field_Nullable[]) {
-  if (!Array.isArray(configs)) return {}
-  const children = configs.filter(_ => _?.inputType === 'MC' || Array.isArray(_?.children))
-  mchcLogger.log('CheckAndCancelButton 000', { children, configs })
-
-  const check_invert_values = children.reduce((a, item, idx) => {
-    const name = get_form_item_name_raw(item)
-    const props = item?.inputProps! as any
-    const options = parse_MC_option(props)
-    const firstOption = options[0]
-    const cArr = item?.children
-    let cObj = {}
-    if (Array.isArray(cArr)) {
-      cObj = get_check_invert_values(cArr)
-      return { ...a, ...cObj }
-    } else {
-      return { ...a, [`${name}`]: [parse_MC_value(props as any, [firstOption]), null], }
-    }
-  }, {} as { [x: string]: any[] })
-  return check_invert_values
-}

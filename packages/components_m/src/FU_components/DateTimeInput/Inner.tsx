@@ -1,17 +1,20 @@
 import { mchcEnv } from '@lm_fe/env';
 import { getMomentObj } from '@lm_fe/utils';
-import { Input, InputProps, message } from 'antd';
+import { Input, InputProps, message, Space } from 'antd';
 import React, { FocusEvent, useEffect, useRef, useState } from 'react';
-import { MyInput } from '../MyInput';
 import { TCommonComponent } from '../types';
 import styles from './index.module.less';
-const DateTimeInput: TCommonComponent<{ size?: any, showSecond?: boolean }, string> = function DateTimeInput(props) {
-  const { onChange, value, size, disabled, showSecond = !mchcEnv.is('广三') } = props;
+import { fuck_focus, MyInput } from '@lm_fe/components';
+const DateTimeInput: TCommonComponent<{ size?: any, showSecond?: boolean, autoFocus?: boolean, onBlur?: any }, string> = function DateTimeInput(props) {
+  const { onChange, value, size, disabled, showSecond = !mchcEnv.is('广三'), onBlur, autoFocus } = props;
+
+  const { parent_blur, parent_focus, child_blur, child_focus } = fuck_focus(props)
+
+
   const [_value, set_value] = useState<number>()
   const [height, setHeight] = useState<number>()
   const [weight, setWeight] = useState<number>()
   const [visible, setVisible] = useState(false)
-
 
   const [年, set_年] = useState<string>()
   const [月, set_月] = useState<string>()
@@ -20,12 +23,12 @@ const DateTimeInput: TCommonComponent<{ size?: any, showSecond?: boolean }, stri
   const [分, set_分] = useState<string>()
   const [秒, set_秒] = useState<string>()
 
-  const 年Ref = useRef<Input>(null)
-  const 月Ref = useRef<Input>(null)
-  const 日Ref = useRef<Input>(null)
-  const 时Ref = useRef<Input>(null)
-  const 分Ref = useRef<Input>(null)
-  const 秒Ref = useRef<Input>(null)
+  const 年Ref = useRef<typeof Input>(null)
+  const 月Ref = useRef<typeof Input>(null)
+  const 日Ref = useRef<typeof Input>(null)
+  const 时Ref = useRef<typeof Input>(null)
+  const 分Ref = useRef<typeof Input>(null)
+  const 秒Ref = useRef<typeof Input>(null)
 
   const [年Warning, set_年Warning] = useState<boolean>()
   const [月Warning, set_月Warning] = useState<boolean>()
@@ -47,10 +50,9 @@ const DateTimeInput: TCommonComponent<{ size?: any, showSecond?: boolean }, stri
     const str = value?.toString() ?? ''
     return str.length > 1 ? str.replace(/^0*/g, '') : str.padStart(2, '0')
   }
-  function getValue(type: keyof typeof myMap, defaultValue = '00') {
+  function getValue(type: keyof typeof myMap, default_v = '00') {
     const v = formatNumberToStr(myMap[type].value)
-    // return v === '00' ? (defaultValue ?? v) : v
-    return v || defaultValue
+    return v || default_v
   }
   useEffect(() => {
     const safeV = value ?? ''
@@ -114,7 +116,7 @@ const DateTimeInput: TCommonComponent<{ size?: any, showSecond?: boolean }, stri
     // type: 'number',
     "aria-controls": 'false',
     disabled,
-    style: { padding: 0, width: 30, },
+    style: { padding: 0, width: 26, textAlign: 'center' },
     // formatter(value) {
     //   if (isNil(value) || isEmpty(value)) return ''
     //   return formatNumberToStr(value)
@@ -135,12 +137,12 @@ const DateTimeInput: TCommonComponent<{ size?: any, showSecond?: boolean }, stri
 
     } else {
       e?.preventDefault?.()
-      message.warn('错误的时间格式')
+      message.warning('错误的时间格式')
     }
     // console.log('format', format)
   }
 
-  function FuckInput({ type, style }: { type: keyof typeof myMap } & InputProps) {
+  function FuckInput({ type, style, autoFocus }: { type: keyof typeof myMap } & InputProps) {
     const ctx = myMap[type]
     return <MyInput {...commonProps} style={{ ...commonProps.style, ...style, background: ctx.warning ? 'orange' : 'unset' }}
       min={1980}
@@ -148,21 +150,25 @@ const DateTimeInput: TCommonComponent<{ size?: any, showSecond?: boolean }, stri
       placeholder={type}
       value={myMap[type].value}
       ref={myMap[type].ref}
+      autoFocus={autoFocus}
       onChange={handleChange(type)}
-      onFocus={onFocus}
-    // onPressEnter={onPressEnter}
-    // onBlur={onBlur(type)}
+      onFocus={e => {
+        onFocus(e)
+        child_focus()
+      }}
+      // onPressEnter={onPressEnter}
+      onBlur={e => child_blur()}
     />
   }
   return (
-    <div className={styles['date-time-input']} style={{ display: 'inline-block' }}>
-      <Input.Group size="small" compact style={{ display: 'inline-block', width: 'auto', marginRight: 6 }}>
-        {FuckInput({ type: "年", style: { padding: 0, width: 44 } })}
+    <div onBlur={e => parent_blur(e)} onFocus={e => parent_focus()} className={styles['date-time-input']} style={{ display: 'inline-block' }}>
+      <Space.Compact size="small" style={{ display: 'inline-block', width: 'auto', marginRight: 6, }}>
+        {FuckInput({ type: "年", style: { padding: 0, width: 40 }, autoFocus })}
         {FuckInput({ type: "月" })}
         {FuckInput({ type: "日" })}
-      </Input.Group>
+      </Space.Compact>
 
-      <Input.Group size="small" compact style={{ display: 'inline-block', width: 'auto', }}>
+      <Space.Compact size="small" style={{ display: 'inline-block', width: 'auto', }}>
 
 
         {FuckInput({ type: "时" })}
@@ -179,7 +185,7 @@ const DateTimeInput: TCommonComponent<{ size?: any, showSecond?: boolean }, stri
 
 
 
-      </Input.Group>
+      </Space.Compact>
     </div>
   );
 };

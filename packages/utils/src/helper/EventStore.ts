@@ -1,10 +1,10 @@
-import { EventEmitter } from './Event'
+import { AnyObject, EventEmitter } from '@noah-libjs/utils'
 import store from 'store'
 
 
-export type TEventBus<T extends { [x: string]: any }> = { bus: EventBus<T> }
-export type TEventStore<T extends { [x: string]: any }> = TEventBus<T> & T
-export class EventBus<T extends { [x: string]: any }> extends EventEmitter<{ change: any }> {
+export type TEventBus<T extends AnyObject> = { bus: EventBus<T> }
+export type TEventStore<T extends AnyObject> = TEventBus<T> & T
+export class EventBus<T extends AnyObject> extends EventEmitter<{ change: any }> {
 
     private _data: T
     public get data(): T {
@@ -58,7 +58,7 @@ export class EventBus<T extends { [x: string]: any }> extends EventEmitter<{ cha
 
 }
 
-export function makeEventStore<T extends { [x: string]: any }>(key?: string, data?: T,): TEventStore<T> {
+export function makeEventStore<T extends AnyObject>(key?: string, data?: T,): TEventStore<T> {
     const bus = new EventBus(key, data)
     return Object.assign(bus.data, { bus })
 }

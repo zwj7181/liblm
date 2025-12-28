@@ -16,7 +16,7 @@ export function historyPush(url: string, props?: any) {
     if (h && h.push) {
         h.push(_url)
     } else {
-        message.warn('history.push 不存在！')
+        message.warning('history.push 不存在！')
         location.pathname = _url
     }
     if (sp) {

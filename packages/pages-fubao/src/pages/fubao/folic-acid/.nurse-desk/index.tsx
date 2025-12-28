@@ -9,9 +9,10 @@ import { SLocal_History, SMchc_FormDescriptions } from '@lm_fe/service';
 import { request } from '@lm_fe/utils';
 import { message } from 'antd';
 import { get, isEmpty, map, set } from 'lodash';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import Form from './components/Form';
 import { form_config } from './form_config'
+import { mchcEnv } from '@lm_fe/env';
 class FolicAcidNurse extends BaseEditPanel {
   static defaultProps = {
     baseUrl: '/api/addFolateManagementFile',
@@ -52,7 +53,7 @@ class FolicAcidNurse extends BaseEditPanel {
       }
     }
 
-    if (!get(data, 'filingDate')) set(data, 'filingDate', moment(new Date()));
+    if (!get(data, 'filingDate')) set(data, 'filingDate', dayjs(new Date()));
     this.setState({ formDescriptions: form_config, formDescriptionsWithoutSection, data, formKey });
   };
 
@@ -76,7 +77,7 @@ class FolicAcidNurse extends BaseEditPanel {
     const folateDistributionRecords = get(params, 'folateDistributionRecords');
     map(folateDistributionRecords, (item) => {
       if (!get(item, 'issueDate')) {
-        set(item, 'issueDate', formatTimeToStandard(moment(new Date()), 'YYYY-MM-DD'));
+        set(item, 'issueDate', formatTimeToStandard(dayjs(new Date()), 'YYYY-MM-DD'));
       }
       if (!get(item, 'registerPerson')) {
         set(item, 'registerPerson', get(user, 'basicInfo.firstName'));
@@ -90,11 +91,11 @@ class FolicAcidNurse extends BaseEditPanel {
       ? (await request.put('/api/updateFolateManagementFile', params)).data
       : (await request.post(baseUrl, params)).data
     if (get(res, 'code') === 1) {
-      message.success(get(res, 'msg'));
+      mchcEnv.success(get(res, 'msg'));
 
       SLocal_History.closeAndPush('/fubao/folic-acid/file-management/list')
     } else {
-      message.warning(get(res, 'msg'));
+      mchcEnv.warning(get(res, 'msg'));
     }
   };
 }

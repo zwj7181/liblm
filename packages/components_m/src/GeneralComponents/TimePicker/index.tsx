@@ -1,6 +1,6 @@
+import { TimePicker_L } from '@lm_fe/components';
+import dayjs, { Dayjs } from 'dayjs';
 import React from 'react';
-import moment from 'moment';
-import { TimePicker } from 'antd';
 export default function CusTimePicker({
   value = undefined,
   onChange,
@@ -9,29 +9,29 @@ export default function CusTimePicker({
   getPopupContainer = () => document.body,
   ...rest
 }: any) {
-  const transValue = (date: moment.MomentInput) => {
+  const transValue = (date: Dayjs) => {
     let result = undefined;
     if (typeof date === 'string') {
-      result = moment(date);
+      result = dayjs(date);
       if (!result.isValid()) {
-        result = moment(`2000 ${date}`)
+        result = dayjs(`2000 ${date}`)
       }
     }
     return result;
   };
 
-  const handleChange = (date?: moment.Moment, dateString?: any) => {
+  const handleChange = (date?: Dayjs, dateString?: any) => {
     let result = date?.format();
     if (valueType && date) {
-      result = moment(date).format(valueType);
+      result = dayjs(date).format(valueType);
     }
     if (format && date) {
-      result = moment(date).format(format);
+      result = dayjs(date).format(format);
     }
     onChange?.(result);
   };
 
   return (
-    <TimePicker getPopupContainer={getPopupContainer} value={transValue(value)} onChange={handleChange} format={format} {...rest} />
+    <TimePicker_L getPopupContainer={getPopupContainer} value={transValue(value)} onChange={handleChange} format={format} {...rest} />
   );
 }

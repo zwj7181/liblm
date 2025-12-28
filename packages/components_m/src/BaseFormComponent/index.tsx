@@ -1,72 +1,72 @@
-import React, { lazy, useCallback } from 'react';
+import { MonthPicker_L, pack_components, Select_L, TimePicker_L } from '@lm_fe/components';
+import { mchcLogger } from '@lm_fe/env';
+import { AutoComplete, Radio } from 'antd';
 import { get } from 'lodash';
-import { Input, Checkbox, InputNumber, TimePicker, DatePicker as AntDatePicker, Radio, AutoComplete, Select } from 'antd';
-import { CheckboxWithInput_lm as CheckboxWithInput } from '../ConfigComponents/CheckboxWithInput';
-import { TimePickerAutoaccept } from '../BusinessComponents/TimePickerAutoaccept';
-import InputWithLabel from '../GeneralComponents/InputWithLabel'
-import InputWithRange from '../GeneralComponents/InputWithRange'
-import PressureInput from '../BusinessComponents/PressureInput'
-import NormalSelect from '../selects/NormalSelect'
-import SelectWithNo from '../selects/SelectWithNo'
-import SelectTagWithOptions from '../selects/SelectTagWithOptions'
-import MyTreeSelect from '../MyForm/components/MyTreeSelect'
-import SelectWithOptionsOrInput from '../selects/SelectWithOptionsOrInput'
-import DataSelectWithOptionsOrInput from '../selects/DataSelectWithOptionsOrInput'
-import PatientAutoComplete from '../selects/PatientAutoComplete'
-import DictionarySelect from '../GeneralComponents/DictionarySelect'
-import DictionarySelectInTable from '../ConfigComponents/DictionarySelectInTable'
-import BloodPressure from '../BusinessComponents/BloodPressure'
-import CustomTreeSelect from '../GeneralComponents/CustomTreeSelect'
-import PureCheckbox from '../ConfigComponents/PureCheckbox'
-import MyCheckbox from '../GeneralComponents/CheckboxWithInput_gold'
-import SelectWithOptionsFromApi from '../selects/SelectWithOptionsFromApi'
-import DatePicker from '../GeneralComponents/DatePicker'
-import MultipleInputWithLabel from '../ConfigComponents/MultipleInputWithLabel'
-import { MyPressure } from '../FU_components/PressureInput';
-import MyInputNumber from '../GeneralComponents/InputNumber';
-import { MySelect, DateTimeInput, ArrayPanel } from '../FU_components';
-import { MyInput } from '../FU_components/MyInput';
-import { MyAutoComplete, HourMinuteInput, CheckboxWithValue, ArrayInput, TakeInVolumn, TemplateTextarea, TakeOutVolumn, MyEditTable } from '../FU_components'
+import React, { useCallback } from 'react';
+import { TakeInVolumn } from 'src/FU_components/TakeInVolumn';
+import { TakeOutVolumn } from 'src/FU_components/TakeOutVolumn/index';
 import { InterceptComponent } from 'src/utils/InterceptComponent';
+import BloodPressure from '../BusinessComponents/BloodPressure';
+import PressureInput from '../BusinessComponents/PressureInput';
+import { TimePickerAutoaccept } from '../BusinessComponents/TimePickerAutoaccept';
+import { CheckboxWithInput_lm as CheckboxWithInput } from '../ConfigComponents/CheckboxWithInput';
+import DictionarySelectInTable from '../ConfigComponents/DictionarySelectInTable';
+import MultipleInputWithLabel from '../ConfigComponents/MultipleInputWithLabel';
+import PureCheckbox from '../ConfigComponents/PureCheckbox';
+import { ArrayPanel, CheckboxWithValue, FormTabs, HourMinuteInput, MyEditTable, TemplateTextarea } from '../FU_components';
+import { DateTimeInput } from '../FU_components/DateTimeInput';
+// import { MySelect } from '../FU_components/MySelect';
+import { MyPressure } from '../FU_components/PressureInput';
+import CustomTreeSelect from '../GeneralComponents/CustomTreeSelect';
+// import DatePicker from '../GeneralComponents/DatePicker';
+import DictionarySelect from '../GeneralComponents/DictionarySelect';
+import GeneralComponents_InputWithLabel from '../GeneralComponents/InputWithLabel';
+import InputWithRange from '../GeneralComponents/InputWithRange';
+import MyTreeSelect from '../MyForm/components/MyTreeSelect';
+import DataSelectWithOptionsOrInput from '../selects/DataSelectWithOptionsOrInput';
+import NormalSelect from '../selects/NormalSelect';
+import PatientAutoComplete from '../selects/PatientAutoComplete';
+import SelectTagWithOptions from '../selects/SelectTagWithOptions';
+import SelectWithNo from '../selects/SelectWithNo';
+import SelectWithOptionsFromApi from '../selects/SelectWithOptionsFromApi';
+import SelectWithOptionsOrInput from '../selects/SelectWithOptionsOrInput';
+
 const Radio_Group = Radio.Group
-const AntDatePicker_MonthPicker = AntDatePicker.MonthPicker
 export const componentMap = {
-  'input': MyInput,
-  'MyInput': MyInput,
-  'Input': MyInput,
+  FormTabs,
   'text_area': TemplateTextarea,
   TextArea: TemplateTextarea,
-  InputNumber: MyInputNumber,
+  // InputNumber: MyInputNumber,
   TakeInVolumn,
   DateTimeInput,
   TakeOutVolumn,
   'patient_auto_complete': PatientAutoComplete,
-  'input_with_label': InputWithLabel,
+  'input_with_label': GeneralComponents_InputWithLabel,
   'input_with_range': InputWithRange,
-  'month_picker': AntDatePicker_MonthPicker,
-  'single_date_picker': DatePicker,
-  DatePicker,
-  MyDatePicker: DatePicker,
-  'single_time_picker': TimePicker,
+  'month_picker': MonthPicker_L,
+  // 'single_date_picker': DatePicker,
+  // DatePicker,
+  // MyDatePicker: DatePicker,
+  'single_time_picker': TimePicker_L,
   'date_picker_auto_accept': TimePickerAutoaccept,
-  'checkbox': Checkbox,
+  // 'checkbox': Checkbox,
   'CheckboxWithValue': CheckboxWithValue,
-  MyCheckbox,
-  MC: MyCheckbox,
+  // MyCheckbox,
+  // MC: MyCheckbox,
   'dictionary_select': DictionarySelect,
   'pure_checkbox': PureCheckbox,
   'dictionary_select_in_table': DictionarySelectInTable,
   'radio_group': Radio_Group,
-  'select': SelectTagWithOptions,
+  // 'select': SelectTagWithOptions,
   'select_tag_with_options': SelectTagWithOptions,
   'normal_select': NormalSelect,
   'tree_select': MyTreeSelect,
   'tree_select_v2': CustomTreeSelect,
-  'input_number': MyInputNumber,
+  // 'input_number': MyInputNumber,
   'select_with_no': SelectWithNo,
-  'select_with_options': Select,
-  'MA': MyAutoComplete,
-  'MyAutoComplete': MyAutoComplete,
+  'select_with_options': Select_L,
+  // 'MA': MyAutoComplete,
+  // 'MyAutoComplete': MyAutoComplete,
   'select_with_options_or_input': SelectWithOptionsOrInput,
   'data_select_with_options_or_input': DataSelectWithOptionsOrInput,
   'select_with_options_from_api': SelectWithOptionsFromApi,
@@ -80,22 +80,32 @@ export const componentMap = {
   TemplateTextarea,
   MyTemplateTextarea: TemplateTextarea,
   'multiple_input_with_label': MultipleInputWithLabel,
-  MySelect,
-  Select: MySelect,
-  MS: MySelect,
-  ArrayInput,
+  // MySelect,
+  // Select: MySelect,
+  // MS: MySelect,
+  // ArrayInput,
   ArrayPanel,
-  MyEditTable
+  MyEditTable,
+  ...pack_components,
+
 
 }
+
 export default function BaseFormComponent(props: any) {
-  const { config } = props
+  const { config, display, value } = props
   const type: 'Input' = get(props, 'inputType') || get(props, 'config.inputType');
   const inputProps = props.inputProps ?? {}
   const C = useCallback(
-    componentMap[type] ?? (() => 'Unkown Component!'),
+    componentMap[type] ?? (() => {
+      mchcLogger.warn('Unkown Component', { componentMap, type })
+      return `Unkown Component: ${type}!`
+    }),
     [type],
   )
+  if (display) {
+    const DisplayFC: any = get(C, 'DisplayFC')
+    return DisplayFC ? <InterceptComponent config={config} C={DisplayFC} {...props} {...inputProps} /> : (value || '')
+  }
   return <InterceptComponent config={config} C={C} {...props} {...inputProps} />
 
 };

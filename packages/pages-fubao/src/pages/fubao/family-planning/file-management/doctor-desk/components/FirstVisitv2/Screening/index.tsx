@@ -4,7 +4,7 @@ import { valueToApi, valueToForm } from '../adapter';
 import { BaseEditPanel, formDescriptionsWithoutSectionApi } from '@lm_fe/components_m';
 import { get, isEqual, set, isEmpty } from 'lodash';
 import { message } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { SMchc_FormDescriptions } from '@lm_fe/service';
 import { fubaoRequest as request } from '@lm_fe/utils';
 import { form_config } from './form_config';
@@ -91,7 +91,7 @@ export default class AdmissionPanel extends BaseEditPanel {
     }
 
     if (!get(data, 'earlyPregnancyCheckDiagnosisAndTreatment.registrationDate'))
-      set(data, 'earlyPregnancyCheckDiagnosisAndTreatment.registrationDate', moment(new Date()));
+      set(data, 'earlyPregnancyCheckDiagnosisAndTreatment.registrationDate', dayjs(new Date()));
     if (!get(data, 'earlyPregnancyCheckDiagnosisAndTreatment.diagnoseDoctor'))
       set(data, 'earlyPregnancyCheckDiagnosisAndTreatment.diagnoseDoctor', get(basicInfo, 'firstName'));
 

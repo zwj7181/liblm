@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { cloneDeep, isString, get } from 'lodash';
-import { Select } from 'antd';
 import { otherOptions } from '@lm_fe/env';
+import { LazyAntd } from '@lm_fe/components';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
 interface DefaultSelectProps {
   onChange: Function;
   value: any;
@@ -50,7 +51,7 @@ class InputSelect extends Component<DefaultSelectProps> {
       multiple = false,
       tags = false,
       style = {},
-      dropdownMatchSelectWidth = true,
+      popupMatchSelectWidth = true,
       uniqueKey,
       dictionaries,
     } = this.props;
@@ -83,7 +84,7 @@ class InputSelect extends Component<DefaultSelectProps> {
         allowClear
         showSearch
         mode={selectMode}
-        dropdownMatchSelectWidth={dropdownMatchSelectWidth}
+        popupMatchSelectWidth={popupMatchSelectWidth}
         onChange={this.handleChange}
         placeholder={`请选择或者输入`}
       >

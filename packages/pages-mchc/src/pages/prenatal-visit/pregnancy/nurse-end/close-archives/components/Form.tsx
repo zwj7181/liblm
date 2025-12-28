@@ -1,12 +1,11 @@
-import React from 'react';
-import { Button, FormInstance, Popconfirm, Space, message } from 'antd';
-import { get, debounce } from 'lodash';
-import store from 'store';
-import { SaveOutlined, PrinterOutlined } from '@ant-design/icons';
-import moment from 'moment';
-import { BaseEditPanelForm, getGestationalWeekBySureEdd, mchcModal } from '@lm_fe/components_m'
-import { request } from '@lm_fe/utils';
+import { BaseEditPanelForm, getGestationalWeekBySureEdd, MyIcon } from '@lm_fe/components_m';
+import { mchcModal__ } from '@lm_fe/pages';
 import { SMchc_Common } from '@lm_fe/service';
+import { Button, FormInstance, message, Popconfirm, Space } from 'antd';
+import dayjs from 'dayjs';
+import { debounce, get } from 'lodash';
+import React from 'react';
+import store from 'store';
 export default class ClosingArchivesForm extends BaseEditPanelForm {
   state = {
     recordstate: '',
@@ -46,10 +45,10 @@ export default class ClosingArchivesForm extends BaseEditPanelForm {
         recordstate: get(changedValues, 'recordstate'),
       });
     }
-    
+
     if (get(changedValues, 'deliveryDate')) {
       form?.setFieldsValue({
-        deliveryGestationalWeek: getGestationalWeekBySureEdd(moment(changedValues.deliveryDate).format('YYYY-MM-DD')),
+        deliveryGestationalWeek: getGestationalWeekBySureEdd(dayjs(changedValues.deliveryDate).format('YYYY-MM-DD')),
       });
     }
   };
@@ -60,7 +59,7 @@ export default class ClosingArchivesForm extends BaseEditPanelForm {
     this.setState({
       printModalVisible: true,
     });
-    mchcModal.open('print_modal', {
+    mchcModal__.open('print_modal', {
       modal_data: {
         requestData: {
           url: printUrl,
@@ -91,7 +90,7 @@ export default class ClosingArchivesForm extends BaseEditPanelForm {
       <Button
         type="primary"
         size="large"
-        icon={<PrinterOutlined />}
+        icon={<MyIcon value='PrinterOutlined' />}
         disabled={!printId}
         onClick={() => {
           this.handlePrint()
@@ -113,7 +112,7 @@ export default class ClosingArchivesForm extends BaseEditPanelForm {
         okText="确定"
         cancelText="取消"
       >
-        <Button size="large" type="primary" icon={<SaveOutlined />}>
+        <Button size="large" type="primary" icon={<MyIcon value='SaveOutlined' />}>
           保存
         </Button>
       </Popconfirm>
@@ -121,7 +120,7 @@ export default class ClosingArchivesForm extends BaseEditPanelForm {
       <Button
         size="large"
         type="primary"
-        icon={<SaveOutlined />}
+        icon={<MyIcon value='SaveOutlined' />}
         htmlType="submit"
         onClick={debounce(this.handleFinish)}
       >

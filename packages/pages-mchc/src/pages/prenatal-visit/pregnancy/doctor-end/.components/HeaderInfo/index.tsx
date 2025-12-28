@@ -1,2 +1,2 @@
-import { HeaderInfo } from '@lm_fe/components_m';
-export default HeaderInfo
+import { DoctorEnd_HeaderInfo } from '@lm_fe/pages';
+export default DoctorEnd_HeaderInfo

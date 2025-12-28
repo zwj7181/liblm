@@ -15,7 +15,7 @@
     "baseUrl": ".",
     "declarationMap": false,
     "strictNullChecks": true,
-    "keyofStringsOnly": true,
+    "resolveJsonModule": true,
     "experimentalDecorators": true,
 
   },

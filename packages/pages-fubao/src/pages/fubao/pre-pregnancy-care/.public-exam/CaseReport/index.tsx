@@ -6,15 +6,18 @@ import {
   getInformedConsents,
   updateInformedConsent
 } from './method';
-import { DataSelect, SelectTip, } from '@lm_fe/components_m';
+import { DataSelect, } from '@lm_fe/components_m';
+import { SelectTip } from '@lm_fe/pages';
+
 import { CalendarOutlined, DeleteOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { CaseTempleteEdit, deleteResourcesByID } from '@lm_fe/components_m';
 import { SLocal_Dictionary } from '@lm_fe/service';
 import { getSearchParamsValue } from '@lm_fe/utils';
 import classnames from 'classnames';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { getTemplateById } from '@lm_fe/components_m';
 import './index.less';
+import { mchcEnv } from '@lm_fe/env';
 const signStates = [
   { label: '已报', value: '1' },
   { label: '未报', value: '2' },
@@ -90,7 +93,7 @@ export class CaseReport extends Component {
       ...informedConsent,
       content,
       prenatalPatient: pregnancyData,
-      createDate: moment().utc().format(),
+      createDate: dayjs().utc().format(),
       documentTemplate: get(informedConsent, 'documentTemplate'),
     };
     if (informedConsent.id) {
@@ -98,7 +101,7 @@ export class CaseReport extends Component {
     } else {
       informedConsent = await createInformedConsent(data);
     }
-    message.success('操作成功');
+    mchcEnv.success('操作成功');
     this.setState({
       informedConsent,
     });
@@ -283,7 +286,7 @@ export class CaseReport extends Component {
                       url="document-templates?moduleType.equals=5&page=0&size=9999"
                       labelKey="title"
                       valueKey="id"
-                      dropdownMatchSelectWidth={350}
+                      popupMatchSelectWidth={350}
                       onChange={this.handleConsentChange}
                       value={get(informedConsent, 'documentTemplate.id')}
                     />
@@ -302,8 +305,8 @@ export class CaseReport extends Component {
               <CaseTempleteEdit
                 key={get(informedConsent, 'id') || Math.random()}
                 containerProps={{ ...containerProps, height: containerProps.height - 10 }}
-                content={get(informedConsent, 'content')}
-                onSave={this.handleSave}
+                value={get(informedConsent, 'content')}
+                onChange={this.handleSave}
                 toolbars={false}
                 mode="STRICT"
               />

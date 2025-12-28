@@ -43,7 +43,7 @@ export default function MountStupidModal(props: {}) {
                         stupidModal.pop(status)
 
                     }
-                    return <C key={id} visible centered bodyStyle={{ padding: 24 }} {...data}
+                    return <C key={id} visible centered {...data}
                         close={close}
                         onOk={() => close(true)}
                         onCancel={() => close(false)} />

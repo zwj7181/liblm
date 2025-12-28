@@ -1,11 +1,12 @@
 import { AutoCompleteProps, InputProps } from "antd";
-import { IMyInputProps } from "../../FU_components/MyInput";
 import { IArrayInputProps } from "../../FU_components/ArrayInput";
 import { ICusDatePickerProps } from "../DatePicker";
 import { IInputWithLabelProps } from "../InputWithLabel";
 import { IMultipleInputWithLabelProps } from "../MultipleInputWithLabel";
 import { ICommonOption } from "@lm_fe/env";
 import React from "react";
+import { IMyInputProps } from "@lm_fe/components";
+import { IMchc_FormDescriptions_Field } from "@lm_fe/service";
 
 export interface ICheckboxWithInputProps {
     value?: string | ICommonOption[];
@@ -14,7 +15,8 @@ export interface ICheckboxWithInputProps {
     type?: 'single' | 'multiple';
     disabled?: boolean;
     inputWidth?: number;
-    optionKey?: string
+    uniqueKey?: string
+    config?: IMchc_FormDescriptions_Field
     uniqueKey?: string
     marshal?: number
     sp?: ICheckboxWithInputOption[]
@@ -34,10 +36,7 @@ interface IAutoComplete extends ICommonOption {
     inputType: 'AutoComplete';
     props?: AutoCompleteProps
 }
-interface IInputWithLabel extends ICommonOption {
-    inputType: 'InputWithLabel';
-    props?: IInputWithLabelProps
-}
+
 interface IMultiple_input extends ICommonOption {
     inputType: 'MultipleInputWithLabel';
     props?: IMultipleInputWithLabelProps
@@ -54,4 +53,4 @@ interface ISingle_date_picker extends ICommonOption {
     inputType: 'DatePicker';
     props?: ICusDatePickerProps
 }
-export type ICheckboxWithInputOption = IAutoComplete | IMultiple_input | IMyInput | ISelf | ISingle_date_picker | IArrayInput | INil | IInputWithLabel
+export type ICheckboxWithInputOption = IAutoComplete | IMultiple_input | IMyInput | ISelf | ISingle_date_picker | IArrayInput | INil 

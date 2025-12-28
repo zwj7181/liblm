@@ -5,7 +5,7 @@
 import { APP_CONFIG } from "@lm_fe/components_m";
 export const tableColumns = [
   {
-    title: '就诊卡号',
+    title: '门诊号',
     dataIndex: 'outpatientNo',
     width: APP_CONFIG.CELL_WIDTH_SMALL,
     align: 'center',

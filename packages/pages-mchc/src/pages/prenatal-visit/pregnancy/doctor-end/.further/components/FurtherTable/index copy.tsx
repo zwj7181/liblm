@@ -1,13 +1,15 @@
-import { MyForm } from '@lm_fe/components_m';
+import { LazyAntd, MyForm } from '@lm_fe/components_m';
 import { mchcEnv, mchcLogger, otherOptions } from '@lm_fe/env';
 import { IMchc_Doctor_Diagnoses, IMchc_Doctor_OutpatientHeaderInfo, IMchc_Doctor_RvisitInfoOfOutpatient, IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit } from '@lm_fe/service';
-import { Button, Modal, Spin, Table } from 'antd';
+import { Button, Modal, Spin } from 'antd';
 import { cloneDeep, filter, forEach, get, isEmpty, set, size } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import ReactToPrint from 'react-to-print';
 import { config, printConfig } from './config';
 import styles from './index.module.less';
 import PrintTable from './print-table';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
 interface IProps {
     visitsData?: IMchc_Doctor_RvisitInfoOfOutpatient,
     headerInfo: IMchc_Doctor_OutpatientHeaderInfo,
@@ -428,7 +430,7 @@ export default function FurtherTable(props: IProps) {
         <div className={styles['FurtherTable']}>
             {(visitsData) ? (
                 <>
-           
+
                     <div className="btn-wrap">
                         <Button size="small" onClick={handleMoreBtn}>
                             查看更多...{selectItem?.visitDate}

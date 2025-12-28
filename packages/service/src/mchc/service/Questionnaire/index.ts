@@ -1,10 +1,11 @@
 export * from './types'
 
-import { formatDate } from '@lm_fe/utils'
-import { Moment } from 'moment'
+import { cache_fetch, expect_array, formatDate } from '@lm_fe/utils'
+import { Dayjs } from 'dayjs'
 import { ModelService } from '../../../ModelService'
 import { IMchc_Questionnaire, IMchc_QuestionWrite, IMchc_WriteRecord } from './types'
 import { IMchc_Pregnancy } from '../Pregnancy'
+import { ICommonOption } from '@lm_fe/env'
 
 
 
@@ -37,11 +38,15 @@ export function makeGoodQuestionnaire(remoteData: IMchc_Questionnaire) {
 }
 
 export const SMchc_Questionnaire = new
-    (class extends ModelService<IMchc_Questionnaire>{
+    (class extends ModelService<IMchc_Questionnaire> {
         async fk_list() {
-            const res = await this._request<any>({ method: 'GET', url: '/api/propaganda/questionnaire/getQuestionnaire/page', params: { size: 9999 } })
+            const res = await this._request<any>({ method: 'GET', url: '/api/propaganda/questionnaire/getQuestionnaire/page', params: { size: 9999 }, ignore_usr: true })
             const data = res.data?.list as IMchc_Questionnaire[]
             return data || []
+        }
+        async to_options() {
+            const data = await cache_fetch('questionnaire', () => this.fk_list());
+            return expect_array(data).map(q => ({ label: q.questionnaireTitle, value: q.id }) as ICommonOption)
         }
         async fk_byId(id: number) {
             const res = await this._request<IMchc_Questionnaire>({ method: 'GET', url: '/api/propaganda/questionnaire/getQuestionnaireById', params: { id } })
@@ -55,7 +60,7 @@ export const SMchc_Questionnaire = new
             const res = await this._request<any>({ method: 'POST', url: '/api/propaganda/questionnaire/saveWriter', data })
             return res.data
         }
-        async fk_getResult(reqData: Omit<Partial<IFuck_ParamVO>, 'beginFillDate' | 'endFillDate'> & { fillDate: Moment[] }, page = 0, size = 9999) {
+        async fk_getResult(reqData: Omit<Partial<IFuck_ParamVO>, 'beginFillDate' | 'endFillDate'> & { fillDate: Dayjs[] }, page = 0, size = 9999) {
             const { fillDate = [], questionOptionList, ...others } = reqData
             const paramVO: Partial<IFuck_ParamVO> = { ...others }
 
@@ -67,7 +72,7 @@ export const SMchc_Questionnaire = new
             const data = res.data
             return data?.writerVOList || []
         }
-        async fk_downloadResult(reqData: Omit<Partial<IFuck_ParamVO>, 'beginFillDate' | 'endFillDate'> & { fillDate: Moment[] }, page = 0, size = 9999) {
+        async fk_downloadResult(reqData: Omit<Partial<IFuck_ParamVO>, 'beginFillDate' | 'endFillDate'> & { fillDate: Dayjs[] }, page = 0, size = 9999) {
             const { fillDate = [], questionOptionList, ...others } = reqData
             const paramVO: Partial<IFuck_ParamVO> = { ...others }
 
@@ -83,7 +88,7 @@ export const SMchc_Questionnaire = new
             const res = await this._request<IMchc_QuestionWrite>({ url: '/api/propaganda/questionnaire/getWriterRecordsDetailById', params: { id } })
             return res.data
         }
-        async fk_getWriterRecords(preg: Partial<IMchc_Pregnancy> = {},) {
+        async fk_getWriterRecords(preg: Partial<{ outpatientNO: string, id: any, idNO: string, telephone: string, inpatientNO: string }> = {},) {
             const { outpatientNO, id, idNO, telephone, inpatientNO } = preg
             const res = await this._request<{ list: IMchc_WriteRecord[] }>({ url: '/api/propaganda/questionnaire/getWriterRecords', params: { inpatientNO, outpatientNO, idNO, id, telephone, page: 0, size: 9999 } })
             return res.data.list

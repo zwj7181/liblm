@@ -1,9 +1,15 @@
+import { LazyAntd } from '@lm_fe/components';
+import { Dayjs } from '@lm_fe/utils';
+import { Button } from 'antd';
+import dayjs from 'dayjs';
+import { cloneDeep, filter, get, indexOf, isEmpty, map, set, split } from 'lodash';
+
 import React from 'react';
-import { Table, Button, Input } from 'antd';
-import { map, get, isNil, set, isEmpty, filter, indexOf, split, cloneDeep } from 'lodash';
-import moment, { Moment } from 'moment';
-import defaultConfig from './config/index-table';
 import BaseFormComponent from '../../BaseFormComponent';
+import defaultConfig from './config/index-table';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
+
 export const renderContent = (children: any, rowData: any) => {
   let rowSpan = 0;
   // 如果是原生孕次，fetalcount 为 0，则取1，否则取 fetalcount
@@ -61,7 +67,7 @@ export default class PregnancyHistoryTable extends React.Component {
             set(
               resultData,
               type,
-              get(item, 'year') && get(item, 'month') && moment(`${get(item, 'year')}-${get(item, 'month')}`),
+              get(item, 'year') && get(item, 'month') && dayjs(`${get(item, 'year')}-${get(item, 'month')}`),
             );
             break;
           case 'select':
@@ -104,8 +110,8 @@ export default class PregnancyHistoryTable extends React.Component {
                 case 'none':
                   break;
                 case 'pregnancyEnd':
-                  const year = item ? (item as Moment).year() : null;
-                  const month = item ? (item as Moment).month() : null;
+                  const year = item ? (item as Dayjs).year() : null;
+                  const month = item ? (item as Dayjs).month() : null;
                   set(tempHistory, 'year', year);
                   set(tempHistory, 'month', month + 1);
                   break;
@@ -418,7 +424,7 @@ export default class PregnancyHistoryTable extends React.Component {
           </Button>
           <Button
             disabled={isEmpty(selectedRowKeys)}
-            
+
             type="primary" danger
             style={{ marginLeft: 8 }}
             onClick={this.removePregnancy}
@@ -437,7 +443,7 @@ export default class PregnancyHistoryTable extends React.Component {
           dataSource={data}
           bordered
           pagination={false}
-          
+
         />
       </>
     );

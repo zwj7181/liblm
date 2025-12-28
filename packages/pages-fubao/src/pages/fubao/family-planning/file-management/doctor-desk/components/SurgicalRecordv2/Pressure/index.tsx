@@ -1,11 +1,13 @@
-import { BaseEditPanel, formDescriptionsWithoutSectionApi, mchcModal } from '@lm_fe/components_m';
+import { BaseEditPanel, formDescriptionsWithoutSectionApi, } from '@lm_fe/components_m';
 import { get, isEmpty, isEqual, set } from 'lodash';
 import { valueToApi, valueToForm } from '../adapter';
 import Form from './components/Form';
 import { SMchc_FormDescriptions } from '@lm_fe/service';
 import { fubaoRequest as request } from '@lm_fe/utils';
 import { message } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
+import { mchcModal__ } from '@lm_fe/pages';
+import { mchcEnv } from '@lm_fe/env';
 export default class AdmissionPanel extends BaseEditPanel {
   static defaultProps = {
     baseUrl: '/api/family/planning/addEarlyPregnancyCheckSurgicalType', request,
@@ -34,7 +36,7 @@ export default class AdmissionPanel extends BaseEditPanel {
   _handlePrint(printId = this.state.printId) {
     const { activeTemplate } = this.state;
 
-    mchcModal.open('print_modal', {
+    mchcModal__.open('print_modal', {
       modal_data: {
 
         request,
@@ -97,7 +99,7 @@ export default class AdmissionPanel extends BaseEditPanel {
     const formKey = get(data, 'id') || Math.random();
 
     if (!get(data, 'operationName')) set(data, 'operationName', '人工流产');
-    if (!get(data, 'surgicalDate')) set(data, 'surgicalDate', moment(new Date()));
+    if (!get(data, 'surgicalDate')) set(data, 'surgicalDate', dayjs(new Date()));
     if (!get(data, 'appointmentPeople')) set(data, 'appointmentPeople', get(basicInfo, 'firstName'));
     if (!get(data, 'surgicalDoctor')) set(data, 'surgicalDoctor', get(basicInfo, 'firstName'));
     this.setState({ data, formKey, printId: get(data, 'id') });
@@ -120,7 +122,7 @@ export default class AdmissionPanel extends BaseEditPanel {
     };
 
     if (!get(params, 'operationTimeEnd')) {
-      message.error('手术起止时间是必填项');
+      mchcEnv.error('手术起止时间是必填项');
       return;
     }
 
@@ -128,7 +130,7 @@ export default class AdmissionPanel extends BaseEditPanel {
       // 修改
       const res = (await request.put('/api/family/planning/updateEarlyPregnancyCheckSurgicalType', params)).data
       if (get(res, 'code') === 1) {
-        message.success(get(res, 'msg'), 0.5).then(() => {
+        mchcEnv.success(get(res, 'msg'), 0.5).then(() => {
           //点击打印按钮保存数据并打印
           if (get(values, 'isPrint')) {
             this._handlePrint(get(res, 'data.id'))
@@ -136,7 +138,7 @@ export default class AdmissionPanel extends BaseEditPanel {
           }
         });
       } else {
-        
+
       }
     } else {
       //新增
@@ -147,7 +149,7 @@ export default class AdmissionPanel extends BaseEditPanel {
       };
       const res = (await request.post(baseUrl, params)).data
       if (get(res, 'code') === 1) {
-        message.success(get(res, 'msg'), 0.5).then(() => {
+        mchcEnv.success(get(res, 'msg'), 0.5).then(() => {
           //点击打印按钮保存数据并打印
           if (get(values, 'isPrint')) {
             this._handlePrint(get(res, 'data.id'))
@@ -155,7 +157,7 @@ export default class AdmissionPanel extends BaseEditPanel {
           }
         });
       } else {
-        
+
       }
     }
     onRefresh && onRefresh();

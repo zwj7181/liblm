@@ -1,10 +1,10 @@
 import { IModel_EarlyPregnancyCheckSurgeryType } from '../../.stupid_model';
-import { Moment } from 'moment';
+import { Dayjs } from 'dayjs';
 export type TabType = 'day' | 'week' | 'month';
 
 export interface IBooking {
   data: Partial<IModel_EarlyPregnancyCheckSurgeryType>;
-  appointmentDate: Moment;
+  appointmentDate: Dayjs;
   appointmentMorningOrAfternoon: TMorningOrAfternoon;
 }
 

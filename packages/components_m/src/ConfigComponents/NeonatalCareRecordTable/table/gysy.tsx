@@ -76,7 +76,7 @@ export const tableColumns_gysy = [
     width: APP_CONFIG.CELL_WIDTH_TINY,
     inputType: 'MyAutoComplete',
     inputProps: {
-      optionKey: '反应s',
+      uniqueKey: '反应s',
     },
   },
   {
@@ -87,7 +87,7 @@ export const tableColumns_gysy = [
     width: APP_CONFIG.CELL_WIDTH_TINY,
     inputType: 'MyAutoComplete',
     inputProps: {
-      optionKey: '面色s',
+      uniqueKey: '面色s',
     },
   },
   {
@@ -98,7 +98,7 @@ export const tableColumns_gysy = [
     width: APP_CONFIG.CELL_WIDTH_TINY,
     inputType: 'MyAutoComplete',
     inputProps: {
-      optionKey: '哭声s',
+      uniqueKey: '哭声s',
     },
   },
   {
@@ -109,7 +109,7 @@ export const tableColumns_gysy = [
     width: APP_CONFIG.CELL_WIDTH_TINY,
     inputType: 'MyAutoComplete',
     inputProps: {
-      optionKey: '吸吮力s',
+      uniqueKey: '吸吮力s',
     },
   },
 
@@ -147,7 +147,7 @@ export const tableColumns_gysy = [
     width: APP_CONFIG.CELL_WIDTH_TINY,
     inputType: 'MyAutoComplete',
     inputProps: {
-      optionKey: '脐带s',
+      uniqueKey: '脐带s',
     },
   },
   {
@@ -158,7 +158,7 @@ export const tableColumns_gysy = [
     width: APP_CONFIG.CELL_WIDTH_TINY,
     inputType: 'MyAutoComplete',
     inputProps: {
-      optionKey: '臀部s',
+      uniqueKey: '臀部s',
     },
   },
   {
@@ -169,7 +169,7 @@ export const tableColumns_gysy = [
     width: APP_CONFIG.CELL_WIDTH_TINY,
     inputType: 'MyAutoComplete',
     inputProps: {
-      optionKey: '大便s',
+      uniqueKey: '大便s',
     },
   },
   {
@@ -180,7 +180,7 @@ export const tableColumns_gysy = [
     width: APP_CONFIG.CELL_WIDTH_TINY,
     inputType: 'MyAutoComplete',
     inputProps: {
-      optionKey: '小便s',
+      uniqueKey: '小便s',
     },
   },
   {

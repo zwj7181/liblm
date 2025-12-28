@@ -1,16 +1,18 @@
-import { IGlobalModalProps } from '@lm_fe/components';
-import { mchcConfig, mchcEvent, mchcUtils } from '@lm_fe/env';
+import { mchcConfig, mchcEvent } from '@lm_fe/env';
 import {
-    IMchc_Dictionaries_Enumeration,
-    IMchc_Doctor_OutpatientHeaderInfo, IMchc_HighriskGradeConfig, SMchc_Admission, SMchc_Common, SMchc_Doctor, TIdTypeCompatible
+    IMchc_Doctor_OutpatientHeaderInfo, IMchc_HighriskGradeConfig,
+    SMchc_Common, SMchc_Doctor, TIdTypeCompatible
 } from '@lm_fe/service';
-import { Select } from 'antd';
+
+import { LazyAntd } from '@lm_fe/components';
+import { request } from '@lm_fe/utils';
 import {
     map
 } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { request } from '@lm_fe/utils';
 import { HighriskGradeColorSpan } from 'src/FU_components';
+import { use_provoke } from '@lm_fe/provoke';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
 interface IProps {
     headerInfo?: IMchc_Doctor_OutpatientHeaderInfo
     pregnancyId?: TIdTypeCompatible
@@ -72,12 +74,11 @@ export function HighRiskGradeSelect(props: IProps) {
 // value Ⅰ Ⅱ ...
 export function HighRiskGradeSelectPure(props: { value?: string, onChange?(v: string): void, disabled?: boolean }) {
     const { value, onChange, disabled } = props
+    const { 可选高危等级 } = use_provoke('可选高危等级',)
 
-    const [gradeOptions, set_gradeOptions] = useState<IMchc_HighriskGradeConfig[]>([])
 
     useEffect(() => {
-        SMchc_Common.getHighriskGradeConfig()
-            .then(set_gradeOptions)
+
 
         return () => {
 
@@ -97,12 +98,10 @@ export function HighRiskGradeSelectPure(props: { value?: string, onChange?(v: st
             style={{ width: 140 }}
             value={value}
         >
-            {map(gradeOptions, (item) => (
+            {map(可选高危等级, (item) => (
                 <Select.Option value={item.label}>
-                    <HighriskGradeColorSpan level={item.label} />
+                    <HighriskGradeColorSpan color={item.note} />
                     {item.colorText}
-                    {/* {item.label} */}
-
                 </Select.Option>
             ))}
         </Select>

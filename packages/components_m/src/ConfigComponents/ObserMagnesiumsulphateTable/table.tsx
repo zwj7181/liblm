@@ -1,6 +1,5 @@
-import { formatTimeToDate, formatTimeToStandard, formatTimeToYearMonth } from '@/utils/format';
-import { APP_CONFIG } from '@/constants';
-import { MODAL_TEMPLATE_TYPES } from '@lm_fe/env';
+import { formatTimeToYearMonth } from '@/utils/format';
+import { APP_CONFIG, MODAL_TEMPLATE_TYPES } from "@lm_fe/env";
 export const tableColumns1 = [
   // {
   //   title: '日期',
@@ -47,7 +46,7 @@ export const tableColumns1 = [
     align: 'center',
     editable: true,
     inputType: 'MyAutoComplete',
-    inputProps: { optionKey: '膝反射s' },
+    inputProps: { uniqueKey: '膝反射s' },
     width: APP_CONFIG.CELL_WIDTH_SMALL,
   },
   {

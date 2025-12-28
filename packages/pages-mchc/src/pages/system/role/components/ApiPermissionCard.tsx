@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Card } from 'antd';
 import { get, isEmpty } from 'lodash';
 import './index.less';
-import { ApiPermissionSelect } from '@lm_fe/components_m';
+import { ApiPermissionSelect } from '../base_components/ApiPermissionSelect';
 
 interface IProps {
   onSaveApiPermission?: (value: any[]) => void;

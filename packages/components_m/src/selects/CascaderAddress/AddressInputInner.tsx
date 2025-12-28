@@ -1,9 +1,8 @@
-import { Button, Cascader, Input, Space, Tooltip } from 'antd';
-import { get, map } from 'lodash';
+import { get_old_address_options } from '@lm_fe/components';
+import { mchcEvent } from '@lm_fe/env';
+import { Button, Cascader, Input, Tooltip } from 'antd';
 import { cloneDeep } from 'lodash';
-import React, { useEffect, useRef, useState } from 'react';
-import defaultOptions from './options';
-import { mchcEnv, mchcEvent } from '@lm_fe/env';
+import React, { useEffect, useState } from 'react';
 interface IProps {
   id?: string;
   value?: string;
@@ -43,7 +42,7 @@ export default function AddressInput({
 
   const [pcasv, setPcasv] = useState<string[]>([]);
   const [detail, setDetail] = useState('');
-  const [options, setOptions] = useState(defaultOptions);
+  const [options, setOptions] = useState<any[]>([]);
   const [text, setText] = useState('');
 
   useEffect(() => {
@@ -52,30 +51,10 @@ export default function AddressInput({
   }, []);
 
   useEffect(() => {
-    if (!needStreet) {
-      const newOptions = map(defaultOptions, (option) => {
-        if (get(option, 'value') === '广东省') {
-          return {
-            children: map(get(option, 'children'), (item) => {
-              return {
-                label: get(item, 'label'),
-                value: get(item, 'value'),
-                children: map(get(item, 'children'), (city) => {
-                  return {
-                    label: get(city, 'label'),
-                    value: get(city, 'value'),
-                  };
-                }),
-              };
-            }),
-            label: get(option, 'label'),
-            value: get(option, 'value'),
-          };
-        }
-        return option;
-      });
-      setOptions(newOptions);
-    }
+    get_old_address_options(needStreet).then(opt => {
+      setOptions((opt[0] || opt) as any[])
+
+    })
   }, []);
 
   useEffect(() => {

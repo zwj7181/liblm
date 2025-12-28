@@ -1,0 +1,1 @@
+export type WhichType = '孕妇学校' | '助产士' 

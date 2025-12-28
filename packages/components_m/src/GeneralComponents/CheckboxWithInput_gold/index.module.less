@@ -5,30 +5,24 @@
 .wrapper {
 
   input {
-    border-width: 0 !important;
-    border-bottom-width: @border-width;
-    border-radius: 0 !important;
-
-    &:focus {
-      box-shadow: none !important;
-      border-width: 0 !important;
-      border-bottom-width: @border-width;
-    }
-
-    &:hover {
-      border-width: 0 !important;
-      border-bottom-width: @border-width;
-    }
+    padding: 0 !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
   }
 
   :global(.ant-select-selector) {
     padding: 0 !important;
-    border: none !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
   }
 
   :global(.ant-select-selection-search-input) {
-    border-width: 0 !important;
-    border-width: @border-width;
+    padding: 0 !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
   }
 }
 

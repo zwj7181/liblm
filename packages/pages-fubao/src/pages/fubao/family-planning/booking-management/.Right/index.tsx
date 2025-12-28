@@ -1,26 +1,22 @@
+import { LeftOutlined, RightOutlined, SyncOutlined } from '@ant-design/icons';
+import { DatePicker_L } from '@lm_fe/components';
+import { Button, Divider, Tag } from 'antd';
+import { get } from 'lodash';
+import dayjs, { Dayjs } from 'dayjs'
+
+import React, { useEffect, useState } from 'react';
 import {
   IModel_EarlyPregnancySurgicalTemplate,
   IModel_FamilyPlaningSchedulingDetails,
   IModel_FamilyPlanningDefaultSetting,
-  SModel_EarlyPregnancyCheckSurgeryType,
-  SModel_FamilyPlaningSchedulingDetails,
-  stupidEnums,
+  SModel_EarlyPregnancyCheckSurgeryType
 } from '../../../.stupid_model';
-import { LeftOutlined, ReloadOutlined, SyncOutlined, RightOutlined } from '@ant-design/icons';
-import { Badge, Button, DatePicker, Space, Tag, Divider } from 'antd';
-import moment, { Moment } from 'moment';
-import React, { useEffect, useState } from 'react';
-import { get } from 'lodash';
 import { OPERATION_ARR } from '../constant';
 import { DD } from '../DD';
 import { IBooking, TabType, TOperationType } from '../type';
 import {
   findOperationColor,
-  getAttendanceOfThisDay,
-  getOperationNum,
-  getOperationOpenStatusAndNum,
-  getSchedulingData,
-  getTimeFrame,
+  getOperationNum
 } from '../util';
 import DateSelect from './DateSelect';
 import MonthSelect from './MonthSelect';
@@ -54,7 +50,7 @@ export default function Right(props: {
   const { dd, colorList, toggleNode } = props;
   const [mode, setMode] = useState<TabType>('day');
   const [bookingData, setBookingData] = useState<IBooking[]>([]);
-  const [selectedDate, setSelectedDate] = useState<Moment>(moment());
+  const [selectedDate, setSelectedDate] = useState<Moment>(dayjs());
   const [daysSetting, setDaysSetting] = useState<IModel_FamilyPlanningDefaultSetting>();
   const [activeOperationType, setActiveOperationType] = useState<Set<TOperationType>>(new Set());
   const [scheduleArr, setScheduleArr] = useState<IModel_FamilyPlaningSchedulingDetails[]>([]);
@@ -139,7 +135,7 @@ export default function Right(props: {
       <div style={{ padding: '4px 18px 0', position: 'relative', height: middleHeight }}>
         <div>
           <Button style={{ color: '#979797' }} size="small" type="text" icon={<LeftOutlined />} onClick={pre} />
-          <DatePicker
+          <DatePicker_L
             value={selectedDate}
             onChange={(v) => v && setSelectedDate(v)}
             picker={mode === 'day' ? 'date' : mode}

@@ -1,12 +1,15 @@
+import { DatePicker_L, LazyAntd } from '@lm_fe/components';
 import { SLocal_State } from '@lm_fe/service';
-import { Col, DatePicker, Divider, Form, Input, Radio, Row, Select } from 'antd';
-import moment from 'moment';
+import { Col, Divider, Form, Input, Radio, Row } from 'antd';
+import dayjs from 'dayjs';
 import React, { useEffect } from 'react';
 import { stupidModal } from '../../../../.StupidModal';
 import { SModel_EarlyPregnancyCheckSurgeryType, stupidEnums } from '../../../../.stupid_model';
 import { TCommonData } from './Form0';
 import { IStepFormComponentType } from './StepModal';
 import { StupidRadioGroup } from './StupidRadioGroup';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
 const { Item } = Form;
 const CheckboxGroup = Radio.Group;
 const Form1: IStepFormComponentType<TCommonData, any> = function Form1({ form, commonData }) {
@@ -35,7 +38,7 @@ const Form1: IStepFormComponentType<TCommonData, any> = function Form1({ form, c
         ...remoteData,
         appointmentPeople: remoteData?.appointmentPeople || SLocal_State.getUserData(),
         signInRegistrant: remoteData?.signInRegistrant || SLocal_State.getUserData(),
-        signInTime: remoteData?.signInTime || moment(),
+        signInTime: remoteData?.signInTime || dayjs(),
       });
     }
     return () => { };
@@ -57,8 +60,8 @@ const Form1: IStepFormComponentType<TCommonData, any> = function Form1({ form, c
             </Item>
           </Col>
           <Col xs={8}>
-            <Item label="就诊卡号" name="outpatientNo">
-              <Input placeholder="请输入就诊卡号" disabled />
+            <Item label="门诊号" name="outpatientNo">
+              <Input placeholder="请输入门诊号" disabled />
             </Item>
           </Col>
           <Col xs={8}>
@@ -90,7 +93,7 @@ const Form1: IStepFormComponentType<TCommonData, any> = function Form1({ form, c
           </Col>
           <Col xs={8}>
             <Item label="接诊日期" name="admissionTime" rules={[{ required: false }]}>
-              <DatePicker placeholder="请输入接诊日期" format="YYYY-MM-DD" disabled />
+              <DatePicker_L placeholder="请输入接诊日期" format="YYYY-MM-DD" disabled />
             </Item>
           </Col>
 
@@ -132,7 +135,7 @@ const Form1: IStepFormComponentType<TCommonData, any> = function Form1({ form, c
           </Col>
           <Col xs={8}>
             <Item label="预约日期" name="appointmentDate" rules={[{ required: false, message: '' }]}>
-              <DatePicker placeholder="请输入预约时间" format="YYYY-MM-DD" disabled />
+              <DatePicker_L placeholder="请输入预约时间" format="YYYY-MM-DD" disabled />
             </Item>
           </Col>
         </Row>
@@ -196,7 +199,7 @@ const Form1: IStepFormComponentType<TCommonData, any> = function Form1({ form, c
           </Col>
           <Col xs={8}>
             <Item label="签到时间" name="signInTime">
-              <DatePicker
+              <DatePicker_L
                 disabled={status === '已签到' ? false : isDone}
                 placeholder="请输入签到时间"
                 format="YYYY-MM-DD HH:mm"

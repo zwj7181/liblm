@@ -45,7 +45,7 @@ export default function Template({ templateData, ...props }: Iprops) {
   return (
     <div className="template-container">
       <Collapse defaultActiveKey={['1']}>
-        <Collapse.Panel header={<span>处理建议</span>} key="1">
+        <Collapse.Panel header={<span>处理建议.</span>} key="1">
           {mainContent(get(templateData, `adviseTemplate`))}
         </Collapse.Panel>
         <Collapse.Panel header={<span>科室模板</span>} key="2">

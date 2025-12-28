@@ -34,7 +34,7 @@ function ModalView({ file, width = '210mm', children = '预览按钮' }: IProps)
         destroyOnClose={true}
         title="预览"
         width={width}
-        visible={visible}
+        open={visible}
         footer={null}
         onOk={handleOk}
         onCancel={handleCancel}

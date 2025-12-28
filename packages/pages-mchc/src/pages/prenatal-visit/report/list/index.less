@@ -1,0 +1,39 @@
+.custom-outercourt-modal {
+  width: 820px !important;
+  height: 98vh;
+  padding-bottom: 0;
+
+  .ant-modal-close-x {
+    width: 39px;
+    height: 39px;
+    line-height: 39px;
+  }
+
+  .ant-modal-header {
+    padding: 8px 12px;
+  }
+
+  .ant-modal-content {
+    height: 100%;
+
+    .ant-modal-body {
+      height: calc(100% - 42px);
+      text-align: center;
+    }
+    .img-container {
+      height: calc(100% - 32px);
+      overflow: auto;
+      margin-bottom: 8px;
+      .hideContent {
+        display: none;
+      }
+      .isShow {
+        display: block;
+      }
+    }
+  }
+
+  img {
+    width: 100%;
+  }
+}

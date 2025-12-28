@@ -1,6 +1,8 @@
 import React, { Component, ReactNode } from 'react';
-import { TreeSelect } from 'antd';
 import { get } from 'lodash';
+import { LazyAntd } from '@lm_fe/components';
+
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
 
 interface MyTreeSelectProps {
   input_props?: any;
@@ -126,11 +128,11 @@ export default class MyTreeSelect extends Component<MyTreeSelectProps, MyTreeSel
     if (!value) {
       value = radio ? [] : null;
     }
-    const dropdownMatchSelectWidth = this.props.dropdownMatchSelectWidth ?? this.props.input_props.dropdownMatchSelectWidth ??  250
+    const popupMatchSelectWidth = this.props.popupMatchSelectWidth ?? this.props.input_props.popupMatchSelectWidth ??  250
     return (
       <TreeSelect
         {...this.props}
-        dropdownMatchSelectWidth={dropdownMatchSelectWidth}
+        popupMatchSelectWidth={popupMatchSelectWidth}
         style={{ width: '100%' }}
         treeData={options}
         multiple={!radio}

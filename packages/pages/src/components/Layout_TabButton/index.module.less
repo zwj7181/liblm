@@ -1,0 +1,115 @@
+@primary-color: #0e318d;
+
+.my-tab-btn {
+  position: relative;
+  height: 36px;
+  padding: 4px 8px;
+  // background-color: #fff;
+  color: #666;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  transition: all .4s;
+
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 13px;
+    right: 0;
+    width: 1px;
+    height: 10px;
+    background-color: #ddd;
+  }
+
+  .after {
+    content: '';
+    display: inline-block !important;
+    position: absolute;
+    left: 0px;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    // background-color: @primary-color;
+    left: 50%;
+  }
+
+  &:hover {
+    color: #666;
+    // background-color: #666;
+    cursor: pointer;
+
+    .my-tab-btn-close {
+      visibility: visible;
+
+
+    }
+    
+  }
+}
+
+.my-tab-btn-icon-active,
+.my-tab-btn-active {
+  position: relative;
+  // background-color: #dfe2eb;
+  // color: @primary-color;
+
+  &:before {
+    background: transparent;
+  }
+
+  .after {
+    transition: all .2s ease-out;
+    left: 0px;
+    width: calc(100%);
+  }
+
+
+
+  .my-tab-btn-close {
+    visibility: visible;
+    transform: rotate(180deg);
+    transition: all .2s ease-out;
+
+    :global(.anticon) {
+      color: #666;
+    }
+
+  }
+}
+
+.my-tab-btn-title {
+  padding: 0 20px 0 12px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  text-align: center;
+  font-size: 14px;
+}
+
+.my-tab-btn-close {
+  width: 18px;
+  height: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2px;
+  visibility: hidden;
+  position: absolute;
+  top: 9px;
+  right: 6px;
+
+  :global(.anticon) {
+    font-size: 10px;
+    color: #999;
+  }
+
+  &:hover {
+    background-color: #fff;
+
+    :global(.anticon) {
+      color: #222;
+    }
+  }
+}

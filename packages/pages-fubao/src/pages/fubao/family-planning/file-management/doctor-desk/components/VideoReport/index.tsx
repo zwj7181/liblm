@@ -1,8 +1,11 @@
-import React, { Component } from 'react';
-import { Table } from 'antd';
-import { getImageExamsByOutpatientNO } from './method';
 import { ModalIframeView } from '@/components/PDFPreview';
+import { LazyAntd } from '@lm_fe/components';
+import React, { Component } from 'react';
 import './index.less';
+import { getImageExamsByOutpatientNO } from './method';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
+
 const columns = [
   { title: '标题', dataIndex: 'title', align: 'center', width: 250 },
   {

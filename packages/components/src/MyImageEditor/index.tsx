@@ -12,8 +12,9 @@ function MyImageEditor__(props: IMyImageEditorProps) {
 
 
 const MyImageEditor = Object.assign(MyImageEditor__, { events: MyImageEditorEvents })
+const GynaecologyImageEditor = MyImageEditor
 
-export { IMyImageEditorProps, MyImageEditorEvents, MyImageEditor }
+export { IMyImageEditorProps, MyImageEditorEvents, MyImageEditor, GynaecologyImageEditor }
 
 
 

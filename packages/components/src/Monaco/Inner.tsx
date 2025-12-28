@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Editor, { loader } from '@monaco-editor/react/dist/index';
 import { getMonacoLoaderPath } from '@lm_fe/env'
 loader.config({ paths: { vs: getMonacoLoaderPath() } });
@@ -11,7 +11,23 @@ interface IProps {
     height?: string
     theme?: "vs-dark" | 'light'
 }
-function MyMonaco({ value, onChange, language, defaultValue, height = '400px', theme = "vs-dark" }: IProps) {
-    return <Editor theme={theme} onChange={onChange} height={height} defaultLanguage={language} defaultValue={defaultValue} value={value} ></Editor>
+function MyMonaco(props: IProps) {
+    const { value, onChange, language, defaultValue, height = '400px', theme = "vs-dark" } = props
+    console.log('MyMonaco', props)
+    const [inner_value, set_inner_value] = useState(value)
+    const inited = useRef(false)
+    useEffect(() => {
+        if (value) {
+            if (inited.current) return
+            inited.current = true;
+            set_inner_value(value)
+        }
+
+        return () => {
+
+        }
+    }, [value])
+
+    return <Editor theme={theme} onChange={onChange} height={height} defaultLanguage={language} defaultValue={defaultValue} value={inner_value} ></Editor>
 }
 export default MyMonaco

@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { Select } from 'antd';
 import { get, isObject, map } from 'lodash';
 import { getAllResources } from '../../utils/defaultMethod';
+import { mchcLogger } from '@lm_fe/env';
+import { LazyAntd } from '@lm_fe/components';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
 export default class ReferralOrganizationSelect extends Component {
   state = {
     data: undefined,
@@ -9,6 +11,7 @@ export default class ReferralOrganizationSelect extends Component {
   };
 
   componentDidMount() {
+    mchcLogger.log('ReferralOrganizationSelect', this.props)
     const { value } = this.props;
     this.setState({
       data: isObject(value) ? value : { id: value },
@@ -36,7 +39,7 @@ export default class ReferralOrganizationSelect extends Component {
       <Select
         onFocus={this.handleGetOptions}
         onChange={this.handleChange}
-        value={get(data, 'name') || data}
+        value={get(data, 'name') || get(data, 'id')}
         showSearch
         allowClear
       >

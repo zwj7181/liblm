@@ -1,19 +1,21 @@
+import { LazyAntd, MyIcon } from '@lm_fe/components';
+import { Button, Input, message, Modal, Popconfirm } from 'antd';
+import { cloneDeep, get, isEmpty, keyBy, map, set } from 'lodash';
 import React, { Component } from 'react';
-import { Modal, Input, Button, Tree, message, Popconfirm } from 'antd';
-import { map, get, set, isEmpty, cloneDeep, keyBy } from 'lodash';
+import EditModal from './EditModal';
+import styles from './TextareaWithTemplate.module.less';
+import { MODAL_NAVS } from './common';
 import {
-  getTemplates,
-  transferTemplates,
   addTemplate,
   deleteTemplate,
   getTemplateDetail,
+  getTemplates,
   rootTemplate,
+  transferTemplates,
   updateTemplate,
 } from './methods';
-import EditModal from './EditModal';
-import { MODAL_NAVS } from './common'
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import styles from './TextareaWithTemplate.module.less';
+
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
 interface ITextareaWithTemplateProp {
   onChange: Function;
   value: any;
@@ -181,9 +183,9 @@ export class TextareaWithTemplate extends Component<ITextareaWithTemplateProp, I
             title={
               <div className={styles["template-list-item"]}>
                 <div>{template.title}</div>
-                <EditOutlined className={styles["template-list-item-icon"]} onClick={this.handleEditTemplate(template)} />
+                <MyIcon value='EditOutlined' className={styles["template-list-item-icon"]} onClick={this.handleEditTemplate(template)} />
                 <Popconfirm title="确定要删除这个模板吗？" onConfirm={this.handleConfirmDelete(template)}>
-                  <DeleteOutlined className={styles["template-list-item-icon template-list-item-icon__delete"]} />
+                  <MyIcon value='DeleteOutlined' className={styles["template-list-item-icon template-list-item-icon__delete"]} />
                 </Popconfirm>
               </div>
             }
@@ -198,9 +200,9 @@ export class TextareaWithTemplate extends Component<ITextareaWithTemplateProp, I
           title={
             <div className={styles["template-list-item"]}>
               <div>{template.title}</div>
-              <EditOutlined className={styles["template-list-item-icon"]} onClick={this.handleEditTemplate(template)} />
+              <MyIcon value='EditOutlined' className={styles["template-list-item-icon"]} onClick={this.handleEditTemplate(template)} />
               <Popconfirm title="确定要删除这个模板吗？" onConfirm={this.handleConfirmDelete(template)}>
-                <DeleteOutlined className={styles["template-list-item-icon template-list-item-icon__delete"]} />
+                <MyIcon value='DeleteOutlined' className={styles["template-list-item-icon template-list-item-icon__delete"]} />
               </Popconfirm>
             </div>
           }

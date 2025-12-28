@@ -17,9 +17,9 @@ export const HourMinuteInput: TCommonComponent<IProps, any> = function HourMinut
 }
 HourMinuteInput.DisplayFC = (p) => {
     const { value } = p
-    const arr = safe_json_parse(value, [])
-    const h = arr[0] ?? 0
-    const m = arr[1] ?? 0
+    const arr = safe_json_parse<number[]>(value, [])
+    const h = arr?.[0] ?? 0
+    const m = arr?.[1] ?? 0
     return <span>
         {h}时{m}分
     </span>

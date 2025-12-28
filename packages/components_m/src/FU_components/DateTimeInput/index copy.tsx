@@ -2,9 +2,9 @@ import { mchcEnv } from '@lm_fe/env';
 import { getMomentObj } from '@lm_fe/utils';
 import { Input, InputProps, message } from 'antd';
 import React, { FocusEvent, useEffect, useRef, useState } from 'react';
-import { MyInput } from '../MyInput';
 import { TCommonComponent } from '../types';
 import styles from './index.module.less';
+import { MyInput } from '@lm_fe/components';
 export const DateTimeInput: TCommonComponent<{ size?: any, showSecond?: boolean }, string> = function MyPressure(props) {
   const { onChange, value, size, disabled, showSecond = !mchcEnv.is('广三') } = props;
   const [_value, set_value] = useState<number>()
@@ -132,7 +132,7 @@ export const DateTimeInput: TCommonComponent<{ size?: any, showSecond?: boolean 
 
     } else {
       e.preventDefault()
-      message.warn('错误的时间格式')
+      message.warning('错误的时间格式')
     }
     // console.log('format', format)
   }

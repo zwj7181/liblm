@@ -29,7 +29,7 @@ export default (props: any) => {
 
   return (
     <AutoComplete
-      dropdownMatchSelectWidth={get(inputProps, 'dropdownMatchSelectWidth') || 120}
+      popupMatchSelectWidth={get(inputProps, 'popupMatchSelectWidth') || 120}
       onChange={handleChange}
       onFocus={handleFocus}
       onBlur={handleBlur}

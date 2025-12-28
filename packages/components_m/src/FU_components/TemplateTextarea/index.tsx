@@ -1,10 +1,7 @@
-import { Button, Input, InputProps } from 'antd';
-import { MoreOutlined } from '@ant-design/icons'
-import { mchcModal } from 'src/modals';
-import { useRef, useState, useEffect } from 'react';
-import { MODAL_TEMPLATE_TYPES, mchcEnv } from '@lm_fe/env';
+import { ITemplateConfig, MODAL_TEMPLATE_TYPES } from '@lm_fe/env';
+import { Button, Input } from 'antd';
 import { TextAreaProps } from 'antd/lib/input';
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 interface ITemplateTextareaProps extends TextAreaProps {
     value?: string
     onChange?(v: any): void
@@ -12,11 +9,12 @@ interface ITemplateTextareaProps extends TextAreaProps {
     style?: React.CSSProperties
     rows?: number
     canOperate?: boolean
-    TemplateTextarea_type?: typeof MODAL_TEMPLATE_TYPES['科室个人']
+    defaultExpandAll?: boolean
+    TemplateTextarea_type?: ITemplateConfig[]
 }
 const SPLIT_KEY = ' / '
 export function TemplateTextarea(props: ITemplateTextareaProps) {
-    const { value = '', onChange, style, type, TemplateTextarea_type, rows = 3, disabled, canOperate, ...others } = props
+    const { value = '', onChange, style, type, TemplateTextarea_type, rows = 3, disabled, defaultExpandAll, canOperate, ...others } = props
     const [_value, set_value] = useState(value)
     useEffect(() => {
         set_value(value)
@@ -29,17 +27,18 @@ export function TemplateTextarea(props: ITemplateTextareaProps) {
             set_value(v)
         }} style={{ ...style, zIndex: 1 }} {...others} />
         <Button
+            type="text"
             disabled={disabled}
             onClick={() => {
-                mchcModal.open('template_modal3', {
+                window.mchc_modal?.open('template_modal3', {
                     getContainer: () => el.current!,
 
                     modal_data: {
                         canOperate,
+                        defaultExpandAll,
                         simpleTypes: TemplateTextarea_type ?? type,
-                        onValueCheck({ result }) {
-                            const v = result.map(_ => _.val).join(SPLIT_KEY)
-                            onChange?.(`${_value ?? ''}${_value ? SPLIT_KEY : ''}${v}`)
+                        on_tpl_check({ content }) {
+                            onChange?.(`${_value ?? ''}${_value ? SPLIT_KEY : ''}${content}`)
                         },
                     }
                 })

@@ -1,15 +1,16 @@
 import {
   fromApi as defaultFromApi,
   toApi as defaultToApi,
-  formDescriptionsWithoutSectionApi
+  formDescriptionsWithoutSectionApi,
+  resolveFubaoPath
 } from '@lm_fe/components_m';
 import { fubaoRequest as request } from '@lm_fe/utils';
 import { message } from 'antd';
 import { get, set } from 'lodash';
 import { BaseEditPanel } from '@lm_fe/components_m';
-import { SMchc_FormDescriptions } from '@lm_fe/service';
+import { SLocal_History, SMchc_FormDescriptions } from '@lm_fe/service';
 import { getSearchParamsValue } from '@lm_fe/utils';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import Form from './components/Form';
 import { fubaoHistoryPush } from '@lm_fe/components_m';
 class FamilyPlanning_FileManagement_NurseDesk extends BaseEditPanel {
@@ -32,7 +33,7 @@ class FamilyPlanning_FileManagement_NurseDesk extends BaseEditPanel {
     this.setState({ spinning: false });
 
     const formDescriptionsWithoutSection = formDescriptionsWithoutSectionApi(formDescriptions);
-    let data = id ? await request.get(`/api/family/planning/getFamilyPlanningFile/page?id.equals=${id}`) : {};
+    let data = id ? (await request.get(`/api/family/planning/getFamilyPlanningFile/page?id.equals=${id}`)).data : {};
     if (data) {
       data = get(data, 'data.pageData.0');
     }
@@ -40,7 +41,7 @@ class FamilyPlanning_FileManagement_NurseDesk extends BaseEditPanel {
     const formKey = get(data, 'id') || Math.random();
 
     if (!get(data, 'testingFacility')) set(data, 'testingFacility', get(system, 'config.hospitalName'));
-    if (!get(data, 'registerDate')) set(data, 'registerDate', moment(new Date()));
+    if (!get(data, 'registerDate')) set(data, 'registerDate', dayjs(new Date()));
     if (!get(data, 'registerPerson')) set(data, 'registerPerson', get(user, 'basicInfo.firstName'));
     this.setState({ formDescriptions, formDescriptionsWithoutSection, data, formKey });
   };
@@ -67,21 +68,23 @@ class FamilyPlanning_FileManagement_NurseDesk extends BaseEditPanel {
     if (get(values, 'id')) {
       // 修改档案
       const res = await request.put('/api/family/planning/updateFamilyPlanningFile', params);
-      
+
     } else {
       //新增档案
       const res = (await request.post(baseUrl, params)).data
       if (get(res, 'code') === 1) {
-        
+
 
         //删除keepAliveProvider缓存
-        await updateTabs(get(tabs, `tabsMapping./family-planning/file-management/list`));
-        routerPath && (await deleteTab(routerPath));
-        fubaoHistoryPush('/family-planning/file-management/list', this.props as any);
-        const { path, search } = get(tabs, `tabsMapping.${routerPath}`);
-        keepAliveProviderRef?.current.removeCache(`${path}.name.${search}`);
+        // await updateTabs(get(tabs, `tabsMapping./family-planning/file-management/list`));
+        // routerPath && (await deleteTab(routerPath));
+        // fubaoHistoryPush('/family-planning/file-management/list', this.props as any);
+        // const { path, search } = get(tabs, `tabsMapping.${routerPath}`);
+        // keepAliveProviderRef?.current.removeCache(`${path}.name.${search}`);
+        SLocal_History.closeAndPush(resolveFubaoPath('/family-planning/file-management/list'))
+
       } else {
-        
+
       }
     }
   };

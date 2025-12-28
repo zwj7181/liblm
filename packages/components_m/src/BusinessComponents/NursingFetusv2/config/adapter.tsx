@@ -1,7 +1,7 @@
 // import { get, map } from 'lodash';
 import { formatDate, formatDateTime, safe_json_parse } from '@lm_fe/utils';
 import { get, map, set } from 'lodash';
-import moment from 'moment';
+import dayjs from 'dayjs';
 export const toApi = (data) => {
   return map(data, (item) => {
     return {
@@ -74,7 +74,7 @@ export const fromApi = (data: any, nativeFormDescriptions: any) => {
         });
         break;
       case 'moment':
-        set(result, key, get(data, path) ? moment(get(data, path)) : undefined);
+        set(result, key, get(data, path) ? dayjs(get(data, path)) : undefined);
         break;
       case 'default':
       default:

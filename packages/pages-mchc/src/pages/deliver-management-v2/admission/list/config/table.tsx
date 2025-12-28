@@ -1,0 +1,77 @@
+
+import { APP_CONFIG, formatTimeToDate, idNOFuzzy, MyBaseTableProps } from '@lm_fe/components_m';
+export const tableColumns: MyBaseTableProps['columns'] = [
+  {
+    title: '住院号',
+    dataIndex: 'inpatientNO',
+    align: 'center',
+    width: APP_CONFIG.CELL_WIDTH_SMALL,
+  },
+  {
+    title: '病区号',
+    dataIndex: 'areaNO',
+    align: 'center',
+    width: APP_CONFIG.CELL_WIDTH_SMALL,
+  },
+  {
+    title: '房号',
+    dataIndex: 'roomNO',
+    align: 'center',
+    width: APP_CONFIG.CELL_WIDTH_SMALL,
+  },
+  {
+    title: '床号',
+    dataIndex: 'bedNO',
+    key: 'bedNO',
+    width: APP_CONFIG.CELL_WIDTH_SMALL,
+  },
+  {
+    title: '孕妇姓名',
+    dataIndex: 'name',
+    align: 'center',
+    width: APP_CONFIG.CELL_WIDTH_SMALL,
+  },
+  {
+    title: '证件号码',
+    dataIndex: 'idNO',
+    key: 'idNO',
+    align: 'center',
+    width: APP_CONFIG.CELL_WIDTH_MIDDLE,
+    render: (text) => {
+      return idNOFuzzy(text);
+    },
+  },
+  {
+    title: '孕妇年龄',
+    dataIndex: 'age',
+    align: 'center',
+    width: APP_CONFIG.CELL_WIDTH_SMALL,
+  },
+  {
+    title: '出生日期',
+    dataIndex: 'dob',
+    align: 'center',
+    width: APP_CONFIG.CELL_WIDTH_SMALL,
+  },
+  {
+    title: '预产期',
+    dataIndex: 'edd',
+    align: 'center',
+    width: APP_CONFIG.CELL_WIDTH_SMALL,
+  },
+  // {
+  //   title: '证件类型',
+  //   dataIndex: 'idType',
+  //   key: 'idType',
+  //   align: 'center',
+  //   render: (value: string) => get(IDCardMappingByValue, `${value}.title`),
+  //   width: APP_CONFIG.CELL_WIDTH_MIDDLE,
+  // },
+  {
+    title: '住院日期',
+    dataIndex: 'adminDate',
+    align: 'center',
+    width: APP_CONFIG.CELL_WIDTH_SMALL,
+    render: (value: string) => formatTimeToDate(value),
+  },
+];

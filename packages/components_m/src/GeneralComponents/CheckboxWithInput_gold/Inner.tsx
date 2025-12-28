@@ -1,4 +1,4 @@
-import { ICommonOption, mchcEnv } from '@lm_fe/env';
+import { ICommonOption } from '@lm_fe/env';
 import { numberLikeCompare } from '@lm_fe/utils';
 import { Checkbox } from 'antd';
 import { default as classNames, default as classnames } from 'classnames';
@@ -15,7 +15,7 @@ const MyCheckbox: TCommonComponent<ICheckboxWithInputProps, string | number | IC
   const options = parse_MC_option(MyCheckboxProps)
   const longOptions = options.length > 2
   const [__data, setData] = useState<ICommonOption[]>([]);
-  const marshal = getMarshal(MyCheckboxProps.marshal, value)
+  const marshal = getMarshal(MyCheckboxProps, value)
   const forcusInfo = useRef<{ index?: number, type?: 'child' | 'parent' }>({})
   // mchcEnv.logger.log('MyCheckbox', { MyCheckboxProps, options, __data })
   useEffect(() => {
@@ -90,7 +90,7 @@ const MyCheckbox: TCommonComponent<ICheckboxWithInputProps, string | number | IC
 
     const props: any = option.props ?? {}
     let style: CSSProperties = props.style ?? {}
-    if (['MyInput', 'Input', 'MA', 'MyAutoComplete'].includes(inputType)) {
+    if (['MyInput', 'Input', 'input', 'MA', 'MyAutoComplete'].includes(inputType)) {
       style = { width: inputWidth * (longOptions ? 1 : 2), ...style }
     }
     if (['Select', 'MS', 'MySelect'].includes(inputType)) {
@@ -149,7 +149,7 @@ const MyCheckbox: TCommonComponent<ICheckboxWithInputProps, string | number | IC
           {_parentheses && checked ? <span style={{ margin: "0 2px", whiteSpace: 'nowrap', }}>)</span> : null}
         </>
         return (
-          <div key={index} style={{ display: 'flex', alignItems: 'center', marginRight: 2 }} className={(option.warning && checked) ? styles['warning'] : undefined}>
+          <div title={JSON.stringify(options)} key={index} style={{ display: 'flex', alignItems: 'center', marginRight: 2 }} className={(option.warning && checked) ? styles['warning'] : undefined}>
             <span
               onFocus={(e) => {
 

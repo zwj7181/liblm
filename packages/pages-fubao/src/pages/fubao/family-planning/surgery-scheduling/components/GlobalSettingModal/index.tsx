@@ -5,18 +5,20 @@
  * @modify date 2021-12-01 11:03:44
  * @desc [全局设置的modal]
  */
-import React from 'react';
-import './index.less';
-import { Modal, Row, Col, Form, Select, message, Button, Popconfirm } from 'antd';
-import SingleCheckBox from '../SingleCheckBox/index';
+import { LazyAntd } from '@lm_fe/components';
+import { fubaoRequest as request } from '@lm_fe/utils';
+import { Button, Col, Form, message, Modal, Popconfirm, Row } from 'antd';
 import { FormInstance } from 'antd/lib/form';
+import { get, map } from 'lodash';
+import dayjs from 'dayjs';
+import React from 'react';
 import { NurseTypesMapping } from "../../../file-management/doctor-desk/components/SurgicalRecordv2/config";
 import { valueToApi, valueToForm } from '../../adapter';
-import { get, map } from 'lodash';
-import moment from 'moment';
-import { fubaoRequest as request } from '@lm_fe/utils';
+import SingleCheckBox from '../SingleCheckBox/index';
+import './index.less';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
 const Option = Select.Option;
-moment.locale('zh-cn');
+dayjs().locale('zh-cn');
 const options = [
   { label: '不可约', value: 0 },
   { label: '上午', value: 1 },
@@ -55,7 +57,7 @@ export default class GlobalSettingModal extends React.Component<any, any> {
 
   getDefaultSetting = async () => {
     let values = {};
-    const res: any = await request.get(BaseUrl);
+    const res: any = (await request.get(BaseUrl)).data;
 
     if (get(res, 'code') === 1) {
       values = get(res, 'data');
@@ -90,7 +92,7 @@ export default class GlobalSettingModal extends React.Component<any, any> {
     }
   };
 
-  onChange = (data: any) => {};
+  onChange = (data: any) => { };
 
   handleSubmitData = (data: [{}]) => {
     let day = '';
@@ -157,14 +159,14 @@ export default class GlobalSettingModal extends React.Component<any, any> {
       };
     }
 
-    const res: any = await request.post(`${UpdateUrl}`, submitData);
+    const res: any = (await request.post(`${UpdateUrl}`, submitData)).data;
 
     if (get(res, 'code') === 1) {
-      
+
       this.props.setGlobalSettingModal(false);
       this.props.getReservationPanel();
     } else {
-      
+
     }
   };
 

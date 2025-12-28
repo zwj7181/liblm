@@ -5,7 +5,7 @@ import { get, isEmpty } from 'lodash';
 import { set } from 'lodash';
 import { pickBy } from 'lodash';
 import styles from './index.module.less';
-import { mchcEnv } from '@lm_fe/env';
+import { mchcEnv, mchcLogger } from '@lm_fe/env';
 import { safe_json_parse } from '@lm_fe/utils';
 interface optionProps {
   key: string;
@@ -19,7 +19,7 @@ const extraObj = {
 interface IProps {
   value?: object;
   options?: optionProps[];
-  optionKey?: '家族史';
+  uniqueKey?: '家族史';
   [propName: string]: any;
 }
 
@@ -59,16 +59,16 @@ export default function CheckboxGroupObject(props: IProps) {
   const {
     value,
     onChange,
-    optionKey,
+    uniqueKey,
     options: _options = [],
     type: _type = 'withoutInput',
 
     ...restProps
   } = props
 
-  const options = optionKeyMap[optionKey!]?.options ?? _options
+  const options = optionKeyMap[uniqueKey!]?.options ?? _options
 
-  const type = optionKeyMap[optionKey!]?.type ?? _type
+  const type = optionKeyMap[uniqueKey!]?.type ?? _type
   // dataSource value值本地变量
   const [dataSource, setDataSource] = useState<any>(null);
 
@@ -90,12 +90,11 @@ export default function CheckboxGroupObject(props: IProps) {
   }, [value]);
 
   const handleChange = (checkedValue) => {
-    console.log('-----handle change----', checkedValue, checkedValue.slice(-1));
+    mchcLogger.log('-----handle change----', checkedValue, checkedValue.slice(-1));
     let val: any = {};
     // 选择“无”时
     if (checkedValue[checkedValue.length - 1] === 'nothing') {
       //val = { id: value.id, nothing: true };
-      options.forEach(_ => val[_?.key!] = false)
       val['nothing'] = true
     } else {
       // 选择非“无”
@@ -106,6 +105,7 @@ export default function CheckboxGroupObject(props: IProps) {
       const noteValue = pickBy(value, (value, key) => key.includes('Note') || key === 'id');
       val = { ...val, ...noteValue, nothing: false };
     }
+    options.forEach(_ => val[_?.key!] = val[_?.key!] || false)
     onChange(val);
     setDataSource(val);
   };

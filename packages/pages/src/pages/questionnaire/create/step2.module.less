@@ -1,0 +1,177 @@
+@import '../index.module.less';
+
+.question-step-two__panel {
+  &-question {
+    height: auto;
+    position: fixed;
+    width: 15%;
+    &-card {
+      font-size: 16px;
+      &-item {
+        display: flex;
+        border-bottom: 1px solid #edeef5;
+        margin: 16px 0;
+        &__title {
+          display: block;
+          font-weight: 400;
+          flex: 1;
+        }
+        &__btns {
+          display: flex;
+          flex: 2;
+          flex-flow: column wrap;
+          justify-content: space-between;
+          margin-left: 8px;
+          &-btn {
+            margin: 8px 0;
+            display: flex;
+            cursor: pointer;
+            img {
+              width: 24px;
+              height: 24px;
+              margin-right: 8px;
+            }
+            &:first-child {
+              margin-top: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+  &-preview {
+    border: 1px solid @questionnaire-border-color;
+    &-top {
+      background-color: @questionnaire-bg-color;
+      padding: 24px 8px;
+      // border-bottom: 1px solid @questionnaire-border-color;
+      margin-bottom: 12px;
+      &__desc {
+        margin-top: 8px;
+      }
+    }
+    &-middle {
+      &__start {
+        height: 250px;
+        line-height: 250px;
+        border: 1px dotted skyblue;
+        text-align: center;
+      }
+      &__question {
+        background-color: @questionnaire-bg-color;
+        padding: 16px 8px;
+        margin-bottom: 8px;
+        border-top: 4px solid transparent;
+        border-bottom: 4px solid transparent;
+
+        border-bottom: 1px solid @questionnaire-border-color;
+        &:hover {
+          background-color: @questionnaire-item-active-bg-color;
+        }
+      
+        &-tip {
+          font-size: 12px;
+          color: @questionnaire-item-text-second-color;
+        }
+        &-title {
+          margin-bottom: 4px;
+          display: flex;
+          flex-flow: row wrap;
+          justify-content: space-between;
+          &-icon-delete {
+            display: none;
+            cursor: pointer;
+            &:hover {
+              color: @questionnaire-danger-color;
+            }
+          }
+        }
+        &-options {
+          margin: 4px 0;
+          display: flex;
+          flex-flow: row nowrap;
+          align-items: center;
+          &-input {
+            width: 100% !important;
+          }
+          &-delete {
+            display: none;
+            width: 10%;
+            cursor: pointer;
+            &:hover {
+              color: @questionnaire-danger-color;
+            }
+          }
+          &:hover {
+            .question-step-two__panel-preview-middle__question-options-delete {
+              display: block;
+            }
+          }
+        }
+        // &-input {
+        //   margin: 8px 0 !important;
+        //   display: flex;
+        //   flex-flow: row nowrap;
+        // }
+        &:hover {
+          .question-step-two__panel-preview-middle__question-title-icon-delete {
+            display: block;
+          }
+        }
+      }
+      &__question-border-top {
+        border-top: 2px solid @questionnaire-danger-color;
+      }
+      &__question-border-bottom {
+        border-bottom: 2px solid @questionnaire-danger-color;
+      }
+    }
+    &-bottom {
+      background-color: @questionnaire-bg-color;
+      padding: 16px 8px;
+      margin-top: 8px;
+      &__title {
+        text-align: center;
+        padding-bottom: 8px;
+      }
+      &__btns {
+        display: flex;
+        justify-content: center;
+        flex-flow: row nowrap;
+        margin-top: 16px;
+        &-btn {
+          margin: 0 8px;
+        }
+      }
+    }
+  }
+  &-func {
+    background-color: @questionnaire-bg-color;
+    padding: 24px 14px;
+    height: auto;
+    width: 20%;
+    position: fixed;
+    &__title {
+      padding: 2px 4px;
+      background-color: black;
+      color: @questionnaire-bg-color;
+      border-radius: 2px;
+      display: inline-block;
+    }
+    &__item {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      margin: 16px 0;
+      span,
+      a {
+        display: block;
+      }
+      &-btn {
+        width: 40% !important;
+      }
+    }
+  }
+}
+
+

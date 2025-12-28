@@ -1,8 +1,8 @@
-import BaseFormComponent from '../../BaseFormComponent';
-import { PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import { MyIcon } from '@lm_fe/components';
 import { Col, Row, Space } from 'antd';
-import { map, cloneDeep, set, get, isEmpty } from 'lodash';
+import { get, isEmpty, map, set } from 'lodash';
 import React, { Component } from 'react';
+import BaseFormComponent from '../../BaseFormComponent';
 import styles from './index.less';
 export default class CaesareanChildren extends Component<any, any> {
   state = {
@@ -80,9 +80,10 @@ export default class CaesareanChildren extends Component<any, any> {
         <div style={{ paddingLeft: 30, color: '#3d8bf7' }}>
           <span>新生儿{index + 1}：</span>
           <Space>
-            <PlusCircleOutlined onClick={this.handleAdd} />
+            <MyIcon value='PlusCircleOutlined' onClick={this.handleAdd} />
             {this.state.childrens.length > 1 ? (
-              <MinusCircleOutlined
+              <MyIcon
+                value='MinusCircleOutlined'
                 onClick={() => {
                   this.handleDelete(index);
                 }}

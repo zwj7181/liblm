@@ -1,7 +1,7 @@
 
+import { IMchc_FormDescriptions_Field } from '@lm_fe/service';
 import { ButtonProps, FormInstance } from 'antd';
-import { IFormSectionFormProps } from '../../BaseModalForm/FormSectionForm';
-import { IMchc_FormDescriptions, IMchc_FormDescriptions_Field } from '@lm_fe/service';
+import { IFormSectionFormProps } from '../FormSection/FormSectionForm';
 
 
 export interface IToggleFormProps<T = any> {

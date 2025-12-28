@@ -1,54 +1,24 @@
-import { formatDateTime, getSearchParamsAll, getSearchParamsValue, request } from "@lm_fe/utils";
-import { message, Button, Space } from "antd";
-import React from 'react'
-import { mchcEnv } from "../env";
-import { mchcLogger } from "../logger";
-import { historyPush } from "./history";
-import { getGlobalHistory } from "./state";
+import { dyn_cb, safeGetFromFuncOrData } from "@lm_fe/utils";
+import { gen_rt_ctx, IRTCtx } from "./runtime_ctx";
 
 
-interface ICtx {
-    message: typeof message
-    request: typeof request
-    mchcEnv: typeof mchcEnv
-    React: typeof React
-    goTo(url: string): void
-    ui: { Button: typeof Button, Space: typeof Space },
-    utils: {
-        formatDateTime: typeof formatDateTime
-        getSearchParamsAll: typeof getSearchParamsAll
-    }
-
-}
 
 
-export function dynamicScriptExecute(cb: (ctx: ICtx) => void, props?: { history?: any }) {
-    try {
-        cb({
-            message,
-            request,
-            mchcEnv,
-            React,
-            utils: { formatDateTime, getSearchParamsAll },
-            goTo(url) {
-                const history = getGlobalHistory()
-                return history.push(url)
-                // historyPush(url, props)
-            },
-            ui: { Button, Space },
-        })
-    } catch (error: any) {
-        mchcLogger.error('dynamicScriptExecute', { error })
-        message.warn(`脚本错误：${error}`)
-    }
 
-}
 
-export function getSymbolFromDynamicScript<T = any>(str: any, props?: { history?: any }) {
+
+
+export function safe_get_symbol<T = any>(str: any, props?: any, default_v?: T) {
     let ret: T | undefined
     if (typeof str !== 'string') return ret
-    dynamicScriptExecute((ctx) => {
-        eval(str)
-    }, props)
+    const is_err = dyn_cb((ctx) => { eval(str) }, () => gen_rt_ctx('instance_ctx', props),)
+    if (is_err) {
+        ret = default_v
+    }
     return ret
+}
+
+export function safe_get_object_symbol(value: any, props?: any, default_v?: any,) {
+    let maybe_fn = safe_get_symbol(value, props, default_v)
+    return safeGetFromFuncOrData(maybe_fn, default_v)
 }

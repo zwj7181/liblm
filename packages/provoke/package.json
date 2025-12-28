@@ -1,0 +1,36 @@
+{
+    "name": "@lm_fe/provoke",
+    "version": "0.2.2",
+    "description": "",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "rollup -c rollup.config.js",
+        "build:watch": "rollup -c rollup.config.js --watch",
+        "clean": "rimraf dist",
+        "prebuild": "pnpm clean"
+    },
+    "main": "dist/index.js",
+    "directories": {
+        "lib": "dist"
+    },
+    "types": "dist/index.d.ts",
+    "files": [
+        "dist"
+    ],
+    "publishConfig": {
+        "access": "public"
+    },
+    "devDependencies": {
+        "rollup": "^2.70.2",
+        "zustand": "^5.0.3"
+    },
+    "dependencies": {
+        "@lm_fe/env": "workspace:*",
+        "@lm_fe/service": "workspace:*",
+        "@lm_fe/utils": "workspace:*"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "MIT",
+    "gitHead": "607e3267c47fa08e9a13c7794ef66d1f1fb0c93f"
+}

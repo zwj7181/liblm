@@ -1,10 +1,7 @@
-import { appEnv } from "./AppEnv";
-import { EventEmitter } from "./Event";
+import { EventEmitter, isString, MyLog } from "@noah-libjs/utils";
 import ReconnectingWebSocket from "reconnecting-websocket";
 import { WebSocketEventListenerMap } from "reconnecting-websocket/dist/events";
-import { MyLog, } from "./log";
-import { isString } from "lodash";
-import { message } from "antd";
+import { appEnv } from "./AppEnv";
 
 
 
@@ -18,7 +15,6 @@ export class BaseWsService<T = any> extends EventEmitter<{ [x in keyof WebSocket
 
         super()
         this._url = url
-        this._logger.log('constructor', { ins: this, url })
 
     }
     get isOpen() {
@@ -45,9 +41,6 @@ export class BaseWsService<T = any> extends EventEmitter<{ [x in keyof WebSocket
             data = JSON.parse(rawData)
         } catch (e) {
             this._logger.error({ e, type: 'JSON.parse' })
-            if (isString(rawData)) {
-                message.warn(rawData)
-            }
         }
         this.emit('message', e)
         this.emit('data', data)
@@ -74,13 +67,13 @@ export class BaseWsService<T = any> extends EventEmitter<{ [x in keyof WebSocket
                 res(this)
             });
             this.wsService.addEventListener('error', (e) => {
-                this._logger.log('error', { e, ins: this })
+                // this._logger.log('error', { e, ins: this })
 
                 this.emit('error', e)
                 rej()
             });
             this.wsService.addEventListener('close', (e) => {
-                this._logger.log('close', { e, ins: this })
+                // this._logger.log('close', { e, ins: this })
 
                 this.emit('close', e)
                 rej()

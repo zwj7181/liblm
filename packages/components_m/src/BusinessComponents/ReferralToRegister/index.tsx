@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { Table, Button, Popconfirm, Space, Divider, Form } from 'antd';
-import moment from 'moment';
-import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { LazyAntd, MyIcon } from '@lm_fe/components';
+import { Button, Divider, Form, Popconfirm, Space } from 'antd';
+import dayjs from 'dayjs';
+import React, { useState } from 'react';
 import EditableCell from './EditableCell';
-import column, { data } from './columns';
+import column from './columns';
 import './index.less';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
+
 export interface ItemProps {
   id: string | number;
   referralType: number;
@@ -42,7 +45,7 @@ export default function ReferralToRegister({ onChange, value = [], ...rest }: an
           </span>
         ) : (
           <>
-            <Button type="link" icon={<EditOutlined />} className="table-action-btn" onClick={() => edit(record)}>
+            <Button type="link" icon={<MyIcon value='EditOutlined' />} className="table-action-btn" onClick={() => edit(record)}>
               编辑
             </Button>
             <Divider type="vertical" />
@@ -57,7 +60,7 @@ export default function ReferralToRegister({ onChange, value = [], ...rest }: an
                 type="link"
                 title="删除"
                 size="small"
-                icon={<DeleteOutlined />}
+                icon={<MyIcon value='DeleteOutlined' />}
                 className="table-action-btn"
               >
                 删除
@@ -107,7 +110,7 @@ export default function ReferralToRegister({ onChange, value = [], ...rest }: an
 
   const edit = (record: any) => {
     let formBaseData = {
-      referralDate: record.referralDate ? moment(record.referralDate) : null,
+      referralDate: record.referralDate ? dayjs(record.referralDate) : null,
     };
     formBaseData = {
       ...record,
@@ -125,7 +128,7 @@ export default function ReferralToRegister({ onChange, value = [], ...rest }: an
       id,
       referralType: 1,
       referralDept: '',
-      referralDate: moment(),
+      referralDate: dayjs(),
       reason: '',
     };
     console.log(newData, [...value, newData], 'newData');
@@ -144,13 +147,13 @@ export default function ReferralToRegister({ onChange, value = [], ...rest }: an
         const item = newData[index];
         newData.splice(index, 1, {
           ...item,
-          ...{ ...row, referralDate: moment(row.referralDate).format('YYYY-MM-DD') },
+          ...{ ...row, referralDate: dayjs(row.referralDate).format('YYYY-MM-DD') },
         });
         onChange(newData);
         setEditingKey(0);
       } else {
         // 新增
-        newData.push({ ...row, referralDate: moment(row.referralDate).format('YYYY-MM-DD') });
+        newData.push({ ...row, referralDate: dayjs(row.referralDate).format('YYYY-MM-DD') });
         onChange(newData);
         setEditingKey(0);
       }
@@ -194,7 +197,7 @@ export default function ReferralToRegister({ onChange, value = [], ...rest }: an
         }}
         footer={() => {
           return (
-            <Button block icon={<PlusOutlined />} onClick={handleAdd}>
+            <Button block icon={<MyIcon value='PlusOutlined' />} onClick={handleAdd}>
               增加
             </Button>
           );

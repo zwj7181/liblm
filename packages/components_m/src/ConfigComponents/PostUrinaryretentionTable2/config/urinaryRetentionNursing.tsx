@@ -2,7 +2,7 @@
  * 产后尿潴留护理单
  */
 import { MODAL_TEMPLATE_TYPES } from '@lm_fe/env';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { APP_CONFIG } from '../../../utils/constants';
 export const tableColumns: any = [
   {
@@ -22,7 +22,7 @@ export const tableColumns: any = [
       type: 'dataTime',
     },
     render: (value, data) => {
-      return value ? moment(value).format('YYYY-MM-DD HH:mm') : '';
+      return value ? dayjs(value).format('YYYY-MM-DD HH:mm') : '';
     },
   },
   {

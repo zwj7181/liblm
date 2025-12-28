@@ -1,115 +1,79 @@
-import { BaseEditPanel, formDescriptionsWithoutSectionApi, mchcModal } from '@lm_fe/components_m';
-import { SLocal_State, SMchc_FormDescriptions } from '@lm_fe/service';
+import { BaseEditPanelFormFC } from '@lm_fe/components_m';
 import { getSearchParamsValue, fubaoRequest as request } from '@lm_fe/utils';
-import { message } from 'antd';
 import { get, set } from 'lodash';
-import moment from 'moment';
-import { valueToApi, valueToForm } from '../config/adapter';
-import Form from './components/Form';
-class BasicInfo extends BaseEditPanel<any> {
-  static defaultProps = {
-    baseUrl: '/api/premarital/check/savePremaritalCheckArchivesGuidanceAsses', request,
-    moduleName: 'wife-premarital-care-guidance-evaluation',
-    title: '指导/评估',
-    Form,
-  };
 
-  state = {
-    data: {},
-    formDescriptionsWithoutSection: {},
-    formDescriptions: [],
-    formKey: undefined,
-    spinning: true,
-    activeTemplate: '',
-    printModalVisible: false,
-    printId: '',
-  };
+import { BF_Wrap2 } from '@lm_fe/pages';
+import { TIdTypeCompatible } from '@lm_fe/service';
+import { Form } from 'antd';
+import React, { useEffect, useState } from 'react';
+import form_config from './form_config';
+import { mchcUtils } from '@lm_fe/env';
+interface IProps {
+  type: 'husband' | 'wife'
+  id?: TIdTypeCompatible
+  filesData?: any
+}
+export default function PhysicalExamination(props: IProps) {
+  const { type, filesData } = props
+  const [form] = Form.useForm()
+  const [data, setdata] = useState<any>({})
 
-  extraEvents = {
-    //打印
-    handlePrint: () => {
-      this.print()
-    },
-  };
-  print(printId = this.state.printId) {
-    const { activeTemplate } = this.state;
-    if (printId != this.state.printId) {
-      this.setState({ printId })
+  const { Wrap, config } = BF_Wrap2({
+    default_conf: {
+      title: `婚前检查-指导评估`,
+      tableColumns: form_config
     }
-    mchcModal.open('print_modal', {
-      modal_data: {
-        request,
-        requestConfig: {
-          url: "/api/premaritalCheckupsPrint",
-          data: {
-            resource: activeTemplate,
-            template: '',
-            version: '',
-            note: '',
-            id: printId,
-          }
-        }
-      }
-    })
-  }
-  async componentDidMount() {
-    this.handleInit();
-  }
+  })
+  useEffect(() => {
 
-  handleInit = async () => {
-    const { routerQuery, moduleName, type, filesData } = this.props as any;
-    const id = get(this.props, 'id') || getSearchParamsValue('id');
+    handleInit();
+
+    return () => {
+
+    }
+  }, [])
+
+
+  async function handleInit() {
+    const id = get(props, 'id') || getSearchParamsValue('id');
     let res: any;
     let data: any;
-    let activeTemplate = '';
-    // 获取配置文件
-    const formDescriptions = await SMchc_FormDescriptions.getModuleParseCache(moduleName);
-    this.setState({ spinning: false });
-    const formDescriptionsWithoutSection = formDescriptionsWithoutSectionApi(formDescriptions);
+
     if (type === 'wife') {
       res = id
-        ? (await request.get(
-          `/api/premarital/check/getByPremaritalCheckArchivesId?premaritalCheckArchivesId.equals=${id}&fileType.equals=2&childrenSign.equals=6`,
-        )).data
+        ? (
+          await request.get(
+            `/api/premarital/check/getByPremaritalCheckArchivesId?premaritalCheckArchivesId.equals=${id}&fileType.equals=2&childrenSign.equals=6`,
+          )
+        ).data
         : {};
-      activeTemplate = 'womanPremaritalCheckupsPrint';
     } else {
       res = id
-        ? (await request.get(
-          `/api/premarital/check/getByPremaritalCheckArchivesId?premaritalCheckArchivesId.equals=${id}&fileType.equals=1&childrenSign.equals=6`,
-        )).data
+        ? (
+          await request.get(
+            `/api/premarital/check/getByPremaritalCheckArchivesId?premaritalCheckArchivesId.equals=${id}&fileType.equals=1&childrenSign.equals=6`,
+          )
+        ).data
         : {};
-      activeTemplate = 'manPremaritalCheckupsPrint';
     }
     if (res) {
       data = get(res, 'data.0');
       data = { ...data, ...get(data, 'premaritalCheckArchivesGuidanceAssesVM') };
+      data = mchcUtils.autoNoteToCommonOption(data)
+      set(data, 'systolic_', [data.systolic, data.diastolic])
     }
 
-    data = id ? valueToForm(data, formDescriptionsWithoutSection) : {};
+    data = id ? data : {};
 
-    const formKey = get(data, 'id') || Math.random();
 
-    if (!get(data, 'checkDate')) set(data, 'checkDate', moment(new Date()));
-    if (!get(data, 'checkDoctor')) set(data, 'checkDoctor', SLocal_State.getUserData());
-    this.setState({
-      formDescriptions,
-      formDescriptionsWithoutSection,
-      data,
-      formKey,
-      activeTemplate,
-      printId: get(filesData, 'id'),
-    });
+    setdata(data)
+    form.setFieldsValue(data)
   };
 
-  handleSubmit = async (values: any) => {
-    const { formDescriptionsWithoutSection, data, newData } = this.state as any;
-    const { baseUrl, filesData, type } = this.props as any;
+  async function handleSubmit(values: any) {
     let { premaritalCheckArchivesGuidanceAssesVM } = data;
-    if (newData) {
-      premaritalCheckArchivesGuidanceAssesVM = get(newData, 'premaritalCheckArchivesGuidanceAssesVM');
-    }
-    let params = valueToApi(values, formDescriptionsWithoutSection);
+    const baseUrl = '/api/premarital/check/savePremaritalCheckArchivesGuidanceAsses'
+    let params = values;
     let premaritalCheckArchivesDetailId = get(filesData, 'womanPremaritalCheckArchivesDetailVM.id');
     if (type === 'husband') {
       premaritalCheckArchivesDetailId = get(filesData, 'manPremaritalCheckArchivesDetailVM.id');
@@ -120,43 +84,26 @@ class BasicInfo extends BaseEditPanel<any> {
       ...params,
       premaritalCheckArchivesDetailId,
     };
-
-    const _res = await request.post(baseUrl, params)
-    const res = _res.data
+    params = mchcUtils.autoCommonOptionToNote(params)
+    set(params, 'systolic', params.systolic_?.[0])
+    set(params, 'diastolic', params.systolic_?.[1])
+    const _re = (await request.post(baseUrl, params)).data
+    const res = _re.data
     if (get(res, 'code') === 1) {
-      if (get(values, 'isPrint')) {
-        message.success(get(res, 'msg'), 0.5).then(() => {
-          this.print(get(filesData, 'id'))
-        });
-      } else {
-        
-      }
+
       let newData = get(res, 'data.0');
-      this.setState({ newData });
+      setdata(newData)
     } else {
-      
+
     }
   };
-
-  // renderOtherModal = () => {
-  //   const { printModalVisible, printId, activeTemplate } = this.state;
-  //   return printModalVisible ? (
-  //     <PrintModal
-  //       onCancel={() => {
-  //         this.setState({ printModalVisible: false });
-  //       }}
-  //       isNewEdition={true}
-  //       visible={printModalVisible}
-  //       url="/api/premaritalCheckupsPrint"
-  //       requestData={{
-  //         resource: activeTemplate,
-  //         template: '',
-  //         version: '',
-  //         note: '',
-  //         id: printId,
-  //       }}
-  //     />
-  //   ) : null;
-  // };
+  return <Wrap>
+    <BaseEditPanelFormFC
+      form={form}
+      onFinish={async v => {
+        handleSubmit(v)
+      }}
+      formDescriptions={config?.tableColumns}
+    />
+  </Wrap>
 }
-export default BasicInfo

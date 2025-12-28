@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { get, map, set, isEmpty } from 'lodash';
-import InputWithLabel from '../InputWithLabel';
+import GeneralComponents_InputWithLabel from '../InputWithLabel';
 import classnames from 'classnames';
 export interface Option {
   enterType?: 'string' | 'number';
@@ -39,7 +39,7 @@ export default function MultipleInputWithLabel(props: IMultipleInputWithLabelPro
   const renderContent = () => {
     return map(options as any, (option, index) => {
       return (
-        <InputWithLabel
+        <GeneralComponents_InputWithLabel
           {...props}
           key={index}
           value={get(data, index)}

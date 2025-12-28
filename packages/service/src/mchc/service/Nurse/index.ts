@@ -6,6 +6,7 @@ import { IMchc_Nurse_OutpatientDocument } from './types'
 import { process_OutpatientDocument_local, process_OutpatientDocument_remote } from "./utils"
 
 export * from './types'
+export * from './utils'
 
 export class Mchc_Nurse_Service extends ModelService {
 
@@ -24,6 +25,7 @@ export class Mchc_Nurse_Service extends ModelService {
         const { data } = await request.put<IMchc_Nurse_OutpatientDocument>('/api/nurse/updateOutpatientDocument', process_OutpatientDocument_local(_data));
         return process_OutpatientDocument_remote(data)
     }
+
 }
 
 export const SMchc_Nurse = new Mchc_Nurse_Service

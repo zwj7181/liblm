@@ -1,16 +1,168 @@
-import { request } from "@lm_fe/utils"
+import { expect_array, request, safe_async_call } from "@lm_fe/utils"
 
 
-import { IMchc_FormDescriptions_Field, IMchc_FormDescriptions, IMchc_FormDescriptions_InputProps } from './types'
-import { getCache, parseFormDescriptions, defineFormConfig, setCache } from "./utils"
+import { isFunction, isObject, values } from "lodash"
+import { IMchc_FormDescriptions, IMchc_FormDescriptions_Field_Nullable, IMchc_FormDescriptions_Field_Nullable_Arr, IMchc_FormDescriptions_MIX } from './types'
+import { get_lazy, getCache, parse_form_item_name_raw, parseFormDescriptions, setCache } from "./utils"
 export * from "./types"
+export * from "./utils"
 
 
-export { parseFormDescriptions, defineFormConfig }
-
+interface IRemoteFilter {
+    name: string,
+    filter: string[]
+}
 
 
 export const SMchc_FormDescriptions = {
+
+    async extract_form_config(config: IMchc_FormDescriptions_MIX) {
+
+        let d = get_lazy(config)
+
+        if (d) return d
+
+        let f: IMchc_FormDescriptions_Field_Nullable_Arr = []
+
+        if (Array.isArray(config)) {
+
+            f = config
+
+        }
+        else if (isFunction(config)) {
+
+            let r = await config()
+
+            // compatible with default export
+            r = (r as any).default ?? r
+
+            const res = await Promise.resolve(
+                isFunction(r) ? r() : r
+            )
+
+            const f = Array.isArray(res)
+                ? res
+                : get_lazy(res) ?? (res as unknown as IMchc_FormDescriptions_Field_Nullable_Arr) ?? []
+
+            return f
+
+        }
+        else if (isObject(config)) {
+
+
+
+            f = Object.values(config)
+
+        }
+
+        return f
+
+    },
+    async filter_form_config(config: IMchc_FormDescriptions_MIX) {
+
+        let f = await this.extract_form_config(config)
+
+        return this.__filter_form_config(f)
+
+    },
+    async __filter_form_config(config: IMchc_FormDescriptions_Field_Nullable_Arr) {
+
+        if (config.every(_ => !_?.remote_filter_key)) return config
+
+        let request_data = config.reduce((sum, _) => {
+            if (!sum) return {}
+            let remote_filter_key = _?.remote_filter_key
+            if (!remote_filter_key) return sum
+            const old = sum[remote_filter_key] = sum[remote_filter_key] ?? { name: remote_filter_key, filter: [] };
+            const title = this.get_form_item_title_or_Name(_)
+            old.filter.push(title)
+            return sum
+
+        }, {} as { [x: string]: IRemoteFilter } | undefined)
+
+        const data = await SMchc_FormDescriptions.remote_filter(values(request_data))
+        const res = config.filter(_ => {
+            if (!_) return false
+            if (!_.children) {
+                return true
+            }
+            const title = this.get_form_item_title_or_Name(_)
+            const remote_filter_key = _.remote_filter_key!
+            const remote_config = data.find(d => d.name === remote_filter_key)
+            if (!remote_config) return true
+            return remote_config?.filter?.includes(title)
+
+        })
+        return res
+
+    },
+
+
+    get_form_item_title_or_Name(fd: IMchc_FormDescriptions_Field_Nullable) {
+        return this.get_form_item_title(fd) ?? this.get_form_item_name_str(fd)
+    },
+    set_form_item_name(item: IMchc_FormDescriptions_Field_Nullable, name?: number | string | string[]) {
+        if (!item) return
+
+        const arr = parse_form_item_name_raw(name)
+        const str = arr.join('.')
+        item.name = str
+        item.key = str
+        return str
+    },
+    format_form_item_name_and_label(item: IMchc_FormDescriptions_Field_Nullable) {
+        if (!item) return null
+        const arr = this.parse_form_item_name(item).filter(_ => _)
+        const str = arr.join('.')
+        item.name = str
+        item.key = str
+        // item.dataIndex = str
+
+        const title = this.get_form_item_title(item)
+        item.label = title
+        item.title = title
+        return str
+
+    },
+    get_form_item_name_raw(item: IMchc_FormDescriptions_Field_Nullable) {
+        return item?.name ?? item?.key ?? item?.dataIndex
+    },
+    get_form_item_name_str(item: IMchc_FormDescriptions_Field_Nullable, separator = '.') {
+        const arr = this.parse_form_item_name(item).filter(_ => _)
+        const str = arr.join(separator)
+        return str
+    },
+    get_form_item_title(item: IMchc_FormDescriptions_Field_Nullable) {
+        return item?.label ?? item?.title
+    },
+    parse_form_item_name(item: IMchc_FormDescriptions_Field_Nullable) {
+        const key = this.get_form_item_name_raw(item)
+        return parse_form_item_name_raw(key)
+    },
+
+
+
+
+    async remote_filter(req_data: IRemoteFilter[],) {
+        if (!req_data?.length) return []
+        const has_cache = req_data.every(_ => remote_filter_cache[_.name])
+        if (has_cache) {
+            return req_data.map(_ => remote_filter_cache[_.name])
+        }
+        try {
+            let res = await request.post<IRemoteFilter[]>('/api/form-filter', req_data, { timeout: 2000, showMsg: false, unboxing: true })
+            const filtered = expect_array(res.data)
+            // .map(f => ({ ...f, filter: f.filter.slice(0, 2) }))
+
+            filtered.forEach(_ => {
+                remote_filter_cache[_.name] = _
+            })
+            return filtered
+        } catch (error) {
+
+            return req_data
+        }
+    },
     async getModule(moduleName: string,) {
         const res = await request.get<IMchc_FormDescriptions<true>[]>('/api/form-descriptions', { params: { moduleName } })
         setCache(moduleName, res.data)
@@ -28,4 +180,7 @@ export const SMchc_FormDescriptions = {
         return parseFormDescriptions(data)
 
     }
+}
+
+const remote_filter_cache: { [x: string]: IRemoteFilter } = {
 }

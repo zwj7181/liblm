@@ -1,4 +1,6 @@
 export interface IMchc_Admission_LabourDocument {
+    "placentadeliveredtime": any,
+    "placentadeliveredtime": any,
     "edd": null,
     "gravidity": null,
     "parity": null,

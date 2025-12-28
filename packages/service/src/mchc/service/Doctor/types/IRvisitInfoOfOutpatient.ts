@@ -1,8 +1,9 @@
-import { MchcTypes, MchcType_default, MchcType_越秀妇幼, } from "@lm_fe/env";
+import { MCHC_TYPE_MAP, MchcTypes } from "@lm_fe/env";
 import { IMchc_Doctor_Diagnoses } from "./common";
+import { IMchc_Nurse_OutpatientDocument_physicalExam } from "../../Nurse";
 
 
-export interface IMchc_Doctor_RvisitInfoOfOutpatient<T extends MchcTypes = MchcType_default> {
+export interface IMchc_Doctor_RvisitInfoOfOutpatient<T extends MchcTypes = MCHC_TYPE_MAP['mchc']> {
 
     diagnoses: IMchc_Doctor_Diagnoses<T>[]
     lackReports: string[]
@@ -28,11 +29,11 @@ export interface IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit {
     exam: null
     fetusExam: {
 
-        fetalHeartRate: "111",
-        fetalMovement: "正常",
-        fetalPosition: "右下",
-        position: "LOA",
-        presentation: "不清",
+        fetalHeartRate?: string,
+        fetalMovement?: string,
+        fetalPosition?: string,
+        position?: string,
+        presentation?: string,
     }[]
     gestationalWeek: string
     id: number
@@ -69,15 +70,7 @@ export interface IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit {
         ast: null
         tba: null
     }
-    physicalExam: {
-        diastolic: 70
-        diastolic2: null
-        diastolic3: null
-        systolic: 120
-        systolic2: null
-        systolic3: null
-        weight: 45
-    }
+    physicalExam: IMchc_Nurse_OutpatientDocument_physicalExam
     pih: {
         medication: null
         quality: null
@@ -87,4 +80,7 @@ export interface IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit {
     isOpenVTETable: number
     isOpenSCTable: number
     isOpenEclampsiaTable: number
+
+    // added
+    isBanned: boolean
 }

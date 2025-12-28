@@ -1,9 +1,9 @@
-import React from 'react';
-import { get, forEach } from 'lodash';
-import { Input, InputNumber, Tooltip } from 'antd';
-import { QuestionCircleOutlined } from '@ant-design/icons';
-import './index.less';
+import { MyIcon } from '@lm_fe/components';
 import { isIE } from '@lm_fe/utils';
+import { Input, InputNumber, Tooltip } from 'antd';
+import { forEach, get } from 'lodash';
+import React from 'react';
+import './index.less';
 interface MyInputProps {
   onChange: Function;
   onClick: Function;
@@ -106,7 +106,7 @@ export default class MyInput extends React.Component<MyInputProps, MyInputState>
 
             {/\*/.test(error) && value ? (
               <Tooltip className="rang_tip" title={`${label}的正常范围值是${minVal}~${maxVal}${unit}`}>
-                <QuestionCircleOutlined />
+                <MyIcon value='QuestionCircleOutlined' />
               </Tooltip>
             ) : null}
           </div>

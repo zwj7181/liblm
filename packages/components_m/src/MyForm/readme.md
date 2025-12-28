@@ -59,13 +59,13 @@
 
 | name   | descriptions             | format | ps                   |
 | ------ | ------------------------ | ------ | -------------------- |
-| format | DatePicker日期展示的形式 | String | 使用`moment`日期格式 |
+| format | DatePicker日期展示的形式 | String | 使用`dayjs()`日期格式 |
 
 - date - time 日期选择组件
 
 | name   | descriptions             | format | ps                   |
 | ------ | ------------------------ | ------ | -------------------- |
-| format | TimePicker时间展示的形式 | String | 使用`moment`日期格式 |
+| format | TimePicker时间展示的形式 | String | 使用`dayjs()`日期格式 |
 
 
 

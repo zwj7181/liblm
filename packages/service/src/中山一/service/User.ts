@@ -1,5 +1,5 @@
 import { formatDate, request, getSearchParamsValue } from "@lm_fe/utils"
-import { Moment } from "moment"
+import { Dayjs } from "dayjs"
 import { IFuckPageResponse, IFuckResponse } from "src/types"
 
 
@@ -68,7 +68,7 @@ const baseURL = '/Obcloud'
 
 export const SZsy_CtgRecord = {
     count: 0,
-    async findRecordsPage(q: { pageCurrent: number, pageSize: number, state?: number, startDate?: Moment, endDate?: Moment }) {
+    async findRecordsPage(q: { pageCurrent: number, pageSize: number, state?: number, startDate?: Dayjs, endDate?: Dayjs }) {
         const visitDateStart = q.startDate ? formatDate(q.startDate) : undefined
         const visitDateEnd = q.endDate ? formatDate(q.endDate) : undefined
         const res = await request.get<IFuckPageResponse<IZsy_CtgRecord>>(`/api/ctg/findRecords`, {

@@ -1,7 +1,6 @@
+import { RangePicker_L } from '@lm_fe/components';
+import dayjs, { Dayjs } from 'dayjs';
 import React from 'react';
-import moment from 'moment';
-import { DatePicker } from 'antd';
-const { RangePicker } = DatePicker;
 export default function CusRangePicker({
   value = undefined,
   onChange,
@@ -10,21 +9,21 @@ export default function CusRangePicker({
   getPopupContainer = () => document.body,
   ...rest
 }: any) {
-  const transValue = (date: moment.MomentInput[]) => {
+  const transValue = (date: Dayjs[]) => {
     let result = undefined;
     if (!!date) {
-      result = [moment(date[0]), moment(date[1])];
+      result = [dayjs(date[0]), dayjs(date[1])];
     }
     return result;
   };
 
-  const handleChange = (date: moment.MomentInput, dateString: any) => {
+  const handleChange = (date: Dayjs, dateString: any) => {
     let result = date;
     if (valueType) {
-      result = moment(date).format(valueType);
+      result = dayjs(date).format(valueType);
     }
     if (format) {
-      result = moment(date).format(format);
+      result = dayjs(date).format(format);
     }
     onChange(result);
   };
@@ -33,6 +32,6 @@ export default function CusRangePicker({
   //     <RangePicker getPopupContainer={getPopupContainer} value={transValue(value)} onChange={handleChange} {...rest} />
   //   );
   return (
-    <RangePicker getPopupContainer={getPopupContainer} value={transValue(value)} onChange={handleChange} {...rest} />
+    <RangePicker_L getPopupContainer={getPopupContainer} value={transValue(value)} onChange={handleChange} {...rest} />
   );
 }

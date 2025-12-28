@@ -1,6 +1,7 @@
 // TODO 将 所有的名命改为下划线名命法
 
 import { IMchc_FormDescriptions_Field } from "@lm_fe/service";
+import { AnyObject } from "@lm_fe/utils";
 
 // Checkbox
 interface ExtraEditors {
@@ -105,7 +106,7 @@ export interface FormItemProp {
 
   disabled_all?: boolean
   config: FormConfig[];
-  allValue?: { [x: string]: any }
+  allValue?: AnyObject
   actions?: {
     setValue?: (val: any) => void;
     getValue?: () => any;

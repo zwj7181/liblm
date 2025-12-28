@@ -1,13 +1,9 @@
-import React, { Component, ReactNode } from 'react';
-import { Button, Tooltip, Modal } from 'antd';
-import {
-  MinusCircleOutlined,
-  PlusCircleOutlined,
-  QuestionCircleOutlined,
-} from '@ant-design/icons';
-import MyCustom from './index';
-import './ArrayCustom.less';
+import { MyIcon } from '@lm_fe/components';
+import { Button, Modal, Tooltip } from 'antd';
 import { set } from 'lodash';
+import React, { Component, ReactNode } from 'react';
+import './ArrayCustom.less';
+import MyCustom from './index';
 
 /**
  * 传入一个数组
@@ -89,7 +85,7 @@ export default class ArrayCustom extends Component<ArrayCustomProps, ArrayCustom
                         shape="circle"
                         danger
                         type="link"
-                        icon={<MinusCircleOutlined />}
+                        icon={<MyIcon value='MinusCircleOutlined' />}
                         disabled={this.props.disabled}
 
                         onClick={() => this.handleDelete(index)}
@@ -103,7 +99,7 @@ export default class ArrayCustom extends Component<ArrayCustomProps, ArrayCustom
                         shape="circle"
                         size="small"
                         type="link"
-                        icon={<PlusCircleOutlined />}
+                        icon={<MyIcon value='PlusCircleOutlined' />}
                         onClick={this.handleAdd}
                         disabled={this.props.disabled}
                       />
@@ -178,7 +174,7 @@ export default class ArrayCustom extends Component<ArrayCustomProps, ArrayCustom
       <div className="array-custom" id={name}>
         <div>{this.renderArrayCustomForm()}</div>
         <Modal
-          visible={visible}
+          open={visible}
           closable={false}
           onCancel={() => this.setState({ visible: false })}
           onOk={() => this.confirmDelete()}
@@ -186,7 +182,7 @@ export default class ArrayCustom extends Component<ArrayCustomProps, ArrayCustom
           style={{ top: '40%' }}
         >
           <span>
-            <QuestionCircleOutlined style={{ color: '#feaa02' }} />
+            <MyIcon value='QuestionCircleOutlined' style={{ color: '#feaa02' }} />
           </span>
           &nbsp;&nbsp;
           <span>你是否确认删除此记录</span>

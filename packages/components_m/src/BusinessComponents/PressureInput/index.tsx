@@ -1,23 +1,48 @@
-import React from 'react';
+import { MyIcon } from '@lm_fe/components';
+import { EMPTY_PLACEHOLDER } from '@lm_fe/utils';
 import { Input, InputNumber, Tooltip } from 'antd';
-import { QuestionCircleOutlined } from '@ant-design/icons';
-import { get } from 'lodash';
 import classnames from 'classnames';
+import { get } from 'lodash';
+import React from 'react';
+import { TCommonComponent } from 'src/FU_components/types';
 import styles from './index.module.less';
-export default (props: any) => {
-  const { onChange, value, hiddenIpt, disabled } = props;
+interface ValueType {
+  "id": 274,
+  "height": null,
+  "weight": null,
+  "systolic": 1,
+  "diastolic": 11,
+  "systolic2": 2,
+  "diastolic2": 22,
+  "systolic3": 3,
+  "diastolic3": 33,
+  "temperature": null,
+  "pulse": null,
+  "type": null,
+  "remark": null
+}
+interface IProps {
+  hiddenIpt?: boolean,
+  disabled?: boolean,
+  pressure_key1?: keyof ValueType
+  pressure_key2?: keyof ValueType
+}
+// 此组件 value 为
+const PressureInput: TCommonComponent<IProps, Partial<ValueType>> = function PressureInput(props) {
+  const { onChange, value = {}, hiddenIpt, disabled, pressure_key1 = 'systolic', pressure_key2 = 'diastolic' } = props;
   const data = {
-    systolic: get(value, 'systolic') || null,
-    diastolic: get(value, 'diastolic') || null,
+    ...value,
+    [pressure_key1]: get(value, pressure_key1) || null,
+    [pressure_key2]: get(value, pressure_key2) || null,
   };
 
-  const handleChange = (type: any) => (value: any) => {
+  const handleChange = (type: keyof ValueType) => (value: any) => {
     data[type] = value;
     onChange && onChange(data);
   };
 
-  const systolic = get(value, 'systolic') || '';
-  const diastolic = get(value, 'diastolic') || '';
+  const systolic = get(value, pressure_key1) || 0;
+  const diastolic = get(value, pressure_key2) || 0;
 
   if (hiddenIpt) {
     return !systolic && !diastolic ? (
@@ -54,9 +79,9 @@ export default (props: any) => {
         max={1000}
         placeholder="收缩压"
         value={systolic}
-        onChange={handleChange('systolic')}
+        onChange={handleChange(pressure_key1)}
       />
-      <Input className={styles["input-split"]} placeholder="/" disabled />
+      <Input title={JSON.stringify(props)} className={styles["input-split"]} placeholder="/" disabled />
       <InputNumber
         disabled={disabled}
 
@@ -67,11 +92,22 @@ export default (props: any) => {
         max={1000}
         placeholder="舒张压"
         value={diastolic}
-        onChange={handleChange('diastolic')}
+        onChange={handleChange(pressure_key2)}
       />
       <Tooltip className={styles["pressure-input_tip"]} title={`收缩压的正常范围值是90~130mmHg，舒张压的正常范围值是60~90mmHg`}>
-        <QuestionCircleOutlined />
+        <MyIcon value='QuestionCircleOutlined' />
       </Tooltip>
     </Input.Group>
   );
 };
+PressureInput.DisplayFC = (props) => {
+  const { value, pressure_key1 = 'systolic', pressure_key2 = 'diastolic' } = props;
+
+  return <div title={JSON.stringify(props)}>
+    {value?.[pressure_key1] ?? EMPTY_PLACEHOLDER}
+    /
+    {value?.[pressure_key2] ?? EMPTY_PLACEHOLDER}
+
+  </div>
+}
+export default PressureInput

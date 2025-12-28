@@ -14,11 +14,24 @@ declare module 'omit.js';
 
 
 interface Window {
-
+  BF_Wrap2(setting: any, props?: any): {
+    config: IMchc_TableConfig | undefined;
+    Wrap: React.FC<{
+      style?: React.CSSProperties;
+      children?: ReactNode;
+    }>;
+  }
   _store?: {
     getState(): any
   }
+  safe_navigate?(url_conf: string, props?: any, params?: any): void
+  happy_conf?: any
   mchcEnv?: any
+  mchcStorage: StoreJsAPI
+  mchc_env?: any
+  peek_provoke?: (key?: any) => any
+  mchc_modal?: any
+  _provoke?: any
   _globalState?: { [x: string]: any }
   _globalHistory?: { push(k: string): void }
   _globalDispatch?: any
@@ -34,6 +47,7 @@ interface Window {
   }
 }
 declare let __DEV__: boolean;
+declare let __LOCAL__: boolean;
 
 declare const APP_MACRO: { [x: string]: any }
 

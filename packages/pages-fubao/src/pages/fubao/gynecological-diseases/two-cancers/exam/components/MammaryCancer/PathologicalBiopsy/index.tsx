@@ -5,7 +5,7 @@ import { formDescriptionsWithoutSectionApi, BaseEditPanel } from '@lm_fe/compone
 import { get, isEqual, set, isEmpty } from 'lodash';
 import { fubaoRequest as request } from '@lm_fe/utils';
 import { message } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { SMchc_FormDescriptions } from '@lm_fe/service'
 export default class AdmissionPanel extends BaseEditPanel {
   static defaultProps = {
@@ -78,7 +78,7 @@ export default class AdmissionPanel extends BaseEditPanel {
     if (!get(data, 'breastCancerDiagnosisAndGuidance.checkUnit'))
       set(data, 'breastCancerDiagnosisAndGuidance.checkUnit', get(system, 'config.hospitalName'));
     if (!get(data, 'breastCancerDiagnosisAndGuidance.checkDate'))
-      set(data, 'breastCancerDiagnosisAndGuidance.checkDate', moment(new Date()));
+      set(data, 'breastCancerDiagnosisAndGuidance.checkDate', dayjs(new Date()));
     if (!get(data, 'breastCancerDiagnosisAndGuidance.checkDoctor'))
       set(data, 'breastCancerDiagnosisAndGuidance.checkDoctor', get(basicInfo, 'firstName'));
     this.setState({ data, formKey, breastCancerRecordId });

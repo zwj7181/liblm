@@ -73,7 +73,7 @@ export default class CustomEditor extends React.Component<IProps> {
             <Col span={16}>
               <Editor
                 {...this.props}
-                style={{ height: 720, overflow: 'scroll' }}
+                style={{ height: 720, overflow: 'auto' }}
                 onChange={this.handleChange}
                 onUpload={this.handleUpload}
               />

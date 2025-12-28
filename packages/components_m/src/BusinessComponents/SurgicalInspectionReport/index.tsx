@@ -1,10 +1,12 @@
-import { Button, Form, Input, Table } from 'antd';
+import { Button, Form, Input } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 import { get, map } from 'lodash';
 import React, { Component } from 'react';
 import { getResourcesByID } from '../../utils/defaultMethod';
 // import { mockData } from './mock';
-import { mchcModal } from '../../modals';
+import { LazyAntd } from '@lm_fe/components';
+const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
+
 const SaveLabExamsUrl = '/api/lab-exams'; // 手术记录-送检结果保存接口
 //合并数组单元格
 export const createNewArr = (data: any) => {
@@ -368,7 +370,7 @@ export default class SurgicalInspectionReport extends Component<IProps, IState> 
 
   handlePrint = () => {
     const { printUrl, printResource, printTemplate, } = this.props
-    mchcModal.open('print_modal', {
+    window.mchc_modal.open('print_modal', {
       modal_data: {
         requestData: {
           url: printUrl,

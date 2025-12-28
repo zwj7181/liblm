@@ -45,7 +45,7 @@ export const CalcBmi: TCommonComponent<{ size?: any }, number> = function MyPres
             max={1000}
             placeholder="体重(kg)"
             value={weight}
-            onChange={e => setWeight(e)}
+            onChange={e => setWeight(e!)}
           />
           <Input size='small' className={styles["input-split"]} placeholder="/" disabled />
           <InputNumber
@@ -57,7 +57,7 @@ export const CalcBmi: TCommonComponent<{ size?: any }, number> = function MyPres
             controls={false}
             placeholder="身高(m)"
             value={height}
-            onChange={e => setHeight(e)}
+            onChange={e => setHeight(e!)}
           />
           <Button onClick={ok} disabled={disabled} size='small'>确定</Button>
           <Button onClick={() => setVisible(false)} disabled={disabled} size='small'>取消</Button>

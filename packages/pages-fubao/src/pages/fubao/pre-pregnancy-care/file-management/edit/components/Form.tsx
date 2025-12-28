@@ -1,6 +1,7 @@
 import { CloseOutlined, SaveOutlined } from '@ant-design/icons';
-import { BaseEditPanelForm, fubaoHistoryPush, getBMI } from '@lm_fe/components_m';
-import { mchcUtils } from '@lm_fe/env';
+import { BaseEditPanelForm, fubaoHistoryPush, getBMI, resolveFubaoPath } from '@lm_fe/components_m';
+import { mchcEnv, mchcUtils } from '@lm_fe/env';
+import { SLocal_History } from '@lm_fe/service';
 import { Button, Space, message } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 import { get, size } from 'lodash';
@@ -16,7 +17,7 @@ export default class AdmissionForm extends BaseEditPanelForm {
           'progestationCheckArchivesBasicInformation',
           'permanentResidenceAddress',
         ]);
-        !value && message.info('请先填写完整的户口地址信息！');
+        !value && mchcEnv.info('请先填写完整的户口地址信息！');
         value &&
           this.form?.setFieldsValue({
             womanProgestationCheckArchivesDetailVM: {
@@ -35,7 +36,7 @@ export default class AdmissionForm extends BaseEditPanelForm {
           'progestationCheckArchivesBasicInformation',
           'permanentResidenceAddress',
         ]);
-        !value && message.info('请先填写完整的户口地址信息！');
+        !value && mchcEnv.info('请先填写完整的户口地址信息！');
         value &&
           this.form?.setFieldsValue({
             manProgestationCheckArchivesDetailVM: {
@@ -50,7 +51,7 @@ export default class AdmissionForm extends BaseEditPanelForm {
           'progestationCheckArchivesBasicInformation',
           'residenceAddress',
         ]);
-        !value && message.info('请先填写完整的居住地址信息！');
+        !value && mchcEnv.info('请先填写完整的居住地址信息！');
         value &&
           this.form?.setFieldsValue({
             manProgestationCheckArchivesDetailVM: {
@@ -176,13 +177,16 @@ export default class AdmissionForm extends BaseEditPanelForm {
     // history && history.push('/pre-pregnancy-care/file-management');
 
     //删除keepAliveProvider缓存
-    await updateTabs(get(tabs, `tabsMapping./pre-pregnancy-care/file-management`));
+    // await updateTabs(get(tabs, `tabsMapping./pre-pregnancy-care/file-management`));
 
-    routerPath && deleteTab && (await deleteTab(routerPath));
+    // routerPath && deleteTab && (await deleteTab(routerPath));
 
-    fubaoHistoryPush('/pre-pregnancy-care/file-management', this.props as any);
-    const { path, search } = get(tabs, `tabsMapping.${routerPath}`);
-    keepAliveProviderRef?.current.removeCache(`${path}.name.${search}`);
+    // fubaoHistoryPush('/pre-pregnancy-care/file-management', this.props as any);
+    // const { path, search } = get(tabs, `tabsMapping.${routerPath}`);
+    // keepAliveProviderRef?.current.removeCache(`${path}.name.${search}`);
+
+    SLocal_History.closeAndPush(resolveFubaoPath(`/pre-pregnancy-care/file-management`))
+
   };
 
   handleSaveAndNext = () => {

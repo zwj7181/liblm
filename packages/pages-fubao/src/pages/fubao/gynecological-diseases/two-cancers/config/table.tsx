@@ -1,7 +1,8 @@
 import { APP_CONFIG } from "@lm_fe/components_m"
+import { SFubao_TwoCancerScreeningFile } from "@lm_fe/service";
 export const tableColumns = [
   {
-    title: '就诊卡号',
+    title: '门诊号',
     dataIndex: 'outpatientNo',
     width: APP_CONFIG.CELL_WIDTH_SMALL,
   },
@@ -34,5 +35,15 @@ export const tableColumns = [
     title: '登记者',
     dataIndex: 'registerPerson',
     width: APP_CONFIG.CELL_WIDTH_SMALL,
+  },
+  {
+    title: '状态',
+    dataIndex: 'fileStatus',
+    width: APP_CONFIG.CELL_WIDTH_SMALL,
+    inputType: 'MS' as const,
+    inputProps: { options: '已审核,未审核', marshal: 0 }
+    // render(a, record) {
+    //   return SFubao_TwoCancerScreeningFile.check_审核(record) ? '已审核' : '未审核'
+    // }
   },
 ];

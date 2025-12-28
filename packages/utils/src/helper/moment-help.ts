@@ -1,39 +1,38 @@
 
-import moment, { Moment, isMoment } from 'moment'
+import { formatDate, formatDateTime, getMomentObj } from '@noah-libjs/utils'
+import { Dayjs } from 'dayjs'
 
-type TInput = moment.MomentInput
-
-
-function getFn<T extends string>(format: T,) {
-    return Object.assign((s?: TInput) => {
-        const a = moment(s)
-        return a.isValid() ? a.format(format) : null
-    }, { format })
+function formatRangeMoment(data: { [x: string]: Dayjs[] | null }, formater: (v: Dayjs) => string | null, cKeys: string[],) {
+    const entries = Object.entries(data)
+    return entries.reduce((a, [k, v], idx) => {
+        if (!v) return a
+        return {
+            ...a,
+            [`${k}.${cKeys[0]}`]: formater(v[0]),
+            [`${k}.${cKeys[1]}`]: formater(v[1]),
+        }
+    }, {} as { [x: string]: string | null })
+}
+export function formatRangeDate(data: { [x: string]: Dayjs[] | null }, cKeys = ['greaterOrEqualThan', 'lessOrEqualThan']) {
+    return formatRangeMoment(data, formatDate, cKeys)
+}
+export function formatRangeDateTime(data: { [x: string]: Dayjs[] | null }, cKeys = ['greaterOrEqualThan', 'lessOrEqualThan']) {
+    return formatRangeMoment(data, formatDateTime, cKeys)
 }
 
-export function getMomentObj(s: TInput) {
-    return moment(s)
+export function diff_hour_minute(inputA: any, inputB: any) {
+    const a = getMomentObj(inputA)
+    const b = getMomentObj(inputB)
+    const a_without_sec = a.set('second', 0)
+    const b_without_sec = b.set('second', 0)
+    const diff = (a_without_sec.isValid() && b_without_sec.isValid()) ? a_without_sec.diff(b_without_sec, 'minute') : null
+    return getHourAndMinute(diff)
 }
 
-export const formatDate = getFn('YYYY-MM-DD')
-
-export const formatDateTime = getFn('YYYY-MM-DD HH:mm:ss')
-
-export const formatDateTimeNoSecond = getFn('YYYY-MM-DD HH:mm')
-
-export const formatTime = getFn('HH:mm:ss')
-
-
-export function getMomentRange() {
-    return {
-        昨天: [moment().add(-1, 'day'), moment().add(-1, 'day')] as [Moment, Moment],
-        今天: [moment(), moment()] as [Moment, Moment],
-        明天: [moment().add(1, 'day'), moment().add(1, 'day')] as [Moment, Moment],
-        这个星期: [moment().subtract(7, 'day'), moment()] as [Moment, Moment],
-        这个月: [moment().startOf('month'), moment().endOf('month')] as [Moment, Moment],
-        下个星期: [moment().add(1, 'day'), moment().add(7, 'day')] as [Moment, Moment],
-    }
+function getHourAndMinute(minutes?: number | null) {
+    if (!minutes || minutes < 0) return { h: 0, m: 0 }
+    const h = Math.floor(minutes / 60);
+    const m = minutes % 60;
+    return { h, m }
 }
 
-
-export { isMoment, }

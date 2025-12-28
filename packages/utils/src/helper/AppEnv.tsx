@@ -1,39 +1,66 @@
-import store from "store";
+import { AnyObject, expect_array, get, getSearchParamsValue, MyLog, safe_json_parse, simple_decrypt, simple_encrypt } from "@noah-libjs/utils";
 import { TOKEN_KEY } from "../constant";
-import { MyLog } from "./log";
-import { getSearchParamsValue } from "./small-fn";
 const tokenPrefix = ['Bearer', 'captcha']
+
 function isStartWithTokenPrefix(token?: string) {
-    if (!token) return false
+    if (!token?.startsWith) return false
     return tokenPrefix.some(_ => token.startsWith(`${_} `))
 }
 export class AppEnv<T = string> {
     static get singleton(): AppEnv {
-        return window.mchcEnv ?? appEnv
+        return window.mchc_env ?? appEnv
     }
-    protected _appName?: T;
-    private _globalCache: { [x: string]: any; } = {};
+    static get client_mode() {
+        return !!get(window, 'client_mode')
+    }
+    _appName?: T;
+    _globalCache: { [x: string]: any; } = {};
     defineGlobalCacheProperty(k: string, d: PropertyDescriptor) {
 
         Object.defineProperty(this._globalCache, k, { ...d, configurable: true })
     }
     getGlobalCache<C extends Object>(k: string): any {
-        const a = this._globalCache[k] as C;
+        const a = this._globalCache[k] as C | null;
         return a
     }
     setGlobalCache(k: string, v: any) {
         this._globalCache[k] = v;
     }
-    private _isDev?: boolean;
+
+    tail_global_cache(k: string,) {
+        let cache: AnyObject[] = this._globalCache[k] = this._globalCache[k] ?? []
+        let len = cache.length
+        if (!len) return null
+        return cache[len - 1]
+    }
+    push_global_cache(k: string, v: AnyObject) {
+        let cache: AnyObject[] = this._globalCache[k] = this._globalCache[k] ?? []
+        return cache.push(v)
+    }
+    pop_global_cache(k: string,) {
+        let cache: AnyObject[] = this._globalCache[k] = this._globalCache[k] ?? []
+        return cache.pop()
+    }
+
+    _isDev?: boolean;
     public is(type: T) {
-        return this._appName === type;
+        return this.appName === type;
+    }
+    public not(type: T) {
+        return this.appName !== type;
     }
     public in(types: T[]) {
-        return types.includes(this._appName!);
+        return types.includes(this.appName!);
     }
     public get isSp() {
-        const sp = getSearchParamsValue('sp') ?? getSearchParamsValue('SP')
+        const sp = getSearchParamsValue('sp') || getSearchParamsValue('SP') || this.is_single
         return !!sp
+    }
+    get is_single() {
+        return location.pathname.includes('/single') || location.pathname.includes('/view')
+    }
+    get is_new() {
+        return [location.pathname, location.pathname.includes('/single'), location.pathname.includes('/view')]
     }
     public get isDev() {
         return this._isDev ?? false;
@@ -49,12 +76,28 @@ export class AppEnv<T = string> {
         this.logger = new MyLog(this._appName as string)
     }
     public logger = new MyLog('AppEnv')
-
+    get store() {
+        return window.mchcStorage
+    }
     get tokenKey() {
         return `${this.appName}_${TOKEN_KEY}`
     }
+    get loginRememberKey() {
+        return `${this.appName}_login`
+    }
     constructor(appName?: T,) {
         this.appName = appName
+    }
+    get loginRemember() {
+        return simple_decrypt(this.store.get(this.loginRememberKey))
+    }
+    set loginRemember(value) {
+        if (!value) {
+            this.store.set(this.loginRememberKey, null)
+            return
+        }
+        const str = simple_encrypt(value)
+        this.store.set(this.loginRememberKey, str)
     }
     get token(): string | null {
         const value = this.getToken()
@@ -65,7 +108,7 @@ export class AppEnv<T = string> {
         const arr = value?.split(' ')?.slice(-1) || []
         const target = arr[0]
         if (target) {
-            store.set(this.tokenKey, target)
+            this.store.set(this.tokenKey, target)
         }
     }
     get rawToken() {
@@ -73,11 +116,31 @@ export class AppEnv<T = string> {
         if (!value) return ''
         return isStartWithTokenPrefix(value) ? value.split(' ').slice(-1) : value
     }
-    private getToken(): string | null {
-
-        return store.get(this.tokenKey) || this.getTokenFromSearchParam()
+    reload(path?: string | URL) {
+        if (path) {
+            window.location.href = path.toString()
+        } else {
+            location.reload()
+        }
     }
-    private getTokenFromSearchParam() {
+    open(url?: string | URL, target?: string, features?: string) {
+        return window.open(url, target, features)
+    }
+    logout(path?: string | URL) {
+        const login_cache = this.loginRemember
+        this.store.clearAll()
+        this.loginRemember = login_cache
+        this.reload(path)
+    }
+    logout_clean(path?: string | URL) {
+        this.store.clearAll()
+        this.reload(path)
+    }
+    getToken(): string | null {
+
+        return this.store.get(this.tokenKey) || this.getTokenFromSearchParam()
+    }
+    getTokenFromSearchParam() {
         const url = new URL(location.toString())
         return url.searchParams.get(this.tokenKey)
     }
@@ -86,8 +149,13 @@ export class AppEnv<T = string> {
         return url
     }
     removeToken() {
-        store.remove(this.tokenKey)
+        this.store.remove(this.tokenKey)
+    }
+    get is_fullscreen() {
+        return !!document.fullscreenElement
     }
 };
-export const appEnv = new AppEnv<'mchc_env'>('mchc_env',)
+export const appEnv = new AppEnv<'mchc_env'>('mchc_env',);
+
+(window as any).appEnv = appEnv;
 

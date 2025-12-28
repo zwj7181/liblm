@@ -1,6 +1,6 @@
-import { MchcType_default, MchcTypes } from "@lm_fe/env"
+import { MchcTypes } from "@lm_fe/env"
 
-export type IMchc_Admission_HeaderInfoOfInpatientEmr<T extends MchcTypes = MchcType_default> = {
+export type IMchc_Admission_HeaderInfoOfInpatientEmr<T extends MchcTypes = '越秀妇幼'> = {
     "id": 7276,
     "infectionLable": null,
     "deliveryLable": null,

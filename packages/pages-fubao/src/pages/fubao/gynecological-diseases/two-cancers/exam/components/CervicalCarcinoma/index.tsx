@@ -1,17 +1,16 @@
-import { DeleteOutlined, PlusCircleOutlined, EditOutlined } from '@ant-design/icons';
-import { Button, Card, Col, Modal, Popconfirm, Row, message } from 'antd';
-import { get, isEmpty, map, cloneDeep, set } from 'lodash';
-import React, { Component, useEffect, useState } from 'react';
-import { NurseTypesMapping } from './config';
-import classnames from 'classnames';
-import './index.less';
+import { DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { IFubao_CervicalCancerRecord, SFubao_CervicalCancerRecord, TIdTypeCompatible } from '@lm_fe/service';
 import { fubaoRequest as request } from '@lm_fe/utils';
-import { IFubao_CervicalCancerRecord, SFubao_CervicalCancerRecord } from '@lm_fe/service';
-import { Item } from 'src/pages/fubao/family-planning/booking-management/.Left/Item';
+import { Button, Card, Col, Modal, Popconfirm, Row, message } from 'antd';
+import classnames from 'classnames';
+import { cloneDeep, get, map, set } from 'lodash';
+import React, { useEffect, useState } from 'react';
+import { NurseTypesMapping } from './config';
+import './index.less';
 const DEFAULT_ACTIVE_TEMPLETE: TNurseType = 'Screening';
 type TNurseType = keyof typeof NurseTypesMapping
 interface IProps {
-
+  id: TIdTypeCompatible
 }
 export default function Nursing(props: IProps) {
   const [activeTemplate, set_activeTemplate] = useState(DEFAULT_ACTIVE_TEMPLETE)
@@ -81,18 +80,18 @@ export default function Nursing(props: IProps) {
         const id = get(item, 'cervicalCancerScreeningId');
         const res = (await request.delete(`/api/two/cancer/screening/deleteCervicalCancerScreening/${id}`)).data;
         if (get(res, 'code') === 1) {
-          
+
         } else {
-          
+
         }
         await handleInit();
       } else {
         const id = get(item, 'cervicalCancerBiopsyId');
         const res = (await request.delete(`/api/two/cancer/screening/deleteCervicalCancerBiopsy/${id}`)).data;
         if (get(res, 'code') === 1) {
-          
+
         } else {
-          
+
         }
         await handleInit();
       }
@@ -115,20 +114,22 @@ export default function Nursing(props: IProps) {
         }
 
         set_activeTemplate(xxType)
-        set_visible(false)
         set_activeItem(listData)
       } else {
         if (get(listData, 'cervicalCancerScreeningId') === -1) {
-          message.warn('请先保存上一次筛查！');
+          message.warning('请先保存上一次筛查！');
           return;
         }
-        newSiderPanels.push({
+        let newImte: Partial<IFubao_CervicalCancerRecord> = {
           cervicalCancerScreeningId: -1,
-        });
+        }
+        newSiderPanels.push(newImte);
         set_siderPanels(newSiderPanels)
         set_activeTemplate(xxType)
-        set_activeItem(listData)
+        set_activeItem(newImte)
       }
+      set_visible(false)
+
     };
 
   }
@@ -252,12 +253,12 @@ export default function Nursing(props: IProps) {
   console.log('zzx item', activeItem)
   return (
     <Row style={{ height: '100%' }}>
-      <Col style={{ height: '100%', width: 290, overflow: 'scroll', backgroundColor: '#fff' }}>
+      <Col style={{ height: '100%', width: 290, overflow: 'auto', backgroundColor: '#fff' }}>
         {renderSider()}
       </Col>
-      <Col style={{ height: '100%', width: 'calc(100% - 290px)', overflow: 'scroll' }}>{renderContent()}</Col>
+      <Col style={{ height: '100%', width: 'calc(100% - 290px)', overflow: 'auto' }}>{renderContent()}</Col>
       <Modal
-        visible={visible}
+        open={visible}
         onCancel={() => {
           set_visible(false)
         }}

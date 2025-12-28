@@ -1,6 +1,6 @@
-import { map, get, keys, filter, isNil, set, indexOf, split, isObject, isUndefined } from 'lodash';
-import moment from 'moment';
-import { getMomentObj } from '@lm_fe/utils'
+import { formatDateTime } from '@lm_fe/utils';
+import { get, isObject, map, set } from 'lodash';
+import dayjs from 'dayjs';
 export const formDescriptionsFromApi = (data: any) => {
   return map(data, item => {
     return {
@@ -48,7 +48,7 @@ export const fromApi = (data: any, nativeFormDescriptions: any) => {
         });
         break;
       case 'moment':
-        set(result, key, moment(get(data, path)));
+        set(result, key, dayjs(get(data, path)));
         break;
       case 'default':
       default:
@@ -104,7 +104,7 @@ export const toApi = (data: any, nativeFormDescriptions: any) => {
         });
         break;
       case 'moment':
-        set(result, path, getMomentObj(item).utc().format());
+        set(result, path, formatDateTime(item));
         break;
       case 'fetusAppendages':
         break;

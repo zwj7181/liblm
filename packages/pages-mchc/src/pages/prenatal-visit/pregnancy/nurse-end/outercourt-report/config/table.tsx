@@ -1,5 +1,5 @@
 import { APP_CONFIG } from '@lm_fe/components_m';
-import moment from 'moment';
+import dayjs from 'dayjs';
 export const tableColumns = [
   {
     title: '检查医院',
@@ -10,7 +10,7 @@ export const tableColumns = [
     title: '日期',
     dataIndex: 'reportDate',
     width: APP_CONFIG.CELL_WIDTH_SMALL,
-    render: (text) => moment(text).format('YYYY-MM-DD'),
+    render: (text) => dayjs(text).format('YYYY-MM-DD'),
   },
   {
     title: '项目类型',

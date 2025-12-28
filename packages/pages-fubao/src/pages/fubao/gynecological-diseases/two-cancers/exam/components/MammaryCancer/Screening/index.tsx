@@ -1,132 +1,70 @@
-import React from 'react';
-import Form from './components/Form';
-import { valueToApi, valueToForm } from './config/adapter';
-import { formDescriptionsWithoutSectionApi, BaseEditPanel } from '@lm_fe/components_m'
-import { get, isEqual, set, isEmpty } from 'lodash';
-import { fubaoRequest as request } from '@lm_fe/utils';
-import { message } from 'antd';
-import moment from 'moment';
-import { SFubao_BreastCancerRecord, SFubao_BreastCancerScreening, SMchc_FormDescriptions } from '@lm_fe/service'
-import { form_config_乳腺癌筛查 } from './form/form_config';
-export default class AdmissionPanel extends BaseEditPanel {
-  static defaultProps = {
-    baseUrl: '/api/two/cancer/screening/addBreastCancerRecord', request,
-    moduleName: 'mammary-cancer-screening',
-    title: '筛查',
-    Form,
-    targetLabelCol: 4,
-  };
+import { BaseEditPanelFormFC } from '@lm_fe/components_m';
+import { BF_Wrap2, mchcModal__ } from '@lm_fe/pages';
+import { SFubao_BreastCancerScreening } from '@lm_fe/service';
+import { Button, Form } from 'antd';
+import { get, set } from 'lodash';
+import dayjs from 'dayjs';
+import React, { useEffect, useState } from 'react';
+import { form_config } from './form_config';
+import { request } from '@lm_fe/utils';
+import { mchcEnv, mchcLogger } from '@lm_fe/env';
+export default function Form_乳腺癌筛查(props: { activeItem: any, id: any, onRefresh?: (a: any, b: any, c?: any) => void }) {
+  const { onRefresh, id, activeItem } = props
 
-  state = {
-    data: {},
-    formDescriptionsWithoutSection: {},
-    formDescriptions: [],
-    formKey: undefined,
-    spinning: true,
-    activeItem: {},
-  };
+  const [data, setdata] = useState<any>({})
 
-  extraEvents = {
-    handleDisabled: (formDescriptionsWithoutSection: any) => {
-      this.setState({ formDescriptionsWithoutSection });
-    },
-  };
+  const { config, Wrap } = BF_Wrap2({ default_conf: { title: '两癌筛查-乳腺癌筛查', tableColumns: form_config } })
 
-  static getDerivedStateFromProps(nextProps: any, prevState: any) {
-    const { activeItem } = nextProps;
-    if (!isEqual(activeItem, prevState.activeItem)) {
-      return {
-        activeItem,
-      };
-    }
-    return null;
-  }
+  const [form] = Form.useForm()
 
-  componentDidUpdate(prevProps: any, prevState: any) {
-    if (
-      get(prevProps, 'activeItem') !== get(this.props, 'activeItem')
-    ) {
-      this.handleInit();
-    }
-  }
 
-  async componentDidMount() {
-    const { moduleName } = this.props as any;
-    const formDescriptions = form_config_乳腺癌筛查();
+  const active_id = get(activeItem, 'id');
+  const active_screen_id = get(activeItem, 'breastCancerScreeningId');
 
-    const formDescriptionsWithoutSection = formDescriptionsWithoutSectionApi(formDescriptions);
 
-    console.log('breast formDescriptions', { formDescriptions, formDescriptionsWithoutSection })
+  useEffect(() => {
+    handleInit();
+    return () => { }
+  }, [activeItem])
 
-    const formKey = Math.random();
-    this.setState({ spinning: false });
-    this.setState({ formDescriptions, formDescriptionsWithoutSection, formKey });
-    this.handleInit();
-  }
 
-  handleInit = async () => {
-    const { activeItem, formDescriptionsWithoutSection } = this.state;
-    const { basicInfo, basicData, siderPanels, system } = this.props as any;
-    console.log('breast', this.props)
-    let values = {};
-    if (get(activeItem, 'breastCancerScreeningId') && get(activeItem, 'breastCancerScreeningId') != -1) {
-      values = await SFubao_BreastCancerScreening.getOne(get(
-        activeItem,
-        'breastCancerScreeningId',
-      ))
-      console.log('??', values)
-      // values = (await request.get(
-      //   `/api/two/cancer/screening/getBreastCancerScreening?id.equals=${get(
-      //     activeItem,
-      //     'breastCancerScreeningId',
-      //   )}&deleteFlag.equals=0`,
-      // )).data;
-      // values = get(values, 'data.0');
+  async function handleInit() {
+    const { basicInfo, basicData, siderPanels, system } = props as any;
+    form.resetFields()
+
+    let values = {} as any;
+    if (active_screen_id && active_screen_id != -1) {
+      values = await SFubao_BreastCancerScreening.getOne(active_screen_id)
+
     } else {
       set(values, 'womenHealthcareMenstrualHistory', { ...get(basicData, 'womenHealthcareMenstrualHistory') }); //同步档案月经史信息
     }
 
-    let data = values ? valueToForm(values, formDescriptionsWithoutSection) : {};
-    const formKey = get(data, 'id') || Math.random();
 
-    //既往接受乳腺癌筛查 取上一次数据
-    // if (!get(data, 'breastCancerMedicalHistory.previousBreastScreening')) {
-    //   if (siderPanels.length > 1) {
-    //     const breastCancerMedicalHistory = siderPanels[siderPanels.length - 2];
-    //     const breastCancerScreeningCheckDate = get(breastCancerMedicalHistory, 'breastCancerScreeningCheckDate');
-    //     const breastCancerScreeningScreeningSuggest = get(
-    //       breastCancerMedicalHistory,
-    //       'breastCancerScreeningScreeningSuggest',
-    //     );
-    //     set(data, 'breastCancerMedicalHistory.previousBreastScreening', {
-    //       key: 2,
-    //       keyNote: `${breastCancerScreeningScreeningSuggest}(${breastCancerScreeningCheckDate})`,
-    //     });
-    //   }
+
     // }
-    if (!get(data, 'breastCancerDiagnosisAndGuidance.checkUnit'))
-      set(data, 'breastCancerDiagnosisAndGuidance.checkUnit', get(system, 'config.hospitalName'));
-    if (!get(data, 'breastCancerDiagnosisAndGuidance.checkDate'))
-      set(data, 'breastCancerDiagnosisAndGuidance.checkDate', moment(new Date()));
-    if (!get(data, 'breastCancerDiagnosisAndGuidance.checkDoctor'))
-      set(data, 'breastCancerDiagnosisAndGuidance.checkDoctor', get(basicInfo, 'firstName'));
-    this.setState({ data, formKey });
+    if (!get(values, 'breastCancerDiagnosisAndGuidance.checkUnit'))
+      set(values, 'breastCancerDiagnosisAndGuidance.checkUnit', get(system, 'config.hospitalName'));
+    if (!get(values, 'breastCancerDiagnosisAndGuidance.checkDate'))
+      set(values, 'breastCancerDiagnosisAndGuidance.checkDate', dayjs(new Date()));
+    if (!get(values, 'breastCancerDiagnosisAndGuidance.checkDoctor'))
+      set(values, 'breastCancerDiagnosisAndGuidance.checkDoctor', get(basicInfo, 'firstName'));
+
+    setdata(values)
+    form.setFieldsValue(values)
   };
 
-  handleSubmit = async (values: any) => {
+  async function handleSubmit(values: any) {
+    mchcLogger.log('handleSubmit', { values, data })
 
-    const { onRefresh, id, baseUrl } = this.props as any;
-    const { formDescriptionsWithoutSection, data, activeItem } = this.state as any;
+    let params: any = values
 
-    let params: any = valueToApi(values, formDescriptionsWithoutSection);
-    console.log('values', values, params)
-
-    if (get(values, 'id')) {
+    if (get(data, 'id')) {
       // 修改
       params = {
         ...data,
         ...params,
-        screeningType: '乳腺癌筛查?',
+        screeningType: '乳腺癌筛查',
       };
       await SFubao_BreastCancerScreening.new_put(params)
       // const res = (await request.put('/api/two/cancer/screening/updateBreastCancerScreening', params)).data;
@@ -137,7 +75,7 @@ export default class AdmissionPanel extends BaseEditPanel {
       params = {
         breastCancerScreening: {
           ...params,
-          screeningType: '乳腺癌筛查?',
+          screeningType: '乳腺癌筛查',
         },
         twoCancerScreeningId: Number(id),
       };
@@ -146,5 +84,31 @@ export default class AdmissionPanel extends BaseEditPanel {
 
       onRefresh && onRefresh('Screening', activeItem, true);
     }
+    mchcEnv.success('操作成功')
+
   };
+  return <Wrap>
+    <BaseEditPanelFormFC form={form} formDescriptions={config?.tableColumns}
+
+      renderExtraBtns={form => {
+        return <Button size='large' onClick={() => {
+          request.post('/api/dataReport/reportBreastCancerRecord', { ids: [active_id], },);
+
+        }}>上报</Button>
+      }}
+      onPrint={() => {
+        mchcModal__.open('print_modal', {
+          modal_data: {
+            requestData: {
+              url: '/api/two/cancer/screening/printBreastCancerScreening',
+              id: data?.id
+            }
+          }
+        })
+      }}
+      onFinish={async (v) => {
+        return handleSubmit(v)
+      }}
+    />
+  </Wrap>
 }

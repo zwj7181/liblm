@@ -13,15 +13,19 @@ import {
   deleteResourcesByID,
   getResources,
   getResourcesByID,
-  mchcModal,
-  SelectTip,
+
+
   transferDataByDate,
   updateResources
 } from '@lm_fe/components_m';
+import { SelectTip } from '@lm_fe/pages';
+
 import { SLocal_State } from '@lm_fe/service';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import MedicalRecord from '../../../../../.others/MedicalRecord';
 import './index.less';
+import { mchcModal__ } from '@lm_fe/pages';
+import { mchcEnv } from '@lm_fe/env';
 const BASE_URL = '/api/pd-ppfos';
 export class SecondVisit extends Component {
   state = {
@@ -84,7 +88,7 @@ export class SecondVisit extends Component {
       () => {
         const form = this.form as FormInstance;
         form.setFieldsValue({
-          followUpDate: moment(),
+          followUpDate: dayjs(),
           followUpPerson: user.firstName,
         });
       },
@@ -136,7 +140,7 @@ export class SecondVisit extends Component {
       },
     );
     await this.initData();
-    message.success('操作成功');
+    mchcEnv.success('操作成功');
   };
 
   handleDelete = (item) => async () => {
@@ -163,7 +167,7 @@ export class SecondVisit extends Component {
   handlePrint = () => {
     const { activeItem } = this.state;
 
-    mchcModal.open('print_modal', {
+    mchcModal__.open('print_modal', {
       modal_data: {
         request,
         requestData: {

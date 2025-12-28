@@ -17,12 +17,10 @@ interface IEnumeration {
 }
 type Fuck_Dic = {
   [x: string]: IDictionary,
-} & { initDictionaries: IDictionary[] }
+}
 
 export function getDictionaries() {
-  const store = mchcStore.state
-  const { dictionaries = {} } = store
-  return dictionaries as Fuck_Dic
+  return window.peek_provoke?.('dict_map') as Fuck_Dic
 };
 
 /**
@@ -32,6 +30,7 @@ export function getDictionaries() {
  */
 export function getDictionariesEnumerations(type: string) {
   const dictionaries = getDictionaries()
+
   const object = dictionaries?.[type];
   if (!object) {
     console.warn(`字典 ${type} 不存在!`);

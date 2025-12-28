@@ -1,5 +1,5 @@
 import { get } from 'lodash';
-// import moment from 'moment';
+// import dayjs from 'dayjs';
 import { formatDateTime } from '@lm_fe/utils';
 import { expandObjectOrEmptyObj } from '@lm_fe/components_m';
 
@@ -37,7 +37,7 @@ export const fromApi = (data: any) => {
     pdPpfoFetuses: get(data, 'pdPpfoFetuses'),
     askObject: get(data, 'askObject'),
     followUpProfile: get(data, 'followUpProfile'),
-    // followUpDate: moment(get(data, 'followUpDate')),
+    // followUpDate: dayjs(get(data, 'followUpDate')),
     followUpDate: formatDateTime(get(data, 'followUpDate')),
     followUpPerson: get(data, 'followUpPerson'),
   };

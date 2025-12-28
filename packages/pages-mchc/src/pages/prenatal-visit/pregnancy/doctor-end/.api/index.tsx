@@ -8,7 +8,8 @@ import { default as image } from './image';
 import { default as survey } from './survey';
 import { default as base } from './base';
 import { default as components } from './components';
-import { getFutureDate } from '@lm_fe/components_m';
+import { getFutureDate } from '@lm_fe/utils';
+
 import { request } from '@lm_fe/utils';
 export const api = {
   /** 更新孕册 */

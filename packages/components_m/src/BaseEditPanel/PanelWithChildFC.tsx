@@ -1,12 +1,14 @@
+import { EMPTY_PLACEHOLDER, getSearchParamsValue } from '@lm_fe/utils';
 import { Space } from 'antd';
 import classNames from 'classnames';
-import { map } from 'lodash';
-import React, { ReactElement, useRef, useState } from 'react';
+import React, { FC, PropsWithChildren, ReactElement, useEffect, useRef, useState } from 'react';
 import styles from './less/panel-with-child.module.less';
-import { EMPTY_PLACEHOLDER, getSearchParamsValue } from '@lm_fe/utils';
+import { use_provoke } from '@lm_fe/provoke';
 export interface IPanelWithChildProps { }
+type IHeaderItem = { title: string, value: any } | null | false | undefined
+
 interface IProps {
-  headerItems: { title: string, value: any }[]
+  headerItems: IHeaderItem[]
   tabItems: { title: string, key: string, node: ReactElement | null }[]
   activeKey?: any,
   setActiveKey?(key: any): void
@@ -14,8 +16,7 @@ interface IProps {
 }
 export default function PanelWithChildFC(props: IProps) {
   const { headerItems = [], tabItems = [] } = props
-  const headerRef = useRef<HTMLDivElement>(null)
-  const [__activeKey, __setActiveKey] = useState(getSearchParamsValue('activeKey') ?? tabItems[0]?.key)
+  const [__activeKey, __setActiveKey] = useState(getSearchParamsValue('activeKey') || tabItems[0]?.key)
   const activeKey = props.activeKey ?? __activeKey
   const setActiveKey = props.setActiveKey ?? __setActiveKey
 
@@ -49,25 +50,39 @@ export default function PanelWithChildFC(props: IProps) {
     );
   };
 
-  // function renderContent() {
 
-  //   const item = tabItems.find(_ => _.key === activeKey)
-  //   return (
-  //     <div className={classNames([styles["panel-with-child-desk"]])}>
-  //       {renderTabs()}
-  //       <div className={styles["panel-with-child-desk-content"]}>
-  //         {
-  //           item?.node
-  //             ? item.node
-  //             : null
-  //         }
-  //       </div>
-
-  //     </div>
-  //   );
-  // };
   const item = tabItems.find(_ => _.key === activeKey)
 
+
+  return (
+    <PanelTitleWrapper headerItems={headerItems} >
+
+
+      {renderTabs()}
+      <div className={styles["panel-with-child-desk-content"]}>
+        {
+          item?.node
+            ? item.node
+            : null
+        }
+      </div>
+    </PanelTitleWrapper>
+  );
+}
+
+export const PanelTitleWrapper: FC<PropsWithChildren<{ headerItems: IHeaderItem[] }>> = function PanelTitleWrapper(props) {
+  const { headerItems, children } = props
+  const headerRef = useRef<HTMLDivElement>(null)
+  const [head_height, setHead_height] = useState(50)
+  useEffect(() => {
+    setTimeout(() => {
+      setHead_height(headerRef.current?.clientHeight ?? 50)
+    }, 400);
+
+    return () => {
+
+    }
+  }, [])
 
   return (
     <div className={styles["panel-with-child"]}>
@@ -75,29 +90,22 @@ export default function PanelWithChildFC(props: IProps) {
         <PanelTitle headerItems={headerItems} />
       </div>
       <div
-        className={styles["panel-with-child_content"]}
-        style={{ height: `calc(100% - ${headerRef.current?.clientHeight}px` }}
+        className={styles["panel-with-child_content"]} style={{ height: `calc(100% - ${head_height}px` }}
       >
-        {renderTabs()}
-        <div className={styles["panel-with-child-desk-content"]}>
-          {
-            item?.node
-              ? item.node
-              : null
-          }
-        </div>
+        {children}
       </div>
     </div>
   );
-}
-
-export function PanelTitle(props: { headerItems: { title: string, value: any }[] }) {
+};
+export function PanelTitle(props: { headerItems: IHeaderItem[] }) {
+  const colors = use_provoke(s => s.sys_theme.colors)
   const { headerItems } = props
 
   return (
-    <div className={styles["panel-with-child_header"]}>
+    <div className={styles["panel-with-child_header"]} style={{ background: colors?.light[1] }}>
       {
         headerItems.map(_ => {
+          if (!_) return null
           return <div key={_.title} className={styles["panel-with-child_header-item"]}>
             <span className={styles["panel-with-child_header-item-label"]}>{_.title}:</span>
             <span className={styles["panel-with-child_header-item-value"]}>{_.value ?? EMPTY_PLACEHOLDER}</span>
