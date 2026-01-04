@@ -12,11 +12,11 @@ importers:
         specifier: ^7.20.0
         version: 7.26.10
       '@lm_fe/scripts':
-        specifier: link:../static/packages/scripts
-        version: link:../static/packages/scripts
+        specifier: link:../liblm-ample/packages/scripts
+        version: link:../liblm-ample/packages/scripts
       '@lm_fe/static':
-        specifier: llink:../static/packages/static
-        version: link:llink:../static/packages/static
+        specifier: link:../liblm-ample/packages/static
+        version: link:../liblm-ample/packages/static
       '@pansy/react-fullscreen':
         specifier: ^1.3.0
         version: 1.3.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -104,7 +104,7 @@ importers:
         version: 2.0.5
       acorn-jsx:
         specifier: ^5.3.2
-        version: 5.3.2(acorn@8.14.1)
+        version: 5.3.2(acorn@6.4.2)
       antd:
         specifier: 5.26.4
         version: 5.26.4(date-fns@2.30.0)(moment@2.29.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -197,19 +197,19 @@ importers:
     dependencies:
       '@lm_fe/env':
         specifier: ^0.2.5
-        version: link:../env
+        version: 0.2.6
       '@lm_fe/provoke':
         specifier: ^0.2.5
-        version: link:../provoke
+        version: 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(axios@0.26.1)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react@16.14.0)
       '@lm_fe/scripts':
         specifier: '*'
         version: 0.1.201
       '@lm_fe/service':
         specifier: ^0.2.5
-        version: link:../service
+        version: 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(axios@0.26.1)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react@16.14.0)
       '@lm_fe/utils':
         specifier: ^0.2.5
-        version: link:../utils
+        version: 0.2.6
       '@monaco-editor/react':
         specifier: ^4.5.1
         version: 4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@16.14.0))(react@16.14.0)
@@ -300,22 +300,22 @@ importers:
     dependencies:
       '@lm_fe/components':
         specifier: ^0.2.5
-        version: link:../components
+        version: 0.2.6(@lm_fe/scripts@0.1.201)(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@16.14.0))(react-router-dom@5.3.4(react@16.14.0))(react@16.14.0))(react-resizable@3.0.4(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-router-dom@5.3.4(react@16.14.0))(react-to-print@2.15.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react@16.14.0)(reconnecting-websocket@4.4.0)
       '@lm_fe/env':
         specifier: ^0.2.5
-        version: link:../env
+        version: 0.2.6
       '@lm_fe/provoke':
         specifier: ^0.2.5
-        version: link:../provoke
+        version: 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(axios@0.26.1)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react@16.14.0)
       '@lm_fe/scripts':
         specifier: '*'
         version: 0.1.201
       '@lm_fe/service':
         specifier: ^0.2.5
-        version: link:../service
+        version: 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(axios@0.26.1)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react@16.14.0)
       '@lm_fe/utils':
         specifier: ^0.2.5
-        version: link:../utils
+        version: 0.2.6
       axios:
         specifier: '>=0.26.0'
         version: 0.26.1
@@ -400,34 +400,34 @@ importers:
     dependencies:
       '@lm_fe/components':
         specifier: ^0.2.5
-        version: link:../components
+        version: 0.2.6(@lm_fe/scripts@0.1.201)(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react@18.3.1))(react-resizable@3.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react-to-print@2.15.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(reconnecting-websocket@4.4.0)
       '@lm_fe/components_m':
         specifier: ^0.2.5
-        version: link:../components_m
+        version: 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react@18.3.1))(react-quill@1.3.5(react@18.3.1))(react-resizable@3.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react-to-print@2.15.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(reconnecting-websocket@4.4.0)
       '@lm_fe/env':
         specifier: ^0.2.5
-        version: link:../env
+        version: 0.2.6
       '@lm_fe/pages':
         specifier: ^0.2.5
-        version: link:../pages
+        version: 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react@18.3.1))(react-quill@1.3.5(react@18.3.1))(react-resizable@3.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react-to-print@2.15.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(reconnecting-websocket@4.4.0)
       '@lm_fe/pages-fubao':
         specifier: ^0.2.5
-        version: link:../pages-fubao
+        version: 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react@18.3.1))(react-quill@1.3.5(react@18.3.1))(react-resizable@3.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react-to-print@2.15.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(reconnecting-websocket@4.4.0)
       '@lm_fe/pages-mchc':
         specifier: ^0.2.5
-        version: link:../pages-mchc
+        version: 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react@18.3.1))(react-quill@1.3.5(react@18.3.1))(react-resizable@3.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react-to-print@2.15.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(reconnecting-websocket@4.4.0)
       '@lm_fe/provoke':
         specifier: ^0.2.5
-        version: link:../provoke
+        version: 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@lm_fe/scripts':
         specifier: '*'
         version: 0.1.201
       '@lm_fe/service':
         specifier: ^0.2.5
-        version: link:../service
+        version: 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@lm_fe/utils':
         specifier: ^0.2.5
-        version: link:../utils
+        version: 0.2.6
       axios:
         specifier: '>=0.26.0'
         version: 0.26.1
@@ -464,7 +464,7 @@ importers:
     dependencies:
       '@lm_fe/utils':
         specifier: ^0.2.5
-        version: link:../utils
+        version: 0.2.6
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
@@ -511,25 +511,25 @@ importers:
     dependencies:
       '@lm_fe/components':
         specifier: ^0.2.5
-        version: link:../components
+        version: 0.2.6(@lm_fe/scripts@0.1.201)(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@16.14.0))(react-router-dom@5.3.4(react@16.14.0))(react@16.14.0))(react-resizable@3.0.4(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-router-dom@5.3.4(react@16.14.0))(react-to-print@2.15.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react@16.14.0)(reconnecting-websocket@4.4.0)
       '@lm_fe/components_m':
         specifier: ^0.2.5
-        version: link:../components_m
+        version: 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@16.14.0))(react-router-dom@5.3.4(react@16.14.0))(react@16.14.0))(react-quill@1.3.5(react@16.14.0))(react-resizable@3.0.4(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-router-dom@5.3.4(react@16.14.0))(react-to-print@2.15.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react@16.14.0)(reconnecting-websocket@4.4.0)
       '@lm_fe/env':
         specifier: ^0.2.5
-        version: link:../env
+        version: 0.2.6
       '@lm_fe/provoke':
         specifier: ^0.2.5
-        version: link:../provoke
+        version: 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(axios@0.26.1)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react@16.14.0)
       '@lm_fe/scripts':
         specifier: '*'
         version: 0.1.201
       '@lm_fe/service':
         specifier: ^0.2.5
-        version: link:../service
+        version: 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(axios@0.26.1)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react@16.14.0)
       '@lm_fe/utils':
         specifier: ^0.2.5
-        version: link:../utils
+        version: 0.2.6
       axios:
         specifier: '>=0.26.0'
         version: 0.26.1
@@ -605,31 +605,31 @@ importers:
     dependencies:
       '@lm_fe/components':
         specifier: ^0.2.5
-        version: link:../components
+        version: 0.2.6(@lm_fe/scripts@0.1.201)(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react@18.3.1))(react-resizable@3.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react-to-print@2.15.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(reconnecting-websocket@4.4.0)
       '@lm_fe/components_m':
         specifier: ^0.2.5
-        version: link:../components_m
+        version: 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react@18.3.1))(react-quill@1.3.5(react@18.3.1))(react-resizable@3.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react-to-print@2.15.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(reconnecting-websocket@4.4.0)
       '@lm_fe/env':
         specifier: ^0.2.5
-        version: link:../env
+        version: 0.2.6
       '@lm_fe/pages':
         specifier: ^0.2.5
-        version: link:../pages
+        version: 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react@18.3.1))(react-quill@1.3.5(react@18.3.1))(react-resizable@3.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react-to-print@2.15.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(reconnecting-websocket@4.4.0)
       '@lm_fe/pages-mchc':
         specifier: ^0.2.5
-        version: link:../pages-mchc
+        version: 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react@18.3.1))(react-quill@1.3.5(react@18.3.1))(react-resizable@3.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react-to-print@2.15.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(reconnecting-websocket@4.4.0)
       '@lm_fe/provoke':
         specifier: ^0.2.5
-        version: link:../provoke
+        version: 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@lm_fe/scripts':
         specifier: '*'
         version: 0.1.201
       '@lm_fe/service':
         specifier: ^0.2.5
-        version: link:../service
+        version: 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@lm_fe/utils':
         specifier: ^0.2.5
-        version: link:../utils
+        version: 0.2.6
       axios:
         specifier: '>=0.26.0'
         version: 0.26.1
@@ -663,28 +663,28 @@ importers:
     dependencies:
       '@lm_fe/components':
         specifier: ^0.2.5
-        version: link:../components
+        version: 0.2.6(@lm_fe/scripts@0.1.201)(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@16.14.0))(react-router-dom@5.3.4(react@16.14.0))(react@16.14.0))(react-resizable@3.0.4(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-router-dom@5.3.4(react@16.14.0))(react-to-print@2.15.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react@16.14.0)(reconnecting-websocket@4.4.0)
       '@lm_fe/components_m':
         specifier: ^0.2.5
-        version: link:../components_m
+        version: 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@16.14.0))(react-router-dom@5.3.4(react@16.14.0))(react@16.14.0))(react-quill@1.3.5(react@16.14.0))(react-resizable@3.0.4(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-router-dom@5.3.4(react@16.14.0))(react-to-print@2.15.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react@16.14.0)(reconnecting-websocket@4.4.0)
       '@lm_fe/env':
         specifier: ^0.2.5
-        version: link:../env
+        version: 0.2.6
       '@lm_fe/pages':
         specifier: ^0.2.5
-        version: link:../pages
+        version: 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-dom@18.3.1(react@16.14.0))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@16.14.0))(react-router-dom@5.3.4(react@16.14.0))(react@16.14.0))(react-quill@1.3.5(react@16.14.0))(react-resizable@3.0.4(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-router-dom@5.3.4(react@16.14.0))(react-to-print@2.15.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react@16.14.0)(reconnecting-websocket@4.4.0)
       '@lm_fe/provoke':
         specifier: ^0.2.5
-        version: link:../provoke
+        version: 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(axios@0.26.1)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react@16.14.0)
       '@lm_fe/scripts':
         specifier: '*'
         version: 0.1.201
       '@lm_fe/service':
         specifier: ^0.2.5
-        version: link:../service
+        version: 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(axios@0.26.1)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react@16.14.0)
       '@lm_fe/utils':
         specifier: ^0.2.5
-        version: link:../utils
+        version: 0.2.6
       axios:
         specifier: '>=0.26.0'
         version: 0.26.1
@@ -751,13 +751,13 @@ importers:
     dependencies:
       '@lm_fe/env':
         specifier: ^0.2.5
-        version: link:../env
+        version: 0.2.6
       '@lm_fe/service':
         specifier: ^0.2.5
-        version: link:../service
+        version: 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@1.13.2)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@lm_fe/utils':
         specifier: ^0.2.5
-        version: link:../utils
+        version: 0.2.6
     devDependencies:
       rollup:
         specifier: ^2.70.2
@@ -770,10 +770,10 @@ importers:
     dependencies:
       '@lm_fe/env':
         specifier: ^0.2.5
-        version: link:../env
+        version: 0.2.6
       '@lm_fe/utils':
         specifier: ^0.2.5
-        version: link:../utils
+        version: 0.2.6
       '@noah-libjs/components':
         specifier: '*'
         version: 0.0.48(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(classnames@2.5.1)(dayjs@1.11.13)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
@@ -1755,12 +1755,132 @@ packages:
     resolution: {integrity: sha512-hUTEWrR8zH+/Z3bp/R1aLm6DW8vB/BB7KH7Yeg4fMfrvSwxegiLVW9uJFAzWkK4mzEagmj/Dti85Yg9MN13t0g==}
     engines: {node: ^20.19.0 || ^22.12.0 || >=24.0.0}
 
+  '@lm_fe/components@0.2.6':
+    resolution: {integrity: sha512-a0Vp87OpU64DwsA7mMayuFEXoztc1YboPnccLi6c88w0K2Vn0NgYEndetSDIYnrBA+1ruoT045n5OK3vD039mg==}
+    peerDependencies:
+      '@lm_fe/scripts': '*'
+      '@monaco-editor/react': ^4.5.1
+      axios: '>=0.26.0'
+      braft-editor: '>=2.3.9'
+      classnames: '*'
+      dayjs: ^1.11.13
+      echarts: ^5.0.1
+      fabric: 5.*
+      history: ^4.9.0
+      monaco-editor: ^0.39.0
+      quill: 1.*
+      quill-image-resize-module: 3.*
+      react: '*'
+      react-container-dimensions: 1.4.1
+      react-dnd: ^11.1.3
+      react-dnd-html5-backend: ^11.1.3
+      react-keep-alive-pro: '*'
+      react-resizable: 3.0.4
+      react-router-dom: ^5.2.0
+      react-to-print: ^2.14.7
+      reconnecting-websocket: 4.x
+
+  '@lm_fe/components_m@0.2.6':
+    resolution: {integrity: sha512-UJfoyTx7RkNL9JOY75QZYsIqRpDjfGN6K9W4K4Z3ru6KMEoX+Lsku8H898sSoV/vmZUtZEhenp5Xhns6S1iHHQ==}
+    peerDependencies:
+      axios: '>=0.26.0'
+      braft-editor: '>=2.3.9'
+      classnames: '*'
+      dayjs: ^1.11.13
+      echarts: ^5.0.1
+      fabric: 5.*
+      history: ^4.9.0
+      quill: 1.*
+      quill-image-resize-module: 3.*
+      react: '*'
+      react-container-dimensions: 1.4.1
+      react-dnd: ^11.1.3
+      react-dnd-html5-backend: ^11.1.3
+      react-keep-alive-pro: '*'
+      react-quill: 1.*
+      react-resizable: 3.0.4
+      react-router-dom: ^5.2.0
+      react-to-print: ^2.14.7
+      reconnecting-websocket: 4.x
+
+  '@lm_fe/env@0.2.6':
+    resolution: {integrity: sha512-9Ss51lAOXHI8BL5II5CC7UeOFsd2pAql4ex+bsOpTnK1pfxMG/uziCQv/CbdqSojuPE/9RePLqDEEBzAzItfnw==}
+
+  '@lm_fe/pages-fubao@0.2.6':
+    resolution: {integrity: sha512-OOFzOMs03YBmxhxJ+zL3FDOYHelX8Q9EdqGwY5rxUd/bTVdT4EOqbMhFDgtswz+YZOiD6cVbD2ub4Cfn/Gc9HA==}
+    peerDependencies:
+      axios: '>=0.26.0'
+      braft-editor: '>=2.3.9'
+      dayjs: ^1.11.13
+      echarts: ^5.0.1
+      history: ^4.9.0
+      react-dnd: ^11.1.3
+      react-dnd-html5-backend: ^11.1.3
+      react-router-dom: ^5.2.0
+
+  '@lm_fe/pages-mchc@0.2.6':
+    resolution: {integrity: sha512-YiJNkTuAnKizZuvyXXRJ6FMh6WgSKuyLoZcIOAMJk13X2h15GPiyQ7Qoo3kig/o87LwOULufRuewkIk11J5RUA==}
+    peerDependencies:
+      axios: '>=0.26.0'
+      braft-editor: '>=2.3.9'
+      classnames: '*'
+      dayjs: ^1.11.13
+      echarts: ^5.0.1
+      fabric: 5.*
+      history: ^4.9.0
+      quill: 1.*
+      quill-image-resize-module: 3.*
+      react: '*'
+      react-container-dimensions: 1.4.1
+      react-dnd: ^11.1.3
+      react-dnd-html5-backend: ^11.1.3
+      react-keep-alive-pro: '*'
+      react-quill: 1.*
+      react-resizable: 3.0.4
+      react-router-dom: ^5.2.0
+      react-to-print: ^2.14.7
+      reconnecting-websocket: 4.x
+
+  '@lm_fe/pages@0.2.6':
+    resolution: {integrity: sha512-afrSGalTCWuSStfzCf0y8HlJqxwIkbaHdwT2ffvu14stpzvHPsm3unTHoEt6gsKOZFhkHrF1QSZ3eMnSdx2dsA==}
+    peerDependencies:
+      axios: '>=0.26.0'
+      braft-editor: '>=2.3.9'
+      classnames: '*'
+      dayjs: ^1.11.13
+      echarts: ^5.0.1
+      fabric: 5.*
+      history: ^4.9.0
+      quill: 1.*
+      quill-image-resize-module: 3.*
+      react: '*'
+      react-container-dimensions: 1.4.1
+      react-dnd: ^11.1.3
+      react-dnd-html5-backend: ^11.1.3
+      react-keep-alive-pro: '*'
+      react-quill: 1.*
+      react-resizable: 3.0.4
+      react-router-dom: ^5.2.0
+      react-to-print: ^2.14.7
+      reconnecting-websocket: 4.x
+
+  '@lm_fe/provoke@0.2.6':
+    resolution: {integrity: sha512-Di9Kd56GRsTHZ0f7s25MB5R+XWlOURd22leanKnbYs3dtd+uIW9UB21+4wFZz8oZaEcPxHC8ggE2SAKOUvV09g==}
+
   '@lm_fe/scripts@0.1.201':
     resolution: {integrity: sha512-f5yR4uln/uWbdQljVQWAzk1LqY77y34Tria7AtLnqIkibzCB8i91TKUq3qRyhtPigymrqC5TWbTR4c/SwHNrqA==}
     hasBin: true
 
+  '@lm_fe/service@0.2.6':
+    resolution: {integrity: sha512-4vjOsybH5YfkSKMVwF/0BMY9mR51uZOxp2GcCmvtawbEzD7sRE0GWiNcpO80FIcNjp8HCI6QOZKyQ4giKWO0aQ==}
+    peerDependencies:
+      axios: 0.x
+
   '@lm_fe/static@0.1.201':
     resolution: {integrity: sha512-7MVK4nHfvlqSqcdQyxy3jBCOpOmepkD8LhqVfPmDCoEKSq559o8+kgGAOyhgO87orFlBM6lXhAbjB54Irltw3g==}
+
+  '@lm_fe/utils@0.2.6':
+    resolution: {integrity: sha512-Ek3b3Z5JMhk8ZRhSFcfWY3S+/cDwZFl5hZSTlWdcSJ99/WXUFva6rHv4dhv/h1iQIHiBxOv00dxdJe/7JUXOfA==}
 
   '@mapbox/node-pre-gyp@1.0.11':
     resolution: {integrity: sha512-Yhlar6v9WQgUp/He7BdgzOz8lqMQ8sU+jkCq7Wx8Myc5YFJLbEe7lgui/V7G1qB1DJykHSGwreceSaD60Y0PUQ==}
@@ -9954,6 +10074,308 @@ snapshots:
       - supports-color
       - typescript
 
+  '@lm_fe/components@0.2.6(@lm_fe/scripts@0.1.201)(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@16.14.0))(react-router-dom@5.3.4(react@16.14.0))(react@16.14.0))(react-resizable@3.0.4(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-router-dom@5.3.4(react@16.14.0))(react-to-print@2.15.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react@16.14.0)(reconnecting-websocket@4.4.0)':
+    dependencies:
+      '@lm_fe/env': 0.2.6
+      '@lm_fe/provoke': 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(axios@0.26.1)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react@16.14.0)
+      '@lm_fe/scripts': 0.1.201
+      '@lm_fe/service': 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(axios@0.26.1)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react@16.14.0)
+      '@lm_fe/utils': 0.2.6
+      '@monaco-editor/react': 4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@16.14.0))(react@16.14.0)
+      '@noah-libjs/components': 0.0.48(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(axios@0.26.1)(classnames@2.5.1)(dayjs@1.11.13)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react@16.14.0)
+      axios: 0.26.1
+      braft-editor: 2.3.9(react-dom@18.3.1(react@16.14.0))(react@16.14.0)
+      classnames: 2.5.1
+      dayjs: 1.11.13
+      echarts: 5.6.0
+      fabric: 5.3.0(encoding@0.1.13)
+      history: 4.10.1
+      monaco-editor: 0.39.0
+      quill: 1.3.7
+      quill-image-resize-module: 3.0.0
+      react: 16.14.0
+      react-container-dimensions: 1.4.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0)
+      react-dnd: 11.1.3(react-dom@18.3.1(react@16.14.0))(react@16.14.0)
+      react-dnd-html5-backend: 11.1.3
+      react-keep-alive-pro: 2.5.5(react-dom@18.3.1(react@16.14.0))(react-router-dom@5.3.4(react@16.14.0))(react@16.14.0)
+      react-resizable: 3.0.4(react-dom@18.3.1(react@16.14.0))(react@16.14.0)
+      react-router-dom: 5.3.4(react@16.14.0)
+      react-to-print: 2.15.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0)
+      reconnecting-websocket: 4.4.0
+    transitivePeerDependencies:
+      - debug
+
+  '@lm_fe/components@0.2.6(@lm_fe/scripts@0.1.201)(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react@18.3.1))(react-resizable@3.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react-to-print@2.15.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(reconnecting-websocket@4.4.0)':
+    dependencies:
+      '@lm_fe/env': 0.2.6
+      '@lm_fe/provoke': 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+      '@lm_fe/scripts': 0.1.201
+      '@lm_fe/service': 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+      '@lm_fe/utils': 0.2.6
+      '@monaco-editor/react': 4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@noah-libjs/components': 0.0.48(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(classnames@2.5.1)(dayjs@1.11.13)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+      axios: 0.26.1
+      braft-editor: 2.3.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      classnames: 2.5.1
+      dayjs: 1.11.13
+      echarts: 5.6.0
+      fabric: 5.3.0(encoding@0.1.13)
+      history: 4.10.1
+      monaco-editor: 0.39.0
+      quill: 1.3.7
+      quill-image-resize-module: 3.0.0
+      react: 18.3.1
+      react-container-dimensions: 1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-dnd: 11.1.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-dnd-html5-backend: 11.1.3
+      react-keep-alive-pro: 2.5.5(react-dom@18.3.1(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react@18.3.1)
+      react-resizable: 3.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-router-dom: 5.3.4(react@18.3.1)
+      react-to-print: 2.15.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      reconnecting-websocket: 4.4.0
+    transitivePeerDependencies:
+      - debug
+
+  '@lm_fe/components_m@0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@16.14.0))(react-router-dom@5.3.4(react@16.14.0))(react@16.14.0))(react-quill@1.3.5(react@16.14.0))(react-resizable@3.0.4(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-router-dom@5.3.4(react@16.14.0))(react-to-print@2.15.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react@16.14.0)(reconnecting-websocket@4.4.0)':
+    dependencies:
+      '@lm_fe/components': 0.2.6(@lm_fe/scripts@0.1.201)(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@16.14.0))(react-router-dom@5.3.4(react@16.14.0))(react@16.14.0))(react-resizable@3.0.4(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-router-dom@5.3.4(react@16.14.0))(react-to-print@2.15.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react@16.14.0)(reconnecting-websocket@4.4.0)
+      '@lm_fe/env': 0.2.6
+      '@lm_fe/provoke': 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(axios@0.26.1)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react@16.14.0)
+      '@lm_fe/scripts': 0.1.201
+      '@lm_fe/service': 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(axios@0.26.1)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react@16.14.0)
+      '@lm_fe/utils': 0.2.6
+      axios: 0.26.1
+      braft-editor: 2.3.9(react-dom@18.3.1(react@16.14.0))(react@16.14.0)
+      classnames: 2.5.1
+      dayjs: 1.11.13
+      echarts: 5.6.0
+      fabric: 5.3.0(encoding@0.1.13)
+      history: 4.10.1
+      quill: 1.3.7
+      quill-image-resize-module: 3.0.0
+      react: 16.14.0
+      react-container-dimensions: 1.4.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0)
+      react-dnd: 11.1.3(react-dom@18.3.1(react@16.14.0))(react@16.14.0)
+      react-dnd-html5-backend: 11.1.3
+      react-keep-alive-pro: 2.5.5(react-dom@18.3.1(react@16.14.0))(react-router-dom@5.3.4(react@16.14.0))(react@16.14.0)
+      react-quill: 1.3.5(react@16.14.0)
+      react-resizable: 3.0.4(react-dom@18.3.1(react@16.14.0))(react@16.14.0)
+      react-router-dom: 5.3.4(react@16.14.0)
+      react-to-print: 2.15.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0)
+      reconnecting-websocket: 4.4.0
+    transitivePeerDependencies:
+      - '@monaco-editor/react'
+      - debug
+      - monaco-editor
+
+  '@lm_fe/components_m@0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react@18.3.1))(react-quill@1.3.5(react@18.3.1))(react-resizable@3.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react-to-print@2.15.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(reconnecting-websocket@4.4.0)':
+    dependencies:
+      '@lm_fe/components': 0.2.6(@lm_fe/scripts@0.1.201)(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react@18.3.1))(react-resizable@3.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react-to-print@2.15.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(reconnecting-websocket@4.4.0)
+      '@lm_fe/env': 0.2.6
+      '@lm_fe/provoke': 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+      '@lm_fe/scripts': 0.1.201
+      '@lm_fe/service': 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+      '@lm_fe/utils': 0.2.6
+      axios: 0.26.1
+      braft-editor: 2.3.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      classnames: 2.5.1
+      dayjs: 1.11.13
+      echarts: 5.6.0
+      fabric: 5.3.0(encoding@0.1.13)
+      history: 4.10.1
+      quill: 1.3.7
+      quill-image-resize-module: 3.0.0
+      react: 18.3.1
+      react-container-dimensions: 1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-dnd: 11.1.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-dnd-html5-backend: 11.1.3
+      react-keep-alive-pro: 2.5.5(react-dom@18.3.1(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react@18.3.1)
+      react-quill: 1.3.5(react@18.3.1)
+      react-resizable: 3.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-router-dom: 5.3.4(react@18.3.1)
+      react-to-print: 2.15.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      reconnecting-websocket: 4.4.0
+    transitivePeerDependencies:
+      - '@monaco-editor/react'
+      - debug
+      - monaco-editor
+
+  '@lm_fe/env@0.2.6':
+    dependencies:
+      '@lm_fe/utils': 0.2.6
+      dayjs: 1.11.13
+    transitivePeerDependencies:
+      - debug
+
+  '@lm_fe/pages-fubao@0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react@18.3.1))(react-quill@1.3.5(react@18.3.1))(react-resizable@3.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react-to-print@2.15.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(reconnecting-websocket@4.4.0)':
+    dependencies:
+      '@lm_fe/components': 0.2.6(@lm_fe/scripts@0.1.201)(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react@18.3.1))(react-resizable@3.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react-to-print@2.15.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(reconnecting-websocket@4.4.0)
+      '@lm_fe/components_m': 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react@18.3.1))(react-quill@1.3.5(react@18.3.1))(react-resizable@3.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react-to-print@2.15.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(reconnecting-websocket@4.4.0)
+      '@lm_fe/env': 0.2.6
+      '@lm_fe/pages': 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react@18.3.1))(react-quill@1.3.5(react@18.3.1))(react-resizable@3.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react-to-print@2.15.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(reconnecting-websocket@4.4.0)
+      '@lm_fe/pages-mchc': 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react@18.3.1))(react-quill@1.3.5(react@18.3.1))(react-resizable@3.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react-to-print@2.15.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(reconnecting-websocket@4.4.0)
+      '@lm_fe/provoke': 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+      '@lm_fe/scripts': 0.1.201
+      '@lm_fe/service': 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+      '@lm_fe/utils': 0.2.6
+      axios: 0.26.1
+      braft-editor: 2.3.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      dayjs: 1.11.13
+      echarts: 5.6.0
+      history: 4.10.1
+      react-dnd: 11.1.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-dnd-html5-backend: 11.1.3
+      react-router-dom: 5.3.4(react@18.3.1)
+    transitivePeerDependencies:
+      - '@monaco-editor/react'
+      - classnames
+      - debug
+      - fabric
+      - monaco-editor
+      - quill
+      - quill-image-resize-module
+      - react
+      - react-container-dimensions
+      - react-dom
+      - react-keep-alive-pro
+      - react-quill
+      - react-resizable
+      - react-to-print
+      - reconnecting-websocket
+
+  '@lm_fe/pages-mchc@0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react@18.3.1))(react-quill@1.3.5(react@18.3.1))(react-resizable@3.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react-to-print@2.15.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(reconnecting-websocket@4.4.0)':
+    dependencies:
+      '@lm_fe/components': 0.2.6(@lm_fe/scripts@0.1.201)(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react@18.3.1))(react-resizable@3.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react-to-print@2.15.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(reconnecting-websocket@4.4.0)
+      '@lm_fe/components_m': 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react@18.3.1))(react-quill@1.3.5(react@18.3.1))(react-resizable@3.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react-to-print@2.15.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(reconnecting-websocket@4.4.0)
+      '@lm_fe/env': 0.2.6
+      '@lm_fe/pages': 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react@18.3.1))(react-quill@1.3.5(react@18.3.1))(react-resizable@3.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react-to-print@2.15.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(reconnecting-websocket@4.4.0)
+      '@lm_fe/provoke': 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+      '@lm_fe/scripts': 0.1.201
+      '@lm_fe/service': 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+      '@lm_fe/utils': 0.2.6
+      axios: 0.26.1
+      braft-editor: 2.3.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      classnames: 2.5.1
+      dayjs: 1.11.13
+      echarts: 5.6.0
+      fabric: 5.3.0(encoding@0.1.13)
+      history: 4.10.1
+      quill: 1.3.7
+      quill-image-resize-module: 3.0.0
+      react: 18.3.1
+      react-container-dimensions: 1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-dnd: 11.1.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-dnd-html5-backend: 11.1.3
+      react-keep-alive-pro: 2.5.5(react-dom@18.3.1(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react@18.3.1)
+      react-quill: 1.3.5(react@18.3.1)
+      react-resizable: 3.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-router-dom: 5.3.4(react@18.3.1)
+      react-to-print: 2.15.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      reconnecting-websocket: 4.4.0
+    transitivePeerDependencies:
+      - '@monaco-editor/react'
+      - debug
+      - monaco-editor
+      - react-dom
+
+  '@lm_fe/pages@0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-dom@18.3.1(react@16.14.0))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@16.14.0))(react-router-dom@5.3.4(react@16.14.0))(react@16.14.0))(react-quill@1.3.5(react@16.14.0))(react-resizable@3.0.4(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-router-dom@5.3.4(react@16.14.0))(react-to-print@2.15.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react@16.14.0)(reconnecting-websocket@4.4.0)':
+    dependencies:
+      '@lm_fe/components': 0.2.6(@lm_fe/scripts@0.1.201)(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@16.14.0))(react-router-dom@5.3.4(react@16.14.0))(react@16.14.0))(react-resizable@3.0.4(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-router-dom@5.3.4(react@16.14.0))(react-to-print@2.15.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react@16.14.0)(reconnecting-websocket@4.4.0)
+      '@lm_fe/components_m': 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@16.14.0))(react-router-dom@5.3.4(react@16.14.0))(react@16.14.0))(react-quill@1.3.5(react@16.14.0))(react-resizable@3.0.4(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react-router-dom@5.3.4(react@16.14.0))(react-to-print@2.15.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react@16.14.0)(reconnecting-websocket@4.4.0)
+      '@lm_fe/env': 0.2.6
+      '@lm_fe/provoke': 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(axios@0.26.1)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react@16.14.0)
+      '@lm_fe/scripts': 0.1.201
+      '@lm_fe/service': 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(axios@0.26.1)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react@16.14.0)
+      '@lm_fe/utils': 0.2.6
+      axios: 0.26.1
+      braft-editor: 2.3.9(react-dom@18.3.1(react@16.14.0))(react@16.14.0)
+      classnames: 2.5.1
+      dayjs: 1.11.13
+      echarts: 5.6.0
+      fabric: 5.3.0(encoding@0.1.13)
+      history: 4.10.1
+      quill: 1.3.7
+      quill-image-resize-module: 3.0.0
+      react: 16.14.0
+      react-container-dimensions: 1.4.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0)
+      react-dnd: 11.1.3(react-dom@18.3.1(react@16.14.0))(react@16.14.0)
+      react-dnd-html5-backend: 11.1.3
+      react-keep-alive-pro: 2.5.5(react-dom@18.3.1(react@16.14.0))(react-router-dom@5.3.4(react@16.14.0))(react@16.14.0)
+      react-perfect-scrollbar: 1.5.8(react-dom@18.3.1(react@16.14.0))(react@16.14.0)
+      react-quill: 1.3.5(react@16.14.0)
+      react-resizable: 3.0.4(react-dom@18.3.1(react@16.14.0))(react@16.14.0)
+      react-router-dom: 5.3.4(react@16.14.0)
+      react-to-print: 2.15.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0)
+      reconnecting-websocket: 4.4.0
+    transitivePeerDependencies:
+      - '@monaco-editor/react'
+      - debug
+      - monaco-editor
+      - react-dom
+
+  '@lm_fe/pages@0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react@18.3.1))(react-quill@1.3.5(react@18.3.1))(react-resizable@3.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react-to-print@2.15.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(reconnecting-websocket@4.4.0)':
+    dependencies:
+      '@lm_fe/components': 0.2.6(@lm_fe/scripts@0.1.201)(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react@18.3.1))(react-resizable@3.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react-to-print@2.15.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(reconnecting-websocket@4.4.0)
+      '@lm_fe/components_m': 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(braft-editor@2.3.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(classnames@2.5.1)(dayjs@1.11.13)(echarts@5.6.0)(fabric@5.3.0(encoding@0.1.13))(history@4.10.1)(monaco-editor@0.39.0)(quill-image-resize-module@3.0.0)(quill@1.3.7)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dnd-html5-backend@11.1.3)(react-dnd@11.1.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-keep-alive-pro@2.5.5(react-dom@18.3.1(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react@18.3.1))(react-quill@1.3.5(react@18.3.1))(react-resizable@3.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react-to-print@2.15.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(reconnecting-websocket@4.4.0)
+      '@lm_fe/env': 0.2.6
+      '@lm_fe/provoke': 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+      '@lm_fe/scripts': 0.1.201
+      '@lm_fe/service': 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+      '@lm_fe/utils': 0.2.6
+      axios: 0.26.1
+      braft-editor: 2.3.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      classnames: 2.5.1
+      dayjs: 1.11.13
+      echarts: 5.6.0
+      fabric: 5.3.0(encoding@0.1.13)
+      history: 4.10.1
+      quill: 1.3.7
+      quill-image-resize-module: 3.0.0
+      react: 18.3.1
+      react-container-dimensions: 1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-dnd: 11.1.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-dnd-html5-backend: 11.1.3
+      react-keep-alive-pro: 2.5.5(react-dom@18.3.1(react@18.3.1))(react-router-dom@5.3.4(react@18.3.1))(react@18.3.1)
+      react-perfect-scrollbar: 1.5.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-quill: 1.3.5(react@18.3.1)
+      react-resizable: 3.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-router-dom: 5.3.4(react@18.3.1)
+      react-to-print: 2.15.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      reconnecting-websocket: 4.4.0
+    transitivePeerDependencies:
+      - '@monaco-editor/react'
+      - debug
+      - monaco-editor
+      - react-dom
+
+  '@lm_fe/provoke@0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(axios@0.26.1)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react@16.14.0)':
+    dependencies:
+      '@lm_fe/env': 0.2.6
+      '@lm_fe/service': 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(axios@0.26.1)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react@16.14.0)
+      '@lm_fe/utils': 0.2.6
+    transitivePeerDependencies:
+      - '@monaco-editor/react'
+      - axios
+      - classnames
+      - debug
+      - monaco-editor
+      - react
+      - react-container-dimensions
+
+  '@lm_fe/provoke@0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@lm_fe/env': 0.2.6
+      '@lm_fe/service': 0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+      '@lm_fe/utils': 0.2.6
+    transitivePeerDependencies:
+      - '@monaco-editor/react'
+      - axios
+      - classnames
+      - debug
+      - monaco-editor
+      - react
+      - react-container-dimensions
+
   '@lm_fe/scripts@0.1.201':
     dependencies:
       '@lm_fe/static': 0.1.201
@@ -9963,7 +10385,67 @@ snapshots:
       json2md: 2.0.3
       yargs-parser: 21.1.1
 
+  '@lm_fe/service@0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(axios@0.26.1)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react@16.14.0)':
+    dependencies:
+      '@lm_fe/env': 0.2.6
+      '@lm_fe/utils': 0.2.6
+      '@noah-libjs/components': 0.0.48(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(axios@0.26.1)(classnames@2.5.1)(dayjs@1.11.13)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@16.14.0))(react@16.14.0))(react@16.14.0)
+      axios: 0.26.1
+      dayjs: 1.11.13
+      lodash: 4.17.21
+    transitivePeerDependencies:
+      - '@monaco-editor/react'
+      - classnames
+      - debug
+      - monaco-editor
+      - react
+      - react-container-dimensions
+
+  '@lm_fe/service@0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@lm_fe/env': 0.2.6
+      '@lm_fe/utils': 0.2.6
+      '@noah-libjs/components': 0.0.48(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@0.26.1)(classnames@2.5.1)(dayjs@1.11.13)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+      axios: 0.26.1
+      dayjs: 1.11.13
+      lodash: 4.17.21
+    transitivePeerDependencies:
+      - '@monaco-editor/react'
+      - classnames
+      - debug
+      - monaco-editor
+      - react
+      - react-container-dimensions
+
+  '@lm_fe/service@0.2.6(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@1.13.2)(classnames@2.5.1)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@lm_fe/env': 0.2.6
+      '@lm_fe/utils': 0.2.6
+      '@noah-libjs/components': 0.0.48(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@1.13.2)(classnames@2.5.1)(dayjs@1.11.13)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+      axios: 1.13.2
+      dayjs: 1.11.13
+      lodash: 4.17.21
+    transitivePeerDependencies:
+      - '@monaco-editor/react'
+      - classnames
+      - debug
+      - monaco-editor
+      - react
+      - react-container-dimensions
+
   '@lm_fe/static@0.1.201': {}
+
+  '@lm_fe/utils@0.2.6':
+    dependencies:
+      '@lm_fe/static': 0.1.201
+      '@noah-libjs/request': 0.0.48(dayjs@1.11.13)
+      '@noah-libjs/utils': 0.0.48(dayjs@1.11.13)
+      axios: 0.26.1
+      dayjs: 1.11.13
+      reconnecting-websocket: 4.4.0
+      store: 2.0.12
+    transitivePeerDependencies:
+      - debug
 
   '@mapbox/node-pre-gyp@1.0.11(encoding@0.1.13)':
     dependencies:
@@ -10065,6 +10547,20 @@ snapshots:
       '@noah-libjs/request': 0.0.48(dayjs@1.11.13)
       '@noah-libjs/utils': 0.0.48(dayjs@1.11.13)
       axios: 0.26.1
+      classnames: 2.5.1
+      dayjs: 1.11.13
+      monaco-editor: 0.39.0
+      react: 18.3.1
+      react-container-dimensions: 1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+    transitivePeerDependencies:
+      - debug
+
+  '@noah-libjs/components@0.0.48(@monaco-editor/react@4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(axios@1.13.2)(classnames@2.5.1)(dayjs@1.11.13)(monaco-editor@0.39.0)(react-container-dimensions@1.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@monaco-editor/react': 4.7.0(monaco-editor@0.39.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@noah-libjs/request': 0.0.48(dayjs@1.11.13)
+      '@noah-libjs/utils': 0.0.48(dayjs@1.11.13)
+      axios: 1.13.2
       classnames: 2.5.1
       dayjs: 1.11.13
       monaco-editor: 0.39.0
@@ -16309,6 +16805,13 @@ snapshots:
       react: 16.14.0
       react-dom: 18.3.1(react@16.14.0)
 
+  react-draggable@4.4.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      clsx: 1.2.1
+      prop-types: 15.8.1
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+
   react-easy-crop@5.4.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       normalize-wheel: 1.0.1
@@ -16357,6 +16860,13 @@ snapshots:
       react: 16.14.0
       react-dom: 18.3.1(react@16.14.0)
 
+  react-perfect-scrollbar@1.5.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      perfect-scrollbar: 1.5.6
+      prop-types: 15.8.1
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+
   react-quill@1.3.5(react@16.14.0):
     dependencies:
       '@types/quill': 1.3.10
@@ -16367,11 +16877,29 @@ snapshots:
       react: 16.14.0
       react-dom-factories: 1.0.2
 
+  react-quill@1.3.5(react@18.3.1):
+    dependencies:
+      '@types/quill': 1.3.10
+      create-react-class: 15.7.0
+      lodash: 4.17.21
+      prop-types: 15.8.1
+      quill: 1.3.7
+      react: 18.3.1
+      react-dom-factories: 1.0.2
+
   react-resizable@3.0.4(react-dom@18.3.1(react@16.14.0))(react@16.14.0):
     dependencies:
       prop-types: 15.8.1
       react: 16.14.0
       react-draggable: 4.4.6(react-dom@18.3.1(react@16.14.0))(react@16.14.0)
+    transitivePeerDependencies:
+      - react-dom
+
+  react-resizable@3.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      prop-types: 15.8.1
+      react: 18.3.1
+      react-draggable: 4.4.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     transitivePeerDependencies:
       - react-dom
 
