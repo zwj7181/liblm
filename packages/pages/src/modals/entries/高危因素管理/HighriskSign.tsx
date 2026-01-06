@@ -37,6 +37,7 @@ export function HighriskSign_高危因素管理(props: IProps) {
     const [selectTree, set_selectTree] = useState<IMchc_TemplateTree_Item[]>([])
     // const multiple = mchcEnv.in(['广三', '建瓯', '郫都', '广州市八']) ? true : false
     const multiple = config.高危标记多选
+    const 高危管理_允许手输传染病 = config.高危管理_允许手输传染病
 
     function getInitData(_h = headerInfo) {
         if (!_h) return _h
@@ -52,7 +53,7 @@ export function HighriskSign_高危因素管理(props: IProps) {
     }
 
     useEffect(() => {
-        ;(async () => {
+        ; (async () => {
             // const gradeDic = initDictionaries.filter((item) => item.key === 'highriskGrade' && item.type === highriskVersion);
 
             if (headerInfo) {
@@ -78,7 +79,7 @@ export function HighriskSign_高危因素管理(props: IProps) {
             }
         })()
 
-        return () => {}
+        return () => { }
     }, [headerInfo])
 
     function handleSearch(e: ChangeEvent<HTMLInputElement>) {
@@ -377,7 +378,7 @@ export function HighriskSign_高危因素管理(props: IProps) {
                             onChange={(v) => {
                                 assign_initData({ infectionNote: v })
                             }}
-                            mode="tags"
+                            mode={高危管理_允许手输传染病 ? 'tags' : 'multiple'}
                             marshal={0}
                             value={initData?.infectionNote}
                         ></MySelect>

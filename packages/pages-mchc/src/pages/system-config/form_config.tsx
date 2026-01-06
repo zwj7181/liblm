@@ -209,13 +209,7 @@ export default defineFormConfig(
                             inputProps: { options: switchOptions, marshal: 0 },
                             layout: '1/3',
                         },
-                        {
-                            label: '禁止编辑高危等级',
-                            name: '禁止编辑高危等级',
-                            inputType: 'MS',
-                            inputProps: { options: switchOptions, marshal: 0 },
-                            layout: '1/3',
-                        },
+
                         {
                             label: '看诊审核限制',
                             name: 'auditRestriction',
@@ -243,21 +237,7 @@ export default defineFormConfig(
                             layout: '1/3',
                         },
 
-                        {
-                            label: '高危提醒功能',
-                            name: 'openHighriskSign',
-                            inputType: 'MS',
-                            inputProps: { options: switchOptions, marshal: 0 },
 
-                            layout: '1/3',
-                        },
-                        {
-                            label: '高危版本',
-                            name: 'highriskVersion',
-                            inputType: 'MS',
-                            inputProps: { options: peek_provoke((s) => s.可选高危版本), marshal: 0 },
-                            layout: '1/3',
-                        },
 
                         {
                             label: 'VTE预防用药筛查表',
@@ -301,19 +281,6 @@ export default defineFormConfig(
                             layout: '1/3',
                         },
 
-                        {
-                            label: '高危展示',
-                            name: 'highriskType',
-                            inputType: 'MS',
-                            inputProps: {
-                                options: [
-                                    { value: 'highRiskDiagnosis', label: '高危诊断' },
-                                    { value: 'highriskNote', label: '高危因素' },
-                                ],
-                                marshal: 0,
-                            },
-                            layout: '1/3',
-                        },
 
                         {
                             label: '首检信息病历风格',
@@ -379,13 +346,7 @@ export default defineFormConfig(
                         //     inputProps: { options: switchOptions, marshal: 0 },
                         //     layout: '1/3'
                         // },
-                        {
-                            label: '禁止编辑高危因素、传染病',
-                            name: '护士端_禁止编辑高危因素_传染病',
-                            inputType: 'MS',
-                            inputProps: { options: switchOptions, marshal: 0 },
-                            layout: '1/3',
-                        },
+
                         {
                             label: '审核禁用保存',
                             name: '护士端_审核禁用保存',
@@ -440,6 +401,32 @@ export default defineFormConfig(
                     },
                     layout: '1/3',
                 },
+
+                {
+                    label: '病人标签多选',
+                    name: '病人标签多选',
+                    inputType: 'Switch',
+                    layout: '1/3',
+                },
+            ],
+        },
+        {
+            label: '高危管理配置',
+            children: [
+                {
+                    label: '禁止编辑高危等级',
+                    name: '禁止编辑高危等级',
+                    inputType: 'MS',
+                    inputProps: { options: switchOptions, marshal: 0 },
+                    layout: '1/3',
+                },
+                {
+                    label: '允许手输传染病',
+                    name: '高危管理_允许手输传染病',
+                    inputType: 'MSW',
+                    inputProps: { options: switchOptions, marshal: 0 },
+                    layout: '1/3',
+                },
                 {
                     label: '高危标记多选',
                     name: '高危标记多选',
@@ -447,9 +434,38 @@ export default defineFormConfig(
                     layout: '1/3',
                 },
                 {
-                    label: '病人标签多选',
-                    name: '病人标签多选',
-                    inputType: 'Switch',
+                    label: '高危展示',
+                    name: 'highriskType',
+                    inputType: 'MS',
+                    inputProps: {
+                        options: [
+                            { value: 'highRiskDiagnosis', label: '高危诊断' },
+                            { value: 'highriskNote', label: '高危因素' },
+                        ],
+                        marshal: 0,
+                    },
+                    layout: '1/3',
+                },
+                {
+                    label: '高危提醒功能',
+                    name: 'openHighriskSign',
+                    inputType: 'MS',
+                    inputProps: { options: switchOptions, marshal: 0 },
+
+                    layout: '1/3',
+                },
+                {
+                    label: '高危版本',
+                    name: 'highriskVersion',
+                    inputType: 'MS',
+                    inputProps: { options: peek_provoke((s) => s.可选高危版本), marshal: 0 },
+                    layout: '1/3',
+                },
+                {
+                    label: '护士端_禁止打开高危管理',
+                    name: '护士端_禁止编辑高危因素_传染病',
+                    inputType: 'MS',
+                    inputProps: { options: switchOptions, marshal: 0 },
                     layout: '1/3',
                 },
             ],
