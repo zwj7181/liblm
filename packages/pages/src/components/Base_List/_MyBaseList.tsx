@@ -161,8 +161,9 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
         setEditKey(id)
         editKeyRef.current = id
     }
+    const cache_key = `${location.pathname}@${name}`
     useEffect(() => {
-        let a = mchcStorage.get(location.pathname)
+        let a = mchcStorage.get(cache_key)
         if (!isNil(a)) {
             searchForm.setFieldsValue(a)
         }
@@ -522,7 +523,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
         const data = tranformQueryData(values, searchConfig, isFuck)
         const v = beforeSearch?.(data as any) ?? data
 
-        mchcStorage.set(location.pathname, values)
+        mchcStorage.set(cache_key, values)
 
 
         // defaultQuery.current = { ...defaultQuery.current, ...v }
@@ -735,7 +736,6 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
                         <div ref={formWrapper} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 4 }}>
                             {
                                 showSearch ? (
-                                    // mchcStorage.get(location.pathname) ?? 
                                     <Form initialValues={initialSearchValue} form={searchForm} layout="inline" >
                                         {searchConfig ? <MyBaseListRenderFormSection config={searchConfig} disabled={loading} /> : null}
 
@@ -798,7 +798,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
                                                 {RenderSearchBtns?.call(window, actionCtx)}
 
                                                 <OkButton htmlType="reset" icon={<MyIcon value='ReloadOutlined' />} disabled={loading} onClick={() => {
-                                                    mchcStorage.remove(location.pathname)
+                                                    mchcStorage.remove(cache_key)
 
                                                     searchForm.resetFields()
                                                     defaultQuery.current = defaultQueryValue
