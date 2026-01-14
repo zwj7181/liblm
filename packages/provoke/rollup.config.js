@@ -11,7 +11,7 @@ export default defineConfig(x => {
   const pkg = JSON.parse(readFileSync('./package.json'))
   const external = [
     'react', 'react-dom', 'antd', 'store', 'lodash', 'moment',
-    /antd/, /lodash/, /axios/,
+    /antd/, /lodash/, /axios/, /zustand/, /@ant/,
     ...Object.keys({ ...pkg.peerDependencies, }),
     ...Object.keys({ ...pkg.dependencies, }),
   ]
