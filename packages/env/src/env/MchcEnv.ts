@@ -17,6 +17,9 @@ const env_to_key_map: { [x in MchcTypes]?: string } = {
 }
 class MchcEnv<T> extends AppEnv<T> {
     utils: MchcUtils = mchcUtils
+    debug_flag() {
+        return getSearchParamsValue('debug')
+    }
     info(msg: string, duration?: number) { return new Promise(res => { mchcEvent.emit('toast', { type: 'info', msg, duration, cb: () => res(null) }) }) }
     warning(msg: string, duration?: number) { return new Promise(res => { mchcEvent.emit('toast', { type: 'warning', msg, duration, cb: () => res(null) }) }) }
     success(msg: string, duration?: number) { return new Promise(res => { mchcEvent.emit('toast', { type: 'success', msg, duration, cb: () => res(null) }) }) }

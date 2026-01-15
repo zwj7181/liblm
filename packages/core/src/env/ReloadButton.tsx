@@ -24,7 +24,7 @@ export const ReloadButton: FC = (props) => {
 
         setTimeout(() => {
 
-            if (mchcConfig.get('顶部工具栏隐藏') || !mchcEnv.token) return
+            if ((mchcConfig.get('顶部工具栏隐藏') || !mchcEnv.token) && !mchcEnv.debug_flag()) return
 
             setShow(true)
         }, 600);
