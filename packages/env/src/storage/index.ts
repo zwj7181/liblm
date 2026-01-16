@@ -1,6 +1,6 @@
+import { safe_json_parse } from '@lm_fe/utils';
 import store from 'store'
 import sessionStorage from 'store/storages/sessionStorage'
-
 class MchcStorage implements StoreJsAPI {
     version: string = "0.0.1";
     enabled: boolean = true;
@@ -30,7 +30,10 @@ class MchcStorage implements StoreJsAPI {
         return store.clearAll()
     }
     get(key: string): string | null {
-        if (this.is_sess()) return sessionStorage.read(key)
+        if (this.is_sess()) {
+            const raw = sessionStorage.read(key)
+            return safe_json_parse(raw)
+        }
         return store.get(key)
 
     }
@@ -40,7 +43,9 @@ class MchcStorage implements StoreJsAPI {
         return store.remove(key)
     }
     set(key: string, value: any): void {
-        if (this.is_sess()) return sessionStorage.write(key, value)
+        if (this.is_sess()) {
+            return sessionStorage.write(key, JSON.stringify(value))
+        }
         return store.set(key, value)
     }
 
