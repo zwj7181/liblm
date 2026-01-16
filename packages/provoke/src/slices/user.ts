@@ -80,7 +80,7 @@ export const createUserInfoSlice: StateCreator<MixState, [], [], UserInfoState> 
       // },
     },
     async auth(req: { username: string, password: string }) {
-      const enc = get().config.加密登录
+      const enc = get().config.加密登录 || mchcEnv.in(['南医附属'])
       // const req_data = mchcEnv.in(['南医附属']) ? { data: simple_encrypt(req) } : req
       const req_data = enc ? { data: simple_encrypt(req) } : req
       const token = await SMchc_Common.fk_login(req_data)
