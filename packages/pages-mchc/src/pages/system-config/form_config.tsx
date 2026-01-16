@@ -99,6 +99,16 @@ export default defineFormConfig(
                     },
                     layout: '1/3',
                 },
+                {
+                    label: '本地数据存储',
+                    name: '本地数据存储',
+                    inputType: 'MS',
+                    inputProps: {
+                        marshal: 0,
+                        options: getSameOptions('Local,Session'),
+                    },
+                    layout: '1/3',
+                },
 
                 {
                     label: 'PDF预览组件版本',

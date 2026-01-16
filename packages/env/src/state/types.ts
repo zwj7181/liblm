@@ -1,4 +1,5 @@
-import { ICommonOption } from '../select_options'
+import { ICommonOption } from '@lm_fe/utils'
+
 
 export type ISystemConfig = Partial<{
     id: number
@@ -11,6 +12,7 @@ export type ISystemConfig = Partial<{
     auditRestriction: boolean
     openIntro: boolean
     加密登录: boolean
+    本地数据存储: 'Local' | 'Session'
     fetalMonitor: string
     openHighriskSign: boolean
     highriskVersion: number

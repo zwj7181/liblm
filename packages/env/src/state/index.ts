@@ -99,7 +99,7 @@ class MchcConfig {
         return this.getAll()?.[key]
     }
     getAll() {
-        const config = window.peek_provoke?.('config')
+        const config = window.peek_provoke?.('config') as ISystemConfig
         return config
     }
 
