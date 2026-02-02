@@ -1,14 +1,14 @@
 import React from 'react'
-import { IMchc_FormDescriptions_Field, IMchc_FormDescriptions_Field_Nullable, SMchc_FormDescriptions } from "@lm_fe/service";
+import { IMchc_FormDescriptions_Field, IMchc_FormDescriptions_Field_Nullable, IMchc_TableConfig, SMchc_FormDescriptions } from "@lm_fe/service";
 import { IMyBaseList_ColumnType, MyBaseListProps, TableProps, RcTableProps } from "./types";
 import { get, isFunction, isNil, isObject, isString } from "lodash";
 import { AnyObject, expect_array, flat, safe_async_call, safe_json_parse, safe_json_parse_arr, safeGetFromFuncOrData } from "@lm_fe/utils";
 import { ICommonOption } from "@lm_fe/env";
 import { useEffect, useState } from "react";
 export { TableProps }
-export function formatProps(props: any) {
+export function formatProps(props: any, config?: IMchc_TableConfig) {
   const _props: MyBaseListProps = { ...props }
-  const bf_conf = _props.bf_conf
+  const bf_conf = _props.bf_conf ?? config
   _props.handleBeforePopup = _props.handleBeforePopup ?? bf_conf?.handleBeforePopup ?? (values => values)
   _props.beforeSubmit = _props.beforeSubmit ?? bf_conf?.beforeSubmit ?? (values => values)
   _props.name = _props.name ?? bf_conf?.name

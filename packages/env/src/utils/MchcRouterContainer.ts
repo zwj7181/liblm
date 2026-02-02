@@ -28,12 +28,12 @@ class MchcRouterContainer {
         const sameKeys = oldKeys.filter(_ => mixinKeys.includes(_))
 
         sameKeys.forEach(_ => {
-            mixinRoutes[`${_}_old`] = base[_]
+            mixinRoutes[`${_}_new`] = mixinRoutes[_]
         })
 
 
 
-        this.routesData = { ...base, ...mixinRoutes }
+        this.routesData = { ...mixinRoutes, ...base, }
 
     }
     get_real_path(pathname: string) {

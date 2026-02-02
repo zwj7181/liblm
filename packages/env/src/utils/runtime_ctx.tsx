@@ -7,7 +7,7 @@ import { getGlobalHistory } from "./state";
 import { mchcEvent } from "../event";
 
 
-function Array_(arr: any[], linker = '/', value_path?: string,) {
+function Array_(arr: any[], linker: string | false = '/', value_path?: string,) {
     if (!arr) return null
     if (!Array.isArray(arr)) return <span>非数组：{JSON.stringify(arr)}</span>
     const _arr = arr

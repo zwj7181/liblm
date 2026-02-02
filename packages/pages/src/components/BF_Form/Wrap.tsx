@@ -103,7 +103,7 @@ export function BF_Wrap2(setting: IBF_props, props?: any) {
                         : <Result
                             status="warning"
                             title={`配置缺失`}
-                            subTitle={`请联系管理员初始化[${setting.default_conf.title}]`}
+                            subTitle={`请联系管理员初始化[${setting.default_conf?.title}]`}
                             extra={
                                 <OkButton onClick={init_config}>初始化</OkButton>
                             }

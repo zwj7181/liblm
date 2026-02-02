@@ -14,14 +14,26 @@ import { getDefaultRequiredRules, InterceptDisplayFC, MyBaseListComponents, OkBu
 import { use_provoke } from '@lm_fe/provoke';
 import { TableRowSelection } from 'antd/es/table/interface';
 import { mchcModal__ } from '../../modals';
+import { BF_Wrap2 } from '../BF_Form';
 const browserClient = Browser.client || {};
 
 
 
 export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible, editKey?: any }>(_props: MyBaseListProps<T>) {
+    const bf_preset = _props.bf_preset
     const sys_theme = use_provoke(s => s.sys_theme)
 
-    const props = formatProps(_props);
+
+    const { Wrap, config } = BF_Wrap2({ default_conf: bf_preset }, {
+        table_helper: {
+            createOrUpdate: create_or_update,
+            handleView,
+            handleDelete,
+            handleEdit,
+            handleSearch: table_fetch,
+        }
+    })
+    const props = formatProps(_props, config);
     const {
         dbg_dataSource,
         needPagination = true,
@@ -56,10 +68,10 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
         searchConfig = [],
         searchParams = {},
         initialSearchValue = {},
-        showRowDelBtn,
-        showRowEditBtn,
-        showRowPrintBtn,
-        showRowExportBtn,
+        showRowDelBtn = true,
+        showRowEditBtn = true,
+        showRowPrintBtn = false,
+        showRowExportBtn = false,
         // rowPrintUrlSuffix = 'rowprint',
         customModelService,
         genColumns,
@@ -148,6 +160,19 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
     const [__pageSize, set__pageSize] = useState(defaultQueryValue.size)
     const [__current, set__current] = useState(1)
 
+    const render_props = {
+        createOrUpdate: create_or_update,
+        handleView: handleView,
+        handleDelete: handleDelete,
+        handleEdit: handleEdit,
+        handleSearch: table_fetch,
+        setExtraModalData: setExtraModalData,
+        setEditable: setEditable,
+        setVisible: setVisible,
+        setId: set___Id,
+        create_or_update
+    }
+
     function setPageSize(n: number) {
         set__pageSize(n)
         defaultQuery.current.size = n
@@ -220,14 +245,14 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
         useMyEffectSafe(effect_ctx)(() => {
             if (inited.current) {
                 message.info('刷新成功！')
-                do_search()
+                table_fetch()
 
             }
         }, [])
     }
 
     const actionCtx: IMyBaseList_ActionCtx<T> = {
-        handleSearch: do_search,
+        handleSearch: table_fetch,
         getSearchParams,
         getCheckRows() {
             return checkRows
@@ -253,13 +278,13 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
 
         safe_set_edit_key(0)
         set___Id(undefined)
-        do_search();
+        table_fetch();
         return res
     }
     function _onModalOpen(rowData?: T,) {
         const id = rowData?.id
         if (onModalOpen)
-            return onModalOpen({ rowData, handleSearch: do_search, create_or_update, table_columns })
+            return onModalOpen({ rowData, handleSearch: table_fetch, create_or_update, table_columns })
         mchcModal__.open('modal_form', {
 
             ...modalFormConfig,
@@ -296,18 +321,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
         })
     }
 
-    const render_props = {
-        createOrUpdate: create_or_update,
-        handleView: handleView,
-        handleDelete: handleDelete,
-        handleEdit: handleEdit,
-        handleSearch: do_search,
-        setExtraModalData: setExtraModalData,
-        setEditable: setEditable,
-        setVisible: setVisible,
-        setId: set___Id,
-        create_or_update
-    }
+
 
     /* istanbul ignore next */
     const actionCol: IMyBaseList_ColumnType<T> = action_col?.(render_props) ?? {
@@ -368,7 +382,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
     };
 
     const _columns = (!table_columns.some(_ => _.title === '操作') && showAction) ? [...table_columns, actionCol] : table_columns
-    const cal_columns = genColumns?.({ handleEdit, handleDelete, handleSearch: do_search, handleItemCancel, handleItemSave, editKey, tableColumns: table_columns, actionCol, getSearchParams }) ?? _columns
+    const cal_columns = genColumns?.({ handleEdit, handleDelete, handleSearch: table_fetch, handleItemCancel, handleItemSave, editKey, tableColumns: table_columns, actionCol, getSearchParams }) ?? _columns
 
 
 
@@ -379,7 +393,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
         if (!isOk) return
         await myBaseListService.current?.del(rowData.id);
         mchcEnv.success(`删除${baseTitle}成功`);
-        do_search();
+        table_fetch();
     };
     async function handleRowPrint(rowData: T) {
         mchcModal__.open('print_modal', {
@@ -537,7 +551,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
 
 
 
-    async function do_search(params: any = defaultQuery.current) {
+    async function table_fetch(params: any = defaultQuery.current) {
 
 
         if (!myBaseListService.current) return
@@ -577,7 +591,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
         setPageSize(size)
         setCurrent(current)
         // setDataSource([])
-        do_search()
+        table_fetch()
 
     };
 
@@ -663,7 +677,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
 
         const q = getSearchParams()
         defaultQuery.current = q
-        do_search(q)
+        table_fetch(q)
 
     }
 
@@ -711,7 +725,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
 
 
 
-    return (
+    const n = (
         <div ref={wrapRef} style={{ background: sys_theme.bg_color, }}>
             <Form
                 onSubmitCapture={e => {
@@ -805,7 +819,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
                                                     setDataSource([])
                                                     setCurrent(1)
                                                     setPageSize(defaultQueryValue.size)
-                                                    do_search()
+                                                    table_fetch()
 
                                                 }} >
                                                     重置
@@ -882,9 +896,9 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
                         editable={editable}
                         id={___id}
                         extraModalData={extraModalData}
-                        onCancel={() => { handleCancel(); do_search(); }}
-                        onSearch={do_search}
-                        onOk={() => { handleCancel(); do_search(); }}
+                        onCancel={() => { handleCancel(); table_fetch(); }}
+                        onSearch={table_fetch}
+                        onOk={() => { handleCancel(); table_fetch(); }}
                     />
                 )}
             </>
@@ -893,6 +907,11 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
             }
         </div>
     );
+
+    if (bf_preset)
+        return <Wrap>{n}</Wrap>
+
+    return n
 }
 
 

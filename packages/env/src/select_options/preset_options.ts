@@ -5,16 +5,7 @@ import { 国家, 国家s } from './country';
 import { getDualModeOptions } from './funcs';
 import { ICommonOption } from './types';
 export { getSimpleOptions, getDualModeOptions, optionKey不详, optionKey其他, optionKey否, getSameOptions } from './funcs'
-const userTypeMapping = () => [
-  {
-    value: 1,
-    label: '临时用户',
-  },
-  {
-    value: 2,
-    label: '永久用户',
-  },
-];
+
 
 
 const orderStatusMapping = () => [
@@ -915,7 +906,6 @@ export const selectOptionMap: { [x: string]: () => ICommonOption[] } = {
   ...pre_option_map,
   AddresstypeMapping,
   degreeofeducationMapping: 文化程度,
-  userTypeMapping,
   orderStatusMapping,
   genderMapping: 性别4,
 

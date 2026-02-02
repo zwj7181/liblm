@@ -7,6 +7,7 @@ import { AnyObject, PartialSome } from '@lm_fe/utils';
 import { FormInstance } from 'antd';
 import { IPdfFrameView_Props } from '@lm_fe/components';
 import type { TableProps as RcTableProps } from 'rc-table';
+import { IBF_Default } from '../BF_Form';
 
 export { TableProps, RcTableProps }
 export interface IGlobalEnumItem<T = string> {
@@ -50,7 +51,7 @@ type RenderColFn<T> = FC<RenderColProps<T> & { rowData: T, }>
 export interface MyBaseListProps<T extends { id?: any } = any> extends TableProps<T> {
   bf_conf?: IMchc_TableConfig
   dbg_dataSource?: any[];
-
+  bf_preset?: IBF_Default,
   effect_ctx?: any
   // 接口 URL
   // 左上角标题
@@ -141,7 +142,3 @@ export interface MyBaseListProps<T extends { id?: any } = any> extends TableProp
   history?: any
   searchForm?: FormInstance
 }
-
-// export const DEFAULT_HEADER_HEIGHT = 37;
-// export const SHOW_SERIAL = true;
-

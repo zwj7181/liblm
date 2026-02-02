@@ -8,7 +8,7 @@ import { IBF_props } from './types';
 
 
 export function use_table_config(setting: IBF_props, props?: any) {
-    let { default_conf } = setting
+    let { default_conf = {} } = setting
     const default_conf_ref = useRef<Partial<IMchc_TableConfig>>({})
 
     const [loading, setLoading] = useState(false)
