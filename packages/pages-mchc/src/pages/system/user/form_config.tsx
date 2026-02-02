@@ -85,7 +85,7 @@ export default defineFormConfig(
             layout: '1/2',
             render(value, rowData, index) {
 
-                return <ctx.ui.Switch onChange={v => {
+                return <ctx.ui.Switch size="small" onChange={v => {
                     rowData.activated = v
                     ctx.request.put('/api/users', rowData).then(() => ctx.props.table_helper.handleSearch())
                 }} value={value} />
