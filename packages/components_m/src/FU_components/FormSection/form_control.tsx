@@ -58,21 +58,22 @@ function getFormItemControlByDependency(form_ins: FormInstance, config: IMchc_Fo
 
 function getDepStatus(form_ins: FormInstance, depKey: string | string[] = '', depValue: any[] | ((v: any) => boolean) = []) {
 
-
-
-
-
     //key值有.的情况下showKey处理
     if (isString(depKey) && depKey.includes('.')) {
         depKey = depKey.split('.')
     }
     const __showVal = form_ins.getFieldValue(depKey)
     const targetShowVal = getUglyValue(__showVal)
+    return chekc_value(__showVal, depValue) || chekc_value(targetShowVal, depValue)
 
-    if (isFunction(depValue))
-        return depValue(targetShowVal)
+}
+function chekc_value(target_value: any, dep_values: any[] | ((v: any) => boolean) = []) {
 
-    return depValue.includes(targetShowVal)
+
+    if (isFunction(dep_values))
+        return dep_values(target_value)
+
+    return dep_values.includes(target_value)
 }
 
 function getUglyValue(v: any) {

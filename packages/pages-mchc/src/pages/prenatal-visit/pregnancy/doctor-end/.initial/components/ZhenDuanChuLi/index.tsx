@@ -130,17 +130,16 @@ function Index(props: IProps & IInitial_Tab_props) {
     }
   };
 
-  function handlePrint(type: 'prenatalVisit1' | 'prenatalVisit') {
-    if (!_handlePrint) return
+  function print(type: 'prenatalVisit1' | 'prenatalVisit') {
     if (type == 'prenatalVisit1') {
       const id = get(visitData, `advice.id`);
       if (id) {
-        _handlePrint(type, id);
+        _handlePrint?.(type, id);
       } else {
         message.warning('请先保存');
       }
     } else {
-      _handlePrint(type, undefined);
+      _handlePrint?.(type, undefined);
     }
   }
 
@@ -254,10 +253,10 @@ function Index(props: IProps & IInitial_Tab_props) {
           {
             diagnosis_addon_btns?.(visitData)
           }
-          <OkButton size="large" onClick={() => handlePrint('prenatalVisit')} icon={<MyIcon value='PrinterOutlined' />}>
+          <OkButton size="large" onClick={() => print('prenatalVisit')} icon={<MyIcon value='PrinterOutlined' />}>
             打印档案
           </OkButton>
-          <OkButton size="large" onClick={() => handlePrint('prenatalVisit1')} icon={<MyIcon value='PrinterOutlined' />}>
+          <OkButton size="large" onClick={() => print('prenatalVisit1')} icon={<MyIcon value='PrinterOutlined' />}>
             打印病历
           </OkButton>
 
