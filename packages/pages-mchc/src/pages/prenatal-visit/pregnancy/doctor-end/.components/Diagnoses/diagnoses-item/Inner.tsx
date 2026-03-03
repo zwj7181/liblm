@@ -1,5 +1,5 @@
 
-import { formatTimeToStandard, MyIcon } from '@lm_fe/components_m';
+import { formatTimeToStandard, MyIcon, OkButton } from '@lm_fe/components_m';
 import { IMchc_Doctor_Diagnoses, IMchc_Doctor_OutpatientHeaderInfo } from '@lm_fe/service';
 import { request } from '@lm_fe/utils';
 import { Input, Popconfirm, Popover } from 'antd';
@@ -229,7 +229,8 @@ export default function DiagnosesItem({
         okText="确定"
         cancelText="取消"
       >
-        <MyIcon value='DeleteOutlined' size={6} className="delBtn" type="icon-cacncel" />
+        <OkButton shape='circle' danger size='small' className="delBtn" icon={<MyIcon value='DeleteOutlined' />} />
+
       </Popconfirm>
     </div>
     // </Tooltip>
