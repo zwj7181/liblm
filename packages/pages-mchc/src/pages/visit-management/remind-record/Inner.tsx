@@ -11,10 +11,10 @@ import { defineFormConfig } from "@lm_fe/service";
 function get_fuck_ids(arr: any[]) {
   const mixed = arr.map((_) => [get<number>(_, 'id'), get<number>(_, 'prenatalVisit.id')]);
   return mixed.reduce((sum, [id, pid],) => {
-    sum.idx.push(id)
+    sum.ids.push(id)
     sum.prenatalVisitIds.push(pid)
     return sum
-  }, { idx: [] as number[], prenatalVisitIds: [] as number[] })
+  }, { ids: [] as number[], prenatalVisitIds: [] as number[] })
 
 }
 

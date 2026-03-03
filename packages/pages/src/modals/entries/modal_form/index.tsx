@@ -102,7 +102,7 @@ export default function MyModalForm<T extends string>({ modal_data, onOk, bodySt
   return (
     <Modal
 
-      title={data?.id ? `修改${title}` : `添加${title}`}
+      title={data?.id ? `编辑${title}` : `新增${title}`}
       okButtonProps={{ loading }}
       centered
       destroyOnHidden
