@@ -20,7 +20,6 @@ const boundSymbol = ':'
 interface IProps {
     headerInfo?: IMchc_Doctor_OutpatientHeaderInfo
     gradeOptions?: IMchc_HighriskGradeConfig[]
-    contagionOptions?: ICommonOption[]
     initData?: IMchc_Doctor_OutpatientHeaderInfo
     assign_initData(v?: Partial<IMchc_Doctor_OutpatientHeaderInfo>): void
 }
@@ -29,7 +28,7 @@ const KEY = 'tags'
 export function HighriskSign_Tag(props: IProps) {
     const { config } = use_provoke('config')
 
-    const { headerInfo, gradeOptions, contagionOptions = [], initData, assign_initData } = props
+    const { headerInfo, gradeOptions, initData, assign_initData } = props
     const highRiskTreeDataMapping = useRef<{ [x: string]: IMchc_TemplateTree_Item }>({})
 
     const [currentTreeData, set_currentTreeData] = useState<IMchc_TemplateTree_Item[]>([])

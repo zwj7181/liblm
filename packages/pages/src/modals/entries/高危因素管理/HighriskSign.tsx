@@ -370,11 +370,7 @@ export function HighriskSign_高危因素管理(props: IProps) {
                     <Col span={21}>
                         <MySelect
                             style={{ width: '100%' }}
-                            options={[
-                                { label: '无', value: '无', exclusive: true },
-                                { label: '未查', value: '未查', exclusive: true },
-                                ...contagionOptions,
-                            ]}
+                            options={contagionOptions}
                             onChange={(v) => {
                                 assign_initData({ infectionNote: v })
                             }}

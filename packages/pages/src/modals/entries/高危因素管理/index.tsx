@@ -155,7 +155,6 @@ export default function HighriskFactor(props: IGlobalModalProps<IProps>) {
                             initData={initData}
                             assign_initData={assign_initData}
                             gradeOptions={可选高危等级}
-                            contagionOptions={可选传染病?.options}
                             headerInfo={headerInfo}
                         />
                     </Tabs.TabPane>

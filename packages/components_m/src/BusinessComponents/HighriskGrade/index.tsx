@@ -5,7 +5,7 @@ function HighriskGradeDisplay(props: { data?: string, type: 'contagion' | 'highr
   const { 可选传染病, 可选高危等级, } = use_provoke('可选传染病', '可选高危等级',)
 
   const { data, type = 'highriskGrade', } = props;
-  if (!data || data === '无') return <span>{data}</span>
+  if (!data || ['无', '未查'].includes(data)) return <span>{data}</span>
   useEffect(() => {
 
     return () => {

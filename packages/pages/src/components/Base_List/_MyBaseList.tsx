@@ -1,6 +1,6 @@
 import { mchcConfig, mchcEnv, mchcEvent, mchcLogger, mchcStorage } from '@lm_fe/env';
 import { ModelService, TIdTypeCompatible } from '@lm_fe/service';
-import { Browser, cloneDeep, downloadFile, formatDateTime, safe_async_call, safeGetFromFuncOrData, sleep } from '@lm_fe/utils';
+import { Browser, cloneDeep, downloadFile, formatDateTime, safe_async_call, safeGetFromFuncOrData, shake, sleep } from '@lm_fe/utils';
 import { Button, Divider, Form, message, Space, TablePaginationConfig } from 'antd';
 import { get, isFunction, isNil, isString, omit } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
@@ -188,9 +188,9 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
     }
     const cache_key = `${location.pathname}@${name}`
     useEffect(() => {
-        let a = mchcStorage.get(cache_key)
-        if (!isNil(a)) {
-            searchForm.setFieldsValue(a)
+        let obj = mchcStorage.get(cache_key)
+        if (!isNil(obj)) {
+            searchForm.setFieldsValue(obj)
         }
         setTimeout(() => {
 
@@ -198,7 +198,9 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
             const formHeight = formWrapper.current?.clientHeight ?? 0
             const queryHeight = queryRef.current?.clientHeight ?? 0
             const tableHeaderHeight = wrapRef.current?.querySelector('.ant-table-header')?.clientHeight ?? 0
-            setTableHeight(h - queryHeight - tableHeaderHeight - 118 - 60)
+            const result = h - queryHeight - tableHeaderHeight - 118 - 60
+            setTableHeight(result)
+            mchcLogger.log(`tableHeight:${result} queryHeight:${queryHeight} tableHeaderHeight:${tableHeaderHeight}`)
             if (formHeight > 40) {
                 setLongSearchForm(true)
             }
@@ -551,8 +553,8 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
 
 
 
-    async function table_fetch(params: any = defaultQuery.current) {
-
+    async function table_fetch(__params: any = defaultQuery.current) {
+        const params = shake(__params, v => ['', undefined].includes(v))
 
         if (!myBaseListService.current) return
 
