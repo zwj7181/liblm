@@ -204,7 +204,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
             const formHeight = formWrapper.current?.clientHeight ?? 0
             const queryHeight = queryRef.current?.clientHeight ?? 0
             const tableHeaderHeight = wrapRef.current?.querySelector('.ant-table-header')?.clientHeight ?? 0
-            const result = h - queryHeight - tableHeaderHeight - 120 - 80
+            const result = h - queryHeight - tableHeaderHeight - 120 - 86
             setTableHeight(result)
             mchcLogger.log(`tablelist tableHeight:${result} queryHeight:${queryHeight} tableHeaderHeight:${tableHeaderHeight}`)
             if (formHeight > 40) {

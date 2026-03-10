@@ -2,13 +2,8 @@
 export const APP_CONFIG = {
     LOGIN_URL: '/login',
     TOKEN: 'lian-med-token',
-    EXPIRE_TIME: 24 * 60 * 60,
     AUTH_NAME: 'username',
-    COPYRIGHT: '© 2020 莲印医疗',
-    VERSION: '2.34.1',
-    SYSTEM_NAME: '产前诊断综合管理系统',
     isProduction: true,
-    LOGIN_TIME: 'login-time',
     CELL_WIDTH_MINI: 30,
     CELL_WIDTH_TINY: 48,
     CELL_WIDTH_SMALL: 96,
