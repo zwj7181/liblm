@@ -19,27 +19,20 @@ export const NewListPage: FC = (props) => {
                 styles: { body: { height: '20vh', } },
                 modal_data: {
                     targetLabelCol: 8,
-                    async onSubmit({ key_name, parentid, ...others }: any, old_data: any) {
-                        const key = `/happy/config-table/list2/${key_name}`
+                    async onSubmit({ name, parentid, ...others }: any, old_data: any) {
+                        const key = `/happy/config-table/list2/${name}`
                         const res = await request.get<AnyObject[]>('/api/permissions', { params: { 'key.equals': key } })
                         if (res.data.length) {
                             mchcEnv.warning('已存在')
                             return
                         }
-                        await request.post<AnyObject[]>('/api/permissions', { key, active: true, parentid: parentid ?? 0, type: 'menu', ...others })
+                        await request.post<AnyObject[]>('/api/permissions', { key, name, active: true, parentid: parentid ?? 0, type: 'menu', ...others })
                         safe_navigate(key)
 
 
                     },
 
                     formDescriptions: [
-                        {
-                            inputType: 'MA',
-                            name: 'key_name',
-                            label: '配置标识',
-                            required: true,
-                            layout: '1'
-                        },
                         {
                             inputType: 'MA',
                             name: 'name',

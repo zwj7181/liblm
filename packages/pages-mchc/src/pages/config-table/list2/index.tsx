@@ -27,7 +27,10 @@ function MyConfigTable2(props: ICommonProps) {
                 initialSearchValue: { nationality: '中' },
                 searchParams: { args: 'abcd' },
                 searchConfig: defineFormConfig([
-                    { label: '国籍', name: 'nationality', inputType: 'Input' },
+                    { label: '姓名', name: 'name', inputType: 'Input' },
+                    { label: '门诊号', name: 'outpatientNO', inputType: 'Input' },
+                    { label: '日期', name: 'date', inputType: 'rangeDate' },
+                    { label: '状态', name: 'status', inputType: 'MS', inputProps: { options: [{ value: 0, label: '无' }, { value: 1, label: '有' }] } },
                     {
                         "inputType": "straw",
                         "title": "年龄范围",
