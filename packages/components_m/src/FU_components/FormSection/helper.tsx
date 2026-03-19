@@ -90,7 +90,7 @@ export function RenderSegs(props: { fds: IMchc_FormDescriptions_Field_Nullable[]
     const is全部 = activeKey === '全部'
 
     return <div style={{
-        margin: '6px 0',
+        margin: '12px 0 6px 0',
         position: 'relative',
         borderRadius: 4,
         border: `1px solid ${sys_theme.colors?.light[0]}`

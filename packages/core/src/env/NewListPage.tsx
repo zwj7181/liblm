@@ -26,7 +26,7 @@ export const NewListPage: FC = (props) => {
                             mchcEnv.warning('已存在')
                             return
                         }
-                        await request.post<AnyObject[]>('/api/permissions', { key, parentid: parentid ?? 0, type: 'route', ...others })
+                        await request.post<AnyObject[]>('/api/permissions', { key, active: true, parentid: parentid ?? 0, type: 'menu', ...others })
                         safe_navigate(key)
 
 
@@ -55,7 +55,7 @@ export const NewListPage: FC = (props) => {
                             layout: '1',
                             inputProps: {
                                 marshal: 0,
-                                fetch_options: { url: '/api/permissions?size=999&parentid.equals=0&active.equals=true&type.equals=menu', valueKey: 'id', labelKey: 'name' }
+                                fetch_options: { url: '/api/permissions?size=999&parentid.equals=0&type.equals=menu', valueKey: 'id', labelKey: 'name' }
                             }
                         },
 

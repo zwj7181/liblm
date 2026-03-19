@@ -63,8 +63,8 @@ export const popupRemindkeyMap = {
   瘢痕子宫: ['thrombusLable', 'isOpenSCTable'] as const,
 }
 export type TPopupRemindkey = (keyof typeof popupRemindkeyMap) | ICommonOption
-export function isShowPopupRemind(key_or_ext: TPopupRemindkey, headerInfo?: IMchc_Doctor_OutpatientHeaderInfo, value?: IData,) {
-  if (!headerInfo || !value) return false
+export function isShowPopupRemind(key_or_ext: TPopupRemindkey, headerInfo?: IMchc_Doctor_OutpatientHeaderInfo, visit_data?: IData,) {
+  if (!headerInfo || !visit_data) return false
   let head_key: string
   let visit_key: string
   if (isObject(key_or_ext)) {
@@ -77,7 +77,7 @@ export function isShowPopupRemind(key_or_ext: TPopupRemindkey, headerInfo?: IMch
     visit_key = item[1]
   }
   const valueOfHeaderinfo = headerInfo[head_key]
-  const valueOfRvisit = value[visit_key]
+  const valueOfRvisit = visit_data[visit_key]
   if (valueOfHeaderinfo) return false
   return (valueOfRvisit == remindEnum.popup || valueOfRvisit == remindEnum.remind)
 

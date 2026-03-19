@@ -186,7 +186,83 @@ export default defineFormConfig(
             label: '产科门诊配置',
             children: [
                 {
+                    title: '其他',
+                    containerType: 'segs',
+                    children: [
+
+                        {
+                            label: '头部信息拓展',
+                            name: '头部信息拓展',
+                            inputType: 'MyEditTable',
+                            inputProps: {
+                                marshal: 0,
+                                formDescriptions: [
+                                    { label: '标题', name: 'label', inputType: 'MA' },
+                                    { label: '字段', name: 'value', inputType: 'MA' },
+                                ],
+                            },
+                            layout: '1/3',
+                        },
+               
+
+                        {
+                            label: '专案拓展',
+                            name: '专案拓展',
+                            isNewRow: 1,
+                            inputType: 'MyEditTable',
+                            inputProps: {
+                                marshal: 0,
+                                formDescriptions: [
+                                    { label: '标题', name: 'label', inputType: 'MA' },
+                                    { label: '标识', name: 'value', inputType: 'MA', width: 100 },
+                                    { label: '禁用', name: 'disabled', inputType: 'MSW', width: 100 },
+                                ],
+                            },
+                            layout: '1/2',
+                        },
+                        {
+                            label: '量表拓展',
+                            name: '量表拓展',
+                            inputType: 'MyEditTable',
+                            inputProps: {
+                                marshal: 0,
+                                formDescriptions: [
+                                    { label: '标题', name: 'label', inputType: 'MA' },
+                                    { label: '标识', name: 'value', inputType: 'MA', width: 100 },
+                                    { label: '禁用', name: 'disabled', inputType: 'MSW', width: 100 },
+                                ],
+                            },
+                            layout: '1/2',
+                        },
+                        {
+                            label: '禁用量表自动弹出',
+                            name: '禁用量表自动弹出',
+                            inputType: 'MSW',
+                            layout: '1/3',
+                        },
+                        {
+                            label: '旧版量表隐藏',
+                            name: '旧版量表隐藏',
+                            inputType: 'MS',
+                            inputProps: {
+                                options: getSameOptions('瘢痕子宫,子痫,VTE'),
+                                type: 'tags',
+                                marshal: 3,
+                            },
+                            layout: '1/3',
+                        },
+
+                        {
+                            label: '病人标签多选',
+                            name: '病人标签多选',
+                            inputType: 'Switch',
+                            layout: '1/3',
+                        },
+                    ]
+                },
+                {
                     label: '医生端',
+                    containerType: 'segs',
                     children: [
                         {
                             label: '模块隐藏(可以手输拓展)',
@@ -357,6 +433,8 @@ export default defineFormConfig(
 
                 {
                     label: '护士端',
+                    containerType: 'segs',
+
                     children: [
                         {
                             label: '模块隐藏(可以手输拓展)',
@@ -386,64 +464,6 @@ export default defineFormConfig(
                     ],
                 },
 
-                {
-                    label: '头部信息拓展',
-                    name: '头部信息拓展',
-                    inputType: 'MyEditTable',
-                    inputProps: {
-                        marshal: 0,
-                        formDescriptions: [
-                            { label: '标题', name: 'label', inputType: 'MA' },
-                            { label: '字段', name: 'value', inputType: 'MA' },
-                        ],
-                    },
-                    layout: '1/3',
-                },
-                {
-                    label: '头部专案',
-                    name: '头部专案',
-                    inputType: 'MSW',
-                    layout: '1/3',
-                },
-
-                {
-                    label: '量表拓展',
-                    name: '量表拓展',
-                    inputType: 'MyEditTable',
-                    inputProps: {
-                        marshal: 0,
-                        formDescriptions: [
-                            { label: '标题', name: 'label', inputType: 'MA' },
-                            { label: '标识', name: 'value', inputType: 'MA', width: 100 },
-                            { label: '禁用', name: 'disabled', inputType: 'MSW', width: 100 },
-                        ],
-                    },
-                    layout: '2/3',
-                },
-                {
-                    label: '禁用量表自动弹出',
-                    name: '禁用量表自动弹出',
-                    inputType: 'MSW',
-                    layout: '1/3',
-                },
-                {
-                    label: '旧版量表隐藏',
-                    name: '旧版量表隐藏',
-                    inputType: 'MS',
-                    inputProps: {
-                        options: getSameOptions('瘢痕子宫,子痫,VTE'),
-                        type: 'tags',
-                        marshal: 3,
-                    },
-                    layout: '1/3',
-                },
-
-                {
-                    label: '病人标签多选',
-                    name: '病人标签多选',
-                    inputType: 'Switch',
-                    layout: '1/3',
-                },
             ],
         },
         {
