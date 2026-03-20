@@ -1,6 +1,6 @@
 import { mchcConfig, mchcEnv, mchcEvent, mchcLogger, mchcStorage } from '@lm_fe/env';
 import { ModelService, TIdTypeCompatible } from '@lm_fe/service';
-import { Browser, cloneDeep, downloadFile, formatDateTime, safe_async_call, safeGetFromFuncOrData, shake, sleep } from '@lm_fe/utils';
+import { Browser, cloneDeep, downloadFile, formatDateTime, safe_async_call, getSearchParamsAll, shake, sleep, AnyObject } from '@lm_fe/utils';
 import { Button, Divider, Form, message, Space, TablePaginationConfig } from 'antd';
 import { get, isFunction, isNil, isString, omit } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
@@ -91,7 +91,8 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
         effect_ctx,
         action_col
     } = props
-
+    const searchParams_cache = useRef(searchParams)
+    searchParams_cache.current = searchParams
     const staticDefaultQuery = {
         // current: 1,
         // pageSize: 14,
@@ -110,7 +111,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
     const queryRef = useRef<HTMLDivElement>(null)
     const wrapRef = useRef<HTMLDivElement>(null)
 
-    const defaultQueryValue = Object.assign({} as TStaticQuery, staticDefaultQuery, searchParams)
+    const defaultQueryValue: AnyObject = Object.assign({} as TStaticQuery, staticDefaultQuery)
 
     const defaultQuery = useRef(defaultQueryValue)
     const showSearch = !!(searchConfig.length)
@@ -539,7 +540,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
 
 
 
-    function getSearchParams(isFuck = false) {
+    function getSearchParams(isFuck = false): AnyObject {
         const { searchConfig } = propsCache.current
 
         const values = searchForm.getFieldsValue()
@@ -549,12 +550,9 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
         mchcStorage.set(cache_key, values)
 
 
-        // defaultQuery.current = { ...defaultQuery.current, ...v }
 
-        mchcLogger.log('tablelist getSearchParams', defaultQuery.current, { values, v, data })
 
-        // return { ...defaultQuery.current }
-        const obj = { ...defaultQuery.current, ...v }
+        const obj = { ...defaultQuery.current, ...v, ...searchParams_cache.current }
         return shake(obj, v => ['', undefined].includes(v))
 
     }
@@ -681,6 +679,8 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
 
 
     async function init_or_click_search() {
+        console.log('ggxx init', searchParams_cache.current)
+
         // setDataSource([])
         setCheckRows([])
         setCurrent(1)

@@ -4,14 +4,13 @@ import { BF_Wrap2, MyBaseList } from "@lm_fe/pages"
 import { get_global_happy_arg } from "@lm_fe/utils"
 import { ICommonProps } from "../utils"
 import { defineFormConfig } from "@lm_fe/service"
-import { rt_ctx } from "@lm_fe/env"
+import { rt_ctx, mchcLogger } from "@lm_fe/env"
 const ctx = rt_ctx
 const React = rt_ctx.React
 function MyConfigTable2(props: ICommonProps) {
 
     const title: any = decodeURI(get_global_happy_arg('usr1') ?? props.configId)
-    if (!title) return <div>请配置title</div>
-
+    if (!title || title === 'undefined') return <div>请配置title</div>
     return <MyBaseList
 
         {...props}
