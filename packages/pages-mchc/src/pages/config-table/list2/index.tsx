@@ -1,9 +1,12 @@
-import React from "react"
+
 // import { message } from "antd"
 import { BF_Wrap2, MyBaseList } from "@lm_fe/pages"
 import { get_global_happy_arg } from "@lm_fe/utils"
 import { ICommonProps } from "../utils"
 import { defineFormConfig } from "@lm_fe/service"
+import { rt_ctx } from "@lm_fe/env"
+const ctx = rt_ctx
+const React = rt_ctx.React
 function MyConfigTable2(props: ICommonProps) {
 
     const title: any = decodeURI(get_global_happy_arg('usr1') ?? props.configId)
@@ -100,6 +103,22 @@ function MyConfigTable2(props: ICommonProps) {
                         ]
                     },
                 ]),
+                renderBtns: (actions) => {
+
+                    return <>
+                        {ctx.ui.render_btn('自定义按钮-上报', () => {
+                            const ids = actions.getCheckRows().map(_ => _.id)
+                            ctx.request.post('/api/dataReport/reportPregnancy', { ids }).then(() => actions.handleSearch())
+                        })}
+                        {ctx.ui.render_btn('自定义按钮-导出', () => {
+                            ctx.request.get('/api/export/admissions', {
+                                responseType: 'blob',
+                                params: actions.getSearchParams(),
+                            }).then(res => ctx.utils.downloadFile(res.data, '导出数据.xls', 'application/vnd.ms-excel'))
+
+                        })}
+                    </>
+                },
                 tableColumns: () => import('./form_config')
             }
         }
