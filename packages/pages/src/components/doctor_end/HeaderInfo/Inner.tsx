@@ -1,7 +1,7 @@
 import { mchcEnv, mchcEvent, mchcLogger, mchcUtils, TLevelType } from '@lm_fe/env'
 import { IMchc_Doctor_OutpatientHeaderInfo, SMchc_Doctor } from '@lm_fe/service'
 import { EMPTY_PLACEHOLDER, ICommonOption, request, setSearchParamsValue } from '@lm_fe/utils'
-import { Button, ButtonProps, Tooltip } from 'antd'
+import { Button, ButtonProps, Tooltip, Tag } from 'antd'
 import classnames from 'classnames'
 import { get } from 'lodash'
 import React, { useEffect, useRef, useState } from 'react'
@@ -14,6 +14,7 @@ import { safe_navigate } from 'src/utils'
 import { QuestionnaireButton } from '../../../pages/questionnaire'
 import { DoctorEnd_ExemplaryCase } from '../ExemplaryCase/index'
 import { FuckTags } from './FuckTag'
+import { CustomTag } from './CustomTag'
 import styles from './index.module.less'
 import { IHeaderInfoProps } from './types'
 import { use_headinfo_color } from './use_headinfo_color'
@@ -28,7 +29,7 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
         onDobuleClick,
     } = props
 
-    const { 头部信息拓展, 专案拓展 = [], 护士端_禁止编辑高危因素_传染病, highriskType } = use_provoke(s => s.config)
+    const { 头部信息拓展, 专案拓展 = [], 护士端_禁止编辑高危因素_传染病, highriskType } = use_provoke((s) => s.config)
     const pregnancyId = mchcUtils.single_id(props)
 
     const [headerInfo, setHeaderInfo] = useState<IMchc_Doctor_OutpatientHeaderInfo>()
@@ -46,7 +47,7 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
 
     const [exemplaryCaseVisible, setExemplaryCaseVisible] = useState(false)
     const [tabkey, setTabkey] = useState('1')
-
+    const [customTags, setCustomTags] = useState([])
 
     const headerInfoCache = useRef(headerInfo)
     headerInfoCache.current = headerInfo
@@ -113,11 +114,11 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
         })
     }
     function open梅毒管理() {
-        const ext = 专案拓展.find(_ => _.label?.includes('梅毒'))
+        const ext = 专案拓展.find((_) => _.label?.includes('梅毒'))
 
         if (ext) {
             mchcModal__.open('拓展专案', {
-                modal_data: { headerInfo, ext }
+                modal_data: { headerInfo, ext },
             })
         } else {
             mchcModal__.openOne(randomIds.current + 4, '梅毒管理', {
@@ -125,13 +126,12 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
                 onClose: fetchHeaderInfo,
             })
         }
-
     }
     function open乙肝管理() {
-        const ext = 专案拓展.find(_ => _.label?.includes('乙肝'))
+        const ext = 专案拓展.find((_) => _.label?.includes('乙肝'))
         if (ext) {
             mchcModal__.open('拓展专案', {
-                modal_data: { headerInfo, ext }
+                modal_data: { headerInfo, ext },
             })
         } else {
             mchcModal__.openOne(randomIds.current + 5, '乙肝管理', {
@@ -139,12 +139,9 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
                 onClose: fetchHeaderInfo,
             })
         }
-
     }
 
     function open高危因素管理() {
-
-
         if (护士端_禁止编辑高危因素_传染病 && isNurse) return
         setIsTwinkling(false)
 
@@ -152,12 +149,23 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
             modal_data: {
                 data: headerInfo!,
                 pregnancyId,
-
                 // onFinish: handleSaveHiskFactor,
                 handleSubmit: fetchHeaderInfo,
             },
         })
     }
+
+    function open标签管理() {
+        mchcModal__.open('test', {
+            title: '标签管理',
+            width: 'auto',
+            modal_data: {
+                content: <CustomTag id={pregnancyId} dataSource={headerInfo?.labels} />,
+            },
+            onClose: () => {}
+        })
+    }
+
     function switch_page() {
         // pregnancyId
         const path = isNurse ? '/prenatal-visit/pregnancy/doctor-end' : '/prenatal-visit/pregnancy/nurse-end'
@@ -198,7 +206,7 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
         return (
             <div
                 className={classnames(styles['header-info-wrapper'])}
-                onDoubleClick={(e) => { }}
+                onDoubleClick={(e) => {}}
                 style={{ background: color_conf.高危背景 }}
             >
                 <div className={styles['header-info-content']}>
@@ -241,9 +249,7 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
                                                 if (_.type === '乙') {
                                                     open乙肝管理()
                                                 }
-                                            }
-
-                                            }
+                                            }}
                                             style={{
                                                 background: _.color,
                                                 flex: 1,
@@ -344,40 +350,29 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
                         </div>
                         <div className={styles['msg-bottom']}>
                             <div className={styles['exemplary-case']}>
-
-
-                                {
-                                    专案拓展.map(ext => {
-                                        const show = __DEV__ ? true : is_show_专案(ext, headerInfo)
-                                        if (!show) return null
-                                        return <OkButton
-                                            size='small'
+                                {专案拓展.map((ext) => {
+                                    const show = __DEV__ ? true : is_show_专案(ext, headerInfo)
+                                    if (!show) return null
+                                    return (
+                                        <OkButton
+                                            size="small"
                                             onClick={() => {
                                                 mchcModal__.open('拓展专案', {
-                                                    modal_data: { headerInfo, ext }
+                                                    modal_data: { headerInfo, ext },
                                                 })
                                             }}
                                         >
                                             {ext.label}专案
-
                                         </OkButton>
-                                    })
-                                }
+                                    )
+                                })}
                                 {is_show_乙肝 && (
-                                    <Button
-                                        type="text"
-                                        size="small"
-                                        onClick={open乙肝管理}
-                                    >
+                                    <Button type="text" size="small" onClick={open乙肝管理}>
                                         乙肝专案管理
                                     </Button>
                                 )}
                                 {is_show_梅毒 && (
-                                    <Button
-                                        type="text"
-                                        size="small"
-                                        onClick={open梅毒管理}
-                                    >
+                                    <Button type="text" size="small" onClick={open梅毒管理}>
                                         梅毒专案管理
                                     </Button>
                                 )}
@@ -457,6 +452,17 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
                                 </div>
                             </Tooltip>
                             <FuckTags str_data={get(headerInfo, 'tags')} />
+                            {/* 标签管理 */}
+                            {customTags.map((tag, i) => {
+                                return <Tag key={tag.id}>{tag.name}</Tag>
+                            })}
+                            <Tag
+                                icon={<MyIcon value="PlusOutlined" />}
+                                style={{ cursor: 'pointer' }}
+                                onClick={open标签管理}
+                            >
+                                标签
+                            </Tag>
                         </div>
                     </div>
                 </div>
@@ -521,6 +527,10 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
         )
     }
 
+    function handleAddTag() {
+        console.log('-----add tag-----')
+    }
+
     return (
         <React.Fragment>
             {renderInfo()}
@@ -540,7 +550,7 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
         </React.Fragment>
     )
 }
-export function is_show_专案(ext: ICommonOption, headerInfo?: IMchc_Doctor_OutpatientHeaderInfo,) {
+export function is_show_专案(ext: ICommonOption, headerInfo?: IMchc_Doctor_OutpatientHeaderInfo) {
     if (!headerInfo || !ext?.value || ext.disabled) return false
     let head_key: string
 
@@ -548,5 +558,4 @@ export function is_show_专案(ext: ICommonOption, headerInfo?: IMchc_Doctor_Out
     head_key = `${ext_key}Case`
 
     return headerInfo[head_key]
-
 }
