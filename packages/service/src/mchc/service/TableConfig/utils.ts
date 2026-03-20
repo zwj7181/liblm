@@ -167,8 +167,8 @@ ret = function (){
 };`
     return `/**
  * @author brainfucker
- * @email lixf@lian-med.com
  * @create date ${formatDateTime()}
+ * @AI 优化以下代码格式，仅调整：1. 变量名（符合对应语言命名规范，语义清晰）；2. 合理换行（提升可读性）；3. 一字不差保留原有文件头注释，并为关键逻辑、函数、变量添加简洁易懂的注释；4. 不修改任何代码逻辑、功能，保持代码原有执行效果不变。
  */
 var React = ctx.React, utils = ctx.utils, mchcEnv = ctx.mchcEnv, request = ctx.request, goTo = ctx.goTo;
 

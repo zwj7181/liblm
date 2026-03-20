@@ -57,6 +57,19 @@ export const ReloadButton: FC = (props) => {
                 {
                     (mchcEnv.isAdmin)
                         ? <OkButton
+                            title="配置表格测试"
+                            size='small'
+                            type='primary'
+                            onClick={() => handleOpenModal('/happy/config-table/list2/test')}
+
+                            icon={<MyIcon value='SettingOutlined' />}>
+                            配置表格测试
+                        </OkButton>
+                        : null
+                }
+                {
+                    (mchcEnv.isAdmin)
+                        ? <OkButton
                             title="配置练习"
                             size='small'
                             type='primary'

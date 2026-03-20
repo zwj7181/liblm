@@ -1,10 +1,10 @@
 import { AnyObject, get, IRequest_AxiosRequestConfig, isObjectLike, isString, request } from "@lm_fe/utils";
-import { Button, message, Space, Switch, Tag } from "antd";
-import React from 'react';
-import { mchcUtils } from "../utils/mchcUtils";
+import { Button, ButtonProps, Space, Switch, Tag } from "antd";
+import React, { MouseEventHandler } from 'react';
 import { mchcEnv } from "../env/MchcEnv";
-import { getGlobalHistory } from "./state";
 import { mchcEvent } from "../event";
+import { mchcUtils } from "../utils/mchcUtils";
+import { getGlobalHistory } from "./state";
 
 
 function Array_(arr: any[], linker: string | false = '/', value_path?: string,) {
@@ -20,6 +20,9 @@ function Array_(arr: any[], linker: string | false = '/', value_path?: string,) 
 function Color_(content: number | string | boolean, is_red = false, color = 'red') {
     return <span style={{ color: is_red ? color : 'unset' }}>{content ?? ''}</span>
 }
+function render_btn(text: any, onClick: MouseEventHandler<HTMLElement>, others: ButtonProps = {}) {
+    return <Button {...others} onClick={onClick}>{text}</Button>
+}
 
 const const_ctx: IRTCtx = {
     required: true,
@@ -28,7 +31,7 @@ const const_ctx: IRTCtx = {
     mchcEvent,
     React,
     utils: mchcUtils,
-    ui: { Button, Space, Tag, Switch, render_arr: Array_, render_color: Color_ },
+    ui: { Button, Space, Tag, Switch, render_arr: Array_, render_color: Color_, render_btn },
     modal() {
         if (!window.mchc_modal) mchcEnv.error('mchc_modal 不存在')
         return window.mchc_modal
@@ -58,7 +61,7 @@ export interface IRTCtx {
     print(requestConfig: IRequest_AxiosRequestConfig): void
     modal(): any
     safeTo(url_conf: string, params?: AnyObject): void
-    ui: { Button: typeof Button, Space: typeof Space, Tag: typeof Tag, Switch: typeof Switch, render_arr: typeof Array_, render_color: typeof Color_ },
+    ui: { Button: typeof Button, Space: typeof Space, Tag: typeof Tag, Switch: typeof Switch, render_arr: typeof Array_, render_color: typeof Color_, render_btn: typeof render_btn },
     utils: typeof mchcUtils
 
 }
