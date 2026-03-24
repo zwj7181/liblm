@@ -4,14 +4,14 @@ export interface IMchc_Doctor_OutpatientHeaderInfo<T extends MchcTypes = MCHC_TY
     age: number
     tags: string | null
     labels: {
-        "id": number
-        "module": number
-        "type": number
-        "code": string
-        "name": string
-        "color": string
-        "sort": number,
-        "keyword": string[]
+        id: number
+        module: number
+        type: number
+        code: string
+        name: string
+        color: string
+        sort: number,
+        keyword: string[]
     }[]
     caseManages: {
         code: string
