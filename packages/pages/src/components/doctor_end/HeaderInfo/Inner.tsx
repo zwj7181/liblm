@@ -1,7 +1,7 @@
 import { mchcEnv, mchcEvent, mchcLogger, mchcUtils, TLevelType } from '@lm_fe/env'
 import { IMchc_Doctor_OutpatientHeaderInfo, SMchc_Doctor } from '@lm_fe/service'
 import { EMPTY_PLACEHOLDER, ICommonOption, request, setSearchParamsValue } from '@lm_fe/utils'
-import { Button, ButtonProps, Tooltip, Tag } from 'antd'
+import { Button, ButtonProps, Tooltip, Tag, Space } from 'antd'
 import classnames from 'classnames'
 import { get } from 'lodash'
 import React, { useEffect, useRef, useState } from 'react'
@@ -43,6 +43,7 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
     const color_conf = use_headinfo_color(highriskLable)
 
     const info_addon = 头部信息拓展 ?? []
+    const caseManages = headerInfo?.caseManages ?? []
 
     const infectionNoteLabels = handleFuckinginfectionNoteLabel(headerInfo?.infectionNote)
 
@@ -120,11 +121,11 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
         })
     }
     function open梅毒管理() {
-        const ext = 专案拓展.find((_) => _.label?.includes('梅毒'))
+        const ext = caseManages.find((_) => _.name?.includes('梅毒'))
 
         if (ext) {
             mchcModal__.open('拓展专案', {
-                modal_data: { headerInfo, ext },
+                modal_data: { headerInfo, ...ext },
             })
         } else {
             mchcModal__.openOne(randomIds.current + 4, '梅毒管理', {
@@ -134,10 +135,10 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
         }
     }
     function open乙肝管理() {
-        const ext = 专案拓展.find((_) => _.label?.includes('乙肝'))
+        const ext = caseManages.find((_) => _.name?.includes('乙肝'))
         if (ext) {
             mchcModal__.open('拓展专案', {
-                modal_data: { headerInfo, ext },
+                modal_data: { headerInfo, ...ext },
             })
         } else {
             mchcModal__.openOne(randomIds.current + 5, '乙肝管理', {
@@ -212,7 +213,7 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
         return (
             <div
                 className={classnames(styles['header-info-wrapper'])}
-                onDoubleClick={(e) => {}}
+                onDoubleClick={(e) => { }}
                 style={{ background: color_conf.高危背景 }}
             >
                 <div className={styles['header-info-content']}>
@@ -355,20 +356,25 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
                             })}
                         </div>
                         <div className={styles['msg-bottom']}>
-                            <div className={styles['exemplary-case']}>
-                                {专案拓展.map((ext) => {
-                                    const show = __DEV__ ? true : is_show_专案(ext, headerInfo)
-                                    if (!show) return null
+                            <Space.Compact >
+                                {caseManages.map((ext) => {
+                                    // const show = __DEV__ ? true : is_show_专案(ext, headerInfo)
+                                    // if (!show) return null
                                     return (
                                         <OkButton
+                                            color={ext.color}
+                                            // variant='solid'
                                             size="small"
                                             onClick={() => {
                                                 mchcModal__.open('拓展专案', {
-                                                    modal_data: { headerInfo, ext },
+                                                    modal_data: {
+                                                        headerInfo,
+                                                        ...ext
+                                                    },
                                                 })
                                             }}
                                         >
-                                            {ext.label}专案
+                                            {ext.name}
                                         </OkButton>
                                     )
                                 })}
@@ -435,7 +441,7 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
                                         {get(props, `headerInfo.pregnancyCaseLable`) || '多胎'}妊娠专案
                                     </Button>
                                 )}
-                            </div>
+                            </Space.Compact>
                             {showSpan('infectionNote') ? (
                                 <div>
                                     <span style={{ color: color_conf.传染病颜色 }}>

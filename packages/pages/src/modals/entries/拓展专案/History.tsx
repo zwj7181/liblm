@@ -4,12 +4,12 @@ import { AnyObject, ICommonOption, request } from "@lm_fe/utils";
 import { Card, Col, Empty, Row, List, Form, Typography } from "antd";
 import { values } from "lodash";
 import React, { useEffect, useState } from 'react'
-interface IProps { ext: ICommonOption, config?: IMchc_TableConfig, recordId: number }
+interface IProps { code: string, config?: IMchc_TableConfig, recordId: number }
 interface IItem { modifiedDate: string, version: number, modifiedBy: string }
-export function ExtHistory({ ext, config, recordId }: IProps) {
+export function ExtHistory({ code, config, recordId }: IProps) {
     const [list, set_list] = useState<IItem[]>([])
     const [active, set_active] = useState<IItem>()
-    const ext_value = ext.value
+    const ext_value = code
     const base_args = {
         recordId,
     }

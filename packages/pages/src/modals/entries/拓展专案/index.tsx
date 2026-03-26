@@ -12,18 +12,18 @@ import { mchcModal__ } from 'src/modals';
 import { ExtHistory } from './History'
 
 
-function Index(props: IGlobalModalProps<{ headerInfo?: IMchc_Doctor_OutpatientHeaderInfo, ext: ICommonOption }>) {
+function Index(props: IGlobalModalProps<{ headerInfo?: IMchc_Doctor_OutpatientHeaderInfo, code: string, name: string }>) {
 
   const { modal_data, close, ...others } = props
-  const { headerInfo, ext } = modal_data
-  const ext_value = ext.value
-  const ext_label = ext.label
+  const { headerInfo, code, name } = modal_data
+  const ext_value = code
+  const ext_label = name
   if (!ext_label || !ext_label || !headerInfo) return <Empty />
 
   const [data, setData] = useState<AnyObject>({})
   const relationId = headerInfo.id
   const [form] = Form.useForm()
-  const { config, Wrap } = BF_Wrap2({ default_conf: { title: `拓展专案-${ext.value}` } })
+  const { config, Wrap } = BF_Wrap2({ default_conf: { title: `拓展专案-${code}` } })
   const base_args = {
     relationId,
     // type: ext_value,
@@ -70,7 +70,7 @@ function Index(props: IGlobalModalProps<{ headerInfo?: IMchc_Doctor_OutpatientHe
       title: '历史记录',
       width: '90vw',
       styles: { body: { height: '80vh', overflow: 'auto' } },
-      modal_data: { content: <ExtHistory ext={ext} recordId={data_id} config={config} /> }
+      modal_data: { content: <ExtHistory code={ext_value} recordId={data_id} config={config} /> }
     })
 
   }
