@@ -96,7 +96,7 @@ export default function Layout_Sider_Inner(props: IProps) {
           <Menu
             theme="light"
             mode="inline"
-            inlineIndent={18}
+            inlineIndent={12}
             // expandIcon={({ isSubMenu, isOpen }) => {
             //   if (collapsed) {
             //     return <></>;

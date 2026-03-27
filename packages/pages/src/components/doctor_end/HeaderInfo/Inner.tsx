@@ -54,7 +54,6 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
 
     const [exemplaryCaseVisible, setExemplaryCaseVisible] = useState(false)
     const [tabkey, setTabkey] = useState('1')
-    const [customTags, setCustomTags] = useState([])
 
     const headerInfoCache = useRef(headerInfo)
     headerInfoCache.current = headerInfo
@@ -361,10 +360,11 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
                                     // const show = __DEV__ ? true : is_show_专案(ext, headerInfo)
                                     // if (!show) return null
                                     return (
-                                        <OkButton
+
+                                        <Tag
+                                            style={{ cursor: 'pointer' }}
                                             color={ext.color}
                                             // variant='solid'
-                                            size="small"
                                             onClick={() => {
                                                 mchcModal__.open('拓展专案', {
                                                     modal_data: {
@@ -375,7 +375,7 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
                                             }}
                                         >
                                             {ext.name}
-                                        </OkButton>
+                                        </Tag>
                                     )
                                 })}
                                 {is_show_乙肝 && (
@@ -467,7 +467,7 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
                             {/* 标签管理 */}
                             {标签管理 && (
                                 <>
-                                    {customTags.map((tag, i) => {
+                                    {headerInfo?.labels.map((tag, i) => {
                                         return (
                                             <Tag key={tag.id} color={tag?.color}>
                                                 {tag.name}
@@ -496,7 +496,6 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
         const data = await SMchc_Doctor.getOutpatientHeaderInfo(pregnancyId)
         saveHeaderInfo?.(data)
         setHeaderInfo(data)
-        setCustomTags(data?.labels || [])
     }
     function render_extra() {
         if (!headerInfo) return null

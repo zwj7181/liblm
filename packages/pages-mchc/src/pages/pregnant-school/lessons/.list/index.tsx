@@ -17,6 +17,7 @@ export default function List(props: { which_type: WhichType }) {
       tableColumns: () => import('./form_config'),
       name: '/api/courses',
       searchParams: { 'course.type.equals': type },
+      beforeSubmit: v => ({ ...v, type }),
       searchConfig: [
         {
           name: 'courseDate',
@@ -52,7 +53,7 @@ export default function List(props: { which_type: WhichType }) {
 
       useListSourceCount
       showCopy
-      beforeSubmit={v => ({ ...v, type })}
+      // beforeSubmit={v => ({ ...v, type })}
       ActionAddonBefore={(ctx) => <Button size='small' onClick={() => { handleQrcodeView(ctx.rowData) }} icon={<MyIcon value='QrcodeOutlined' />} />}
       genColumns={ctx => {
         return [
