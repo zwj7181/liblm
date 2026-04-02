@@ -289,7 +289,7 @@ export default defineFormConfig(
                     formDescriptions: [
                       { label: '领取人姓名', name: 'receiverName', layout: '1/2', required: true },
                       { label: '与新生儿关系', name: 'receiverRelative', inputType: 'MA', inputProps: { options: '母子,母女,父子,父女' }, layout: '1/2', required: true },
-                      { label: '证件类型', name: 'receiverIdType', inputType: 'MS', inputProps: { uniqueKey: '证明类型', marshal: 0 }, layout: '1/2', required: true },
+                      { label: '证件类型', name: 'receiverIdType', inputType: 'MS', inputProps: { uniqueKey: '证件类型', marshal: 0 }, layout: '1/2', required: true },
                       { label: '证件号码', name: 'receiverIdNo', inputType: 'MA', layout: '1/2', required: true },
                       { label: '领取日期', name: 'reserveDate', inputType: 'DatePicker', layout: '1/2', required: true },
                     ]
