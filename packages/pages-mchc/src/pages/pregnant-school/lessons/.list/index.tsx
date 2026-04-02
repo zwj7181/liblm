@@ -1,37 +1,18 @@
 import { MyIcon, QRCode_L } from '@lm_fe/components';
-import { mchcEnv, mchcEvent } from '@lm_fe/env';
+import { mchcEnv, mchcEvent, rt_ctx } from '@lm_fe/env';
 import { BF_Wrap2, mchcModal__, MyBaseList } from '@lm_fe/pages';
 import { request } from '@lm_fe/utils';
 import { Button, Switch } from 'antd';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { WhichType } from '../../types';
 
-
+const ctx = rt_ctx
+const React = rt_ctx.React
 
 export default function List(props: { which_type: WhichType }) {
   const { which_type } = props
-  const type = which_type === '孕妇学校' ? 1 : 2
-  const { Wrap, config } = BF_Wrap2({
-    default_conf: {
-      title: `${which_type}-课程列表`,
-      tableColumns: () => import('./form_config'),
-      name: '/api/courses',
-      searchParams: { 'course.type.equals': type },
-      beforeSubmit: v => ({ ...v, type }),
-      searchConfig: [
-        {
-          name: 'courseDate',
-          label: '开课日期',
-          inputType: 'rangeDate',
-        },
-        {
-          label: '课程标题',
-          inputType: 'input',
-          name: 'name',
-        },
-      ]
-    }
-  })
+  const the_type = which_type === '孕妇学校' ? 1 : 2
+
   useEffect(() => {
     const rm = mchcEvent.on_rm('custom_msg', e => {
       const rowData = e.data
@@ -44,45 +25,67 @@ export default function List(props: { which_type: WhichType }) {
   }, [])
 
 
-  return <Wrap>
-    <MyBaseList
-      bf_conf={config}
-      // name={config?.name}
-      // searchParams={config?.searchParams}
-      // searchConfig={config?.searchConfig}
-
-      useListSourceCount
-      showCopy
-      // beforeSubmit={v => ({ ...v, type })}
-      ActionAddonBefore={(ctx) => <Button size='small' onClick={() => { handleQrcodeView(ctx.rowData) }} icon={<MyIcon value='QrcodeOutlined' />} />}
-      genColumns={ctx => {
-        return [
-          ...(config?.tableColumns ?? []),
+  return <MyBaseList
+    the_type
+    table_preset={
+      {
+        title: `${which_type}-课程列表`,
+        tableColumns: () => import('./form_config'),
+        name: '/api/courses',
+        searchParams: { 'course.type.equals': the_type },
+        beforeSubmit: function (v: any) {
+          v.type = v.type || ctx.props.the_type
+          return v
+        },
+        searchConfig: [
           {
-            dataIndex: 'status',
-            title: '发布',
-            layout: '1/1',
-            inputType: 'MC',
-            width: 50,
-            inputProps: { marshal: 0, options: mchcEnv.get_other_options('nyOptions') },
-
-            render: (status: any, rowData: any) => {
-              return (
-                <Switch size="small" checked={status} onChange={() => {
-                  request
-                    .put('/api/courses', { ...rowData, status: !rowData.status })
-                    .then(() => { ctx.handleSearch() })
-                }} />
-
-              );
-            },
-
+            name: 'courseDate',
+            label: '开课日期',
+            inputType: 'rangeDate',
           },
-          ctx.actionCol
+          {
+            label: '课程标题',
+            inputType: 'input',
+            name: 'name',
+          },
         ]
-      }}
-    />
-  </Wrap>
+      }
+    }
+    // name={config?.name}
+    // searchParams={config?.searchParams}
+    // searchConfig={config?.searchConfig}
+
+    useListSourceCount
+    showCopy
+    // beforeSubmit={v => ({ ...v, type })}
+    ActionAddonBefore={(ctx) => <Button size='small' onClick={() => { handleQrcodeView(ctx.rowData) }} icon={<MyIcon value='QrcodeOutlined' />} />}
+  // genColumns={ctx => {
+  //   return [
+  //     ...(config?.tableColumns ?? []),
+  //     {
+  //       dataIndex: 'status',
+  //       title: '发布',
+  //       layout: '1/1',
+  //       inputType: 'MC',
+  //       width: 50,
+  //       inputProps: { marshal: 0, options: mchcEnv.get_other_options('nyOptions') },
+
+  //       render: (status: any, rowData: any) => {
+  //         return (
+  //           <Switch size="small" checked={status} onChange={() => {
+  //             request
+  //               .put('/api/courses', { ...rowData, status: !rowData.status })
+  //               .then(() => { ctx.handleSearch() })
+  //           }} />
+
+  //         );
+  //       },
+
+  //     },
+  //     ctx.actionCol
+  //   ]
+  // }}
+  />
 }
 
 
@@ -125,7 +128,9 @@ function openFuckModal(rowData: any) {
             dataIndex: ['pregnancy', 'idNO'],
             width: 200,
             align: 'center',
-          },]}
+          },
+        ]
+        }
       />
     }
   })

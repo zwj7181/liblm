@@ -12,7 +12,7 @@ export default function BreastCancerDataReport(prop: any) {
         needChecked
         useListSourceCount
 
-        bf_preset={{
+        table_preset={{
             title: '数据上报-复诊上报',
             name: "/api/prenatal-visits/upload-logs",
             searchParams: {

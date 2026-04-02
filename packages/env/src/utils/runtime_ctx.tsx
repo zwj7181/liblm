@@ -1,5 +1,5 @@
 import { AnyObject, get, IRequest_AxiosRequestConfig, isObjectLike, isString, request } from "@lm_fe/utils";
-import { Button, ButtonProps, Space, Switch, Tag } from "antd";
+import { Button, ButtonProps, Space, Switch, QRCode, Tag, Table } from "antd";
 import React, { MouseEventHandler } from 'react';
 import { mchcEnv } from "../env/MchcEnv";
 import { mchcEvent } from "../event";
@@ -23,7 +23,7 @@ function Color_(content: number | string | boolean, is_red = false, color = 'red
 function render_btn(text: any, onClick: MouseEventHandler<HTMLElement>, others: ButtonProps = {}) {
     return <Button {...others} onClick={onClick}>{text}</Button>
 }
-
+//@ts-ignore
 const const_ctx: IRTCtx = {
     required: true,
     request,
@@ -31,7 +31,7 @@ const const_ctx: IRTCtx = {
     mchcEvent,
     React,
     utils: mchcUtils,
-    ui: { Button, Space, Tag, Switch, render_arr: Array_, render_color: Color_, render_btn },
+    ui: { Button, QRCode, Space, Tag, Switch, render_arr: Array_, render_color: Color_, Table, render_btn },
     modal() {
         if (!window.mchc_modal) mchcEnv.error('mchc_modal 不存在')
         return window.mchc_modal
@@ -51,7 +51,20 @@ function gen_rt_ctx_helper(g: (p: IRTCtx) => IRTCtx) {
 }
 export interface IRTCtx {
     type?: string,
-    props?: any,
+    // 避免空判断生成冗余代码
+    props: {
+        table_helper: {
+            createOrUpdate: (submitData: AnyObject) => Promise<any>
+            handleView: (rowData: AnyObject) => void
+            handleDelete: (rowData: AnyObject) => Promise<void>
+            handleEdit: (rowData: AnyObject) => Promise<void>
+            handleSearch: (__params?: AnyObject) => Promise<void>
+            getCheckRows(): AnyObject[]
+            getSearchParams: (isFuck?: boolean) => AnyObject
+        },
+        table_preset: { [x: string]: any, name: string, tableColumns: any }
+        [x: string]: any
+    },
     required: boolean,
     request: typeof request
     mchcEnv: typeof mchcEnv
@@ -61,7 +74,7 @@ export interface IRTCtx {
     print(requestConfig: IRequest_AxiosRequestConfig): void
     modal(): any
     safeTo(url_conf: string, params?: AnyObject): void
-    ui: { Button: typeof Button, Space: typeof Space, Tag: typeof Tag, Switch: typeof Switch, render_arr: typeof Array_, render_color: typeof Color_, render_btn: typeof render_btn },
+    ui: { QRCode: typeof QRCode, Table: typeof Table, Button: typeof Button, Space: typeof Space, Tag: typeof Tag, Switch: typeof Switch, render_arr: typeof Array_, render_color: typeof Color_, render_btn: typeof render_btn },
     utils: typeof mchcUtils
 
 }

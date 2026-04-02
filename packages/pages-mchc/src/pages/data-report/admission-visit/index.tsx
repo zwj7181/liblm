@@ -20,7 +20,7 @@ export default function BreastCancerDataReport(prop: any) {
         }}
 
 
-        bf_preset={{
+        table_preset={{
             title: '数据上报-建档上报',
             name: "/api/pregnancies/upload-logs",
             searchParams: {

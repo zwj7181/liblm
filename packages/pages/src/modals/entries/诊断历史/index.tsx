@@ -64,7 +64,7 @@ export default function Test({ modal_data, visible, onCancel, ...others }: IGlob
     const renderPrint = () => {
 
         return (
-            <div className="diag-wrapper" ref={printDiagRef}>
+            <div style={{ display: 'none' }} ref={printDiagRef}>
                 {/* <div className="diag-first">
             1、G<span className="diag-GP">{get(pregnancyData, 'gravidity')}</span>P
             <span className="diag-GP">{get(pregnancyData, 'parity')}</span>

@@ -111,9 +111,34 @@ export default defineFormConfig(
             align: 'center',
             render: (recordstate: any, rowData: any) => {
                 return (
-                    <div onClick={() => { ctx.mchcEnv.event.emit('custom_msg', { type: 'courses.reserveNum', data: rowData }) }} style={{ color: '#007AFF', cursor: 'pointer' }}>
-                        {recordstate}
-                    </div>
+                    ctx.ui.render_btn(recordstate, () => {
+                        ctx.request.get('/api/courses/reservations?size=999&page=0&courseId=' + rowData.id,)
+                            .then(res => {
+                                const list = res.data
+                                ctx.modal().
+                                    open('test', {
+                                        modal_data: {
+
+                                            content: <ctx.ui.Table dataSource={list} columns={[
+                                                {
+                                                    title: '患者姓名',
+                                                    dataIndex: ['pregnancy', 'name'],
+                                                    width: 200,
+                                                    align: 'center',
+                                                },
+                                                {
+                                                    title: '身份证号：',
+                                                    dataIndex: ['pregnancy', 'idNO'],
+                                                    width: 200,
+                                                    align: 'center',
+                                                },
+                                            ]} />
+                                        }
+                                    })
+                            })
+
+                    }, { size: 'small' })
+
                 );
             },
         },
@@ -155,6 +180,27 @@ export default defineFormConfig(
             width: APP_CONFIG.CELL_WIDTH_LARGE,
             isActive: 0,
             align: 'center',
+        },
+        {
+            dataIndex: 'status',
+            title: '发布',
+            layout: '1/1',
+            inputType: 'MC',
+            width: 50,
+            inputProps: { marshal: 0, options: ctx.mchcEnv.get_other_options('nyOptions') },
+
+            render: (status: any, rowData: any) => {
+                return (
+                    <ctx.ui.Switch size="small" checked={status} onChange={() => {
+                        rowData.status = !rowData.status
+                        ctx.request
+                            .put('/api/courses', rowData)
+                            .then(() => { ctx.props.table_helper.handleSearch() })
+                    }} />
+
+                );
+            },
+
         },
     ]
 )

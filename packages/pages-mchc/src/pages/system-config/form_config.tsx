@@ -201,7 +201,20 @@ export default defineFormConfig(
                                     { label: '字段', name: 'value', inputType: 'MA' },
                                 ],
                             },
-                            layout: '1/3',
+                            layout: '1/2',
+                        },
+                        {
+                            label: '产后信息拓展',
+                            name: '产后信息拓展',
+                            inputType: 'MyEditTable',
+                            inputProps: {
+                                marshal: 0,
+                                formDescriptions: [
+                                    { label: '标题', name: 'label', inputType: 'MA' },
+                                    { label: '字段', name: 'value', inputType: 'MA' },
+                                ],
+                            },
+                            layout: '1/2',
                         },
 
 

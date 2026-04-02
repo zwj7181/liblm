@@ -22,7 +22,7 @@ function MyConfigTable2(props: ICommonProps) {
                 targetLabelCol: 4
             }
         }}
-        bf_preset={
+        table_preset={
             {
                 title: `动态表格-${title}`, name: '/api/users',
                 showAction: 1,

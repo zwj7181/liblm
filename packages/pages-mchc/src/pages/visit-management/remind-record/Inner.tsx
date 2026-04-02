@@ -1,12 +1,13 @@
 import { formatTimeToDate, OkButton } from "@lm_fe/components_m";
-import { APP_CONFIG, mchcLogger } from "@lm_fe/env";
+import { APP_CONFIG, mchcLogger, rt_ctx } from "@lm_fe/env";
 import { BF_Wrap2, MyBaseList } from "@lm_fe/pages";
 import { get, request } from "@lm_fe/utils";
 import { message } from "antd";
-import React from "react";
 import { RemindType } from "./types";
 import { defineFormConfig } from "@lm_fe/service";
 
+const ctx = rt_ctx
+const React = ctx.React
 
 function get_fuck_ids(arr: any[]) {
   const mixed = arr.map((_) => [get<number>(_, 'id'), get<number>(_, 'prenatalVisit.id')]);
@@ -30,36 +31,54 @@ export default function RemindRecord(prop: { remindType: RemindType }) {
   const url = req_url[remindType]
 
 
-  const { config, Wrap } = BF_Wrap2({
-    default_conf: {
-      title: '复诊追踪-预约提醒记录',
-      name: '/api/prenatal-visit-logs',
-      searchConfig: defineFormConfig([
-        { label: '门诊号', name: 'outpatientNO', inputType: 'Input' },
-        { label: '姓名', name: 'name', inputType: 'Input' },
-        { label: '证件号码', name: 'idNO', inputType: 'Input' },
-        { label: '检查日期', name: 'filingDay', inputType: 'rangeDate' },
-      ]),
-      tableColumns: defineFormConfig(
+  return <MyBaseList
+    remindType={remindType}
+    table_preset={{
+      title: `复诊追踪-${remindType === 1 ? '预约提醒记录' : '超时提醒记录'}`,
+      tableColumns: () => import('./form_config'),
+      name: "/api/prenatal-visit-logs",
+      searchParams: {
+        'remindType.equals': ctx.props.remindType,
+      },
+      needChecked: 1,
+
+      searchConfig:
         [
-          { title: '门诊号', dataIndex: 'outpatientNO', layout: '1/3' },
-          { title: '姓名', dataIndex: 'name', layout: '1/3' },
-          { title: '年龄', dataIndex: 'age', layout: '1/3' },
-          { title: '电话', dataIndex: 'telephone', layout: '1/3' },
-          { title: '证件号码', dataIndex: 'idNO', layout: '1/3' },
-          { title: 'hbcab', dataIndex: 'hbcab', inputType: 'MA', inputProps: { options: '阴性,阳性,不详' }, layout: '1/3' },
-          { title: 'hbsag', dataIndex: 'hbsag', inputType: 'MA', inputProps: { options: '阴性,阳性,不详' }, layout: '1/3' },
-          { title: 'hbeag', dataIndex: 'hbeag', inputType: 'MA', inputProps: { options: '阴性,阳性,不详' }, layout: '1/3' },
-          { title: 'hbeab', dataIndex: 'hbeab', inputType: 'MA', inputProps: { options: '阴性,阳性,不详' }, layout: '1/3' },
-          { title: 'hbcab', dataIndex: 'hbcab', inputType: 'MA', inputProps: { options: '阴性,阳性,不详' }, layout: '1/3' },
-          { inputType: 'check_invert_button', hidden: true, layout: '1/3' },
-          { title: '身份证地址', dataIndex: 'permanentResidenceAddress', inputType: 'MyAddress', layout: '1/1' },
+          { label: '就诊卡号', name: 'prenatalVisitCriteria.pregnancy.outpatientNO', inputType: 'Input' },
+          { label: '姓名', name: 'prenatalVisitCriteria.pregnancy.name', inputType: 'Input' },
+          { label: '预约时间', name: 'appointmentDate', inputType: 'rangeDate' },
+          { label: '提醒方式', name: 'remindWay', inputType: 'MS', inputProps: { options: '短信,微信' } },
+          { label: '发送状态', name: 'sendStatus', inputType: 'MS', inputProps: { options: '成功,失败' } },
 
-        ]
-      )
+        ],
+
+      showAction: 0,
+      showAdd: 0,
+      renderBtns: () => {
+        const req_url = {
+          1: "/api/prenatal-visit-logs/apppointmentRemind",
+          2: "/api/prenatal-visit-logs/timeoutRemind",
+        }
+        return ctx.ui.render_btn('重新发送', () => {
+          const q = ctx.props.table_helper.getSearchParams()
+          const selectRows = ctx.props.table_helper.getCheckRows()
+
+          const params = {
+            remindWay: ctx.utils.get(q, 'remindWay.equals'),
+            ids: selectRows.map(_ => _.id),
+            prenatalVisitIds: selectRows.map(_ => ctx.utils.get(_, 'prenatalVisit.id') || ctx.utils.get(_, 'prenatalVisitId'),),
+          };
+          ctx.request.post(req_url[ctx.props.remindType], params, { successText: '批量发送操作成功，详情请看发送记录' }).then(() => {
+            ctx.props.table_helper.handleSearch()
+          })
+        })
+      }
     }
-  })
 
+
+
+    }
+  />
   return <MyBaseList
     name="/api/prenatal-visit-logs"
 

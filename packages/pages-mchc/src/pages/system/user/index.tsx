@@ -3,7 +3,7 @@ import { MyBaseList } from '@lm_fe/pages';
 import { defineFormConfig } from '@lm_fe/service';
 import React from 'react';
 export default function User(props: any) {
-  return <MyBaseList bf_preset={{
+  return <MyBaseList table_preset={{
 
     title: '系统管理-用户管理',
     name: "/api/users",

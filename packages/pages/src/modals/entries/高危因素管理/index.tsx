@@ -1,22 +1,17 @@
 import { IGlobalModalProps } from '@lm_fe/components'
-import { ICommonOption, mchcEnv } from '@lm_fe/env'
+import { mchcEnv } from '@lm_fe/env'
+import { use_provoke } from '@lm_fe/provoke'
 import {
     IMchc_Doctor_OutpatientHeaderInfo,
-    IMchc_HighriskGradeConfig,
-    IMchc_TemplateTree_Item,
-    SMchc_Common,
     SMchc_Doctor,
-    TIdTypeCompatible,
+    TIdTypeCompatible
 } from '@lm_fe/service'
-import { request, ROMAN_NUMERALS } from '@lm_fe/utils'
-import { Modal, Tabs, message } from 'antd'
-import { get, keyBy, map } from 'lodash'
-import React, { useEffect, useRef, useState } from 'react'
+import { get, request, ROMAN_NUMERALS } from '@lm_fe/utils'
+import { message, Modal, Tabs } from 'antd'
+import React, { useEffect, useState } from 'react'
 import { HighriskSign_高危因素管理 } from './HighriskSign'
 import { HighriskTimeline_高危因素管理 } from './HighriskTimeline'
-import { HighriskSign_Tag } from './Tag'
 import styles from './index.module.less'
-import { use_provoke } from '@lm_fe/provoke'
 const boundSymbol = ':'
 interface IProps {
     data?: IMchc_Doctor_OutpatientHeaderInfo
@@ -149,16 +144,7 @@ export default function HighriskFactor(props: IGlobalModalProps<IProps>) {
                         <HighriskTimeline_高危因素管理 id={pregnancyId ?? headerInfo?.id} gradeOptions={可选高危等级} />
                     </Tabs.TabPane>
                 )}
-                {hide高危标记 ? null : (
-                    <Tabs.TabPane tab="标签管理" key="3">
-                        <HighriskSign_Tag
-                            initData={initData}
-                            assign_initData={assign_initData}
-                            gradeOptions={可选高危等级}
-                            headerInfo={headerInfo}
-                        />
-                    </Tabs.TabPane>
-                )}
+
             </Tabs>
         </Modal>
     )

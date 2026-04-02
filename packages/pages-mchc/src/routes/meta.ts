@@ -5,6 +5,7 @@ import { FC, lazy, LazyExoticComponent, ComponentType } from 'react'; //
 export type TC = LazyExoticComponent<ComponentType> | FC
 
 export const routesData = {
+    "/birth-certificate":lazy(() => import("../pages/birth-certificate/index")),
     "/config-table":lazy(() => import("../pages/config-table/index")),
     "/config-table/list":lazy(() => import("../pages/config-table/list/index")),
     "/config-table/list2":lazy(() => import("../pages/config-table/list2/index")),

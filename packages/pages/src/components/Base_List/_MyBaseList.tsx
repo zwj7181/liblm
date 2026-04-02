@@ -20,18 +20,22 @@ const browserClient = Browser.client || {};
 
 
 export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible, editKey?: any }>(_props: MyBaseListProps<T>) {
-    const bf_preset = _props.bf_preset
+    const table_preset = _props.table_preset
     const sys_theme = use_provoke(s => s.sys_theme)
 
 
-    const { Wrap, config } = BF_Wrap2({ default_conf: bf_preset }, {
-        table_props: _props,
+    const { Wrap, config } = BF_Wrap2({ default_conf: table_preset }, {
+        ..._props,
         table_helper: {
             createOrUpdate: create_or_update,
             handleView,
             handleDelete,
             handleEdit,
             handleSearch: table_fetch,
+            getSearchParams,
+            getCheckRows() {
+                return checkRowsCache.current
+            },
         }
     })
     const props = formatProps(_props, config);
@@ -150,7 +154,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
     const [longSearchForm, setLongSearchForm] = useState(false)
     const [tableHeight, setTableHeight] = useState(500)
     const [checkRows, setCheckRows] = useState<T[]>([])
-
+    const checkRowsCache = useRef<T[]>([])
     const [table_form] = Form.useForm()
 
 
@@ -184,6 +188,10 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
         defaultQuery.current.page = n - 1
     }
 
+    function safe_set_check_rows(rows: T[]) {
+        setCheckRows(rows)
+        checkRowsCache.current = rows
+    }
     function safe_set_edit_key(id: number) {
         setEditKey(id)
         editKeyRef.current = id
@@ -604,7 +612,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
     };
 
     const handleRowSelected = (keys: any[], rows: T[]): any => {
-        setCheckRows(rows)
+        safe_set_check_rows(rows)
     };
 
     function format_columns(cols: (IMyBaseList_ColumnType | null)[] = [],) {
@@ -682,7 +690,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
         console.log('ggxx init', searchParams_cache.current)
 
         // setDataSource([])
-        setCheckRows([])
+        safe_set_check_rows([])
         setCurrent(1)
 
         const q = getSearchParams()
@@ -921,7 +929,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
         </div>
     );
 
-    if (bf_preset)
+    if (table_preset)
         return <Wrap>{n}</Wrap>
 
     return n

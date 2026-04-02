@@ -57,6 +57,7 @@ export type ISystemConfig = Partial<{
     旧版量表隐藏?: string[]
     禁用量表自动弹出?: boolean
     头部信息拓展?: ICommonOption[]
+    产后信息拓展?: ICommonOption[]
     量表拓展?: ICommonOption[]
     专案拓展?: ICommonOption[]
     医生端_BMI曲线类型?: number

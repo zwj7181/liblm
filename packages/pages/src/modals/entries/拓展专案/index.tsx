@@ -78,9 +78,9 @@ function Index(props: IGlobalModalProps<{ headerInfo?: IMchc_Doctor_OutpatientHe
   function renderFooter() {
     return (
       <Space style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <OkButton hidden={!data_id} onClick={open_history}>
+        {/* <OkButton hidden={!data_id} onClick={open_history}>
           查看历史
-        </OkButton>
+        </OkButton> */}
 
         <OkButton hidden={!data_id} onClick={() => mchcModal__.open('print_modal', {
           modal_data: { requestData: { url: `/api/case/manage/${ext_value}/print`, template: ext_value, relationId, id: data_id } }

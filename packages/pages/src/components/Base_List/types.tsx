@@ -51,7 +51,7 @@ type RenderColFn<T> = FC<RenderColProps<T> & { rowData: T, }>
 export interface MyBaseListProps<T extends { id?: any } = any> extends TableProps<T> {
   bf_conf?: IMchc_TableConfig
   dbg_dataSource?: any[];
-  bf_preset?: IBF_Default,
+  table_preset?: IBF_Default,
   effect_ctx?: any
   // 接口 URL
   // 左上角标题

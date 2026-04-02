@@ -5,6 +5,7 @@ mchc 页面级模块
 
 | 路径  | 说明  |
 | --- | --- |
+| /birth-certificate | 出生证预约办理-列表 |
 | /config-table | 缺省 |
 | /config-table/list | 缺省 |
 | /config-table/list2 | 缺省 |
@@ -75,4 +76,4 @@ mchc 页面级模块
 | /visit-management/remind-record | 复诊追踪-预约提醒记录 |
 | /visit-management/telephone-followup | 复诊追踪-超时电话随访 |
 | /visit-management/telephone-followup-record | 电话随访记录 |
-| /visit-management/timeout-remind-record | 超时提醒记录 |
+| /visit-management/timeout-remind-record | 复诊追踪-超时提醒记录 |
