@@ -53,6 +53,7 @@ export default defineFormConfig(
         {
             title: '超时原因',
             dataIndex: 'timeoutReason',
+            inputType: "MC",
             inputProps: {
                 options: '住院,转院,已分娩,终止妊娠,其他',
                 marshal: 0
