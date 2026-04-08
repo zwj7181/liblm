@@ -93,10 +93,11 @@ class Mchc_TableConfig_Service extends ModelService<IMchc_TableConfig> {
         _con.searchParams = stringify_bf(config.searchParams,)
         _con.initialValues = stringify_bf_obj(config.initialValues,)
 
-        const searchConfig = await SMchc_FormDescriptions.extract_form_config(config.searchConfig,)
-        _con.searchConfig = stringify_bf_obj(searchConfig,)
+        // const searchConfig = await SMchc_FormDescriptions.extract_form_config(config.searchConfig,)
+        // _con.searchConfig = stringify_bf_obj(searchConfig,)
 
 
+        _con.searchConfig = await this.clippy_local(config.searchConfig,)
 
 
 

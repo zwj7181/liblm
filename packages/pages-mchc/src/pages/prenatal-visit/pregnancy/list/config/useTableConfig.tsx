@@ -14,14 +14,14 @@ export function useTableConfig(props: any) {
 
     const [form] = Form.useForm()
     useEffect(() => {
-        return mchcEvent.on_rm('my_form', e => {
-            if (e.type === 'onSearch' && e.name === "outpatientNO") {
-                const pregnancy: IMchc_Pregnancy = e.value?.data
-                if (!pregnancy) return
-                const isUn = pregnancy.recordstate === '0'
-                isUn ? handleCheck(pregnancy) : handleEdit(pregnancy)
-            }
-        })
+        // return mchcEvent.on_rm('my_form', e => {
+        //     if (e.type === 'onSearch' && e.name === "outpatientNO") {
+        //         const pregnancy: IMchc_Pregnancy = e.value?.data
+        //         if (!pregnancy) return
+        //         const isUn = pregnancy.recordstate === '0'
+        //         isUn ? handleCheck(pregnancy) : handleEdit(pregnancy)
+        //     }
+        // })
     }, [])
     useEffect(() => {
 
