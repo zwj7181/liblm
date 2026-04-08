@@ -111,23 +111,23 @@ function Pregnancies(props: { id?: TIdTypeCompatible, toAdd?: boolean, toCheck?:
     }
   }
 
-  async function onFinish(recordstate = formData.recordstate, is_check = false) {
+  async function onFinish(recordstate = formData.recordstate, isAudit = false) {
     // const recordstate = isContinue ? '0' : (isUnCheck ? '1' : formData.recordstate)
     setLoading(true)
     return form.validateFields()
       .then(async v => {
         mchcLogger.log('vvv', { v, formData })
         const fn = formData?.id ? SMchc_Nurse.updateOutpatientDocument : SMchc_Nurse.newOutpatientDocument
-        const submit_data = { ...formData, ...v, recordstate }
+        const submit_data = { ...formData, ...v, recordstate, isAudit }
         const remoteData = await fn(submit_data)
 
         setLoading(false)
 
         mchcEnv.success('操作成功！')
         if (submit_data.id) {
-          mchcEvent.emit('outpatient', { type: '刷新头部', pregnancyId: remoteData.id })
+          mchcEvent.emit('outpatient', { type: '刷新头部', })
 
-          const ok = (isUnCheck && is_check) ? confirm('是否前往编辑孕册?') : false
+          const ok = (isUnCheck && isAudit) ? confirm('是否前往编辑孕册?') : false
           if (ok) {
             safe_navigate(`/prenatal-visit/pregnancy/nurse-end?id=${remoteData.id}`, props, { id: remoteData.id }, true)
           }

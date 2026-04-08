@@ -54,10 +54,10 @@ export function HighRiskGradeSelect(props: IProps) {
         };
 
 
-        request.put('/api/doctor/assessHighRisk', postData, { successText: '操作成功' })
+        request
+            .put('/api/doctor/assessHighRisk', postData, { successText: '操作成功' })
             .then(() => {
-                mchcEvent.emit('outpatient', { type: '刷新头部', pregnancyId: headerInfo?.id })
-
+                mchcEvent.emit('outpatient', { type: '刷新头部', })
             })
 
     }

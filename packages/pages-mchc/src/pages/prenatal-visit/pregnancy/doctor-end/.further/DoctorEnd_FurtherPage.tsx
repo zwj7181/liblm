@@ -192,7 +192,7 @@ function DoctorEnd_Further(props: IDoctorEnd_FurtherProps) {
 
     HighRiskTableEntry.highRiskTablePopup(data, headerInfo)
 
-    mchcEvent.emit('outpatient', { type: '刷新头部', pregnancyId: outEmrId })
+    mchcEvent.emit('outpatient', { type: '刷新头部', })
     mchcEnv.success('操作成功');
 
   }

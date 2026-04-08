@@ -1,8 +1,8 @@
 import { FormSectionForm, getBMI } from '@lm_fe/components_m';
-import { mchcUtils } from '@lm_fe/env';
+import { mchcEnv, mchcEvent, mchcUtils } from '@lm_fe/env';
 import { BF_Wrap2 } from '@lm_fe/pages';
 import { IMchc_Doctor_FirstVisitInfoOfOutpatient, SMchc_Doctor } from '@lm_fe/service';
-import  React from 'react';
+import React from 'react';
 import { useEffect } from 'react';
 import { IInitial_Tab_props } from '../../types';
 // import form_conf from './config';
@@ -47,6 +47,7 @@ export default function JWS(props: IInitial_Tab_props) {
       }}
       onFinish={(v) => {
         SMchc_Doctor.updatePhysicalExamOfOutpatient(v)
+          .then(() => mchcEvent.emit('outpatient', { type: '刷新头部' }))
       }}
       formDescriptions={config?.tableColumns} form={form} />
   </Wrap>

@@ -139,7 +139,7 @@ function FurtherForm(props: IProps) {
 
                                 const params = { sureEdd: v.edd, date: visitDate, id: preg_id }
                                 const { gestationalWeek } = await SLocal_Calculator.calcGesWeek(params)
-                                mchcEvent.emit('outpatient', { type: '刷新头部', pregnancyId: preg_id })
+                                mchcEvent.emit('outpatient', { type: '刷新头部', })
                                 let prescription = `${old_pre} ${old_pre ? '/' : ''} 预产期B超修订为 ${v.edd}`
                                 form.setFieldsValue({ prescription, gestationalWeek })
                                 return 1

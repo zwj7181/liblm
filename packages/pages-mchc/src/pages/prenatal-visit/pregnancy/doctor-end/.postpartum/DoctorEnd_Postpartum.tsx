@@ -149,7 +149,7 @@ function DoctorEnd_Postpartum(props: IDoctorEnd_PostpartumProps) {
     setFormData(data)
 
 
-    mchcEvent.emit('outpatient', { type: '刷新头部', pregnancyId: outEmrId })
+    mchcEvent.emit('outpatient', { type: '刷新头部' })
     mchcEnv.success('操作成功');
 
   }

@@ -37,7 +37,7 @@ export default function JWS(props: IInitial_Tab_props) {
     onFinish={(v) => {
       SMchc_Doctor.updatePregnacymh(v).then((data) => {
         form.setFieldsValue(data)
-        mchcEvent.emit('outpatient', { type: '刷新头部', pregnancyId })
+        mchcEvent.emit('outpatient', { type: '刷新头部' })
       })
     }}
     formDescriptions={[...config.children!, { name: 'id', form_hidden: true }]} form={form} />

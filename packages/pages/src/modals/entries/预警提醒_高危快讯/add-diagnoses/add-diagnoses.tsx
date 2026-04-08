@@ -104,7 +104,7 @@ export default function AddDiagnoses({ handelProcess, diagId, diagnosesTemplate,
       const newList = cloneDeep(diagnosesList);
       setDiagnosesList?.([...newList, data]);
 
-      mchcEvent.emit('outpatient', { type: '刷新头部', pregnancyId: headerInfo?.id })
+      mchcEvent.emit('outpatient', { type: '刷新头部', })
       // setTimeout(() => {
 
       // }, 5 * 1000);
