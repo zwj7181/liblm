@@ -2,7 +2,7 @@ import { AppEnv, expect_array, getSearchParamsValue, isString } from "@lm_fe/uti
 import { IMchc_User, mchcConfig } from "../state";
 import { ds, getMacroValue, gs, mchcMacro } from "../macro";
 import { getOptionLabel, getOptionValue, getOtherOptions, getPresetOptions, merge_preset_options_inner } from "../select_options";
-import { all_env, Common_Form_Config_Names, MchcTypes } from "./type";
+import { all_env, Common_Form_Config_Names, MchcTypes, primary_env } from "./type";
 
 
 import { mchcEvent } from "../event";
@@ -65,8 +65,7 @@ class MchcEnv<T> extends AppEnv<T> {
         return env_to_key_map[this.appName as MchcTypes]
     }
     get is_primary() {
-        const all: MchcTypes[] = ['广三', '广州市八', '建瓯', '南医附属', '南医增城', '越秀妇幼', '华医', 'mf']
-        return all.includes(this.appName as MchcTypes)
+        return primary_env.includes(this.appName as any)
     }
     event = mchcEvent
     get_options = getPresetOptions
