@@ -57,6 +57,7 @@ mchc 页面级模块
 | /prenatal-visit/pregnancy/check | 缺省 |
 | /prenatal-visit/pregnancy/list | 缺省 |
 | /prenatal-visit/pregnancy/nurse-end | 孕册管理-编辑孕册（护士端） |
+| /prenatal-visit/registration/list | 产科门诊-挂号列表 |
 | /prenatal-visit/report/list | 缺省 |
 | /referral-management/referral-in/add | 缺省 |
 | /referral-management/referral-in/list | 缺省 |
@@ -70,7 +71,7 @@ mchc 页面级模块
 | /system/role | 系统管理-角色管理 |
 | /system/user | 系统管理-用户管理 |
 | /system-config | 系统配置页 |
-| /task-logs | 宣教任务管理 |
+| /task-logs | 宣教随访-宣教任务管理 |
 | /tasks/list | 宣教随访-宣教任务管理 |
 | /test | 测试页 |
 | /visit-management/remind-record | 复诊追踪-预约提醒记录 |

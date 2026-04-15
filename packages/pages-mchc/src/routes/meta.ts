@@ -57,6 +57,7 @@ export const routesData = {
     "/prenatal-visit/pregnancy/check":lazy(() => import("../pages/prenatal-visit/pregnancy/check/index")),
     "/prenatal-visit/pregnancy/list":lazy(() => import("../pages/prenatal-visit/pregnancy/list/index")),
     "/prenatal-visit/pregnancy/nurse-end":lazy(() => import("../pages/prenatal-visit/pregnancy/nurse-end/index")),
+    "/prenatal-visit/registration/list":lazy(() => import("../pages/prenatal-visit/registration/list/index")),
     "/prenatal-visit/report/list":lazy(() => import("../pages/prenatal-visit/report/list/index")),
     "/referral-management/referral-in/add":lazy(() => import("../pages/referral-management/referral-in/add/index")),
     "/referral-management/referral-in/list":lazy(() => import("../pages/referral-management/referral-in/list/index")),

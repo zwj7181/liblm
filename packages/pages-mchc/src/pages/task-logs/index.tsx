@@ -1,22 +1,81 @@
-import React from 'react';
-import Table from './components/Table';
-import { tableColumns } from './config/table';
-import Query from './components/Query';
-import { BaseListOld } from '@lm_fe/components_m';
+import { rt_ctx } from "@lm_fe/env"
+import { MyBaseList, width } from '@lm_fe/pages'
+import React from "react"
+const ctx = rt_ctx
 
-export default class List extends BaseListOld {
-  static defaultProps = {
-    baseUrl: '/api/knowledge-logs',
-    baseTitle: '宣教任务记录',
-    rowKey: 'id',
-    needPagination: true,
-    showQuery: true,
-    tableColumns,
-    showAdd: false,
-    Table,
-    Query,
-    otherTableProps: {
-      scroll: { x: 920 },
-    },
-  };
+export default function BreastCancerDataReport(prop: any) {
+  return <MyBaseList
+    // apiPrefix="/fb/api"
+    needChecked
+    useListSourceCount
+
+    table_preset={{
+      title: '宣教随访-宣教任务记录',
+      name: "/api/knowledge-logs",
+      searchParams: {
+        'visitType.equals': 1,
+      },
+      searchConfig: [
+        { label: '标题', name: 'title', inputType: 'Input' },
+        { label: '推送状态', name: 'pushStatus', inputType: 'MS', inputProps: { uniqueKey: '推送状态' } },
+      ],
+      showAdd: 0,
+      showAction: 0,
+      tableColumns: [
+        {
+          title: '就诊卡号',
+          dataIndex: ['outpatientNO'],
+          width: 120,
+
+        },
+        {
+          title: '姓名',
+          dataIndex: ['name'],
+          width: 120,
+
+        },
+        {
+          title: '任务标题',
+          dataIndex: ['title'],
+          width: 120,
+
+        },
+        {
+          title: '内容类型',
+          dataIndex: ['contentType'],
+          width: 50,
+          inputType: 'MS',
+          inputProps: {
+            uniqueKey: 'Task.contentType'
+          }
+        },
+        {
+          title: '推送内容',
+          dataIndex: 'content',
+
+        },
+        {
+          title: '推送时间',
+          dataIndex: 'pushTime',
+          width: 160,
+        },
+        {
+          title: '推送状态',
+          dataIndex: 'pushStatus',
+          inputType: 'MS',
+          width: 50,
+          inputProps: {
+            marshal: 0,
+            uniqueKey: '推送状态'
+          }
+        },
+        {
+          title: '推送情况说明',
+          dataIndex: 'pushNote',
+        },
+      ],
+
+
+    }}
+  />
 }
