@@ -11,7 +11,6 @@ import FurtherTable from './components/FurtherTable';
 import './index.less';
 const single_id = mchcUtils.single_id
 export interface IDoctorEnd_PostpartumProps {
-  refreshData?(): void
   id: TIdTypeCompatible
 
   headerInfo: IMchc_Doctor_OutpatientHeaderInfo
@@ -190,9 +189,7 @@ function DoctorEnd_Postpartum(props: IDoctorEnd_PostpartumProps) {
 
 
   function furtherRefresh() {
-    const { refreshData } = props;
     getVisitsData();
-    refreshData?.();
   }
 
 

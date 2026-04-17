@@ -1,5 +1,5 @@
 import { FormSectionForm } from '@lm_fe/components_m';
-import { mchcUtils } from '@lm_fe/env';
+import { mchcEvent, mchcUtils } from '@lm_fe/env';
 import { BF_Wrap2, conceive_fuck_edd, nt_fuck_edd } from '@lm_fe/pages';
 import { IMchc_Doctor_FirstVisitPresentmhOutpatient, SMchc_Doctor } from '@lm_fe/service';
 import { debounce } from '@lm_fe/utils';
@@ -57,7 +57,11 @@ export default function JWS(props: IInitial_Tab_props) {
       onValuesChange={(changedValues) => { set_dont_fuck_nt(false) }}
       onFinish={(v) => {
         SMchc_Doctor.updateFirstVisitPresentmh(v)
-          .then(form.setFieldsValue.bind(form))
+          .then((v) => {
+            form.setFieldsValue(v)
+            mchcEvent.emit('outpatient', { type: '刷新头部' })
+          })
+
         check_edd_by_nt(v)
       }}
       form={form} />

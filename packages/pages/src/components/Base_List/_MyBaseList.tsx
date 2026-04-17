@@ -103,7 +103,7 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
         page: 0,
         size: needPagination ? (mchcConfig.get('列表一页显示条数') || 14) : 999,
         sort: 'id,desc', // 基本列表都需要倒序
-        // 'deleteFlag.equals': 0
+        'deleteFlag.equals': 0
     };
     type TStaticQuery = typeof staticDefaultQuery
 

@@ -25,11 +25,12 @@ export interface IBF_Form_Props extends IBF_props {
     form?: FormInstance
     disabled?: boolean
     fallback_init: () => Promise<any>
+    on_finish?: () => void
     fallback_finish: (v: any) => Promise<void>
     history_args: { relationId: any }
 }
 export function BF_Form(props: IBF_Form_Props) {
-    const { history_args, fallback_finish, fallback_init, disabled } = props
+    const { history_args, fallback_finish, fallback_init, on_finish, disabled } = props
     const [_form] = Form.useForm()
     const history_url = useRef<string>()
     const [_form_first] = Form.useForm()
@@ -86,18 +87,16 @@ export function BF_Form(props: IBF_Form_Props) {
         } else {
             await fallback_finish(v);
         }
-        mchcEvent.emit('custom_msg', { type: 'BF_Form', data: config?.title })
+        on_finish?.()
+        init()
+
 
     }
 
     useEffect(() => {
 
         init()
-        return mchcEvent.on_rm('custom_msg', e => {
-            if (e.type == 'BF_Form' && e.data === config?.title) {
-                init()
-            }
-        })
+
     }, [config])
 
     return (

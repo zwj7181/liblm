@@ -9,16 +9,12 @@ interface IProps {
     form: FormInstance
     disabled?: boolean
     pregnancyId: TIdTypeCompatible
+    on_finish: () => void
 }
 
 export default function DoctorEnd_检验检查_History(props: IProps) {
-    const { pregnancyId, form, disabled } = props
-    useEffect(() => {
+    const { pregnancyId, form, disabled, on_finish } = props
 
-        return () => {
-
-        }
-    }, [])
     useEffect(() => {
 
 
@@ -40,7 +36,11 @@ export default function DoctorEnd_检验检查_History(props: IProps) {
         disabled={disabled}
         form={form}
         fallback_init={() => SMchc_Doctor.getLabExamOfOutpatient(pregnancyId)}
-        fallback_finish={(v) => SMchc_Doctor.updateLabExamOfOutpatient(v)}
+        on_finish={on_finish}
+        fallback_finish={(v) =>
+            SMchc_Doctor.updateLabExamOfOutpatient(v)
+
+        }
         default_conf={{ tableColumns: form_confg, title: "门诊-检验检查" }}
         history_args={{ relationId: pregnancyId }}
 

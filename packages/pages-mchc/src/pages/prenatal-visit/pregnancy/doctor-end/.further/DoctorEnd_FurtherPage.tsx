@@ -14,7 +14,6 @@ const single_id = mchcUtils.single_id
 export interface IDoctorEnd_FurtherProps {
   addon_btns?: (data?: Partial<IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit>) => React.ReactNode
   before_submit?: (submit: (values: any) => Promise<void>, data?: Partial<IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit>, form?: FormInstance) => Promise<void>
-  refreshData?(): void
   setDiagnosesList(v: IMchc_Doctor_Diagnoses[]): void
   id: TIdTypeCompatible
 
@@ -245,9 +244,7 @@ function DoctorEnd_Further(props: IDoctorEnd_FurtherProps) {
   //   setFormData(new_one)
   // }
   function furtherRefresh() {
-    const { refreshData } = props;
     init();
-    refreshData?.();
   }
 
 
