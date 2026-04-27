@@ -184,7 +184,6 @@ export const config_table_fd = (props: any): IMchc_FormDescriptions_Field_Nullab
                         ...msw_options,
                         dataIndex: 'showAction',
                         layout: '1/4',
-                        formItemLayout: defaultFormItemLayout,
                     },
                     {
                         title: '添加按钮',
@@ -192,7 +191,6 @@ export const config_table_fd = (props: any): IMchc_FormDescriptions_Field_Nullab
 
                         dataIndex: 'showAdd',
                         layout: '1/4',
-                        formItemLayout: defaultFormItemLayout,
                     },
                     {
                         title: '行打印按钮',
