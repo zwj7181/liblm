@@ -770,12 +770,12 @@ export function _MyBaseList<T extends { [x: string]: any, id?: TIdTypeCompatible
                 <div className="global-base-table" id="global-base-table">
                     <div
                         ref={queryRef}
-                        style={{ padding: 4, ...(longSearchForm ? { display: 'flex', flexDirection: 'column-reverse' } : { display: 'flex', justifyContent: 'space-between' }) }}
+                        style={{ padding: '4px 12px', ...(longSearchForm ? { display: 'flex', flexDirection: 'column-reverse' } : { display: 'flex', justifyContent: 'space-between' }) }}
                     >
                         <div ref={formWrapper} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 4 }}>
                             {
                                 showSearch ? (
-                                    <Form initialValues={initialSearchValue} form={searchForm} layout="inline" >
+                                    <Form initialValues={initialSearchValue} form={searchForm} layout="inline" style={{ display: 'flex', gap: '4px 0'}}>
                                         {searchConfig ? <MyBaseListRenderFormSection config={searchConfig} disabled={loading} /> : null}
 
 

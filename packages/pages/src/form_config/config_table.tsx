@@ -4,6 +4,9 @@ import { IMchc_FormDescriptions_Field_Nullable, SLocal_History } from "@lm_fe/se
 import { copyText, genHappyPath } from "@lm_fe/utils"
 import { Space } from "antd"
 import React from "react"
+
+const defaultFormItemLayout ={ labelCol: { span: 10 }, wrapperCol: { span: 14 } }
+
 const options = {
     uniqueKey: '否是',
     marshal: 0 as const,
@@ -170,7 +173,6 @@ export const config_table_fd = (props: any): IMchc_FormDescriptions_Field_Nullab
         hidden: true,
         children: [
 
-
             {
                 title: '表格行为',
                 containerType: 'segs',
@@ -182,6 +184,7 @@ export const config_table_fd = (props: any): IMchc_FormDescriptions_Field_Nullab
                         inputProps: options,
                         dataIndex: 'showAction',
                         layout: '1/4',
+                        formItemLayout: defaultFormItemLayout,
                     },
                     {
                         title: '添加按钮',
@@ -189,6 +192,7 @@ export const config_table_fd = (props: any): IMchc_FormDescriptions_Field_Nullab
                         inputProps: options,
                         dataIndex: 'showAdd',
                         layout: '1/4',
+                        formItemLayout: defaultFormItemLayout,
                     },
                     {
                         title: '行打印按钮',
