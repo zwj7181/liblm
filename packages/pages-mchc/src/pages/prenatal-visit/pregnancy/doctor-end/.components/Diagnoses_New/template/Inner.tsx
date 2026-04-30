@@ -16,13 +16,14 @@ function DiagnosesTemplateOld(props: IDiagnosesTemplate) {
 
   const {
     isShowDiagnosesTemplate,
-
+    handleDelete,
     diagnosesList,
     headerInfo,
     saveHeaderInfo,
     setDiagnosesList,
     closeTemplate,
     add_diag,
+
   } = props;
 
   const userid = SLocal_State.getUserData()?.id
@@ -167,27 +168,10 @@ function DiagnosesTemplateOld(props: IDiagnosesTemplate) {
   }
 
 
-  async function handleDelete(item: any, i: number) {
-
-    const newList = cloneDeep(diagnosesList);
-    const delArr = newList.splice(i, 1);
-    await SMchc_Doctor.del_diagnosis(delArr[0]);
-    mchcEnv.info('删除成功！');
-    setDiagnosesList(newList);
-    changeHeaderInfo();
-  };
 
 
 
-  function changeNote(v: string, i: number, key: string) {
 
-
-    const newList = cloneDeep(diagnosesList);
-    const item = newList[i];
-    item[`${key}`] = v;
-    // item['createDate'] = formatTimeToStandard(new Date());
-    setDiagnosesList(newList);
-  };
 
   function updateNote(value: any, i: number, key: string) {
 
@@ -313,7 +297,6 @@ function DiagnosesTemplateOld(props: IDiagnosesTemplate) {
                 <DiagnosesItem
                   key={`${get(item, 'id')}-true`}
                   diagnose={item}
-                  changeNote={changeNote}
                   updateNote={updateNote}
                   index={i}
                   handleDelete={handleDelete}

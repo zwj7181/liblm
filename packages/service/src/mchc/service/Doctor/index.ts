@@ -33,7 +33,7 @@ export class Mchc_Doctor_Service extends ModelService {
     }
 
     // 越秀妇幼
-    async newOrSaveDiagnosisOfOutpatientList<T extends MchcTypes>(data: Partial<IMchc_Doctor_Diagnoses<T>>[]) {
+    async new_diagnosis_list<T extends MchcTypes>(data: Partial<IMchc_Doctor_Diagnoses<T>>[]) {
         const ret = await request.post<IMchc_Doctor_Diagnoses<T>[]>('/api/doctor/newOrSaveDiagnosisOfOutpatientList', data)
         return ret.data
     }

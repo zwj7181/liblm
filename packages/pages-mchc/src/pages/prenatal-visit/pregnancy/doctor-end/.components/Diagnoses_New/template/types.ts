@@ -6,6 +6,7 @@ export interface IDiagnosesTemplate {
     closeTemplate(): void
 
     isShowDiagnosesTemplate: boolean
+    handleDelete?: (item: IMchc_Doctor_Diagnoses, idx: number) => Promise<void>
 
     setDiagnosesList(v: IMchc_Doctor_Diagnoses[]): void
     saveHeaderInfo(h: IMchc_Doctor_OutpatientHeaderInfo): void

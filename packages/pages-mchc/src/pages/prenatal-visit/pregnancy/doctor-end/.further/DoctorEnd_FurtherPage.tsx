@@ -172,7 +172,7 @@ function DoctorEnd_Further(props: IDoctorEnd_FurtherProps) {
         outEmrId
       }))
 
-      SMchc_Doctor.newOrSaveDiagnosisOfOutpatientList(xxxa).then(setDiagnosesList)
+      SMchc_Doctor.new_diagnosis_list(xxxa).then(setDiagnosesList)
     }
 
     var set_data = assign(newData, { outEmrId, serialNo })

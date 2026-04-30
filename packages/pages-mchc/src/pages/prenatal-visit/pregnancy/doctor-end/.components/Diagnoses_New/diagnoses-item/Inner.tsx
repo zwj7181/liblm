@@ -8,28 +8,19 @@ import { cloneDeep, get, map, set, size } from 'lodash';
 import React, { useEffect, useMemo, useState } from 'react';
 import requestMethods_further from '../../../.further/methods/request';
 import './index.less';
-interface IProps {
-  edit?: boolean;
-  index: number;
-  diagnose: any;
-  changeNote?: Function;
-  handleDelete?: Function;
-  updateNote?: Function;
-  headerInfo: IMchc_Doctor_OutpatientHeaderInfo
-  saveHeaderInfo(H: IMchc_Doctor_OutpatientHeaderInfo): void
-  diagnosesList: IMchc_Doctor_Diagnoses[]
-  setDiagnosesList(l: IMchc_Doctor_Diagnoses[]): void
-  isShowDiagnosesTemplate: boolean
-}
+import { IDiagnosesItem_Props } from './types'
 export default function DiagnosesItem({
   updateNote,
   handleDelete,
-  changeNote,
   diagnose,
   index,
   edit,
-  ...props
-}: IProps) {
+  headerInfo,
+  saveHeaderInfo,
+  diagnosesList,
+  setDiagnosesList,
+  isShowDiagnosesTemplate,
+}: IDiagnosesItem_Props) {
   const [note, setNote] = useState(get(diagnose, `note`));
   const [preNote, setPreNote] = useState(get(diagnose, `preNote`));
   const [visibleId, setVisibleId] = useState(null);
@@ -44,7 +35,7 @@ export default function DiagnosesItem({
     setPreNote(e.target.value);
   }
   function itemDelete() {
-    handleDelete && handleDelete(diagnose, index);
+    handleDelete?.(diagnose, index);
   }
   function inputBlur(key: string) {
     return () => {
@@ -70,12 +61,10 @@ export default function DiagnosesItem({
     // );
   }, [diagnose]);
   async function changeHeaderInfo() {
-    const { headerInfo, saveHeaderInfo } = props;
     const res = await request.get('/api/doctor/getOutpatientHeaderInfo?id=' + get(headerInfo, `id`));
     saveHeaderInfo(res.data);
   }
   function handleVisibleChange(visible: boolean, i: number) {
-    const { diagnosesList, setDiagnosesList } = props;
     const newList = cloneDeep(diagnosesList);
     const item = newList[i];
     map(newList, (it, ind) => {
@@ -87,7 +76,6 @@ export default function DiagnosesItem({
     setDiagnosesList(newList);
   }
   const popoverContent = (item: any, i: number) => {
-    const { diagnosesList, setDiagnosesList } = props;
 
     const handleHighrisk = async () => {
       const newList = cloneDeep(diagnosesList);
@@ -202,8 +190,8 @@ export default function DiagnosesItem({
             className="diag-popover2"
             trigger="click"
             content={popoverContent(diagnose, index)}
-            visible={!props.isShowDiagnosesTemplate && !!diagnose.visible}
-            onVisibleChange={(visible) =>
+            open={!isShowDiagnosesTemplate && !!diagnose.visible}
+            onOpenChange={(visible) =>
               setTimeout(() => {
                 handleVisibleChange(visible, index);
               }, 200)
