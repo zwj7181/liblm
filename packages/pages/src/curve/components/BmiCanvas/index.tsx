@@ -75,6 +75,7 @@ export default function BmiCanvas(props: IProps) {
     bmiNum.current = get(res, 'preBmi')
     bmiTz.current = get(res, 'weight')
     bmiList.current = get(res, 'items')
+    console.log('bmiList', bmiList)
     drawBmiCanvas();
   };
 
@@ -152,9 +153,7 @@ export default function BmiCanvas(props: IProps) {
     baseLeft: number,
     baseTop: number,
   ) {
-    let count = 0;
     for (let i = 0; i < yCount; i++) {
-      count++;
       context.beginPath();
       context.lineWidth = 1;
       context.moveTo(yStep * i + baseLeft, baseTop);
@@ -162,9 +161,8 @@ export default function BmiCanvas(props: IProps) {
       context.textAlign = 'center';
       context.fillStyle = font_color;
       context.font = 'bold 12px consolas';
-      if (count === 1 || count === 4) {
-        count = count === 4 ? 1 : count;
-        context.fillText(i + 1, baseLeft + i * yStep, xStep * xCount + baseTop - 15);
+      if (i % 2 == 0) {
+        context.fillText(i, baseLeft + i * yStep, xStep * xCount + baseTop - 15);
       }
       context.stroke();
     }
@@ -175,18 +173,19 @@ export default function BmiCanvas(props: IProps) {
   function drawBmiCanvas() {
     const { bmiBottomLine, bmiIntro, bmiLinesPoints, bmiTopLine } = bmi_Data.current
     let newBmiList = cloneDeep(bmiList.current);
-
+    console.log('bmiTz', bmiTz)
     newBmiList.map((item: any) => {
       if (!item.weight || !item.week) {
         item.weight = 0;
-        item.week = -1;
+        // item.week = -1;
+        item.week = 0;
       } else {
         item.weight = item.weight - Number(bmiTz.current);
         if (item.week.indexOf('+') !== -1) {
           const arr = item.week.split('+');
           item.week = Number(arr[0]) + Number(arr[1]) / 7;
         }
-        item.week = item.week - 1;
+        // item.week = item.week - 1;
       }
     });
     // console.log(newBmiList, 'bmi1');
@@ -202,7 +201,7 @@ export default function BmiCanvas(props: IProps) {
 
     const canvas = get_canvas_el('bmi-canvas', sys_theme);
     const context = canvas.getContext('2d')!;
-    canvas.width = 700;
+    canvas.width = 730;
     canvas.height = 710;
 
     const baseLeft = 60;
@@ -210,7 +209,7 @@ export default function BmiCanvas(props: IProps) {
     const xStep = 30;
     const yStep = 15;
     const xCount = 17;
-    const yCount = 40;
+    const yCount = 42;
 
     context.fillStyle = font_color;
     context.font = 'bold 16px normal';

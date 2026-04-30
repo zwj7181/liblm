@@ -1,93 +1,96 @@
 import { set, get } from 'lodash';
-import { getLineArea, TPoint } from './func';
+import { getLineArea } from './func';
 
 export const bmiData1 = {
-  bmiIntro: '体重过轻,建议孕期体重增长目标:12.5-18kg',
+  // bmiIntro: '体重过轻,建议孕期体重增长目标:11.62-16.56kg',
+  bmiIntro: '体重过轻,建议孕期体重增长目标:11-16kg',
   bmiBottomLine: [
     { x: 0, y: 0 },
-    { x: 12, y: 1.5 },
-    { x: 39, y: 12.5 },
+    { x: 14, y: 0 },
+    { x: 41, y: 11 },
   ],
   bmiTopLine: [
     { x: 0, y: 0 },
-    { x: 12, y: 3 },
-    { x: 39, y: 18 },
+    { x: 14, y: 2 },
+    { x: 41, y: 16 },
   ],
   bmiLinesPoints: [
     { x: 0, y: 0 },
-    { x: 12, y: 1.5 },
-    { x: 39, y: 12.5 },
-    { x: 39, y: 18 },
-    { x: 12, y: 3 },
+    { x: 14, y: 0 },
+    { x: 41, y: 11 },
+    { x: 41, y: 16 },
+    { x: 14, y: 2 },
     { x: 0, y: 0 },
   ],
 };
 export const bmiData2 = {
-  bmiIntro: '体重正常，建议增长体重增长目标11.5-16kg',
+  // bmiIntro: '体重正常，建议增长体重增长目标8.76-14.48kg',
+  bmiIntro: '体重正常，建议增长体重增长目标8-14kg',
   bmiBottomLine: [
     { x: 0, y: 0 },
-    { x: 12, y: 1.5 },
-    { x: 39, y: 11.5 },
+    { x: 14, y: 0 },
+    { x: 41, y: 8 },
   ],
   bmiTopLine: [
     { x: 0, y: 0 },
-    { x: 12, y: 3 },
-    { x: 39, y: 16 },
+    { x: 14, y: 2 },
+    { x: 41, y: 14 },
   ],
   bmiLinesPoints: [
     { x: 0, y: 0 },
-    { x: 12, y: 1.5 },
-    { x: 39, y: 11.5 },
-    { x: 39, y: 16 },
-    { x: 12, y: 3 },
+    { x: 14, y: 0 },
+    { x: 41, y: 8 },
+    { x: 41, y: 14 },
+    { x: 14, y: 2 },
     { x: 0, y: 0 },
   ],
 };
 export const bmiData3 = {
-  bmiIntro: '体重超重，建议增长体重增长目标7-11.5kg',
+  // bmiIntro: '体重超重，建议增长体重增长目标7.72-11.62kg',
+  bmiIntro: '体重超重，建议增长体重增长目标7-11kg',
   bmiBottomLine: [
     { x: 0, y: 0 },
-    { x: 12, y: 1.5 },
-    { x: 39, y: 7 },
+    { x: 14, y: 0 },
+    { x: 41, y: 7 },
   ],
   bmiTopLine: [
     { x: 0, y: 0 },
-    { x: 12, y: 3 },
-    { x: 39, y: 11.5 },
+    { x: 14, y: 2 },
+    { x: 41, y: 11 },
   ],
   bmiLinesPoints: [
     { x: 0, y: 0 },
-    { x: 12, y: 1.5 },
-    { x: 39, y: 7 },
-    { x: 39, y: 11.5 },
-    { x: 12, y: 3 },
+    { x: 14, y: 0 },
+    { x: 41, y: 7 },
+    { x: 41, y: 11 },
+    { x: 14, y: 2 },
     { x: 0, y: 0 },
   ],
 };
 export const bmiData4 = {
+  // bmiIntro: '体重肥胖，建议增长体重增长目标5.9-9.8kg',
   bmiIntro: '体重肥胖，建议增长体重增长目标5-9kg',
   bmiBottomLine: [
     { x: 0, y: 0 },
-    { x: 12, y: 1.5 },
-    { x: 39, y: 5 },
+    { x: 14, y: 0 },
+    { x: 41, y: 5 },
   ],
   bmiTopLine: [
     { x: 0, y: 0 },
-    { x: 12, y: 3 },
-    { x: 39, y: 9 },
+    { x: 14, y: 2 },
+    { x: 41, y: 9 },
   ],
   bmiLinesPoints: [
     { x: 0, y: 0 },
-    { x: 12, y: 1.5 },
-    { x: 39, y: 5 },
-    { x: 39, y: 9 },
-    { x: 12, y: 3 },
+    { x: 14, y: 0 },
+    { x: 41, y: 5 },
+    { x: 41, y: 9 },
+    { x: 14, y: 2 },
     { x: 0, y: 0 },
   ],
 };
 
 export const acData = {
-  lineArea: [] as TPoint[],
   bottomLine: [
     { x: 5.5, y: 8 },
     { x: 10, y: 12.8 },
@@ -116,7 +119,6 @@ export const acData = {
 set(acData, 'lineArea', getLineArea(get(acData, 'bottomLine'), get(acData, 'topLine')));
 
 export const flData = {
-  lineArea: [] as TPoint[],
   bottomLine: [
     { x: 2, y: 2.5 },
     { x: 5.5, y: 13.3 },
@@ -148,7 +150,6 @@ export const flData = {
 set(flData, 'lineArea', getLineArea(get(flData, 'bottomLine'), get(flData, 'topLine')));
 
 export const bpdData = {
-  lineArea: [] as TPoint[],
   bottomLine: [
     { x: 2, y: 14.8 },
     { x: 5.5, y: 26.7 },
@@ -183,7 +184,6 @@ export const bpdData = {
 set(bpdData, 'lineArea', getLineArea(get(bpdData, 'bottomLine'), get(bpdData, 'topLine')));
 
 export const fundalHeightData = {
-  lineArea: [] as TPoint[],
   topSolidLine: [
     { x: 1, y: 7 },
     { x: 2, y: 8 },
