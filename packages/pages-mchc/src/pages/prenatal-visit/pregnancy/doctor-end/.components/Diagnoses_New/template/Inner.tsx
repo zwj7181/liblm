@@ -1,6 +1,6 @@
 import { formatTimeToStandard, HighRiskGradeSelect, MyIcon } from '@lm_fe/components_m';
 import { mchcEnv } from '@lm_fe/env';
-import { IMchc_Doctor_Diagnoses, SLocal_State } from '@lm_fe/service';
+import { IMchc_Doctor_Diagnoses, SLocal_State, SMchc_Doctor } from '@lm_fe/service';
 import { request } from '@lm_fe/utils';
 import { Button, Col, Input, Modal, Row, Space, Spin, Tabs } from 'antd';
 import { cloneDeep, filter, find, findIndex, get, isString, map, set, size, throttle } from 'lodash';
@@ -8,8 +8,8 @@ import React, { CSSProperties, useEffect, useRef, useState } from 'react';
 import { api } from '../../../.api';
 import requestMethods_further from '../../../.further/methods/request';
 import DoctorEnd_TemplateTree from '../../TemplateTree';
-import DiagnosesItem from './../diagnoses-item/diagnoses-item';
-import DiagnosesWeek from './../diagnoses-week/diagnoses-week';
+import DiagnosesItem from '../diagnoses-item/diagnoses-item';
+import DiagnosesWeek from '../diagnoses-week/diagnoses-week';
 import './index.less';
 import { IDiagnosesTemplate } from './types';
 function DiagnosesTemplateOld(props: IDiagnosesTemplate) {
@@ -29,7 +29,6 @@ function DiagnosesTemplateOld(props: IDiagnosesTemplate) {
 
   const [allDiagnosesTemplate, set_allDiagnosesTemplate] = useState<any[]>([])
   const [filterDiagnosesTemplate, set_filterDiagnosesTemplate] = useState<any[]>([])
-  const [noteChange, set_noteChange] = useState(false)
   const [searchValue, set_searchValue] = useState('')
   const [activeKey, set_activeKey] = useState('1')
   const page = useRef(0)
@@ -166,21 +165,13 @@ function DiagnosesTemplateOld(props: IDiagnosesTemplate) {
     const res = (await request.get('/api/doctor/getOutpatientHeaderInfo?id=' + get(headerInfo, `id`))).data;
     saveHeaderInfo(res);
   }
-  function getTitle(item: any) {
-    const createdDate = item.createdDate ? `诊断时间: ${formatTimeToStandard(item.createdDate)}\n` : '';
-    const diagnosis = item.diagnosis ? `诊断全称: ${item.diagnosis}\n` : '';
-    const preNote = item.preNote ? `前备注: ${item.preNote}\n` : '';
-    const note = item.note ? `后备注: ${item.note}\n` : '';
-    const doctor = item.doctor ? `诊断医生: ${item.doctor}\n` : '';
 
-    return `${createdDate}${diagnosis}${preNote}${note}${doctor}`;
-  };
 
   async function handleDelete(item: any, i: number) {
 
     const newList = cloneDeep(diagnosesList);
     const delArr = newList.splice(i, 1);
-    await requestMethods_further.deleteDiagnosis(get(delArr, `[0].id`));
+    await SMchc_Doctor.del_diagnosis(delArr[0]);
     mchcEnv.info('删除成功！');
     setDiagnosesList(newList);
     changeHeaderInfo();
@@ -204,7 +195,7 @@ function DiagnosesTemplateOld(props: IDiagnosesTemplate) {
     const item = newList[i];
     item[`${key}`] = value;
     setDiagnosesList(newList);
-    requestMethods_further.newadd_diagnosis(item);
+    SMchc_Doctor.new_Diagnosis(item);
   }
 
   //#endregion

@@ -62,6 +62,4 @@ export default {
   /** 删除产检计划模板类型 */
   deletePrenatalVisitPlanTypes: (id: number) => request.delete(`/api/prenatal-visit-plan-types/${id}`).then(r => r.data),
 
-  /**新增修改诊断 新增无id 修改带id*/
-  newAddDiagnosis: (data: any) => request.post(`/api/doctor/newOrSaveDiagnosisOfOutpatient`, data).then(r => r.data),
 };

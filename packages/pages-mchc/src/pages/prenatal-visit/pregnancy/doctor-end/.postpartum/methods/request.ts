@@ -7,11 +7,7 @@ async function updateRvisitInfoOfOutpatient(data: any) {
   return res.data
 }
 
-/**  删除诊断 */
-async function deleteDiagnosis(id) {
-  const res = await request.delete(`/api/doctor/deleteDiagnosisOfOutpatient/${id}`);
-  return res.data
-}
+
 
 /** 排序诊断 */
 async function sortDiagnoses(data: any) {
@@ -19,15 +15,10 @@ async function sortDiagnoses(data: any) {
   return res.data
 }
 
-/**新增修改诊断 新增无id 修改带id*/
-async function newAddDiagnosis(data: any) {
-  return (await request.post(`/api/doctor/newOrSaveDiagnosisOfOutpatient`, data)).data;
-}
+
 export const requestMethods_further = {
 
   updateRvisitInfoOfOutpatient,
-  deleteDiagnosis,
   sortDiagnoses,
-  newAddDiagnosis,
 };
 export default requestMethods_further

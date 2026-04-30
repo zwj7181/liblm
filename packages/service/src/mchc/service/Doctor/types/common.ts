@@ -38,5 +38,7 @@ export interface IMchc_Doctor_Diagnoses<T extends MchcTypes = 'mchc'> {
 
     visitNo: null
     depCode: null
+    // new
+    prenatalVisitId?: number
 
 }

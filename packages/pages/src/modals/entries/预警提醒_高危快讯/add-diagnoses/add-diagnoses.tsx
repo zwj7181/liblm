@@ -96,7 +96,7 @@ export default function AddDiagnoses({ handelProcess, diagId, diagnosesTemplate,
     const diag = get(diagnosisObj, 'diagnosis') ?? '';
 
     if (diagnosesList.filter((item: any) => item.diagnosis === diag).length === 0) {
-      const res = await SMchc_Doctor.newOrSaveDiagnosisOfOutpatient(diagnosisObj);
+      const res = await SMchc_Doctor.new_Diagnosis(diagnosisObj);
       const data = res || diagnosisObj;
       mchcEnv.success('添加成功！');
       mchcEvent.emit('outpatient', { type: '添加修改诊断', diagnoses: data })

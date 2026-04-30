@@ -6,7 +6,7 @@ import { getFutureDate } from '@lm_fe/utils';
 import { Col, message, Modal, Row, Space } from 'antd';
 import { forEach, get, isNil } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import Diagnoses from '../../../.components/Diagnoses';
+import Diagnoses from '../../../.components/Diagnoses_New';
 import ManagementPlan from '../../../.further/components/FurtherSidebar/management-plan';
 import './index.less';
 const { Tree, TreeSelect, Select, Table, Dropdown, Pagination } = LazyAntd
@@ -220,7 +220,7 @@ function Index(props: IProps & IInitial_Tab_props) {
           headerInfo={headerInfo}
           diagnosesList={diagnosesList}
           isAllPregnancies={false}
-
+          prenatalVisitId={v_id}
 
           serialNo={serialNo}
 

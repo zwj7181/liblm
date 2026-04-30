@@ -82,18 +82,17 @@ export class Mchc_Doctor_Service extends ModelService {
     }
 
     /**新增修改诊断 新增无id 修改带id*/
-    async newOrSaveDiagnosisOfOutpatient(x: Partial<IMchc_Doctor_Diagnoses>) {
-        const { data } = await request.post<any>(`/api/doctor/newOrSaveDiagnosisOfOutpatient`, x)
-        return data
+    new_Diagnosis(x: Partial<IMchc_Doctor_Diagnoses>) {
+        return request.post<any>(`/api/doctor/newOrSaveDiagnosisOfOutpatient`, x).then(res => res.data)
     }
     /** 排序诊断 */
     async sortDiagnosesOfOutpatient(data: any) {
         const res = await request.put('/api/doctor/sortDiagnosesOfOutpatient', data);
         return res.data;
     }
-    async deleteDiagnosisOfOutpatient(id: TIdTypeCompatible) {
-        const res = await request.delete(`/api/doctor/deleteDiagnosisOfOutpatient/${id}`);
-        return res.data;
+    del_diagnosis(item: IMchc_Doctor_Diagnoses) {
+        if (!item) return
+        return request.delete(`/api/doctor/deleteDiagnosisOfOutpatient/${item.id}`, { params: { prenatalVisitId: item.prenatalVisitId } }).then(res => res.data)
     }
     /**一次获得全部首检信息 */
     async getFirstVisitInfoOfOutpatient(id: TIdTypeCompatible) {

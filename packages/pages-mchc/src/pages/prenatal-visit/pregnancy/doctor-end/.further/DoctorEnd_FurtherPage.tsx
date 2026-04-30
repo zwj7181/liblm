@@ -259,6 +259,7 @@ function DoctorEnd_Further(props: IDoctorEnd_FurtherProps) {
             saveHeaderInfo={saveHeaderInfo}
             setDiagnosesList={setDiagnosesList}
             diagnosesList={diagnosesList}
+            formData={formData}
 
             headerInfo={headerInfo}
             id={id}

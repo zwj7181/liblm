@@ -1,13 +1,13 @@
 import { GestationalWeekProjectTree, MyLazyComponent, OkButton } from '@lm_fe/components_m';
 import { mchcConfig, mchcEnv, mchcUtils } from '@lm_fe/env';
 import { use_provoke } from '@lm_fe/provoke';
-import { IMchc_Doctor_Diagnoses, IMchc_Doctor_OutpatientHeaderInfo, IMchc_Doctor_RvisitInfoOfOutpatient, TIdTypeCompatible } from '@lm_fe/service';
+import { IMchc_Doctor_Diagnoses, IMchc_Doctor_OutpatientHeaderInfo, IMchc_Doctor_RvisitInfoOfOutpatient, IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit, TIdTypeCompatible } from '@lm_fe/service';
 import { request } from '@lm_fe/utils';
 import { Card, Collapse, Timeline } from 'antd';
 import classnames from 'classnames';
 import { get, isEmpty, join, map, size, slice } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import Diagnoses from '../../../.components/Diagnoses';
+import Diagnoses from '../../../.components/Diagnoses_New';
 import './index.less';
 import ManagementPlan from './management-plan';
 import PrenatalTree from './prenatal-tree';
@@ -25,6 +25,7 @@ interface IProps {
 
   saveHeaderInfo(h: IMchc_Doctor_OutpatientHeaderInfo): void,
   setDiagnosesList(list: any[]): void,
+  formData?: Partial<IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit>,
 
 }
 export default function FurtherSidebar(props: IProps) {
@@ -35,7 +36,7 @@ export default function FurtherSidebar(props: IProps) {
     headerInfo,
     id,
     visitsData,
-
+    formData,
     diagnosesList,
     furtherRefresh,
     saveHeaderInfo,
@@ -100,7 +101,7 @@ export default function FurtherSidebar(props: IProps) {
     set_lackReports(join(lackReports || [], '，'))
   };
 
-  function closeModal(type:  'isShowManageModal') {
+  function closeModal(type: 'isShowManageModal') {
 
 
     if (type === 'isShowManageModal') {
@@ -111,7 +112,7 @@ export default function FurtherSidebar(props: IProps) {
   function handleBtnClick(e: any, type: string) {
     e.stopPropagation();
     switch (type) {
-  
+
 
       case 'manageBtn':
         set_isShowManageModal(true)
@@ -143,6 +144,7 @@ export default function FurtherSidebar(props: IProps) {
                   id="further-diagnosis"
                 >
                   <Diagnoses
+                    prenatalVisitId={formData?.id}
                     serialNo={serialNo}
                     saveHeaderInfo={saveHeaderInfo}
                     setDiagnosesList={setDiagnosesList}

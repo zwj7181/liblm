@@ -10,6 +10,6 @@ export * from './.survey-report'
 export * from './.base/index'
 export { api as DoctorEnd_api } from './.api'
 export { default as DoctorEnd_TemplateTree } from './.components/TemplateTree'
-export { default as DoctorEnd_Diagnoses, IDiagnosesprops } from './.components/Diagnoses'
-export { default as DoctorEnd_DiagnosesTemplate, IDiagnosesTemplate } from './.components/Diagnoses/template'
+export { default as DoctorEnd_Diagnoses, IDiagnosesprops } from './.components/Diagnoses_New'
+export { default as DoctorEnd_DiagnosesTemplate, IDiagnosesTemplate } from './.components/Diagnoses_New/template'
 

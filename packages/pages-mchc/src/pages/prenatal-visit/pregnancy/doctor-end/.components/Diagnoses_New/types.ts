@@ -10,11 +10,11 @@ export interface IDiagnosesprops {
   // isShowDiagnosesTemplatets: boolean
   isAllPregnancies: boolean
   page: '' | 'return'
-
+  prenatalVisitId?: any
   serialNo: string
 
 
-  
+
 
 
 
@@ -26,5 +26,5 @@ export interface IDiagnosesprops {
   // changeSyphilis,
   // page,
   // serialNo,
-  
+
 }

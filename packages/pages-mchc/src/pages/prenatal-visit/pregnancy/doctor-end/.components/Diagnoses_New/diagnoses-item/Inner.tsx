@@ -1,6 +1,6 @@
 
 import { formatTimeToStandard, MyIcon, OkButton } from '@lm_fe/components_m';
-import { IMchc_Doctor_Diagnoses, IMchc_Doctor_OutpatientHeaderInfo } from '@lm_fe/service';
+import { IMchc_Doctor_Diagnoses, IMchc_Doctor_OutpatientHeaderInfo, SMchc_Doctor } from '@lm_fe/service';
 import { request } from '@lm_fe/utils';
 import { Input, Popconfirm, Popover } from 'antd';
 import classnames from 'classnames';
@@ -93,7 +93,7 @@ export default function DiagnosesItem({
       const newList = cloneDeep(diagnosesList);
       set(newList, `[${i}].highrisk`, newList[i].highrisk ? false : true);
       const postData = newList[i];
-      await requestMethods_further.newAddDiagnosis(postData);
+      await SMchc_Doctor.new_Diagnosis(postData);
       setDiagnosesList(newList);
       changeHeaderInfo();
     };
