@@ -41,6 +41,9 @@ export default defineFormConfig(
             inputProps: { disabled: true },
             layout: '1/3',
             width,
+            render(name, rowData, index) {
+                return <ctx.ui.Button size='small' onClick={() => ctx.safeTo(`/prenatal-visit/pregnancy/doctor-end?id=` + rowData.pregnancyId)}>{name}</ctx.ui.Button>
+            },
         },
         {
             title: '证件号码',
@@ -131,6 +134,8 @@ export default defineFormConfig(
             inputProps: { options: '阴性,阳性' },
             dataIndex: 'result',
         },
+
+
 
     ]
 )

@@ -8,10 +8,15 @@ import React, { useEffect } from 'react';
 
 export default function List(props: {}) {
 
-  const { Wrap, config } = BF_Wrap2({
-    default_conf: {
+
+
+
+  return <MyBaseList
+    table_preset={{
       title: 'B族链球菌-列表',
       tableColumns: () => import('./form_config'),
+      showRowPrintBtn: 1,
+      showPrint: 1,
       name: '/api/gbsResult',
       searchParams: {},
       searchConfig: [
@@ -34,42 +39,25 @@ export default function List(props: {}) {
           inputType: 'rangeDate',
         },
       ]
-    }
-  })
-  useEffect(() => {
-    const rm = mchcEvent.on_rm('custom_msg', e => {
-      const rowData = e.data
+    }}
 
-    })
+  // initialSearchValue={{}}
 
-    return rm
-  }, [])
-
-
-  return <Wrap>
-    <MyBaseList
-      bf_conf={config}
-
-      useListSourceCount
-      // initialSearchValue={{}}
-      showRowPrintBtn
-      showPrint
-      ActionAddonBefore={(ctx) => {
-        const rowData = ctx.rowData
-        const pregnancyId = rowData.pregnancyId
-        const id = rowData.id
-        // return <OkButton size='small' onClick={() => {
-        //   mchcModal__.open('print_modal', {
-        //     modal_data: {
-        //       requestConfig: { method: 'get', url: '/api/gbsResult/print', params: { id: rowData.id } }
-        //     }
-        //   })
-        // }}  >打印</OkButton>
-        return <OkButton size='small' onClick={() => SLocal_History.historyPush(`/prenatal-visit/pregnancy/doctor-end?id=${pregnancyId}`)} >看诊</OkButton>
-      }}
-      // tableColumns={__DEV__ ? () => import('./form_config') : config?.tableColumns}
-    />
-  </Wrap >
+  // ActionAddonBefore={(ctx) => {
+  //   const rowData = ctx.rowData
+  //   const pregnancyId = rowData.pregnancyId
+  //   const id = rowData.id
+  //   // return <OkButton size='small' onClick={() => {
+  //   //   mchcModal__.open('print_modal', {
+  //   //     modal_data: {
+  //   //       requestConfig: { method: 'get', url: '/api/gbsResult/print', params: { id: rowData.id } }
+  //   //     }
+  //   //   })
+  //   // }}  >打印</OkButton>
+  //   return <OkButton size='small' onClick={() => SLocal_History.historyPush(`/prenatal-visit/pregnancy/doctor-end?id=${pregnancyId}`)} >看诊</OkButton>
+  // }}
+  // tableColumns={__DEV__ ? () => import('./form_config') : config?.tableColumns}
+  />
 }
 
 
