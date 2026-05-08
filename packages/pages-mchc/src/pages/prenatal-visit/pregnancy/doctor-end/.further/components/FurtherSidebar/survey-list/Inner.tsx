@@ -46,8 +46,14 @@ function SurverList(props: IProps) {
 
 
   async function handleBtnClick() {
-    forms[0].submit()
-    forms[1].submit()
+    if (activeKey === '检验检查') {
+
+      forms[0].submit()
+    }
+    if (activeKey === '超声检查') {
+      forms[1].submit()
+
+    }
 
 
   };
@@ -93,7 +99,7 @@ function SurverList(props: IProps) {
             furtherRefresh();
           }}
           form={forms[1]} pid={headerInfo?.id} />
- 
+
       </Tabs.TabPane>
 
       <Tabs.TabPane className="check-items-wrapper" tab="孕期必查项目" key="孕期必查项目">
