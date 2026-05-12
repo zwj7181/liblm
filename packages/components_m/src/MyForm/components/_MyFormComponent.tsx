@@ -32,10 +32,8 @@ const NormalButton = lazy(() => import('./business/NormalButton'))
 const TextareaWithBtn = lazy(() => import('./business/TextareaWithBtn'))
 const MyAutoCompleteOld = lazy(() => import('./MyAutoComplete'))
 const MyCascader = lazy(() => import('./MyCascader'))
-const ArrayCustom = lazy(() => import('./MyCustom/ArrayCustom'))
-const ArrayCustomTab = lazy(() => import('./MyCustom/ArrayCustomTab'))
 // const MyDateTime = lazy(() => import('./MyDateTime'))
-const MyInputWithRed = lazy(() => import('./MyInputWithRed'))
+// const MyInputWithRed = lazy(() => import('./MyInputWithRed'))
 // const MySelect = lazy(() => import('./MySelect'))
 // const MyTable = lazy(() => import('./MyTable'))
 const SingleCheckbox = lazy(() => import('./SingleCheckbox'))
@@ -69,8 +67,6 @@ const MyComponent = {
   textareaWithBtn: TextareaWithBtn,
   textareaWithTemplate: TextareaWithTemplate,
   custom: MyCustom,
-  'array-custom': ArrayCustom,
-  'array-custom-tab': ArrayCustomTab,
   // 业务类组件
   addressCascader: AddressCascader,
   bloodPressureInput: BloodPressureInput,
@@ -88,7 +84,7 @@ const MyComponent = {
   fundalHeightInput: FundalHeightInput,
   prenatalReturnTable: PrenatalReturnTable,
   input_with_label: GeneralComponents_InputWithLabel,
-  my_input_with_red: MyInputWithRed,
+  // my_input_with_red: MyInputWithRed,
 
   // 'blood-and-thalassemia': BloodAndThalassemia,
   // 'blood-flows': BloodFlows,
