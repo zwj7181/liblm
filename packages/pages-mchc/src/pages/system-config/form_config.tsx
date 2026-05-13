@@ -278,7 +278,7 @@ export default defineFormConfig(
                     containerType: 'segs',
                     children: [
                         {
-                            label: '模块隐藏(可以手输拓展)',
+                            label: '模块隐藏(可以手输)',
                             name: '医生端_模块隐藏',
                             inputType: 'MS',
                             inputProps: {
@@ -456,7 +456,7 @@ export default defineFormConfig(
 
                     children: [
                         {
-                            label: '模块隐藏(可以手输拓展)',
+                            label: '模块隐藏(可以手输)',
                             name: '护士端_模块隐藏',
                             inputType: 'MS',
                             inputProps: {
@@ -582,7 +582,18 @@ export default defineFormConfig(
             label: '产科住院配置',
             children: [
                 {
-                    label: '护理文书隐藏表单(可以手输拓展)',
+                    label: '模块隐藏(可以手输)',
+                    name: '住院_模块隐藏',
+                    inputType: 'MS',
+                    inputProps: {
+                        marshal: 3,
+                        type: 'tags',
+                        options: getSameOptions('知情同意书,分娩登记本'),
+                    },
+                    layout: '2/3',
+                },
+                {
+                    label: '护理文书隐藏表单(可以手输)',
                     name: 'nurseHide',
                     inputType: 'MS',
                     inputProps: {
@@ -593,7 +604,7 @@ export default defineFormConfig(
                     layout: '1/1',
                 },
                 {
-                    label: '病历文书隐藏表单(可以手输拓展)',
+                    label: '病历文书隐藏表单(可以手输)',
                     name: 'medicalHide',
                     inputType: 'MS',
                     inputProps: {

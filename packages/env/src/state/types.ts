@@ -39,6 +39,7 @@ export type ISystemConfig = Partial<{
     高危管理_允许手输高危: boolean
     护士端_审核禁用保存: boolean
     医生端_模块隐藏: string[] // the old version is string[]
+    住院_模块隐藏: string[] // the old version is string[]
     护士端_模块隐藏: string[] // the old version is string[]
     doctorOpenWebsocket: boolean
     VTE预防用药筛查表: string
