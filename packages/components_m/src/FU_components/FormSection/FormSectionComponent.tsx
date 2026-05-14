@@ -144,6 +144,7 @@ import CascaderAddress from '../../selects/CascaderAddress';
 
 import TextareaWithBtn from '../../MyForm/components/business/TextareaWithBtn';
 import { LoadFlag } from '../LoadFlag';
+import { MultiTemplate } from '../MultiTemplate';
 
 
 export const FormSectionComponent = {
@@ -271,7 +272,7 @@ export const FormSectionComponent = {
     ParentPermissionSelect,
     PatientAutoComplete,
     patient_auto_complete: PatientAutoComplete,
-
+    MultiTemplate,
     PermissionTypeSelect,
     RadioWithInput,
     RadioWithInputNumber,
