@@ -39,14 +39,18 @@ export default function FurtherTable(props: IProps) {
 		{ delete: () => { console.log('233') } } // 传递进来的方法
 	)
 
-	useEffect(() => {
+	const { config: tableConfig, Wrap: TableWrap } = BF_Wrap2(
+		{ default_conf: { title: '复诊-产检记录表格文档', tableColumns: () => import('./tableConfig') } },
+	)
 
+	useEffect(() => {
 
 
 	}, [])
 
 	const filtered_rvisits = (visitsData?.rvisits ?? []).filter(_ => _.id)
 	const tableColumns = expect_array<IMchc_FormDescriptions_Field>(config?.tableColumns)
+	const tableContentColumns = expect_array<IMchc_FormDescriptions_Field>(tableConfig?.tableColumns)
 
 	const form_config = filter_fds(diagnosesList, config?.tableColumns)
 	const actionRender = (value: any, rowData: any, index: number) => {
@@ -91,84 +95,25 @@ export default function FurtherTable(props: IProps) {
 	};
 
 	const reverseRvisit = cloneDeep(filtered_rvisits)?.reverse() || []
-	const renderTaleContent = () => {
+	const renderTableMore = () => {
 		return (
 			<Tabs className={styles['further-table-modal']}>
 				<Tabs.TabPane key={1} tab={<><MyIcon value='FileTextOutlined' />文档</>}>
-					{reverseRvisit.map(data => {
-						return (
-							<Row className={styles['further-table-row']}>
-								<Col span={2}>
-									<span>{data.visitDate}</span>
-									<span style={{ marginLeft: 8 }}>{data.gestationalWeek}周</span>
-								</Col>
-								<Col span={18}>
-									<div><span className={styles['content-label']}>主诉:</span>{data.physicalExam.chiefComplaint}</div>
-									<div><span className={styles['content-label']}>现病史:</span>{data.physicalExam.phi}</div>
-									<div>
-										{data.physicalExam.systolic &&
-											<>
-												<span className={styles['content-label']}>血压:</span>
-												{data.physicalExam.systolic}/{data.physicalExam.diastolic} mmhg
-											</>
-										}
-										{data.physicalExam.pulse &&
-											<>
-												<span className={styles['content-label']}>脉搏:</span>
-												{data.physicalExam.pulse} bpm
-											</>
-										}
-										{data.physicalExam.weight &&
-											<>
-												<span className={styles['content-label']}>体重:</span>
-												{data.physicalExam.weight} kg
-												{data.physicalExam.weightGain && <>(增长{data.physicalExam.weightGain}kg)</>}
-											</>
-										}
-										{data.physicalExam.fundalHeight &&
-											<>
-												<span className={styles['content-label']}>宫高:</span>
-												{data.physicalExam.fundalHeight}
-											</>
-										}
-										{data.physicalExam.waistHip &&
-											<>
-												<span className={styles['content-label']}>腹围:</span>
-												{data.physicalExam.waistHip}
-											</>
-										}
-										{data.physicalExam.engagement &&
-											<>
-												<span className={styles['content-label']}>衔接:</span>
-												{data.physicalExam.engagement}
-											</>
-										}
-										{data.physicalExam.edema &&
-											<>
-												<span className={styles['content-label']}>浮肿:</span>
-												{data.physicalExam.edema}
-											</>
-										}
-									</div>
-									{data.fetuses?.map(fetuse => {
-										return (
-											<div>
-												{fetuse.fetalHeartRate && <><span className={styles['content-label']}>胎心率:</span>{fetuse.fetalHeartRate}</>}
-												{fetuse.fetalMovement && <><span className={styles['content-label']}>胎动:</span>{fetuse.fetalMovement}</>}
-												{fetuse.fetalPosition && <><span className={styles['content-label']}>胎方位:</span>{fetuse.fetalPosition}</>}
-												{fetuse.presentation && <><span className={styles['content-label']}>先露:</span>{fetuse.presentation}</>}
-											</div>
-										)
-									})}
-									<div><span className={styles['content-label']}>检验检查:</span>{data.physicalExam.inspection}</div>
-									<div>
-										<span className={styles['content-label']}>处理措施:</span>{data.physicalExam.prescription}
-										<span className={styles['content-label']}>下次产检时间:</span>{data.appointmentDate}
-									</div>
-								</Col>
-							</Row>
-						)
-					})}
+					<TableWrap>
+						{reverseRvisit.map((data: IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit) => {
+							return (
+								<Row className={styles['further-table-row']}>
+									<Col span={2}>
+										<span>{data.visitDate}</span>
+										<span style={{ marginLeft: 8 }}>{data.gestationalWeek}周</span>
+									</Col>
+									<Col span={18}>
+										{renderContent(data)}
+									</Col>
+								</Row>
+							)
+						})}
+					</TableWrap>
 				</Tabs.TabPane>
 				<Tabs.TabPane key={2} tab={<><MyIcon value='TableOutlined' />表格</>}>
 					{renderTable(true)}
@@ -177,7 +122,42 @@ export default function FurtherTable(props: IProps) {
 		)
 	}
 
+	const renderContent = (data: any) => {
+		const configformArrayList: any[] = [];
+		let Columnsarr = [];
+		for (let i = 0; i < tableContentColumns.length; i++) {
+			Columnsarr.push(tableContentColumns[i]);
+			if (tableContentColumns[i + 1] && tableContentColumns[i + 1].isNewRow) {
+				configformArrayList.push(Columnsarr);
+				Columnsarr = []
+			} else if (i == tableContentColumns.length - 1) {
+				// 去到最后一步
+				configformArrayList.push(Columnsarr);
+			}
+		}
 
+		const contentArr: any = []
+		configformArrayList.map((ArrayList, index) => {
+			contentArr.push(
+				<div key={index}>
+					{ArrayList.map((config: any) => {
+						const value = get(data, config.dataIndex)
+						let text = config.render ? config.render(value, data) : value;
+						if (!text) {
+							return <></>
+						}
+						return (
+							<>
+								<span className={styles['content-label']}>{config.title}:</span>
+								{text}
+							</>
+						)
+					})}
+				</div>
+			)
+		})
+		return contentArr
+	}
 	const renderTable = (isAll = false) => {
 		return <Wrap>
 			<Table_L
@@ -196,7 +176,7 @@ export default function FurtherTable(props: IProps) {
 								<OkButton type="text" size="small" onClick={handlePrint} >
 									打印
 								</OkButton>
-								<OkButton type='text' size="small" onClick={() => mchcModal__.open('modal_page', { modal_data: { content: renderTaleContent() } })}>
+								<OkButton type='text' size="small" onClick={() => mchcModal__.open('modal_page', { modal_data: { content: renderTableMore() } })}>
 									更多...
 								</OkButton>
 							</Space>
