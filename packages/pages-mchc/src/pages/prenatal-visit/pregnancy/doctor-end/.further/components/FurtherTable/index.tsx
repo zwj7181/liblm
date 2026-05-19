@@ -4,152 +4,260 @@ import { mchcUtils } from '@lm_fe/env';
 import { BF_Wrap2, mchcModal__ } from '@lm_fe/pages';
 import { use_provoke } from '@lm_fe/provoke';
 import { IMchc_Doctor_Diagnoses, IMchc_Doctor_OutpatientHeaderInfo, IMchc_Doctor_RvisitInfoOfOutpatient, IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit, IMchc_FormDescriptions_Field } from '@lm_fe/service';
-import { expect_array, identity } from '@lm_fe/utils';
-import { Space } from 'antd';
+import { cloneDeep, expect_array, get, identity, map, request, set } from '@lm_fe/utils';
+import { Button, Col, message, Modal, Popconfirm, Row, Space, Tabs } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { filter_diagnoses } from '../../../.utils';
 import styles from './index.module.less';
 import { filter_fds } from '../../utils';
 interface IProps {
-    diagnosesList: IMchc_Doctor_Diagnoses[]
-    visitsData?: IMchc_Doctor_RvisitInfoOfOutpatient,
-    headerInfo: IMchc_Doctor_OutpatientHeaderInfo,
-    setDiagnosesList?(list: IMchc_Doctor_Diagnoses[]): void
-    setFormData(v: Partial<IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit>): void
-    toggle_fuck(): void
-    fuck: boolean
-    formData?: Partial<IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit>,
-    furtherRefresh(): void
+	diagnosesList: IMchc_Doctor_Diagnoses[]
+	visitsData?: IMchc_Doctor_RvisitInfoOfOutpatient,
+	headerInfo: IMchc_Doctor_OutpatientHeaderInfo,
+	setDiagnosesList?(list: IMchc_Doctor_Diagnoses[]): void
+	setFormData(v: Partial<IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit>): void
+	toggle_fuck(): void
+	fuck: boolean
+	formData?: Partial<IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit>,
+	furtherRefresh(): void
 }
 
 export default function FurtherTable(props: IProps) {
-    const sys_theme = use_provoke(s => s.sys_theme)
-    const { setFormData, setDiagnosesList, visitsData, furtherRefresh, formData, toggle_fuck, fuck, diagnosesList } = props;
+	const sys_theme = use_provoke(s => s.sys_theme)
+	const { setFormData, setDiagnosesList, visitsData, furtherRefresh, formData, toggle_fuck, fuck, diagnosesList } = props;
 
-    const preg_id = mchcUtils.single_id(visitsData);
-
-
-
-    const [selectKeys, set_selectKeys] = useState<any[]>([])
-    const [selectRows, set_selectRows] = useState<any[]>([])
-
-    const printTableRef = useRef<HTMLDivElement>(null)
-    const { config, Wrap } = BF_Wrap2({ default_conf: { title: '复诊-产检记录表格', tableColumns: () => import('./config') } })
-
-    useEffect(() => {
+	const preg_id = mchcUtils.single_id(visitsData);
 
 
 
-    }, [])
+	const [selectKeys, set_selectKeys] = useState<any[]>([])
+	const [selectRows, set_selectRows] = useState<any[]>([])
 
-    const filtered_rvisits = (visitsData?.rvisits ?? []).filter(_ => _.id)
-    const tableColumns = expect_array<IMchc_FormDescriptions_Field>(config?.tableColumns)
+	const printTableRef = useRef<HTMLDivElement>(null)
+	const { config, Wrap } = BF_Wrap2(
+		{ default_conf: { title: '复诊-产检记录表格', tableColumns: () => import('./config') } },
+		{ delete: () => { console.log('233') } } // 传递进来的方法
+	)
 
-    const form_config = filter_fds(diagnosesList, config?.tableColumns)
-
-
-
-
-
-    async function handlePrint() {
-
-        mchcModal__.open('print_modal', {
-            modal_data: {
-                requestData: {
-                    url: '/api/pdf-preview',
-                    id: preg_id,
-                    resource: 'prenatalRVisit'
-                }
-            }
-        })
-    };
+	useEffect(() => {
 
 
 
+	}, [])
+
+	const filtered_rvisits = (visitsData?.rvisits ?? []).filter(_ => _.id)
+	const tableColumns = expect_array<IMchc_FormDescriptions_Field>(config?.tableColumns)
+
+	const form_config = filter_fds(diagnosesList, config?.tableColumns)
+	const actionRender = (value: any, rowData: any, index: number) => {
+		return (
+			<>
+				<Popconfirm
+					title={`确定要删除这个病历吗?`}
+					onConfirm={() => handleDelete(rowData)}
+					okText="确定"
+					cancelText="取消"
+				>
+					<Button type="link" size="small" danger icon={<MyIcon value='DeleteOutlined' className="global-table-action-icon" />}>
+						删除
+					</Button>
+				</Popconfirm>
+			</>
+		);
+	}
+	const handleDelete = async (rowData: any) => {
+		await request.delete(`/api/prenatal-visits/${get(rowData, 'id')}`);
+		message.success(`删除成功`);
+		props.furtherRefresh()
+	}
+
+	for (let i = 0; i < form_config.length; i++) {
+		if (form_config[i].dataIndex == 'action' || form_config[i].title == '操作') {
+			form_config[i].render = actionRender
+			break;
+		}
+	}
+	async function handlePrint() {
+
+		mchcModal__.open('print_modal', {
+			modal_data: {
+				requestData: {
+					url: '/api/pdf-preview',
+					id: preg_id,
+					resource: 'prenatalRVisit'
+				}
+			}
+		})
+	};
+
+	const reverseRvisit = cloneDeep(filtered_rvisits)?.reverse() || []
+	const renderTaleContent = () => {
+		return (
+			<Tabs className={styles['further-table-modal']}>
+				<Tabs.TabPane key={1} tab={<><MyIcon value='FileTextOutlined' />文档</>}>
+					{reverseRvisit.map(data => {
+						return (
+							<Row className={styles['further-table-row']}>
+								<Col span={2}>
+									<span>{data.visitDate}</span>
+									<span style={{ marginLeft: 8 }}>{data.gestationalWeek}周</span>
+								</Col>
+								<Col span={18}>
+									<div><span className={styles['content-label']}>主诉:</span>{data.physicalExam.chiefComplaint}</div>
+									<div><span className={styles['content-label']}>现病史:</span>{data.physicalExam.phi}</div>
+									<div>
+										{data.physicalExam.systolic &&
+											<>
+												<span className={styles['content-label']}>血压:</span>
+												{data.physicalExam.systolic}/{data.physicalExam.diastolic} mmhg
+											</>
+										}
+										{data.physicalExam.pulse &&
+											<>
+												<span className={styles['content-label']}>脉搏:</span>
+												{data.physicalExam.pulse} bpm
+											</>
+										}
+										{data.physicalExam.weight &&
+											<>
+												<span className={styles['content-label']}>体重:</span>
+												{data.physicalExam.weight} kg
+												{data.physicalExam.weightGain && <>(增长{data.physicalExam.weightGain}kg)</>}
+											</>
+										}
+										{data.physicalExam.fundalHeight &&
+											<>
+												<span className={styles['content-label']}>宫高:</span>
+												{data.physicalExam.fundalHeight}
+											</>
+										}
+										{data.physicalExam.waistHip &&
+											<>
+												<span className={styles['content-label']}>腹围:</span>
+												{data.physicalExam.waistHip}
+											</>
+										}
+										{data.physicalExam.engagement &&
+											<>
+												<span className={styles['content-label']}>衔接:</span>
+												{data.physicalExam.engagement}
+											</>
+										}
+										{data.physicalExam.edema &&
+											<>
+												<span className={styles['content-label']}>浮肿:</span>
+												{data.physicalExam.edema}
+											</>
+										}
+									</div>
+									{data.fetuses?.map(fetuse => {
+										return (
+											<div>
+												{fetuse.fetalHeartRate && <><span className={styles['content-label']}>胎心率:</span>{fetuse.fetalHeartRate}</>}
+												{fetuse.fetalMovement && <><span className={styles['content-label']}>胎动:</span>{fetuse.fetalMovement}</>}
+												{fetuse.fetalPosition && <><span className={styles['content-label']}>胎方位:</span>{fetuse.fetalPosition}</>}
+												{fetuse.presentation && <><span className={styles['content-label']}>先露:</span>{fetuse.presentation}</>}
+											</div>
+										)
+									})}
+									<div><span className={styles['content-label']}>检验检查:</span>{data.physicalExam.inspection}</div>
+									<div>
+										<span className={styles['content-label']}>处理措施:</span>{data.physicalExam.prescription}
+										<span className={styles['content-label']}>下次产检时间:</span>{data.appointmentDate}
+									</div>
+								</Col>
+							</Row>
+						)
+					})}
+				</Tabs.TabPane>
+				<Tabs.TabPane key={2} tab={<><MyIcon value='TableOutlined' />表格</>}>
+					{renderTable(true)}
+				</Tabs.TabPane>
+			</Tabs>
+		)
+	}
 
 
+	const renderTable = (isAll = false) => {
+		return <Wrap>
+			<Table_L
+				bordered
+				title={
+					isAll ? undefined : () => (
+						<div className={styles['btn-wrap']}>
+							<Space>
+								<OkButton onClick={toggle_fuck} shape='circle' type='text' icon={fuck ? <MyIcon value='RightOutlined' /> : <MyIcon value='LeftOutlined' />} />
+								<span>共 {filtered_rvisits.length} 条记录</span>
+							</Space>
+							<Space>
+								<OkButton type="text" size="small" onClick={furtherRefresh} >
+									刷新
+								</OkButton>
+								<OkButton type="text" size="small" onClick={handlePrint} >
+									打印
+								</OkButton>
+								<OkButton type='text' size="small" onClick={() => mchcModal__.open('modal_page', { modal_data: { content: renderTaleContent() } })}>
+									更多...
+								</OkButton>
+							</Space>
+						</div>
+					)
+				}
+				scroll={isAll ? undefined : { y: 160 }}
+				pagination={false}
+				size={isAll ? 'large' : 'small'}
+				// rowSelection={{
+				//     selectedRowKeys: selectKeys,
+				//     onChange(keys, rows) {
+				//         mchcLogger.log({ keys, rows })
+				//         set_selectKeys(keys)
+				//         set_selectRows(rows)
+				//     }
+				// }}
+
+				onRow={(record) => {
+					const is_target = record.id === formData?.id
+					const background = is_target ? sys_theme.colors?.light[3] : undefined
+					const cursor = is_target ? undefined : 'pointer'
+					const color = is_target ? '#fff' : undefined
+					return {
+						style: { background, cursor, color },
+						onClick(event) {
+							set_selectKeys([record.id])
+							set_selectRows([record])
+
+						},
+						onDoubleClick() {
+							setFormData(record);
+							mchcModal__.pop()
+							const __diagnoses = filter_diagnoses(visitsData?.diagnoses)
 
 
-    const renderTable = (isAll = false) => {
-        return <Wrap>
-            <Table_L
-                bordered
-                title={
-                    isAll ? undefined : () => (
-                        <div className={styles['btn-wrap']}>
-                            <Space>
-                                <OkButton onClick={toggle_fuck} shape='circle' type='text' icon={fuck ? <MyIcon value='RightOutlined' /> : <MyIcon value='LeftOutlined' />} />
-                                <span>共 {filtered_rvisits.length} 条记录</span>
-                            </Space>
-                            <Space>
-                                <OkButton type="text" size="small" onClick={furtherRefresh} >
-                                    刷新
-                                </OkButton>
-                                <OkButton type="text" size="small" onClick={handlePrint} >
-                                    打印
-                                </OkButton>
-                                <OkButton type='text' size="small" onClick={() => mchcModal__.open('modal_page', { modal_data: { content: renderTable(true) } })}>
-                                    更多...
-                                </OkButton>
-                            </Space>
-                        </div>
-                    )
-                }
-                scroll={isAll ? undefined : { y: 160 }}
-                pagination={false}
-                size={isAll ? 'large' : 'small'}
-                // rowSelection={{
-                //     selectedRowKeys: selectKeys,
-                //     onChange(keys, rows) {
-                //         mchcLogger.log({ keys, rows })
-                //         set_selectKeys(keys)
-                //         set_selectRows(rows)
-                //     }
-                // }}
+							setDiagnosesList?.(__diagnoses);
+						},
 
-                onRow={(record) => {
-                    const is_target = record.id === formData?.id
-                    const background = is_target ? sys_theme.colors?.light[3] : undefined
-                    const cursor = is_target ? undefined : 'pointer'
-                    const color = is_target ? '#fff' : undefined
-                    return {
-                        style: { background, cursor, color },
-                        onClick(event) {
-                            set_selectKeys([record.id])
-                            set_selectRows([record])
+					};
+				}}
+				// rowClassName={r => {
+				//     return r.id === formData?.id ? styles['selected-row'] : ''
+				// }}
+				rowHoverable={false}
+				rowKey={'id'}
+				dataSource={isAll ? filtered_rvisits : filtered_rvisits.slice(0, 5)}
+				columns={form_config}
+			/>
+		</Wrap>
 
-                        },
-                        onDoubleClick() {
-                            setFormData(record);
-                            mchcModal__.pop()
-                            const __diagnoses = filter_diagnoses(visitsData?.diagnoses)
+	}
+	return (
+		<div style={{ marginBottom: 8 }} className={styles['FurtherTable']}>
+			<MyLazyComponent size='middle'>
+
+				{renderTable()}
 
 
-                            setDiagnosesList?.(__diagnoses);
-                        },
+			</MyLazyComponent>
 
-                    };
-                }}
-                // rowClassName={r => {
-                //     return r.id === formData?.id ? styles['selected-row'] : ''
-                // }}
-                rowHoverable={false}
-                rowKey={'id'}
-                dataSource={isAll ? filtered_rvisits : filtered_rvisits.slice(0, 5)}
-                columns={form_config}
-            />
-        </Wrap>
-
-    }
-    return (
-        <div style={{ marginBottom: 8 }} className={styles['FurtherTable']}>
-            <MyLazyComponent size='middle'>
-
-                {renderTable()}
-
-
-            </MyLazyComponent>
-
-        </div>
-    );
+		</div>
+	);
 }
