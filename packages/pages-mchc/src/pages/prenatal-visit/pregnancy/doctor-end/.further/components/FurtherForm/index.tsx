@@ -174,6 +174,13 @@ function FurtherForm(props: IProps) {
             })
     }
     async function on_submit() {
+        if (mchcEnv.is('扬州妇幼')) {
+            const yes = window.confirm('温馨提醒：是否需要更新高危评估？')
+            if (yes) {
+                mchcEnv.success('请点击高危色卡，更新高危评估后再重新保存！')
+                return
+            }
+        }
         const data = await get_form_data()
         if (!data) return
         if (before_submit) {
