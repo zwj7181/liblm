@@ -400,7 +400,7 @@ export default function HighRiskWarn({
       }
       const olddata = diagnoses[item.id];
       if (!olddata) {
-        const res = await SMchc_TemplateTrees.getDiagnosesTemplate(item.data.key);
+        const res = await SMchc_TemplateTrees.get_diagnoses_template(item.data.key);
         const obj = {
           [item.id]: res,
         };

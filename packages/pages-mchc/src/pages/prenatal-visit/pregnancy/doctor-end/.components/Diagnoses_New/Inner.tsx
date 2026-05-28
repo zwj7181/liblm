@@ -38,7 +38,10 @@ function Diagnoses(props: IDiagnosesprops) {
   }, [])
 
 
-
+  const filter_diagnoses_list = diagnosesList.filter(_ => {
+    if (!_.prenatalVisitId || !pv_id_for_diagnose) return true
+    return _.prenatalVisitId === pv_id_for_diagnose
+  })
 
   async function changeHeaderInfo() {
     const res = await request.get('/api/doctor/getOutpatientHeaderInfo?id=' + get(headerInfo, `id`));
@@ -47,10 +50,10 @@ function Diagnoses(props: IDiagnosesprops) {
 
 
 
-  const del_diagnose_item = async (item: any, i: number) => {
-    const newList = [...diagnosesList];
-    const delArr = newList.splice(i, 1);
-    await SMchc_Doctor.del_diagnosis(delArr[0]);
+  const del_diagnose_item = async (item: IMchc_Doctor_Diagnoses,) => {
+    const newList = diagnosesList.filter(_ => _.id !== item.id)
+
+    await SMchc_Doctor.del_diagnosis(item);
     mchcEnv.success('删除成功！');
     setDiagnosesList(newList);
     changeHeaderInfo();
@@ -76,18 +79,20 @@ function Diagnoses(props: IDiagnosesprops) {
       diagnosisObj.serialNo = serialNo
     }
     const diag = get(diagnosisObj, 'diagnosis');
-    if (diagnosesList.filter((item: any) => item.diagnosis === diag).length === 0) {
+    if (diagnosesList.find(item => item.diagnosis === diag)) {
+      message.warning('添加诊断重复！');
+
+    } else {
+
       /**判断是否打开VTE */
       const res = await SMchc_Doctor.new_Diagnosis(diagnosisObj);
       mchcEnv.success('添加成功！');
       const data = res || diagnosisObj;
       setDiagnosesList([...diagnosesList, data]);
       changeHeaderInfo();
-      if (diag.indexOf('梅毒') > -1) {
-        mchcEvent.emit('outpatient', { type: '弹窗', modal_name: '梅毒管理', })
-      }
-    } else {
-      message.warning('添加诊断重复！');
+      // if (diag.indexOf('梅毒') > -1) {
+      //   mchcEvent.emit('outpatient', { type: '弹窗', modal_name: '梅毒管理', })
+      // }
     }
   };
 
@@ -134,6 +139,7 @@ function Diagnoses(props: IDiagnosesprops) {
           <OkButton
             disabled={!pv_id_for_diagnose}
             type='dashed'
+            title='请先保存产检信息'
             // className="diag-btn"
             // icon={<SettingOutlined />} 
             onClick={handleBtnClick}>
@@ -154,12 +160,8 @@ function Diagnoses(props: IDiagnosesprops) {
           诊断管理按钮()
         }
         <DiagnosesWeek first={page !== 'return'} headerInfo={headerInfo} />
-        {diagnosesList?.length
-          ? diagnosesList
-            .filter(_ => {
-              if (!_.prenatalVisitId) return true
-              return _.prenatalVisitId === pv_id_for_diagnose
-            })
+        {filter_diagnoses_list?.length
+          ? filter_diagnoses_list
             .map((item: IMchc_Doctor_Diagnoses, index: any) => {
               return (
                 <DiagnosesItem
@@ -192,7 +194,9 @@ function Diagnoses(props: IDiagnosesprops) {
           closeTemplate={closeTemplate}
           add_diag_inner={add_diag}
           headerInfo={headerInfo}
+          pv_id_for_diagnose={pv_id_for_diagnose}
           diagnosesList={diagnosesList}
+          filter_diagnoses_list={filter_diagnoses_list}
           setDiagnosesList={setDiagnosesList}
           saveHeaderInfo={saveHeaderInfo}
 

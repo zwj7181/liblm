@@ -16,7 +16,7 @@ export default class Index extends Component {
   }
 
   getDiagnosesTemplate = async (value: string) => {
-    const res = await SMchc_TemplateTrees.getDiagnosesTemplate(value);
+    const res = await SMchc_TemplateTrees.get_diagnoses_template(value);
     this.setState({ allDiagnosesTemplate: res });
   };
 

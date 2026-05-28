@@ -1,6 +1,6 @@
 
 import { formatTimeToStandard, MyIcon } from '@lm_fe/components_m';
-import { SMchc_Doctor } from '@lm_fe/service';
+import { IMchc_Doctor_Diagnoses, SMchc_Doctor } from '@lm_fe/service';
 import { request } from '@lm_fe/utils';
 import { Button, Divider, Input, Popover } from 'antd';
 import classnames from 'classnames';
@@ -10,7 +10,6 @@ import requestMethods_further from '../../../.further/methods/request';
 import './index.less';
 import { IDiagnosesItem_Props } from './types';
 export default function DiagnosesItem({
-  updateNote,
   do_del_diagnose_item,
   diagnose,
   index,
@@ -39,12 +38,17 @@ export default function DiagnosesItem({
     if (!confirm) {
       return;
     }
-    do_del_diagnose_item?.(diagnose, index);
+    do_del_diagnose_item?.(diagnose);
   }
-  function inputBlur(key: string) {
-    return () => {
-      updateNote && updateNote(key == 'note' ? note : preNote, index, key);
-    };
+
+  function updateNote_inner<T extends keyof IMchc_Doctor_Diagnoses>(key: T, value: IMchc_Doctor_Diagnoses[T],) {
+
+    const newList = cloneDeep(diagnosesList);
+    const target = newList.find(_ => _.id === diagnose.id);
+    if (!target) return
+    target[key] = value;
+    setDiagnosesList(newList);
+    SMchc_Doctor.new_Diagnosis(target);
   }
   const getTitle = useMemo(() => {
     const createdDate = diagnose.createdDate ? `诊断时间: ${formatTimeToStandard(diagnose.createdDate)}\n` : '';
@@ -156,7 +160,7 @@ export default function DiagnosesItem({
               <Input
                 placeholder="请输入前备注"
                 onChange={inputChange2}
-                onBlur={inputBlur('preNote')}
+                onBlur={() => updateNote_inner('preNote', preNote)}
                 className="my-input pre-input"
                 value={preNote}
               ></Input>
@@ -188,7 +192,7 @@ export default function DiagnosesItem({
               <Input
                 placeholder="请输入后备注"
                 onChange={inputChange3}
-                onBlur={inputBlur('note')}
+                onBlur={() => updateNote_inner('note', note)}
                 className="my-input"
                 value={note}
               ></Input>

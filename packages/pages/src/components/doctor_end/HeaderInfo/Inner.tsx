@@ -249,7 +249,9 @@ export default function HeaderInfoInner(props: IHeaderInfoProps) {
                                         <span
                                             key={_.key}
                                             onClick={() => {
-                                                if (_.type === '梅' || _.type === '传染病') {
+                                                if (_.type === '梅'
+                                                    // || _.type === '传染病'
+                                                ) {
                                                     open梅毒管理()
                                                 }
                                                 if (_.type === '乙') {

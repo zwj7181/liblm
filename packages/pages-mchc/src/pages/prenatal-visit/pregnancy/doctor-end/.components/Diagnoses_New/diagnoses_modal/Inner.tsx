@@ -1,12 +1,11 @@
-import { formatTimeToStandard, HighRiskGradeSelect, MyIcon } from '@lm_fe/components_m';
+import { HighRiskGradeSelect, MyIcon } from '@lm_fe/components_m';
 import { mchcEnv } from '@lm_fe/env';
-import { IMchc_Doctor_Diagnoses, SLocal_State, SMchc_Doctor } from '@lm_fe/service';
-import { request } from '@lm_fe/utils';
+import { IMchc_Doctor_Diagnoses, IMchc_TemplateTree_Item, SLocal_State, SMchc_TemplateTrees } from '@lm_fe/service';
+import { get, isString, max, request } from '@lm_fe/utils';
 import { Button, Col, Input, Modal, Row, Space, Spin, Tabs } from 'antd';
-import { cloneDeep, filter, find, findIndex, get, isString, map, set, size, throttle } from 'lodash';
+import { set, size, throttle } from 'lodash';
 import React, { CSSProperties, useEffect, useRef, useState } from 'react';
 import { api } from '../../../.api';
-import requestMethods_further from '../../../.further/methods/request';
 import DoctorEnd_TemplateTree from '../../TemplateTree';
 import DiagnosesItem from '../diagnoses-item/diagnoses-item';
 import DiagnosesWeek from '../diagnoses-week/diagnoses-week';
@@ -18,18 +17,19 @@ function DiagnosesTemplateOld(props: IDiagnosesTemplate) {
     isShowDiagnosesTemplate,
     del_diagnose_item_inner,
     diagnosesList,
+    filter_diagnoses_list,
     headerInfo,
     saveHeaderInfo,
     setDiagnosesList,
     closeTemplate,
     add_diag_inner,
-
+    pv_id_for_diagnose,
   } = props;
 
   const userid = SLocal_State.getUserData()?.id
 
-  const [allDiagnosesTemplate, set_allDiagnosesTemplate] = useState<any[]>([])
-  const [filterDiagnosesTemplate, set_filterDiagnosesTemplate] = useState<any[]>([])
+  const [allDiagnosesTemplate, set_allDiagnosesTemplate] = useState<IMchc_TemplateTree_Item[]>([])
+  const [diagnoses_to_select, set_diagnoses_to_select] = useState<IMchc_TemplateTree_Item[]>([])
   const [searchValue, set_searchValue] = useState('')
   const [activeKey, set_activeKey] = useState('1')
   const page = useRef(0)
@@ -52,30 +52,29 @@ function DiagnosesTemplateOld(props: IDiagnosesTemplate) {
     const scrollHeight = target.scrollHeight;
 
     if (clientHeight + scrollTop > scrollHeight * .8 || scrollTop < 10)
-      getDiagnosesTemplatePage(searchValue, ++page.current)
+      append_template_page(searchValue, ++page.current)
 
   }, 100)
   useEffect(() => {
 
 
-    set_filterDiagnosesTemplate(filterDiagnoses(allDiagnosesTemplate, diagnosesList))
+    set_diagnoses_to_select(filter_templates(allDiagnosesTemplate, diagnosesList))
   }, [diagnosesList])
 
-  function filterDiagnoses(remoteData: any, diagnoses: IMchc_Doctor_Diagnoses[]) {
-    const newTemplate = filter(remoteData, (item) => {
-      const ind = findIndex(diagnoses, (i: any) => i.diagnosis == item.val);
-      return ind == -1 ? true : false;
+  function filter_templates(all: IMchc_TemplateTree_Item[], diagnoses: IMchc_Doctor_Diagnoses[]) {
+    const newTemplate = all.filter(tmpl => {
+      return !diagnoses.find((_) => _.diagnosis == tmpl.val);
     });
     return newTemplate;
   }
 
   async function getDiagnosesTemplate(value: string) {
-    const res = await api.components.getDiagnosesTemplate(value);
+    const res = await SMchc_TemplateTrees.get_diagnoses_template(value);
 
-    set_filterDiagnosesTemplate(filterDiagnoses(res, diagnosesList))
+    set_diagnoses_to_select(filter_templates(res, diagnosesList))
     set_allDiagnosesTemplate(res)
   };
-  async function getDiagnosesTemplatePage(value: string, page = 0) {
+  async function append_template_page(value: string, page = 0) {
     loading.current = true
     try {
       const res: any = await api.components.getDiagnosesTemplate(value, page);
@@ -83,7 +82,7 @@ function DiagnosesTemplateOld(props: IDiagnosesTemplate) {
         empty.current = true
 
 
-      set_filterDiagnosesTemplate([...filterDiagnosesTemplate, ...filterDiagnoses(res, diagnosesList)])
+      set_diagnoses_to_select([...diagnoses_to_select, ...filter_templates(res, diagnosesList)])
     } finally {
       loading.current = false
     }
@@ -104,14 +103,8 @@ function DiagnosesTemplateOld(props: IDiagnosesTemplate) {
     }, 500);
   };
   function findMaxSort() {
-    let max: any = 0;
-    map(diagnosesList, (item) => {
-      const sort = get(item, `sort`);
-      if (sort > max) {
-        max = sort;
-      }
-    });
-    return max + 1;
+    const max_num = max(diagnosesList.map(item => get(item, `sort`))) || 0
+    return max_num + 1
   }
 
   function handleSearch(item: any) {
@@ -128,7 +121,7 @@ function DiagnosesTemplateOld(props: IDiagnosesTemplate) {
       if (!isString(item) && size(item.children) > 0) return;
       if (isString(item)) {
         set(postdata, `diagnosis`, item);
-        let itemObj = find(filterDiagnosesTemplate, (tem: any) => tem.val == item);
+        let itemObj = diagnoses_to_select.find(_ => _.val == item);
         if (itemObj) {
           set(postdata, 'diagnosisCode', get(itemObj, 'code'));
         }
@@ -173,14 +166,6 @@ function DiagnosesTemplateOld(props: IDiagnosesTemplate) {
 
 
 
-  function updateNote(value: any, i: number, key: string) {
-
-    const newList = cloneDeep(diagnosesList);
-    const item = newList[i];
-    item[`${key}`] = value;
-    setDiagnosesList(newList);
-    SMchc_Doctor.new_Diagnosis(item);
-  }
 
   //#endregion
 
@@ -218,7 +203,7 @@ function DiagnosesTemplateOld(props: IDiagnosesTemplate) {
               key="1"
             >
               <div onScroll={scrollHandler} style={{ height: '100%', overflowY: 'auto', }}>
-                {map(filterDiagnosesTemplate, (item) => (
+                {diagnoses_to_select.map((item) => (
                   <p className="diag-item">
                     <span onClick={() => handleSearch(item)}>
                       {get(item, 'code') ? '（icd）' : null}
@@ -292,19 +277,18 @@ function DiagnosesTemplateOld(props: IDiagnosesTemplate) {
           <div className="diag-title">已选诊断</div>
           <div id="diag-content" className="diag-content">
             <DiagnosesWeek first={false} headerInfo={headerInfo} />
-            {diagnosesList ? (
-              diagnosesList.map((item: any, i: number) => (
+            {filter_diagnoses_list ? (
+              filter_diagnoses_list.map((item: any, i: number) => (
                 <DiagnosesItem
                   key={`${get(item, 'id')}-true`}
                   diagnose={item}
-                  updateNote={updateNote}
                   index={i}
                   do_del_diagnose_item={del_diagnose_item_inner}
                   edit={true}
                   headerInfo={headerInfo}
-                  saveHeaderInfo={props.saveHeaderInfo}
+                  saveHeaderInfo={saveHeaderInfo}
                   diagnosesList={diagnosesList}
-                  setDiagnosesList={props.setDiagnosesList}
+                  setDiagnosesList={setDiagnosesList}
                   isShowDiagnosesTemplate={true}
                 />
               ))

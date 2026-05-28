@@ -10,7 +10,7 @@ export * from './types'
 class TemplateTreeService extends ModelService<IMchc_TemplateTree_Item> {
     name = '/template-trees'
     /** 获取诊断模糊搜索数据 */
-    async getDiagnosesTemplate(value: string, page = 0) {
+    async get_diagnoses_template(value: string, page = 0) {
         const code = encodeURIComponent(value);
         const code2 = encodeURIComponent(code);
         const { data } = await request.get<IMchc_TemplateTree_Item[]>(
