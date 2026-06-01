@@ -158,29 +158,38 @@ function FurtherForm(props: IProps) {
 
     function setItemValue(val: string, key: string) { }
 
-    function get_form_data() {
+    async function get_form_data() {
 
-
-        return form
-            .validateFields()
-            .then((values) => {
-                values.physicalExam = process_OutpatientDocument_physicalExam_local(values.physicalExam)
-                return values as Partial<IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit>
-            })
-            .catch((error) => {
-                const first = handle_form_error(error)
-                if (first?.text) mchcEnv.warning(first.text)
-                return null
-            })
-    }
-    async function on_submit() {
         if (mchcEnv.is('扬州妇幼')) {
             const yes = window.confirm('温馨提醒：是否需要更新高危评估？')
             if (yes) {
-                mchcEnv.success('请点击高危色卡，更新高危评估后再重新保存！')
-                return
+                mchcEnv.success('请点击高危色卡，更新高危评估后再重新操作！')
+                return null
             }
         }
+        try {
+            const values = await form.validateFields()
+            values.physicalExam = process_OutpatientDocument_physicalExam_local(values.physicalExam)
+            return values as Partial<IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit>
+        } catch (error) {
+            const first = handle_form_error(error)
+            if (first?.text) mchcEnv.warning(first.text)
+            return null
+        }
+        // return form
+        //     .validateFields()
+        //     .then((values) => {
+        //         values.physicalExam = process_OutpatientDocument_physicalExam_local(values.physicalExam)
+        //         return values as Partial<IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit>
+        //     })
+        //     .catch((error) => {
+        //         const first = handle_form_error(error)
+        //         if (first?.text) mchcEnv.warning(first.text)
+        //         return null
+        //     })
+    }
+    async function on_submit() {
+
         const data = await get_form_data()
         if (!data) return
         if (before_submit) {
