@@ -21,13 +21,13 @@
         "access": "public"
     },
     "devDependencies": {
-        "rollup": "^2.70.2",
-        "zustand": "^5.0.3"
+        "rollup": "^2.80.0",
+        "zustand": "^5.0.14"
     },
     "dependencies": {
-        "@lm_fe/env": "^0.2.12",
-        "@lm_fe/service": "^0.2.12",
-        "@lm_fe/utils": "^0.2.12"
+        "@lm_fe/env": "workspace:^",
+        "@lm_fe/service": "workspace:^",
+        "@lm_fe/utils": "workspace:^"
     },
     "keywords": [],
     "author": "",

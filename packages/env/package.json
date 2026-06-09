@@ -23,11 +23,11 @@
     "author": "",
     "license": "MIT",
     "dependencies": {
-        "@lm_fe/utils": "^0.2.12",
-        "dayjs": "^1.11.13"
+        "@lm_fe/utils": "workspace:^",
+        "dayjs": "^1.11.21"
     },
     "devDependencies": {
-        "rollup": "^2.70.2"
+        "rollup": "^2.80.0"
     },
     "gitHead": "9e8eab8af4aa2675ed973be51fe85cf2e3c2ed27"
 }

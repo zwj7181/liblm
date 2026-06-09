@@ -21,16 +21,16 @@
         "access": "public"
     },
     "devDependencies": {
-        "rollup": "^2.70.2"
+        "rollup": "^2.80.0"
     },
     "dependencies": {
-        "@lm_fe/static": "*",
+        "@lm_fe/static": "^0.2.18",
         "@noah-libjs/request": "latest",
         "@noah-libjs/utils": "latest",
-        "axios": ">=0.26.1",
-        "dayjs": "^1.11.13",
-        "reconnecting-websocket": "4.x",
-        "store": "2.x"
+        "axios": "^1.17.0",
+        "dayjs": "^1.11.21",
+        "reconnecting-websocket": "~4.4.0",
+        "store": "~2.0.12"
     },
     "keywords": [],
     "author": "",

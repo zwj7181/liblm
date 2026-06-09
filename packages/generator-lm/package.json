@@ -14,7 +14,7 @@
     "license": "ISC",
     "dependencies": {
         "axios": "^0.26.1",
-        "beeper": "^2.0.0",
+        "beeper": "^2.1.0",
         "boxen": "^3.2.0",
         "chalk": "^4.1.2",
         "download-git-repo": "^1.1.0",
@@ -24,7 +24,7 @@
         "yeoman-generator": "^3.2.0"
     },
     "devDependencies": {
-        "rollup": "^2.70.2"
+        "rollup": "^2.80.0"
     },
     "gitHead": "9e8eab8af4aa2675ed973be51fe85cf2e3c2ed27"
 }

@@ -25,9 +25,9 @@
     "author": "",
     "license": "MIT",
     "devDependencies": {
-        "@vitest/ui": "^3.1.2",
-        "rollup": "^2.70.2",
-        "vitest": "^3.1.2"
+        "@vitest/ui": "^3.2.6",
+        "rollup": "^2.80.0",
+        "vitest": "^3.2.6"
     },
     "peerDependencies": {
         "axios": ">=0.26.0",
@@ -51,13 +51,13 @@
         "reconnecting-websocket": "4.x"
     },
     "dependencies": {
-        "@lm_fe/components": "^0.2.12",
-        "@lm_fe/components_m": "^0.2.12",
-        "@lm_fe/env": "^0.2.12",
-        "@lm_fe/provoke": "^0.2.12",
-        "@lm_fe/scripts": "*",
-        "@lm_fe/service": "^0.2.12",
-        "@lm_fe/utils": "^0.2.12",
+        "@lm_fe/components": "workspace:^",
+        "@lm_fe/components_m": "workspace:^",
+        "@lm_fe/env": "workspace:^",
+        "@lm_fe/provoke": "workspace:^",
+        "@lm_fe/scripts": "^0.2.18",
+        "@lm_fe/service": "workspace:^",
+        "@lm_fe/utils": "workspace:^",
         "react-perfect-scrollbar": "^1.5.8"
     },
     "gitHead": "9e8eab8af4aa2675ed973be51fe85cf2e3c2ed27"
