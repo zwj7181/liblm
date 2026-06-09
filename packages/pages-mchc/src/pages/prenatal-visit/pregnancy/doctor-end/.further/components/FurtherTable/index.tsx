@@ -1,11 +1,11 @@
 import { MyIcon, MyLazyComponent, Table_L } from '@lm_fe/components';
 import { OkButton } from '@lm_fe/components_m';
-import { mchcUtils } from '@lm_fe/env';
+import { mchcLogger, mchcUtils } from '@lm_fe/env';
 import { BF_Wrap2, mchcModal__ } from '@lm_fe/pages';
 import { use_provoke } from '@lm_fe/provoke';
 import { IMchc_Doctor_Diagnoses, IMchc_Doctor_OutpatientHeaderInfo, IMchc_Doctor_RvisitInfoOfOutpatient, IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit, IMchc_FormDescriptions_Field } from '@lm_fe/service';
 import { cloneDeep, expect_array, get, request } from '@lm_fe/utils';
-import { Button, Col, message, Popconfirm, Row, Space, Tabs } from 'antd';
+import { Button, Col, message, Popconfirm, Row, Space, Tabs, Modal } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { filter_diagnoses } from '../../../.utils';
 import { filter_fds } from '../../utils';
@@ -32,6 +32,7 @@ export default function FurtherTable(props: IProps) {
 
 	const [selectKeys, set_selectKeys] = useState<any[]>([])
 	const [selectRows, set_selectRows] = useState<any[]>([])
+	const [isModalOpen, setIsModalOpen] = useState(false)
 
 	const printTableRef = useRef<HTMLDivElement>(null)
 	const { config, Wrap } = BF_Wrap2(
@@ -97,6 +98,19 @@ export default function FurtherTable(props: IProps) {
 	};
 
 	const reverseRvisit = cloneDeep(filtered_rvisits)?.reverse() || []
+	const renderModal = () => {
+		return (
+			<Modal
+				open={isModalOpen}
+				onCancel={() => setIsModalOpen(false)}
+				width={'93%'}
+				footer={null}
+				centered
+			>
+				{renderTableMore()}
+			</Modal>
+		)
+	}
 	const renderTableMore = () => {
 		return (
 			<Tabs className={styles['further-table-modal']}>
@@ -179,7 +193,8 @@ export default function FurtherTable(props: IProps) {
 								<OkButton type="text" size="small" onClick={handlePrint} >
 									打印
 								</OkButton>
-								<OkButton type='text' size="small" onClick={() => mchcModal__.open('modal_page', { modal_data: { content: renderTableMore() } })}>
+								{/* <OkButton type='text' size="small" onClick={() => mchcModal__.open('modal_page', { modal_data: { content: renderTableMore() } })}> */}
+								<OkButton type='text' size="small" onClick={() => setIsModalOpen(true)}>
 									更多...
 								</OkButton>
 							</Space>
@@ -240,7 +255,7 @@ export default function FurtherTable(props: IProps) {
 
 
 			</MyLazyComponent>
-
+			{renderModal()}
 		</div>
 	);
 }
