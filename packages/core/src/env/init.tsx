@@ -18,7 +18,7 @@ request.spawn({
         baseURL: `${AppEnv.client_mode ? HOST_URL : baseApiUrl}${API_PREFIX}`,
         timeout: 240000,
         headers: {
-            'Content-Type': 'application/json;charset=UTF-8',
+            // 'Content-Type': 'application/json;charset=UTF-8',
         },
     }
 })

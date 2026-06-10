@@ -51,7 +51,7 @@ function FurtherForm(props: IProps) {
 
     const { getLastRecord } = props
     const { formChange } = props
-    const { handle_cs_sign, 签名方式 } = use_doctor_sign({ type: 'prenatalVisit' })
+    const { handle_cs_sign, 签名形式 } = use_doctor_sign({ type: 'prenatalVisit' })
     const {
         addon_btns,
         before_submit,
@@ -331,13 +331,13 @@ function FurtherForm(props: IProps) {
                         <OkButton hidden={!mchcEnv.is('南医附属') || !form_id} onClick={copy}>
                             复制
                         </OkButton>
-                        <OkButton hidden={(!form_id && 签名方式 === 'CA签名') || !签名方式} primary disabled={disabled_save} onClick={sign}>
-                            {签名方式}
+                        <OkButton hidden={(!form_id && 签名形式 === 'CA签名') || !签名形式} primary disabled={disabled_save} onClick={sign}>
+                            {签名形式}
                         </OkButton>
                         <OkButton hidden={!mchcEnv.is('南医附属') || !form_id} onClick={nfyy_sign}>
                             签名
                         </OkButton>
-                        <OkButton hidden={签名方式 === 'CA签名并保存'} primary disabled={disabled_save} onClick={on_submit}>
+                        <OkButton hidden={签名形式 === 'CA签名并保存'} primary disabled={disabled_save} onClick={on_submit}>
                             {saveBtnTxt}
                         </OkButton>
                     </Space.Compact>

@@ -437,17 +437,64 @@ export default defineFormConfig(
                             layout: '1/3',
                         },
                         {
-                            label: '签名方式',
-                            name: '签名方式',
-                            inputType: 'MS',
-                            inputProps: {
-                                marshal: 0,
-                                options: getSameOptions('CA签名并保存,CA签名'),
-                                popupMatchSelectWidth: 300,
-                                allowClear: true
-                            },
-                            layout: '1/3',
-                        },
+                            label: '签名',
+                            children: [
+
+                                {
+                                    label: '签名形式',
+                                    name: '签名形式',
+                                    inputType: 'MS',
+                                    inputProps: {
+                                        marshal: 0,
+                                        options: getSameOptions('CA签名并保存,CA签名'),
+                                        popupMatchSelectWidth: 300,
+                                        allowClear: true
+                                    },
+                                    layout: '1/3',
+                                },
+                                {
+                                    label: '签名方式',
+                                    name: '签名方式',
+                                    inputType: 'MS',
+                                    inputProps: {
+                                        marshal: 0,
+                                        options: getSameOptions('扫码(默认),本地http签名'),
+                                        popupMatchSelectWidth: 300,
+                                        allowClear: true
+                                    },
+                                    layout: '1/3',
+                                },
+                                {
+                                    label: '本地http签名地址',
+                                    name: '本地http签名地址',
+                                    inputType: 'Input',
+                                    inputProps: {},
+                                    layout: '1/3',
+
+                                },
+                                {
+                                    label: '本地http签名格式',
+                                    name: '本地http签名格式',
+                                    inputType: 'MS',
+                                    inputProps: {
+                                        options: getSameOptions('json(默认),formdata,json_formdata,searchparams'),
+                                        marshal: 0,
+                                        popupMatchSelectWidth: 300,
+                                        allowClear: true
+                                    },
+
+                                    layout: '1/3',
+
+                                },
+                                {
+                                    label: '本地http签名净化',
+                                    name: '本地http签名净化',
+                                    inputType: 'MSW',
+                                    layout: '1/3',
+
+                                }
+                            ],
+                        }
                     ],
                 },
 

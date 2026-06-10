@@ -29,7 +29,7 @@ interface IProps {
 }
 function FurtherForm(props: IProps) {
   const [disabled_save, set_disabled_save] = useState(false)
-  const { handle_cs_sign, 签名方式 } = use_doctor_sign({ type: 'prenatalVisitCH' })
+  const { handle_cs_sign, 签名形式 } = use_doctor_sign({ type: 'prenatalVisitCH' })
 
   const { getLastRecord } = props;
   const { formChange } = props;
@@ -201,11 +201,11 @@ function FurtherForm(props: IProps) {
           <Space.Compact style={{ position: 'fixed', bottom: 24, right: 24 }}>
             <OkButton hidden={!form_id} onClick={showpdf}>打印</OkButton>
 
-            <OkButton hidden={(!form_id && 签名方式 === 'CA签名') || !签名方式} primary disabled={disabled_save} onClick={sign}>
-              {签名方式}
+            <OkButton hidden={(!form_id && 签名形式 === 'CA签名') || !签名形式} primary disabled={disabled_save} onClick={sign}>
+              {签名形式}
             </OkButton>
 
-            <OkButton hidden={签名方式 === 'CA签名并保存'} primary disabled={disabled_save} onClick={on_submit}>
+            <OkButton hidden={签名形式 === 'CA签名并保存'} primary disabled={disabled_save} onClick={on_submit}>
               {saveBtnTxt}
             </OkButton>
 

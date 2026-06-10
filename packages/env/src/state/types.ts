@@ -63,7 +63,11 @@ export type ISystemConfig = Partial<{
     量表拓展?: ICommonOption[]
     专案拓展?: ICommonOption[]
     医生端_BMI曲线类型?: number
-    签名方式?: 'CA签名并保存' | 'CA签名'
+    签名形式?: 'CA签名并保存' | 'CA签名'
+    签名方式?: '扫码(默认)' | '本地http签名'
+    本地http签名地址?: string
+    本地http签名格式?: 'json(默认)' | 'formdata' | 'json_formdata' | 'searchparams'
+    本地http签名净化?: boolean
     顶部工具栏隐藏?: boolean
     styles?: Partial<{
         compact: boolean

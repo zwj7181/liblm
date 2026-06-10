@@ -49,7 +49,7 @@ function Index(props: IProps & IInitial_Tab_props) {
     form
   } = props;
   const preg_id = mchcUtils.single_id()
-  const { handle_cs_sign, 签名方式 } = use_doctor_sign({ type: 'prenatalFVisit' })
+  const { handle_cs_sign, 签名形式 } = use_doctor_sign({ type: 'prenatalFVisit' })
 
   const { Wrap, config } = BF_Wrap2({ default_conf: { title: '门诊-诊断处理', tableColumns: () => import('./config') } })
 
@@ -280,12 +280,12 @@ function Index(props: IProps & IInitial_Tab_props) {
 
 
 
-          <OkButton size="large" hidden={签名方式 === 'CA签名并保存'} primary disabled={disabled_save} onClick={handleSubmitBefore} icon={<MyIcon value='SaveOutlined' />}>
+          <OkButton size="large" hidden={签名形式 === 'CA签名并保存'} primary disabled={disabled_save} onClick={handleSubmitBefore} icon={<MyIcon value='SaveOutlined' />}>
             保存
           </OkButton>
 
-          <OkButton size="large" hidden={(!v_id && 签名方式 === 'CA签名') || !签名方式} primary disabled={disabled_save} onClick={sign}>
-            {签名方式}
+          <OkButton size="large" hidden={(!v_id && 签名形式 === 'CA签名') || !签名形式} primary disabled={disabled_save} onClick={sign}>
+            {签名形式}
           </OkButton>
         </Space>
       </Col>

@@ -1,6 +1,6 @@
 import { mchcEnv, mchcLogger } from '@lm_fe/env';
 import { mchcModal__ } from '@lm_fe/pages';
-import { isString, request } from '@lm_fe/utils';
+import { AnyObject, isString, object_to_formData, object_to_searchparams, request } from '@lm_fe/utils';
 import React, { useEffect, useState } from 'react'
 
 import { use_provoke } from '@lm_fe/provoke';
@@ -17,23 +17,27 @@ interface IConfig {
 }
 
 // parse string like post:http://abc.com
-const allow_method = ['get', 'post', 'put']
 
-function parseReqUrl(str: string): { method: 'get' | 'post' | 'put', url: string } | null {
-    if (!str) return null
-    if (!allow_method.some(m => str.startsWith(m + ':'))) {
-        mchcEnv.error('不合法的url:' + str)
-        return null
-    }
-    const arr = str.split(':')
-    return { method: arr[0] as any, url: arr[1] }
-}
+
 export function use_doctor_sign(props: IProps) {
     const [ca_conf, set_ca_conf] = useState<IConfig>()
     const {
         type
     } = props
-    const { 签名方式 } = use_provoke(c => c.config)
+    const { 签名形式, 本地http签名地址, 本地http签名格式, 本地http签名净化, 签名方式 } = use_provoke(c => c.config)
+
+    function format_ca_req_data(data: AnyObject) {
+        if(本地http签名格式 === 'formdata') {
+            return object_to_formData(data)
+        }
+        if (本地http签名格式 === 'searchparams') {
+            return object_to_searchparams(data)
+        }
+        if (本地http签名格式 === 'json_formdata') {
+            return JSON.stringify(data)
+        }
+        return data
+    }
 
     useEffect(() => {
         request.get<IConfig>('/api/ca/conf').then(res => {
@@ -46,29 +50,31 @@ export function use_doctor_sign(props: IProps) {
     }, [])
 
     async function handle_cs_sign<T>(data: T) {
-        if (ca_conf?.caType === 'qrCode') {
-            return handle_cs_sign_qrcode(data)
-        } else if (ca_conf?.caType === 'http') {
+        if (签名方式 === '本地http签名') {
             return handle_cs_sign_http(data)
+        } else {
+            return handle_cs_sign_qrcode(data)
         }
     }
+
     async function handle_cs_sign_http<T>(data: T) {
         try {
 
-            const params_res = await request.post(ca_conf?.paramsUrl!, { type, data },)
-            const params = params_res.data
+            const params_res = await request.post('/api/ca/getParam', { type, data },)
+            const params = format_ca_req_data(params_res.data)
+            mchcLogger.log('本地http签名请求参数', params, toString.call(params))
 
-            mchcLogger.log('签名', { resUrl: ca_conf?.reqUrl, params, request })
+            // const sign_res = await request.post(ca_conf?.reqUrl!, objectToFormData(params), { pure_req: true })
+            const sign_res = await request.post(本地http签名地址!, params, { pure_req: 本地http签名净化 })
 
-            const sign_res = await request.post(ca_conf?.reqUrl!, params)
 
             const sign_data = sign_res.data
-            const res = await request.post(ca_conf?.resUrl!, { type, data, sign_data })
+            const res = await request.post('/api/ca/sign', { type, data, sign_data },)
             mchcEnv.success('操作成功')
             return res.data
         } catch (error) {
             mchcEnv.error('操作失败')
-            throw error
+            mchcLogger.error('本地http签名失败', error)
         }
     }
     async function handle_cs_sign_qrcode<T>(newData: T, this_res?: (value: T) => void, this_rej?: (reason?: any) => void,) {
@@ -113,7 +119,7 @@ export function use_doctor_sign(props: IProps) {
 
 
     return {
-        签名方式,
+        签名形式,
         handle_cs_sign
     }
 
