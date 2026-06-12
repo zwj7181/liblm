@@ -8,26 +8,15 @@ import { use_provoke } from '@lm_fe/provoke';
 interface IProps {
     type: 'prenatalVisit' | 'prenatalFVisit' | 'prenatalVisitCH'
 }
-interface IConfig {
-    caType: 'qrCode' | 'http'
-    preForm?: string
-    paramsUrl?: string
-    reqUrl?: string
-    resUrl?: string
-}
-
-// parse string like post:http://abc.com
-
 
 export function use_doctor_sign(props: IProps) {
-    const [ca_conf, set_ca_conf] = useState<IConfig>()
     const {
         type
     } = props
     const { 签名形式, 本地http签名地址, 本地http签名格式, 本地http签名净化, 签名方式 } = use_provoke(c => c.config)
 
     function format_ca_req_data(data: AnyObject) {
-        if(本地http签名格式 === 'formdata') {
+        if (本地http签名格式 === 'formdata') {
             return object_to_formData(data)
         }
         if (本地http签名格式 === 'searchparams') {
@@ -40,9 +29,7 @@ export function use_doctor_sign(props: IProps) {
     }
 
     useEffect(() => {
-        request.get<IConfig>('/api/ca/conf').then(res => {
-            set_ca_conf(res.data)
-        })
+
 
         return () => {
 
@@ -58,24 +45,24 @@ export function use_doctor_sign(props: IProps) {
     }
 
     async function handle_cs_sign_http<T>(data: T) {
-        try {
+        return new Promise<T>(async (resolve, reject) => {
+            try {
 
-            const params_res = await request.post('/api/ca/getParam', { type, data },)
-            const params = format_ca_req_data(params_res.data)
-            mchcLogger.log('本地http签名请求参数', params, toString.call(params))
+                const params_res = await request.post('/api/ca/getParam', { type, data },)
+                const params = params_res.data
 
-            // const sign_res = await request.post(ca_conf?.reqUrl!, objectToFormData(params), { pure_req: true })
-            const sign_res = await request.post(本地http签名地址!, params, { pure_req: 本地http签名净化 })
+                const sign_res = await request.post(本地http签名地址!, format_ca_req_data(params), { pure_req: 本地http签名净化 })
+                const signData = sign_res.data
 
+                const res = await request.post('/api/ca/sign', { type, data, signData, params },)
+                mchcEnv.success('签名成功')
+                resolve(res.data)
+            } catch (error) {
+                mchcEnv.error('签名失败')
+                reject(error)
+            }
 
-            const sign_data = sign_res.data
-            const res = await request.post('/api/ca/sign', { type, data, sign_data },)
-            mchcEnv.success('操作成功')
-            return res.data
-        } catch (error) {
-            mchcEnv.error('操作失败')
-            mchcLogger.error('本地http签名失败', error)
-        }
+        })
     }
     async function handle_cs_sign_qrcode<T>(newData: T, this_res?: (value: T) => void, this_rej?: (reason?: any) => void,) {
         return new Promise<T>(async (resolve, reject) => {
@@ -100,23 +87,6 @@ export function use_doctor_sign(props: IProps) {
             }
         })
     }
-    // 前端获取签名配置 get /api/ca/conf 返回 { caType:String preForm:String }
-    // preForm 返回一个表单名字，如果返回了签名前会弹出一个表单
-    // caType 为 'qrCode' 即走目前弹窗扫码的形式
-    // catype 为 'http', 表示走本地http签名服务， /api/ca/conf 返回体需同时返回
-    //  { paramsUrl:'post:/api/ca/params', reqUrl:'post:http://127.0.0.1:38877/tjca/gmt0020/', resUrl:'post:/api/ca/response' },
-    // 我会调用 paramsUrl 并传当前签名的数据，paramsUrl 返回调用本地签名服务的传参，如 	{"func_name": "BHCA_Login",	"param0": 0}
-    // 用来调用本地签名服务 reqUrl，本地签名服务返回数据, 我会将签名返回传递给 resUrl
-
-
-
-
-
-
-
-
-
-
 
     return {
         签名形式,

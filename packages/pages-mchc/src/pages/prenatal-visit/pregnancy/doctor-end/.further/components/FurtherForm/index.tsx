@@ -160,15 +160,18 @@ function FurtherForm(props: IProps) {
 
     async function get_form_data() {
 
-        if (mchcEnv.is('扬州妇幼')) {
-            const yes = window.confirm('温馨提醒：是否需要更新高危评估？')
-            if (yes) {
-                mchcEnv.success('请点击高危色卡，更新高危评估后再重新操作！')
-                return null
-            }
-        }
+
         try {
             const values = await form.validateFields()
+
+            if (mchcEnv.is('扬州妇幼')) {
+                const yes = window.confirm('温馨提醒：是否需要更新高危评估？')
+                if (yes) {
+                    mchcEnv.success('请点击高危色卡，更新高危评估后再重新操作！')
+                    return null
+                }
+            }
+
             values.physicalExam = process_OutpatientDocument_physicalExam_local(values.physicalExam)
             return values as Partial<IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit>
         } catch (error) {
