@@ -213,7 +213,7 @@ function DoctorEnd_Further(props: IDoctorEnd_FurtherProps) {
     const list = expect_array(visitsData_cache.current?.rvisits);
     const newFormData = list.find(item => item.id !== null)!
 
-    const omit_data = omit(newFormData, ['id', 'isBanned', 'serialNo'])
+    const omit_data = omit(newFormData, ['id', 'isBanned',])
     const new_values = Object.assign(omit_data, get_default_value())
     setFormData(new_values)
   };
