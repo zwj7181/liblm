@@ -198,13 +198,7 @@ function DoctorEnd_Further(props: IDoctorEnd_FurtherProps) {
 
 
 
-  function onAddBtnClick() {
-    setDiagnosesList((visitsData?.diagnoses as any) || [])
-    const idNullRvisit = get_id_null_data(visitsData)
-    const first = idNullRvisit ?? get_default_value()
-    setFormData(first)
 
-  }
 
 
   function changeDoctorRecord(v: IMchc_Doctor_RvisitInfoOfOutpatient) {
@@ -219,11 +213,17 @@ function DoctorEnd_Further(props: IDoctorEnd_FurtherProps) {
     const list = expect_array(visitsData_cache.current?.rvisits);
     const newFormData = list.find(item => item.id !== null)!
 
-    const omit_data = omit(newFormData, ['id', 'isBanned',])
+    const omit_data = omit(newFormData, ['id', 'isBanned', 'serialNo'])
     const new_values = Object.assign(omit_data, get_default_value())
     setFormData(new_values)
   };
+  function onAddBtnClick() {
+    setDiagnosesList((visitsData?.diagnoses as any) || [])
+    const idNullRvisit = get_id_null_data(visitsData)
+    const first = idNullRvisit ?? get_default_value()
+    setFormData(first)
 
+  }
 
 
   // function changeVisitsData(new_one: IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit) {
