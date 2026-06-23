@@ -11,6 +11,8 @@ const BloodPressure_static = lazy(() => import('./BloodPressure/static'))
 const BloodPressure_record = lazy(() => import('./BloodPressure/record'))
 const FetalMovement_static = lazy(() => import('./FetalMovement/static'))
 const FetalMovement_record = lazy(() => import('./FetalMovement/record'))
+const Weight_static = lazy(() => import('./Weight/static'))
+const Weight_record = lazy(() => import('./Weight/record'))
 export function DoctorEnd_HomeCare(props: any) {
 
   const pregnancyId = mchcUtils.single_id(props);
@@ -48,6 +50,13 @@ export function DoctorEnd_HomeCare(props: any) {
             pregnancyId={pregnancyId}
             Static={FetalMovement_static}
             Record={FetalMovement_record}
+          />
+        </Tabs.TabPane>
+        <Tabs.TabPane tab="体重" key="WeightInHome">
+          <Seg
+            pregnancyId={pregnancyId}
+            Static={Weight_static}
+            Record={Weight_record}
           />
         </Tabs.TabPane>
       </Tabs>
