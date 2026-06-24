@@ -110,10 +110,10 @@ function FurtherForm(props: IProps) {
                 const values = e.values
                 const value = e.value
                 const key = e.name
-                if (key === 'visitDate') {
-                    const a = await SLocal_Calculator.calcGesWeek({ date: value, id: preg_id })
-                    e.setValue?.('gestationalWeek', a.gestationalWeek)
-                }
+                // if (key === 'visitDate') {
+                //     const a = await SLocal_Calculator.calcGesWeek({ date: value, id: preg_id })
+                //     e.setValue?.('gestationalWeek', a.gestationalWeek)
+                // }
 
                 if (key === 'appointmentCycle') {
                     e.setValue?.('appointmentDate', getFutureDate(value))
