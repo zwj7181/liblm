@@ -5,15 +5,12 @@ import React, { useEffect, useState } from 'react'
 
 import { use_provoke } from '@lm_fe/provoke';
 
-interface IProps {
-    type: 'prenatalVisit' | 'prenatalFVisit' | 'prenatalVisitCH'
-}
 
-export function use_doctor_sign(props: IProps) {
-    const {
-        type
-    } = props
+export function use_doctor_sign(type: 'prenatalVisit' | 'prenatalFVisit' | 'prenatalVisitCH', data_with_sign_status?: { prenatalVisitId?: any, caSignStatus?: boolean }) {
+
     const { 签名形式, 本地http签名地址, 本地http签名格式, 本地http签名净化, 签名方式 } = use_provoke(c => c.config)
+    const is_signed = data_with_sign_status?.caSignStatus
+    const is_saved = !!data_with_sign_status?.prenatalVisitId
 
     function format_ca_req_data(data: AnyObject) {
         if (本地http签名格式 === 'formdata') {
@@ -27,7 +24,31 @@ export function use_doctor_sign(props: IProps) {
         }
         return data
     }
+    function sign_btn_disabled() {
+        if (签名形式 === 'CA签名' && is_signed) {
+            return true
+        }
+        return false
+    }
+    function sign_btn_text() {
+        if (签名形式 === 'CA签名' && is_signed) {
+            return '已签名'
+        }
+        if (签名形式 === 'CA签名并保存' && is_signed) {
+            return '签名并保存（已签名）'
+        }
 
+        return 签名形式
+    }
+    function sign_btn_hidden() {
+        if (签名形式 === 'CA签名' && !is_saved) {
+            return true
+        }
+        if (!签名形式) {
+            return true
+        }
+        return false
+    }
     useEffect(() => {
 
 
@@ -37,13 +58,19 @@ export function use_doctor_sign(props: IProps) {
     }, [])
 
     async function handle_cs_sign<T>(data: T) {
+
         if (签名方式 === '本地http签名') {
             return handle_cs_sign_http(data)
         } else {
             return handle_cs_sign_qrcode(data)
         }
     }
-
+    function sign_confirm() {
+        if (is_signed) {
+            return confirm('该记录已签名，继续操作签名将无效，需重签，是否继续？')
+        }
+        return true
+    }
     async function handle_cs_sign_http<T>(data: T) {
         return new Promise<T>(async (resolve, reject) => {
             try {
@@ -90,7 +117,12 @@ export function use_doctor_sign(props: IProps) {
 
     return {
         签名形式,
-        handle_cs_sign
+        handle_cs_sign,
+        sign_btn_disabled: sign_btn_disabled(),
+        sign_btn_text: sign_btn_text(),
+        sign_btn_hidden: sign_btn_hidden(),
+        save_btn_hidden: 签名形式 === 'CA签名并保存',
+        sign_confirm
     }
 
 }

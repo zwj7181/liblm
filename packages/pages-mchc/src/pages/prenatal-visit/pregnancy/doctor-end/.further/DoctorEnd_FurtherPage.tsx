@@ -14,13 +14,13 @@ const single_id = mchcUtils.single_id
 export interface IDoctorEnd_FurtherProps {
   addon_btns?: (data?: Partial<IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit>) => React.ReactNode
   before_submit?: (submit: (values: any) => Promise<void>, data?: Partial<IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit>, form?: FormInstance) => Promise<void>
-  setDiagnosesList(v: IMchc_Doctor_Diagnoses[]): void
+  // setDiagnosesList(v: IMchc_Doctor_Diagnoses[]): void
   id: TIdTypeCompatible
 
   headerInfo: IMchc_Doctor_OutpatientHeaderInfo
 
 
-  diagnosesList: IMchc_Doctor_Diagnoses[]
+  // diagnosesList: IMchc_Doctor_Diagnoses[]
   formChange(b: boolean): void,
 
 
@@ -31,13 +31,14 @@ function DoctorEnd_Further(props: IDoctorEnd_FurtherProps) {
 
   const {
     saveHeaderInfo,
-    setDiagnosesList,
+    // setDiagnosesList,
     headerInfo,
     id,
 
-    diagnosesList,
+    // diagnosesList,
     formChange,
   } = props;
+  const [diagnosesList, setDiagnosesList] = useState<IMchc_Doctor_Diagnoses[]>([])
 
   const serialNo_q = getSearchParamsValue('serialNo')
 
@@ -198,13 +199,7 @@ function DoctorEnd_Further(props: IDoctorEnd_FurtherProps) {
 
 
 
-  function onAddBtnClick() {
-    setDiagnosesList((visitsData?.diagnoses as any) || [])
-    const idNullRvisit = get_id_null_data(visitsData)
-    const first = idNullRvisit ?? get_default_value()
-    setFormData(first)
 
-  }
 
 
   function changeDoctorRecord(v: IMchc_Doctor_RvisitInfoOfOutpatient) {
@@ -213,7 +208,7 @@ function DoctorEnd_Further(props: IDoctorEnd_FurtherProps) {
 
   }
 
-  // 同步导入上一次复诊记录的主诉等信息
+  // 同步导入上一次复诊记录的主诉等信息，不要再做维护！！！！！！！！！！！！！！！
   async function getLastRecord() {
 
     const list = expect_array(visitsData_cache.current?.rvisits);
@@ -223,7 +218,13 @@ function DoctorEnd_Further(props: IDoctorEnd_FurtherProps) {
     const new_values = Object.assign(omit_data, get_default_value())
     setFormData(new_values)
   };
+  function onAddBtnClick() {
+    setDiagnosesList((visitsData?.diagnoses as any) || [])
+    const idNullRvisit = get_id_null_data(visitsData)
+    const first = idNullRvisit ?? get_default_value()
+    setFormData(first)
 
+  }
 
 
   // function changeVisitsData(new_one: IMchc_Doctor_RvisitInfoOfOutpatient_Rvisit) {
